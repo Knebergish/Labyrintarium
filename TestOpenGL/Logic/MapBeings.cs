@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace TestOpenGL.Logic
 {
-    class MapBlocks
+    class MapBeings
     {
-        //Hahahaha!
     }
 }
