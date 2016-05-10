@@ -66,7 +66,7 @@ namespace TestOpenGL
                 }
             }
             Program.L.SetBlocks(BS);
-            Program.L.camera.SetLookingBeing(Be);
+            Program.P.camera.SetLookingBeing(Be);
         }
 
         private void button2_Click(object sender, EventArgs e)

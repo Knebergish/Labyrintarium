@@ -21,13 +21,11 @@ namespace TestOpenGL
         
         Being looking;
 
-        public Camera(Level l, int width, int height)
+        public Camera(int width, int height)//(Level l, int width, int height)
         {
-            this.l = l;
+            this.l = Program.L;
             this.width = width;
             this.height = height;
-
-            
 
             Look();
         }

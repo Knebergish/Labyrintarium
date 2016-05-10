@@ -23,8 +23,8 @@ namespace TestOpenGL.Logic
             isEnabledControl = true;
             Steps = new System.Threading.Thread(StepBeings);
             Steps.Start(this.isNextStep);
-            sight = new Sight(Program.L.camera);
-            Program.L.StartRedraw();
+            sight = new Sight(Program.P.camera);
+            Program.P.StartRedraw();
             StartStep();
             formInventory = new Form2(new EventDelegate(StartStep));
         }

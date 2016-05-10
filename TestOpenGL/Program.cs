@@ -15,6 +15,7 @@ namespace TestOpenGL
         public static TexturesAssistant TA;
         public static DataBaseIO DBIO;
         public static Level L;
+        public static Painter P;
         public static GameCycle GCycle;
 
         /// <summary>
@@ -41,7 +42,8 @@ namespace TestOpenGL
             DBIO = new DataBaseIO(Directory.GetCurrentDirectory());
             TA = new TexturesAssistant(Directory.GetCurrentDirectory());
             OB = new ObjectsBuilder(DBIO, TA);
-            L = new Level(30, 30, 2, f);
+            L = new Level(30, 30, 2);
+            P = new Painter(f);
             GCycle = new GameCycle();
         }
     }
