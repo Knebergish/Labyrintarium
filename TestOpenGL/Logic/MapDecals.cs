@@ -8,6 +8,9 @@ using TestOpenGL.VisualObjects;
 
 namespace TestOpenGL.Logic
 {
+    /// <summary>
+    /// Организует работу с декалями на карте.
+    /// </summary>
     class MapDecals
     {
         private List<Decal> listDecals;

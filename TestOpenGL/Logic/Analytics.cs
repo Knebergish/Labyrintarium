@@ -52,7 +52,7 @@ namespace TestOpenGL.Logic
         /// <param name="end"> Координаты точки, к которой ищем путь.</param>
         /// <param name="type"> Тип проходимости ячейки: true - учитывются сущности.</param>
         /// <returns></returns>
-        static public Stack<Coord> BFS(Coord start, Coord end, bool type)
+        static public Stack<Coord> BFS(Coord start, Coord end)//, bool type)
         {
             //Stopwatch SW = new Stopwatch();
             //SW.Start();
@@ -83,7 +83,7 @@ namespace TestOpenGL.Logic
                                 {
                                 //try
                                 //{
-                                    if (Program.L.IsPassable(new Coord(xd + dx[k], yd + dy[k]), type) == true || (xd + dx[k] == end.X && yd + dy[k] == end.Y))
+                                    if (Program.L.IsPassable(new Coord(xd + dx[k], yd + dy[k])/*, type*/) == true || (xd + dx[k] == end.X && yd + dy[k] == end.Y))
                                     {
                                         if (grid[xd + dx[k], yd + dy[k]] == -1)
                                         {

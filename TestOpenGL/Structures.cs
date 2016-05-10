@@ -80,16 +80,30 @@ namespace TestOpenGL
         }
     }
 
+    public delegate void EventDelegate();
+
     /// <summary>
     /// Перечисление частей тела, которые может занимать одетый предмет.
     /// </summary>
     enum Part { Head, Body, Leg, LHand, RHand };
 
+    /// <summary>
+    /// Перечисление характеристик, которые имеет сущность.
+    /// </summary>
     enum Feature { Power, Stamina, Agility };
 
-    public delegate void EventDelegate();
-
+    /// <summary>
+    /// Перечисление типов визуальных объектов (отображаемых на карте).
+    /// </summary>
     enum TypeVisualObject { Block, Being, Decal};
 
+    /// <summary>
+    /// Перечисление направлений движения сущности.
+    /// </summary>
     enum Direction { Left, Up, Right, Down};
+
+    /// <summary>
+    /// Перечисление типов проверки проходимости/проницаемости ячейки.
+    /// </summary>
+    enum Passableness { Block, BlockAndBeing};
 }

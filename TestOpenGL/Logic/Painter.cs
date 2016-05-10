@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,10 +11,14 @@ using TestOpenGL.VisualObjects;
 
 namespace TestOpenGL.Logic
 {
+    /// <summary>
+    /// Рисует игровое поля на переданной форме.
+    /// </summary>
     class Painter
     {
         public Camera camera;
-        private Form1 mainForm;
+
+        private Tao.Platform.Windows.SimpleOpenGlControl GlControl;
 
         //TODO: отрефакторить эту хрень и метод Redraw.
         delegate void updateVoid();
@@ -27,9 +29,9 @@ namespace TestOpenGL.Logic
         ManualResetEvent isTest = new ManualResetEvent(false);
 
 
-        public Painter(Form1 F)
+        public Painter(Tao.Platform.Windows.SimpleOpenGlControl GlControl)
         {
-            this.mainForm = F;
+            this.GlControl = GlControl;
             camera = new Camera(20, 20);
 
             InitializeGraphics();
@@ -70,7 +72,7 @@ namespace TestOpenGL.Logic
                             for (int i = 0; i < Program.L.LengthZ; i++)
                             {
                                 if (Program.L.GetBlock(new Coord(x + this.camera.ShiftX, y + this.camera.ShiftY, i)) != null)
-                                    this.DrawObject(new Coord(x, y), Program.L.GetBlock(new Coord(x + this.camera.ShiftX, y + this.camera.ShiftY, i)).texture);//this.GetBlock(new Coord(x + this.camera.ShiftX, y + this.camera.ShiftY, i.texture)));
+                                    this.DrawObject(new Coord(x, y), Program.L.GetBlock(new Coord(x + this.camera.ShiftX, y + this.camera.ShiftY, i)).texture);
                             }
                         }
                     }
@@ -81,20 +83,14 @@ namespace TestOpenGL.Logic
                                 this.DrawObject(new Coord(B.C.X - this.camera.ShiftX, B.C.Y - this.camera.ShiftY), B.texture);
 
                     foreach (Decal d in Program.L.GetAllDecals())
-                        if (Analytics.IsInCamera(d.C, camera))//if (Math.Abs(this.camera.ShiftX - d.C.X) < this.camera.Width && Math.Abs(this.camera.ShiftY - d.C.Y) < this.camera.Height)
+                        if (Analytics.IsInCamera(d.C, camera))
                             this.DrawObject(new Coord(d.C.X - this.camera.ShiftX, d.C.Y - this.camera.ShiftY), d.texture);
 
                     this.DrawObject(new Coord(Program.GCycle.sight.AimCoord.X - this.camera.ShiftX, Program.GCycle.sight.AimCoord.Y - this.camera.ShiftY), Program.GCycle.sight.aimDecal.texture);
 
-                    this.mainForm.AnT.SwapBuffers();
+                    this.GlControl.SwapBuffers();
                 };
-                if (this.mainForm.InvokeRequired)
-                    this.mainForm.Invoke(del);
-                else
-                {
-                    del();
-                }
-
+                this.GlControl.Invoke(del);
                 System.Threading.Thread.Sleep(16);
             }
         }
@@ -120,8 +116,7 @@ namespace TestOpenGL.Logic
             Gl.glClearColor(255, 255, 255, 1);
 
             // устанавливаем порт вывода, основываясь на размерах элемента управления AnT 
-            Gl.glViewport(0, 0, this.mainForm.AnT.Width, this.mainForm.AnT.Height);
-
+            Gl.glViewport(0, 0, this.GlControl.Width, this.GlControl.Height);
             // устанавливаем проекционную матрицу 
             Gl.glMatrixMode(Gl.GL_PROJECTION);
             // очищаем ее 
@@ -132,10 +127,10 @@ namespace TestOpenGL.Logic
             // теперь необходимо корректно настроить 2D ортогональную проекцию 
             // в зависимости от того, какая сторона больше 
             // мы немного варьируем то, как будут сконфигурированы настройки проекции 
-            if (this.mainForm.AnT.Width <= this.mainForm.AnT.Height)
-                Glu.gluOrtho2D(0.0, camera.Width, 0.0, camera.Height * (float)this.mainForm.AnT.Height / (float)this.mainForm.AnT.Width);
+            if (this.GlControl.Width <= this.GlControl.Height)
+                Glu.gluOrtho2D(0.0, camera.Width, 0.0, camera.Height * (float)this.GlControl.Height / (float)this.GlControl.Width);
             else
-                Glu.gluOrtho2D(0.0, camera.Width * (float)this.mainForm.AnT.Width / (float)this.mainForm.AnT.Height, 0.0, camera.Height);
+                Glu.gluOrtho2D(0.0, camera.Width * (float)this.GlControl.Width / (float)this.GlControl.Height, 0.0, camera.Height);
 
             // переходим к объектно-видовой матрице 
             Gl.glMatrixMode(Gl.GL_MODELVIEW);

@@ -73,7 +73,7 @@ namespace TestOpenGL.VisualObjects
 
             try
             {
-                if (Program.L.IsPassable(new Coord(this.C.X + dx, this.C.Y + dy), true))
+                if (Program.L.IsPassable(new Coord(this.C.X + dx, this.C.Y + dy)))
                     this.Spawn(new Coord(this.C.X + dx, this.C.Y + dy));
                 else
                     return;
@@ -122,7 +122,7 @@ namespace TestOpenGL.VisualObjects
         public void AI()
         {
             // Действия искина
-            this.Spawn(Analytics.BFS(this.C, new Coord(39, 39), false).Pop());
+            this.Spawn(Analytics.BFS(this.C, new Coord(39, 39)/*, false*/).Pop());
             //this.Move(2);
         }
         public void NoAI()

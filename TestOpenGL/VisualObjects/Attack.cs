@@ -50,7 +50,7 @@ namespace TestOpenGL.VisualObjects
             while (s.Count > 1)
             {
                 c = s.Dequeue();
-                if (Program.L.IsPassable(c, false))
+                if (Program.L.IsPermeable(c, Passableness.Block))
                     Program.L.AddDecal(new Decal(this.texture, c));
                 else break;
                 //Program.GCycle.isEnabledControl = false;

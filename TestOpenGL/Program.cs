@@ -29,7 +29,6 @@ namespace TestOpenGL
             Application.SetCompatibleTextRenderingDefault(false);
             
             Application.Run(new Form1());
-            
         }
         
 
@@ -43,7 +42,7 @@ namespace TestOpenGL
             TA = new TexturesAssistant(Directory.GetCurrentDirectory());
             OB = new ObjectsBuilder(DBIO, TA);
             L = new Level(30, 30, 2);
-            P = new Painter(f);
+            P = new Painter(f.AnT);
             GCycle = new GameCycle();
         }
     }

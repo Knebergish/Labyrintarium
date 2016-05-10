@@ -8,6 +8,9 @@ using TestOpenGL.VisualObjects;
 
 namespace TestOpenGL.Logic
 {
+    /// <summary>
+    /// Организует работу с блоками на карте.
+    /// </summary>
     class MapBlocks
     {
         // Максимальные измерения карты (LengthZ для глубины карты блоков)
@@ -40,6 +43,17 @@ namespace TestOpenGL.Logic
             {
                 if (this.GetBlock(new Coord(C.X, C.Y, i)) != null)
                     if (!this.GetBlock(new Coord(C.X, C.Y, i)).passableness)
+                        return false;
+            }
+            return true;
+        }
+
+        public bool IsPermeable(Coord C)
+        {
+            for (int i = 0; i < this.lengthZ; i++)
+            {
+                if (this.GetBlock(new Coord(C.X, C.Y, i)) != null)
+                    if (!this.GetBlock(new Coord(C.X, C.Y, i)).permeability)
                         return false;
             }
             return true;

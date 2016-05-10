@@ -19,7 +19,7 @@ namespace TestOpenGL
             {
                 try
                 {
-                    this.Spawn(Analytics.BFS(this.C, new Coord(Program.GCycle.sight.AimCoord.X, Program.GCycle.sight.AimCoord.Y), false).Pop());
+                    this.Spawn(Analytics.BFS(this.C, new Coord(Program.GCycle.sight.AimCoord.X, Program.GCycle.sight.AimCoord.Y)/*, false*/).Pop());
                     this.features.ActionPoints--;
                 }
                 catch

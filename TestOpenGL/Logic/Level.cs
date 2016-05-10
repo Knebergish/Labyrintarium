@@ -16,7 +16,7 @@ using TestOpenGL.VisualObjects;
 namespace TestOpenGL.Logic
 {
     /// <summary>
-    /// Самый главный и самый кривой игровой класс, отвечающий за игровой мир.
+    /// Объединяет слои карты.
     /// </summary>
     class Level
     {
@@ -24,9 +24,6 @@ namespace TestOpenGL.Logic
         private MapBeings mapBeings;
         private MapDecals mapDecals;
         
-        /// <summary>
-        /// Инициализация класса работы с игровой картой
-        /// </summary>
         /// <param name="LengthX"> Ширина игровой карты.</param>
         /// <param name="LengthY"> Выстока игровой карты.</param>
         /// <param name="LengthZ"> Глубина игровой карты.</param>
@@ -115,12 +112,26 @@ namespace TestOpenGL.Logic
         }
 
         
-        //TODO: Флаги в параметрах - зло. Переделать. Возможно, стоит создать новое перечисление.
-        public bool IsPassable(Coord C, bool type)
+        /// <summary>
+        /// Проверяет ячейку на проходимость для сущностей.
+        /// </summary>
+        /// <param name="C"></param>
+        /// <returns></returns>
+        public bool IsPassable(Coord C)
         {
             bool flag = mapBlocks.IsPassable(C);
 
-            if (type)
+            if (!mapBeings.IsPassable(C))
+                flag = false;
+
+            return flag;
+        }
+
+        public bool IsPermeable(Coord C, Passableness p)
+        {
+            bool flag = mapBlocks.IsPassable(C);
+
+            if(p==Passableness.BlockAndBeing)
                 if (!mapBeings.IsPassable(C))
                     flag = false;
 
