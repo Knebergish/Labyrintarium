@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Threading;
@@ -108,16 +110,16 @@ namespace TestOpenGL
 
         private void button4_Click(object sender, EventArgs e)
         {
-            /*Program.GCycle.isEnabledControl = false;
+            Program.GCycle.isEnabledControl = false;
             Thread Tr = new System.Threading.Thread(delegate() 
                 { 
                     A.UseAttack(Program.GCycle.gamer, Program.GCycle.sight.AimCoord); 
                     Program.GCycle.isEnabledControl = true; 
                 });
             Tr.Start();
-            */
-            Form3 F3 = new Form3();
-            F3.Show();
+            
+            //Form3 F3 = new Form3();
+            //F3.Show();
         }
         private void Test(Delegate del)
         {

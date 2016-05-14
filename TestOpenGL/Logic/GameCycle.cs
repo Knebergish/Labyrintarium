@@ -23,10 +23,28 @@ namespace TestOpenGL.Logic
             isEnabledControl = true;
             Steps = new System.Threading.Thread(StepBeings);
             Steps.Start(this.isNextStep);
+
             sight = new Sight(Program.P.camera);
+
             Program.P.StartRedraw();
             StartStep();
+
             formInventory = new Form2(new EventDelegate(StartStep));
+
+
+            /*VisualObjectStructure<Decal> VOSD = new VisualObjectStructure<Decal>();
+            VOSD.Push(Program.OB.GetDecal(3), new Coord(5, 5));
+            VOSD.Push(Program.OB.GetDecal(3), new Coord(5, 6));
+            Program.L.AddDecals(VOSD);
+            Decal d;
+
+
+            d = Program.OB.GetDecal(4);
+            d.C = new Coord(10, 7);
+            Program.L.AddDecal(d);
+
+            Program.L.RemoveGroupDecals(0);*/
+            
         }
 
         public void StartStep()

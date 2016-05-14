@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Diagnostics;
@@ -45,13 +44,17 @@ namespace TestOpenGL.Logic
 
         
         
-        public void AddDecal(Decal d)
+        public int AddDecal(Decal d)
         {
-            mapDecals.AddDecal(d);
+            return mapDecals.AddDecal(d);
         }
-        public void AddDecals(VisualObjectStructure<Decal> decalStructure)
+        public int AddDecals(VisualObjectStructure<Decal> decalStructure)
         {
-            mapDecals.AddDecals(decalStructure);
+            return mapDecals.AddDecals(decalStructure);
+        }
+        public void RemoveGroupDecals(int numberGroup)
+        {
+            mapDecals.RemoveGroupDecals(numberGroup);
         }
         public int CountDecals
         {

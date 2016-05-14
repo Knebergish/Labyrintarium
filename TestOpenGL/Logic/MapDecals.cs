@@ -1,8 +1,8 @@
-﻿using System;
+﻿using System.Data;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+//using System.Linq;
+//using System.Text;
+//using System.Threading.Tasks;
 
 using TestOpenGL.VisualObjects;
 
@@ -13,40 +13,67 @@ namespace TestOpenGL.Logic
     /// </summary>
     class MapDecals
     {
-        private List<Decal> listDecals;
+        private DataTable DTDecals;
+        //private List<Decal> listDecals;
 
         public MapDecals()
         {
-            listDecals = new List<Decal>();
+            DTDecals = new DataTable();
+            this.DTDecals.Columns.Add("groupId", System.Type.GetType("System.Int32"));
+            this.DTDecals.Columns.Add("decal", typeof(Decal));
+            
+            //listDecals = new List<Decal>();
         }
 
         //TODO: Хрень, мне это не нравится. Подумать над переделкой системы декалирования.
 
         public List<Decal> GetAllDecals()
         {
-            return listDecals;
+            List<Decal> ld = new List<Decal>();
+            for (int i = 0; i < DTDecals.Rows.Count; i++)
+                ld.Add((Decal)DTDecals.Rows[i]["decal"]);
+            return ld;
         }
-        public void AddDecal(Decal d)
+        private int NextNumberGroup()
         {
-            listDecals.Add(d);
+            int nextNumber = -1;
+            for (int i = 0; i < DTDecals.Rows.Count; i++)
+                nextNumber = (int)DTDecals.Rows[i]["groupId"] > nextNumber ? (int)DTDecals.Rows[i]["groupId"] : nextNumber;
+            return ++nextNumber;
         }
-        public void AddDecals(VisualObjectStructure<Decal> decalStructure)
+        public int AddDecal(Decal d)
+        {
+            int currentNumberGroup = NextNumberGroup();
+            DTDecals.Rows.Add(currentNumberGroup, d);
+            return currentNumberGroup;
+        }
+        public int AddDecals(VisualObjectStructure<Decal> decalStructure)
         {
             Decal d;
+            int currentNumberGroup = NextNumberGroup();
+
             while (decalStructure.Count != 0)
             {
                 d = decalStructure.PopObject();
                 d.C = decalStructure.PopCoord();
-                listDecals.Add(d);
+                DTDecals.Rows.Add(currentNumberGroup, d);
             }
+
+            return currentNumberGroup;
+        }
+        public void RemoveGroupDecals(int numberGroup)
+        {
+            for (int i = DTDecals.Rows.Count - 1; i >= 0; i--)
+                if ((int)DTDecals.Rows[i]["groupId"] == numberGroup)
+                    DTDecals.Rows.RemoveAt(i);
         }
         public int CountDecals
         {
-            get { return listDecals.Count; }
+            get { return DTDecals.Rows.Count; }
         }
         public void ClearDecals()
         {
-            listDecals.Clear();
+            DTDecals.Rows.Clear();
         }
     }
 }

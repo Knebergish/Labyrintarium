@@ -10,12 +10,14 @@ namespace TestOpenGL.DataIO
     class TexturesAssistant
     {
         // Таблица подгруженных текстур блоков.
-        private DataTable texturesDataTable = new DataTable();
-        private string[] pathes = new string[3];
+        private DataTable texturesDataTable;
+        private string[] pathes;
         private string path;
 
         private TexturesAssistant()
         {
+            texturesDataTable = new DataTable();
+            pathes = new string[3];
             this.texturesDataTable.Columns.Add("type", typeof(TypeVisualObject));
             this.texturesDataTable.Columns.Add("imageId", System.Type.GetType("System.Int32"));
             this.texturesDataTable.Columns.Add("textureId", System.Type.GetType("System.Int32"));

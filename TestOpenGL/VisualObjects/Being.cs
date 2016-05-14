@@ -96,7 +96,7 @@ namespace TestOpenGL.VisualObjects
             if (count > 0)
             {
                 this.features.CurrentHealth -= count;
-
+                
             }
             else throw new Exception("Урон почему-то отрицательный.");
         }

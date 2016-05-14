@@ -7,7 +7,7 @@ using TestOpenGL.VisualObjects;
 namespace TestOpenGL
 {
     /// <summary>
-    /// Структура для передачи нескольких блоков.
+    /// Структура для передачи нескольких блоков (или не блоков).
     /// </summary>
     struct VisualObjectStructure<T>
     {
