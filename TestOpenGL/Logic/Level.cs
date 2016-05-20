@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System.IO;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Diagnostics;
 
 using Tao.OpenGl;
 using Tao.FreeGlut;
-//using Tao.Platform.Windows;
-//using Tao.Sdl;
 using Tao.DevIl;
 
 using TestOpenGL;
@@ -26,9 +25,9 @@ namespace TestOpenGL.Logic
         /// <param name="LengthX"> Ширина игровой карты.</param>
         /// <param name="LengthY"> Выстока игровой карты.</param>
         /// <param name="LengthZ"> Глубина игровой карты.</param>
-        public Level(int LengthX, int LengthY, int LengthZ)
+        public Level(int lengthX, int lengthY, int lengthZ)
         {
-            mapBlocks = new MapBlocks(LengthX, LengthY, LengthZ);
+            mapBlocks = new MapBlocks(lengthX, lengthY, lengthZ);
             mapBeings = new MapBeings();
             mapDecals = new MapDecals();
         }
@@ -139,6 +138,38 @@ namespace TestOpenGL.Logic
                     flag = false;
 
             return flag;
+        }
+
+        public void MapIfFile()
+        {
+            StreamWriter sw = new StreamWriter("fil.txt");
+
+            sw.WriteLine(this.LengthX.ToString() + " " + this.LengthY.ToString() + " " + this.LengthZ.ToString());
+
+            for (int i = 0; i < this.LengthX; i++)
+                for (int j = 0; j < this.LengthY; j++)
+                    for (int l = 0; l < this.LengthZ; l++)
+                        if (this.GetBlock(new Coord(i, j, l)) != null)
+                            sw.WriteLine(i.ToString() + " " + j.ToString() + " " + l.ToString() + " " + this.GetBlock(new Coord(i, j, l)).Id.ToString());
+
+            sw.Close();
+        }
+
+        public void FileInMap()
+        {
+            StreamReader sr = new StreamReader("fil.txt");
+            string[] s;
+
+            s = sr.ReadLine().Split(' ');
+            this.mapBlocks = new MapBlocks(int.Parse(s[0]), int.Parse(s[1]), int.Parse(s[2]));
+            
+            while(!sr.EndOfStream)
+            {
+                s = sr.ReadLine().Split(' ');
+                this.SetBlock(Program.OB.GetBlock(int.Parse(s[3])), new Coord(int.Parse(s[0]), int.Parse(s[1]), int.Parse(s[2])));
+            }
+            sr.Close();
+
         }
     }
 }

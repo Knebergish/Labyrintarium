@@ -44,7 +44,7 @@ namespace TestOpenGL
                 DT = Program.DBIO.ExecuteSQL("SELECT imageId FROM Blocks WHERE Blocks.id = " + i);
                 LB.Add(Program.OB.GetBlock(i));
                 IL.Images.Add(Image.FromFile(Directory.GetCurrentDirectory() + "\\Textures\\Blocks\\" + DT.Rows[0][0].ToString() + ".png"));
-                listView1.Items.Add(LB[i - 1].visualObjectInfo.name, i - 1);
+                listView1.Items.Add(LB[i - 1].visualObjectInfo.Name, i - 1);
             }
         }
 
@@ -74,8 +74,8 @@ namespace TestOpenGL
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            label3.Text = LB[listView1.SelectedIndices[0]].visualObjectInfo.name;
-            label4.Text = LB[listView1.SelectedIndices[0]].visualObjectInfo.description;
+            label3.Text = LB[listView1.SelectedIndices[0]].visualObjectInfo.Name;
+            label4.Text = LB[listView1.SelectedIndices[0]].visualObjectInfo.Description;
         }
 
         private void ListReload()
@@ -87,7 +87,7 @@ namespace TestOpenGL
                     listBox1.Items.Add(Program.L.GetBlock(new Coord(
                         Program.GCycle.sight.AimCoord.X,
                         Program.GCycle.sight.AimCoord.Y,
-                        i)).visualObjectInfo.name);
+                        i)).visualObjectInfo.Name);
                 }
                 catch(Exception e)
                 {

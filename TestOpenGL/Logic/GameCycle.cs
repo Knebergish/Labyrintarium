@@ -14,6 +14,7 @@ namespace TestOpenGL.Logic
         ManualResetEvent isNextStep = new ManualResetEvent(false);
         public Sight sight;
         public Gamer gamer;
+        //public Triggers triggers;
         public bool isEnabledControl;
 
         Form2 formInventory;
@@ -76,13 +77,13 @@ namespace TestOpenGL.Logic
                         B.Step();
                 }
                 //Program.L.ClearDeadBeings();
-                //if (gamer != null)
-                //    A.UseAttack(gamer, new Coord(gamer.C.X + 5, gamer.C.Y));
+
+                // И тут должны идти уровневые триггеры.
+                if (Triggers.currentTriggers != null)
+                    Triggers.currentTriggers.CallAllTriggers();
 
                 MRE.WaitOne();
             }
-
-            // И тут должны идти уровневые триггеры.
         }
 
         public void ProcessingKeyPress(char key)

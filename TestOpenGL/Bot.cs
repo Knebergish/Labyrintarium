@@ -8,7 +8,8 @@ namespace TestOpenGL
     {
         bool isEndStep = false;
 
-        public Bot() : base()
+        public Bot(int id, string name, string description, Texture texture)
+            : base(id, name, description, texture)
         {
             this.eventsBeing.EventBeingEndActionPoints += new EventDelegate(EndStep);
         }

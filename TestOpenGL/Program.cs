@@ -1,7 +1,5 @@
 ﻿using System;
-//using System.Collections.Generic;
 using System.IO;
-//using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using TestOpenGL.DataIO;
@@ -48,5 +46,4 @@ namespace TestOpenGL
     }
 }
 
-// Изменена система декалирования: List заменён на DataTable. Декали можно добавлять группами и удалять по номеру группы (который возвращает метод добавления).
-// Добавлены классы Triggers и Trigger, реализующие систему триггеров на уровне.
+// Во всех наследниках VisualObject теперь только параметризованный конструктор, часть публичных переменных запривачена и для них созданы свойства только на чтение.

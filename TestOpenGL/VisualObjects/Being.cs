@@ -22,23 +22,13 @@ namespace TestOpenGL.VisualObjects
         public EventsBeing eventsBeing;
         ////////////////////////////////////////////////////////////////////////////////////////
 
-
-
-
-
-        public Being()
+        public Being(int id, string name, string description, Texture texture)
+            : base (id, name, description, texture)
         {
-            texture = new Texture();
-            visualObjectInfo = new VisualObjectInfo();
-
-            ActionAI = new Action(AI);
             this.features = new Features(this);
             this.inventory = new Inventory();
-
             isSpawned = false;
-            //TODO: сделать только параметризованный конструктор.
             this.C = new Coord(0, 0);
-
             eventsBeing = new EventsBeing();
         }
 

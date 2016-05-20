@@ -2,23 +2,21 @@
 {
     class Decal : VisualObject
     {
-        public Coord C;
-        public Decal()
+        public Coord C { get; set; }
+        /*public Decal()
         {
             texture = new Texture();
             visualObjectInfo = new VisualObjectInfo();
             C = new Coord();
-        }
-        public Decal(Texture texture)
+        }*/
+        public Decal(int id, string name, string description, Texture texture)
+            : base(id, name, description, texture)
+        { }
+
+        //TODO: Может и нахрен он не нужен.
+        public Decal(int id, string name, string description, Texture texture, Coord C)
+            : base(id, name, description, texture)
         {
-            this.texture = texture;
-            visualObjectInfo = new VisualObjectInfo();
-            C = new Coord();
-        }
-        public Decal(Texture texture, Coord C)
-        {
-            this.texture = texture;
-            visualObjectInfo = new VisualObjectInfo();
             this.C = C;
         }
     }

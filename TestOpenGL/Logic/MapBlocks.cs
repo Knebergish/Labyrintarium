@@ -41,7 +41,7 @@ namespace TestOpenGL.Logic
             for (int i = 0; i < this.lengthZ; i++)
             {
                 if (this.GetBlock(new Coord(C.X, C.Y, i)) != null)
-                    if (!this.GetBlock(new Coord(C.X, C.Y, i)).passableness)
+                    if (!this.GetBlock(new Coord(C.X, C.Y, i)).Passableness)
                         return false;
             }
             return true;
@@ -52,7 +52,7 @@ namespace TestOpenGL.Logic
             for (int i = 0; i < this.lengthZ; i++)
             {
                 if (this.GetBlock(new Coord(C.X, C.Y, i)) != null)
-                    if (!this.GetBlock(new Coord(C.X, C.Y, i)).permeability)
+                    if (!this.GetBlock(new Coord(C.X, C.Y, i)).Permeability)
                         return false;
             }
             return true;
@@ -109,7 +109,7 @@ namespace TestOpenGL.Logic
             for (int i = 0; i < this.lengthZ; i++)
             {
                 if (this.GetBlock(new Coord(C.X, C.Y, i)) != null)
-                    if (!this.GetBlock(new Coord(C.X, C.Y, i)).passableness)
+                    if (!this.GetBlock(new Coord(C.X, C.Y, i)).Passableness)
                         return false;
             }
 

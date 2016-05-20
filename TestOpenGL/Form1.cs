@@ -26,9 +26,7 @@ namespace TestOpenGL
         private void Form1_Load(object sender, EventArgs e)
         {
             Program.InitApp(this);
-
             
-
             Bg = Program.OB.GetBlock(1);
             B = Program.OB.GetBlock(2);
 
@@ -37,7 +35,8 @@ namespace TestOpenGL
             Be1 = Program.OB.GetBot(1);
             Program.GCycle.gamer = (Gamer)Be;
 
-            A = Program.OB.GetAttack(0);
+            A = Program.OB.GetAttack(1);
+
             //A.coefficient = 10;
             //A.profilingFeature = Feature.Stamina;
             //Item i = new Item();
@@ -110,14 +109,18 @@ namespace TestOpenGL
 
         private void button4_Click(object sender, EventArgs e)
         {
-            Program.GCycle.isEnabledControl = false;
-            Thread Tr = new System.Threading.Thread(delegate() 
-                { 
-                    A.UseAttack(Program.GCycle.gamer, Program.GCycle.sight.AimCoord); 
-                    Program.GCycle.isEnabledControl = true; 
-                });
-            Tr.Start();
-            
+            /*Program.GCycle.isEnabledControl = false;
+            new System.Threading.Thread(delegate()
+                {
+                    A.UseAttack(Program.GCycle.gamer, Program.GCycle.sight.AimCoord);
+                    Program.GCycle.isEnabledControl = true;
+                }).Start();*/
+
+            /*Program.GCycle.StopStep();
+            Stages.Stage_1();
+            Program.GCycle.StartStep();*/
+
+            Program.L.FileInMap();
             //Form3 F3 = new Form3();
             //F3.Show();
         }

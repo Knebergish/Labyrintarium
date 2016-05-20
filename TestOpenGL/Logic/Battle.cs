@@ -19,7 +19,7 @@ namespace TestOpenGL.Logic
                 return;
             }
 
-            int damage = (int)((double)attacking.features[A.profilingFeature] * A.coefficient);
+            int damage = (int)((double)attacking.features[A.profilingFeature] * A.Coefficient);
             damage += rnd.Next(-damage / 10, damage / 10 + 1);
 
             //damage *= (100 - defending.inventory.generalArmor) / 100;

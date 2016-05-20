@@ -14,21 +14,14 @@ namespace TestOpenGL.VisualObjects
         //Атаки, добавляемые предметом
         public List<Attack> Attacks;
 
-        public Item()
+        public Item(int id, string name, string description, Texture texture)
+            : base (id, name, description, texture)
         {
-            texture = new Texture();
-            visualObjectInfo = new VisualObjectInfo();
-
-            //TODO: сделать только параметризованный конструктор.
             this.C = new Coord(0, 0);
 
             Attacks = new List<Attack>();
             Parts = new List<Part>();
         }
-        public Item(Coord C)
-        {
-            this.C = C;
-        }
-        
+
     }
 }

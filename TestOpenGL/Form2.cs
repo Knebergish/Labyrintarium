@@ -53,11 +53,11 @@ namespace TestOpenGL
 
             for(int i = 0; i < Program.GCycle.gamer.inventory.CountEquippedItems;i++)
             {
-                listBox1.Items.Add(Program.GCycle.gamer.inventory.GetEquippedItem(i).visualObjectInfo.name);
+                listBox1.Items.Add(Program.GCycle.gamer.inventory.GetEquippedItem(i).visualObjectInfo.Name);
             }
             for (int i = 0; i < Program.GCycle.gamer.inventory.CountOutBagItems; i++)
             {
-                listBox2.Items.Add(Program.GCycle.gamer.inventory.GetOutBagItem(i).visualObjectInfo.name);
+                listBox2.Items.Add(Program.GCycle.gamer.inventory.GetOutBagItem(i).visualObjectInfo.Name);
             }
         }
 

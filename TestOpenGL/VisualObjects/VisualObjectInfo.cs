@@ -2,7 +2,15 @@
 {
     class VisualObjectInfo
     {
-        public string name { get; set; }
-        public string description { get; set; }
+        string name;
+        string description;
+        public string Name { get { return name; } }
+        public string Description { get { return description; } }
+
+        public VisualObjectInfo(string name, string description)
+        {
+            this.name = name;
+            this.description = description;
+        }
     }
 }

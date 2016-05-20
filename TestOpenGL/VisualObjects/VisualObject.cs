@@ -3,16 +3,19 @@
     abstract class VisualObject
     {
         // Номер объекта в базе
-        public int id { get; set; }
-
-        public Texture texture;
+        int id;
+        public int Id { get { return id; } }
 
         public VisualObjectInfo visualObjectInfo;
 
-        protected VisualObject()
+        public Texture texture;
+
+        
+        protected VisualObject(int id, string name, string description, Texture texture)
         {
-            texture = new Texture();
-            visualObjectInfo = new VisualObjectInfo();
+            this.id = id;
+            visualObjectInfo = new VisualObjectInfo(name, description);
+            this.texture = texture;
         }
     }
 }

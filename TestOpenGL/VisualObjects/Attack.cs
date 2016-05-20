@@ -8,23 +8,16 @@ namespace TestOpenGL.VisualObjects
     class Attack : VisualObject
     {
         public Feature profilingFeature;
-        public double coefficient;
-        public int minDistance, maxDistance;
-        public int length;
-        public int timePause;
+        private double coefficient;
+        private int minDistance, maxDistance;
+        //public int length;
+        private int timePause;
 
-        public Attack()
-            : base()
+
+        public Attack(int id, string name, string description, Texture texture, Feature profilingFeature, 
+            double coefficient, int minDistance, int maxDistance, int timePause)
+            : base(id, name, description, texture)
         {
-            profilingFeature = new Feature();
-        }
-        public Attack(int id, Texture texture, string name, string description, Feature profilingFeature, 
-            double coefficient, int minDistance, int maxDistance, int timePause) : this()
-        {
-            this.id = id;
-            this.texture = texture;
-            this.visualObjectInfo.name = name;
-            this.visualObjectInfo.description = description;
             this.profilingFeature = profilingFeature;
             this.coefficient = coefficient;
             this.minDistance = minDistance;
@@ -51,7 +44,8 @@ namespace TestOpenGL.VisualObjects
             {
                 c = s.Dequeue();
                 if (Program.L.IsPermeable(c, Passableness.Block))
-                    Program.L.AddDecal(new Decal(this.texture, c));
+                    //TODO: херь, исправить
+                    Program.L.AddDecal(new Decal(-1, "test", "test", this.texture, c));
                 else break;
                 //Program.GCycle.isEnabledControl = false;
                 //await Task.Delay(50);//this.timePause);
@@ -64,6 +58,23 @@ namespace TestOpenGL.VisualObjects
             //Program.L.UnBlock();
             Battle.Fight(attacking, this, Program.L.GetBeing(s.Dequeue()));
             return true;
+        }
+
+        public double Coefficient
+        {
+            get { return coefficient; }
+        }
+        public int MaxDistance
+        {
+            get { return maxDistance; }
+        }
+        public int MinDistance
+        {
+            get { return minDistance; }
+        }
+        public int TimePause
+        {
+            get { return timePause; }
         }
     }
 }

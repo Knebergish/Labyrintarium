@@ -16,10 +16,10 @@ namespace TestOpenGL
         public Sight(Camera camera)
         {
             aimCoord = new Coord(0, 0);
-            aimDecal = new Decal();
+            aimDecal = Program.OB.GetDecal(1);
             this.camera = camera;
 
-            aimDecal.texture = Program.TA.GetTexture(TypeVisualObject.Decal, 1);
+            //aimDecal.texture = Program.TA.GetTexture(TypeVisualObject.Decal, 1);
 
             this.camera.changeCameraPosition += Check;
         }

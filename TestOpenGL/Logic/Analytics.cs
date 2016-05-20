@@ -81,8 +81,8 @@ namespace TestOpenGL.Logic
                             {
                                 if (yd + dy[k] >= 0 && yd + dy[k] < Program.L.LengthY && xd + dx[k] >= 0 && xd + dx[k] < Program.L.LengthX)//(Program.L.CorrectCoordinate(xd + dx[k], yd + dy[k]))
                                 {
-                                //try
-                                //{
+                                    //try
+                                    //{
                                     if (Program.L.IsPassable(new Coord(xd + dx[k], yd + dy[k])/*, type*/) == true || (xd + dx[k] == end.X && yd + dy[k] == end.Y))
                                     {
                                         if (grid[xd + dx[k], yd + dy[k]] == -1)
@@ -106,47 +106,47 @@ namespace TestOpenGL.Logic
 
             int xdop = end.X;
             int ydop = end.Y;
-            while( d > 0)
+            while (d > 0)
             {
                 SC.Push(new Coord(xdop, ydop));
                 d--;
-                for(int k = 0; k < 4; k++)
+                for (int k = 0; k < 4; k++)
                 {
                     //try
                     //{
-                        if((ydop + dy[k] >= 0 && ydop + dy[k] < Program.L.LengthY && xdop + dx[k] >= 0 && xdop + dx[k] < Program.L.LengthX))//new Coord(xdop + dx[k], ydop + dy[k]);//
-                            if (grid[xdop + dx[k], ydop + dy[k]] == d)
-                            {
-                                xdop = xdop + dx[k];
-                                ydop = ydop + dy[k];
-                                break;
-                            }
+                    if ((ydop + dy[k] >= 0 && ydop + dy[k] < Program.L.LengthY && xdop + dx[k] >= 0 && xdop + dx[k] < Program.L.LengthX))//new Coord(xdop + dx[k], ydop + dy[k]);//
+                        if (grid[xdop + dx[k], ydop + dy[k]] == d)
+                        {
+                            xdop = xdop + dx[k];
+                            ydop = ydop + dy[k];
+                            break;
+                        }
                     //}
                     //catch(Exception e){}
-                    
+
                 }
             }
             //SW.Stop();
             //System.Windows.Forms.MessageBox.Show(SW.ElapsedMilliseconds.ToString());
-            
+
             return SC;
         }
 
         static public Queue<Coord> CoordsLine(Coord start, Coord end)
         {
-            Queue<Coord> coords = new Queue<Coord>();;
+            Queue<Coord> coords = new Queue<Coord>(); ;
             int dx, dy;
             int lengthX, lengthY, length;
 
             dx = end.X - start.X >= 0 ? 1 : -1;
             dy = end.Y - start.Y >= 0 ? 1 : -1;
-    
+
             lengthX = Math.Abs(end.X - start.X);
             lengthY = Math.Abs(end.Y - start.Y);
 
             length = lengthX > lengthY ? lengthX : lengthY;
 
-            if(length == 0)
+            if (length == 0)
             {
                 coords.Enqueue(start);
                 return coords;
@@ -155,38 +155,38 @@ namespace TestOpenGL.Logic
 
 
             int X, Y, d;
-            
-                X = start.X;
-                Y = start.Y;
-                d = -lengthX;
 
-                length++;
-                while (length > 0)
+            X = start.X;
+            Y = start.Y;
+            d = -lengthX;
+
+            length++;
+            while (length > 0)
+            {
+                length--;
+                coords.Enqueue(new Coord(X, Y));
+                if (lengthY <= lengthX)
                 {
-                    length--;
-                    coords.Enqueue(new Coord(X, Y));
-                    if (lengthY <= lengthX)
+                    X = X + dx;
+                    d = d + 2 * lengthY;
+                    if (d > 0)
                     {
-                        X = X + dx;
-                        d = d + 2 * lengthY;
-                        if( d > 0)
-                        {
-                            d = d - 2 * lengthX;
-                            Y = Y + dy;
-                        }
-                    }
-                    else
-                    {
+                        d = d - 2 * lengthX;
                         Y = Y + dy;
-                        d = d + 2 * lengthX;
-                        if (d > 0)
-                        {
-                            d = d - 2 * lengthY;
-                            X = X + dx;
-                        }
                     }
                 }
-            
+                else
+                {
+                    Y = Y + dy;
+                    d = d + 2 * lengthX;
+                    if (d > 0)
+                    {
+                        d = d - 2 * lengthY;
+                        X = X + dx;
+                    }
+                }
+            }
+
             return coords;
         }
 
@@ -208,6 +208,34 @@ namespace TestOpenGL.Logic
             if (C.Y > camera.Height + camera.ShiftY - 1)
                 return false;
             return true;
+        }
+
+        static public bool IsInArea(Coord C1, Coord C2, Coord C)
+        {
+            bool inX = false, inY = false;
+            if (C1.X >= C2.X)
+            { 
+                if (C.X <= C1.X && C.X >= C2.X)
+                    inX = true;
+            }
+            else
+            {
+                if (C.X <= C2.X && C.X >= C1.X)
+                    inX = true;
+            }
+
+            if (C1.Y >= C2.Y)
+            {
+                if (C.Y <= C1.Y && C.Y >= C2.Y)
+                    inY = true;
+            }
+            else
+            {
+                if (C.Y <= C2.Y && C.Y >= C1.Y)
+                    inY = true;
+            }
+
+            return inX && inY;
         }
     }
 }

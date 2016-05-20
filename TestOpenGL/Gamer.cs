@@ -9,7 +9,8 @@ namespace TestOpenGL
     {
         ManualResetEvent isEndStep = new ManualResetEvent(false);
 
-        public Gamer(): base()
+        public Gamer(int id, string name, string description, Texture texture)
+            : base(id, name, description, texture)
         {
             this.eventsBeing.EventBeingEndActionPoints += new EventDelegate(EndStep);
         }

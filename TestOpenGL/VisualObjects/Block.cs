@@ -2,14 +2,18 @@
 {
     class Block: VisualObject
     {
-        //Проходимость (для сущностей)
-        public bool passableness { get; set; }
-        //Прозрачность (для видимости за объектом)
-        public bool transparency { get; set; }
-        //Проницаемость (для атаки сквозь такой объект)
-        public bool permeability { get; set; }
+        bool passableness;
+        bool transparency;
+        bool permeability;
 
-        public Block()
+        //Проходимость (для сущностей)
+        public bool Passableness { get { return passableness; } }
+        //Прозрачность (для видимости за объектом)
+        public bool Transparency { get { return transparency; } }
+        //Проницаемость (для атаки сквозь такой объект)
+        public bool Permeability { get { return permeability; } }
+
+        /*public Block()
         {
             texture = new Texture();
             visualObjectInfo = new VisualObjectInfo();
@@ -22,11 +26,14 @@
             passableness = true;
             transparency = true;
             permeability = true;
-        }
-
-        /*~Block()
-        {
-            System.Windows.Forms.MessageBox.Show("Потрачено");
         }*/
+
+        public Block(int id, string name, string description, bool passableness, bool transparency, bool permeability, Texture texture)
+            : base(id, name, description, texture)
+        {
+            this.passableness = passableness;
+            this.transparency = transparency;
+            this.permeability = permeability;
+        }
     }
 }
