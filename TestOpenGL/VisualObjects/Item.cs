@@ -4,23 +4,25 @@ namespace TestOpenGL.VisualObjects
 {
     class Item : VisualObject
     {
-        public Coord C;
-
-        public int armor;
-
+        int level;
+        int price;
         // Части тела, занимаемые предметом
-        public List<Part> Parts;
+        List<Part> parts;
 
-        //Атаки, добавляемые предметом
-        public List<Attack> Attacks;
+        public int Level
+        { get { return level; } }
+        public int Price
+        { get { return price; } }
+        internal List<Part> Parts
+        { get { return parts; } }
 
-        public Item(int id, string name, string description, Texture texture)
+        public Item(int id, string name, string description, Texture texture, int level, int price, List<Part> parts)
             : base (id, name, description, texture)
         {
-            this.C = new Coord(0, 0);
+            this.level = level;
+            this.price = price;
 
-            Attacks = new List<Attack>();
-            Parts = new List<Part>();
+            this.parts = new List<Part>(parts);
         }
 
     }

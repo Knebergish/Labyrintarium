@@ -15,6 +15,8 @@ namespace TestOpenGL
         public static Level L;
         public static Painter P;
         public static GameCycle GCycle;
+        public static Control C;
+        public static FormsAssistant FA;
 
         /// <summary>
         /// Главная точка входа для приложения.
@@ -42,8 +44,13 @@ namespace TestOpenGL
             L = new Level(30, 30, 2);
             P = new Painter(f.AnT);
             GCycle = new GameCycle();
+            C = new Control();
+            FA = new FormsAssistant();
         }
     }
 }
 
-// Во всех наследниках VisualObject теперь только параметризованный конструктор, часть публичных переменных запривачена и для них созданы свойства только на чтение.
+// Переделана система инвентаря и предметов. 
+// Добавлена отрисовка одетых предметов на сущности.
+// Изменения в системе обработки нажатия клавиш.
+// Обработка нажатий клавиш и управление дополнительными формами вынесены в отдельные классы.

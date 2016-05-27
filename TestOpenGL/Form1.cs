@@ -33,7 +33,12 @@ namespace TestOpenGL
             
             Be = Program.OB.GetGamer(1);
             Be1 = Program.OB.GetBot(1);
-            Program.GCycle.gamer = (Gamer)Be;
+            for (int i = 1; i < 10; i++)
+                Be.inventory.PutBagItem(Program.OB.GetItem(i));
+
+            Be1.inventory.PutBagItem(Program.OB.GetItem(8));
+            Be1.inventory.EquipItem(0);
+            Program.GCycle.Gamer = (Gamer)Be;
 
             A = Program.OB.GetAttack(1);
 
@@ -46,6 +51,8 @@ namespace TestOpenGL
 
             Be.Spawn(new Coord(0, 0));
             Be1.Spawn(new Coord(1, 5));
+
+            Program.P.Camera.SetLookingBeing(Be);
 
             button1_Click(sender, e);
         }
@@ -67,12 +74,11 @@ namespace TestOpenGL
                 }
             }
             Program.L.SetBlocks(BS);
-            Program.P.camera.SetLookingBeing(Be);
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Program.GCycle.ProcessingOpeningForms(1);
+            Program.FA.ProcessingOpeningForms(1);
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -82,29 +88,9 @@ namespace TestOpenGL
             //A.UseAttack(Be, new Coord(1, 5));
         }
 
-        private void button3_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            Program.GCycle.ProcessingKeyPress(e.KeyChar);
-        }
-
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             System.Environment.Exit(1);
-        }
-
-        private void button2_KeyPress(object sender, KeyPressEventArgs e)
-        {
-
-        }
-
-        private void button3_Leave(object sender, EventArgs e)
-        {
-            button3.Text = "Клава выкл.";
-        }
-
-        private void button3_Enter(object sender, EventArgs e)
-        {
-            button3.Text = "Клава вкл.";
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -120,14 +106,20 @@ namespace TestOpenGL
             Stages.Stage_1();
             Program.GCycle.StartStep();*/
 
-            Program.L.FileInMap();
-            //Form3 F3 = new Form3();
-            //F3.Show();
+            //Program.L.FileInMap();
+
+            //Form2 F2 = new Form2();
+            //F2.Show();
         }
         private void Test(Delegate del)
         {
-            A.UseAttack(Program.GCycle.gamer, Program.GCycle.sight.AimCoord);
-            Program.GCycle.isEnabledControl = true;
+            A.UseAttack(Program.GCycle.Gamer, Program.GCycle.sight.AimCoord);
+            Program.C.isEnabledControl = true;
+        }
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            Program.C.ProcessingKeyPress(e);
         }
     }
 }

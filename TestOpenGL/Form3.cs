@@ -17,9 +17,11 @@ namespace TestOpenGL
     {
         ImageList IL;
         List<Block> LB;
-        public Form3()
+        EventDelegate closeForm;
+        public Form3(EventDelegate closeForm)
         {
             InitializeComponent();
+            this.closeForm = closeForm;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -46,12 +48,6 @@ namespace TestOpenGL
                 IL.Images.Add(Image.FromFile(Directory.GetCurrentDirectory() + "\\Textures\\Blocks\\" + DT.Rows[0][0].ToString() + ".png"));
                 listView1.Items.Add(LB[i - 1].visualObjectInfo.Name, i - 1);
             }
-        }
-
-        private void button3_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            Program.GCycle.ProcessingKeyPress(e.KeyChar);
-            ListReload();
         }
         private void button3_Leave(object sender, EventArgs e)
         {
@@ -93,6 +89,19 @@ namespace TestOpenGL
                 {
                     listBox1.Items.Add("Пусто");
                 }
+        }
+
+        private void Form3_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            this.Hide();
+            e.Cancel = true;
+            closeForm();
+        }
+
+        private void Form3_KeyDown(object sender, KeyEventArgs e)
+        {
+            Program.C.ProcessingKeyPress(e);
+            ListReload();
         }
     }
 }

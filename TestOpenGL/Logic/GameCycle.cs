@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Collections.Generic;
 
+
 using TestOpenGL.VisualObjects;
 using TestOpenGL;
 
@@ -13,25 +14,31 @@ namespace TestOpenGL.Logic
         bool isStopStep = true;
         ManualResetEvent isNextStep = new ManualResetEvent(false);
         public Sight sight;
-        public Gamer gamer;
-        //public Triggers triggers;
-        public bool isEnabledControl;
+        Gamer gamer;
 
-        Form2 formInventory;
+        internal Gamer Gamer
+        {
+            get { return gamer; }
+            set 
+            { 
+                gamer = value;
+                Program.FA.UpdateForms();
+                Program.P.Camera.SetLookingBeing(gamer);
+            }
+        }
+
+
         
         public GameCycle()
         {
-            isEnabledControl = true;
+            
             Steps = new System.Threading.Thread(StepBeings);
             Steps.Start(this.isNextStep);
 
-            sight = new Sight(Program.P.camera);
+            sight = new Sight(Program.P.Camera);
 
             Program.P.StartRedraw();
             StartStep();
-
-            formInventory = new Form2(new EventDelegate(StartStep));
-
 
             /*VisualObjectStructure<Decal> VOSD = new VisualObjectStructure<Decal>();
             VOSD.Push(Program.OB.GetDecal(3), new Coord(5, 5));
@@ -84,56 +91,6 @@ namespace TestOpenGL.Logic
 
                 MRE.WaitOne();
             }
-        }
-
-        public void ProcessingKeyPress(char key)
-        {
-            if (!isEnabledControl) return;
-            if (isStopStep) return;
-            switch (key)
-            {
-                case 'a':
-                    gamer.Move(0);
-                    break;
-                case 'w':
-                    gamer.Move(1);
-                    break;
-                case 'd':
-                    gamer.Move(2);
-                    break;
-                case 's':
-                    gamer.Move(3);
-                    break;
-
-                case 'j':
-                    Program.GCycle.sight.MoveSight(Direction.Left);
-                    break;
-                case 'i':
-                    Program.GCycle.sight.MoveSight(Direction.Up);
-                    break;
-                case 'l':
-                    Program.GCycle.sight.MoveSight(Direction.Right);
-                    break;
-                case 'k':
-                    Program.GCycle.sight.MoveSight(Direction.Down);
-                    break;
-            }
-        }
-
-        public void ProcessingOpeningForms(int num)
-        {
-            if (!isEnabledControl) return;
-            switch(num)
-            {
-                case 1:
-                    ShowInventory();
-                    break;
-            }
-        }
-        public void ShowInventory()
-        {
-            StopStep();
-            formInventory.Show();
         }
     }
 }

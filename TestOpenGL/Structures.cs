@@ -90,12 +90,12 @@ namespace TestOpenGL
     /// <summary>
     /// Перечисление характеристик, которые имеет сущность.
     /// </summary>
-    enum Feature { Power, Stamina, Agility };
+    enum Feature { Power, Coordination, MMR, Stamina, Agility, Sense };
 
     /// <summary>
     /// Перечисление типов визуальных объектов (отображаемых на карте).
     /// </summary>
-    enum TypeVisualObject { Block, Being, Decal};
+    enum TypeVisualObject { Block, Being, Item, Decal };
 
     /// <summary>
     /// Перечисление направлений движения сущности.

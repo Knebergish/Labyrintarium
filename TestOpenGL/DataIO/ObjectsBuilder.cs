@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System.Collections.Generic;
+using System.Data;
 using System.Data.SQLite;
 
 using TestOpenGL.VisualObjects;
@@ -87,6 +88,26 @@ namespace TestOpenGL.DataIO
                 (string)dt.Rows[0]["description"],
                 TA.GetTexture(TypeVisualObject.Being, int.Parse(dt.Rows[0]["imageId"].ToString()))
                 );
+        }
+
+        public Item GetItem(int num)
+        {
+            DataTable dt = DBIO.ExecuteSQL("SELECT * FROM Items WHERE Items.id = " + num);
+            DataTable dt2 = DBIO.ExecuteSQL("SELECT * FROM Parts WHERE Parts.itemId = " + num);
+            List<Part> lp = new List<Part>();
+            for (int i = 0; i < dt2.Rows.Count; i++ )
+                lp.Add((Part)int.Parse(dt2.Rows[i]["part"].ToString()));
+
+            return new Item(
+                num,
+                (string)dt.Rows[0]["name"],
+                (string)dt.Rows[0]["description"],
+                TA.GetTexture(TypeVisualObject.Item, int.Parse(dt.Rows[0]["imageId"].ToString())),
+                int.Parse(dt.Rows[0]["level"].ToString()),
+                int.Parse(dt.Rows[0]["price"].ToString()),
+                lp
+                );
+
         }
     }
 }

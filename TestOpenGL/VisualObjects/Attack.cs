@@ -56,7 +56,7 @@ namespace TestOpenGL.VisualObjects
                 //this.timePause);
             }
             //Program.L.UnBlock();
-            Battle.Fight(attacking, this, Program.L.GetBeing(s.Dequeue()));
+            Battle.Fight(attacking,/* this,*/ Program.L.GetBeing(s.Dequeue()));
             return true;
         }
 

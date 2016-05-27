@@ -21,7 +21,7 @@ namespace TestOpenGL
             //Triggers.currentTriggers = t;
             t.AddTrigger(new Trigger(0, true, delegate() 
                 {
-                    if (Logic.Analytics.IsInArea(new Coord(4, 4), new Coord(9, 9), Program.GCycle.gamer.C))
+                    if (Logic.Analytics.IsInArea(new Coord(4, 4), new Coord(9, 9), Program.GCycle.Gamer.C))
                     {
                         Program.L.RemoveGroupDecals(0);
                         Triggers.currentTriggers.DeactivateTrigger(0);
@@ -35,8 +35,8 @@ namespace TestOpenGL
                         VOSD.Push(Program.OB.GetDecal(3), new Coord(i,j));
                 Program.L.AddDecals(VOSD);
 
-                Program.GCycle.gamer.Spawn(new Coord(0, 0));
-                Program.L.AddBeing(Program.GCycle.gamer);
+                Program.GCycle.Gamer.Spawn(new Coord(0, 0));
+                Program.L.AddBeing(Program.GCycle.Gamer);
             };
             s1.StartStage();
         }

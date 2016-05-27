@@ -16,7 +16,7 @@ namespace TestOpenGL.Logic
     /// </summary>
     class Painter
     {
-        public Camera camera;
+        Camera camera;
 
         private Tao.Platform.Windows.SimpleOpenGlControl GlControl;
 
@@ -28,11 +28,24 @@ namespace TestOpenGL.Logic
         ManualResetEvent isNextRedraw = new ManualResetEvent(false);
         ManualResetEvent isTest = new ManualResetEvent(false);
 
+        internal Camera Camera
+        {
+            get { return camera; }
+            set 
+            {
+                if (value != null)
+                {
+                    StopRedraw();
+                    camera = value;
+                    StartRedraw();
+                }
+            }
+        }
 
         public Painter(Tao.Platform.Windows.SimpleOpenGlControl GlControl)
         {
             this.GlControl = GlControl;
-            camera = new Camera(20, 20);
+            camera = new Camera(10, 10);
 
             InitializeGraphics();
 
@@ -80,7 +93,13 @@ namespace TestOpenGL.Logic
                     foreach (Being B in Program.L.GetAllBeings())
                         if (B.isSpawned)
                             if (Analytics.IsInCamera(B.C, camera))
+                            {
                                 this.DrawObject(new Coord(B.C.X - this.camera.ShiftX, B.C.Y - this.camera.ShiftY), B.texture);
+                                foreach(Item i in B.inventory.GetEquipmentItems())
+                                {
+                                    this.DrawObject(new Coord(B.C.X - this.camera.ShiftX, B.C.Y - this.camera.ShiftY), i.texture);
+                                }
+                            }
 
                     foreach (Decal d in Program.L.GetAllDecals())
                         if (Analytics.IsInCamera(d.C, camera))

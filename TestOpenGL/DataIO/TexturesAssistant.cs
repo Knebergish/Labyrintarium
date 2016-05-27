@@ -17,7 +17,7 @@ namespace TestOpenGL.DataIO
         private TexturesAssistant()
         {
             texturesDataTable = new DataTable();
-            pathes = new string[3];
+            pathes = new string[4];
             this.texturesDataTable.Columns.Add("type", typeof(TypeVisualObject));
             this.texturesDataTable.Columns.Add("imageId", System.Type.GetType("System.Int32"));
             this.texturesDataTable.Columns.Add("textureId", System.Type.GetType("System.Int32"));
@@ -27,7 +27,8 @@ namespace TestOpenGL.DataIO
             this.path = path;
             pathes[0] = this.path + "\\Textures\\Blocks\\";
             pathes[1] = this.path + "\\Textures\\Beings\\";
-            pathes[2] = this.path + "\\Textures\\Decals\\";
+            pathes[2] = this.path + "\\Textures\\Items\\";
+            pathes[3] = this.path + "\\Textures\\Decals\\";
         }
 
         private int LoadTexture(TypeVisualObject tvo, int imageId)

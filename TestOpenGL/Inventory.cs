@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-
 using TestOpenGL.VisualObjects;
 using TestOpenGL;
 
@@ -10,49 +9,32 @@ namespace TestOpenGL
     class Inventory
     {
         // Неэкипированные вещи, хранящиеся в мешке.
-        List<Item> Bag;
+        List<Item> bag;
 
         // Экипированные вещи.
-        List<Item> Equipment;
-
-        // Атаки от экипированных вещей
-        List<Attack> Attacks;
-
-        public int generalArmor;
+        List<Item> equipment;
 
         public EventInventory eventsInventory;
 
         public Inventory()
         {
-            Bag = new List<Item>();
-            Equipment = new List<Item>();
-            Attacks = new List<Attack>();
+            bag = new List<Item>();
+            equipment = new List<Item>();
             eventsInventory = new EventInventory();
         }
 
-        public int CountOutBagItems
+        public void PutBagItem(Item i)
         {
-            get { return Bag.Count; }
-        }
-        public int CountEquippedItems
-        {
-            get { return Equipment.Count; }
-        }
-        public int CountAttacks
-        {
-            get { return Attacks.Count; }
-        }
-        public void PutItem(Item i)
-        {
-            Bag.Add(i);
+            bag.Add(i);
             eventsInventory.InventoryChangeBag();
         }
-        public void ThrowItem(int num)
+        public void ThrowBagItem(int num)
         {
             try
             {
-                Bag.Remove(GetOutBagItem(num));
+                bag.RemoveAt(num);
                 eventsInventory.InventoryChangeBag();
+                //TODO: вызов события без подписчиков вылетит?
             }
             catch(Exception e)
             {
@@ -60,27 +42,23 @@ namespace TestOpenGL
             }
         }
 
-        public Item GetOutBagItem(int num)
+        public List<Item> GetBagItems()
         {
-            if (num < 0 || num > Bag.Count)
-                throw new IndexOutOfRangeException();
-            return Bag[num];
+            return bag;
         }
-        public Item GetEquippedItem(int num)
+        public List<Item> GetEquipmentItems()
         {
-            if (num < 0 || num > Equipment.Count)
-                throw new IndexOutOfRangeException();
-            return Equipment[num];
+            return equipment;
         }
 
         public bool EquipItem(int num)
         {
             try
             {
-                Item ei = GetOutBagItem(num);
+                Item ei = bag[num];
 
 
-                foreach (Item i in Equipment)
+                foreach (Item i in equipment)
                 {
                     foreach (Part p in i.Parts)
                     {
@@ -94,8 +72,8 @@ namespace TestOpenGL
                     }
                 }
 
-                Equipment.Add(ei);
-                Bag.Remove(ei);
+                equipment.Add(ei);
+                bag.Remove(ei);
                 eventsInventory.InventoryChangeBag();
                 eventsInventory.InventoryChangeEquipment();
                 return true;
@@ -105,12 +83,12 @@ namespace TestOpenGL
                 throw e;
             }
         }
-        public void UnEquipItem(int num)
+        public void UnequipItem(int num)
         {
             try
             {
-                Bag.Add(GetEquippedItem(num));
-                Equipment.Remove(GetEquippedItem(num));
+                bag.Add(equipment[num]);
+                equipment.RemoveAt(num);
                 eventsInventory.InventoryChangeBag();
                 eventsInventory.InventoryChangeEquipment();
             }
@@ -119,23 +97,6 @@ namespace TestOpenGL
                 throw e;
             }
         }
-
-        public void CheckAttack()
-        {
-            Attacks.Clear();
-            foreach(Item i in Equipment)
-            {
-                foreach (Attack a in i.Attacks)
-                    Attacks.Add(a);
-            }
-        }
-        public Attack GetAttack(int num)
-        {
-            if (num < 0 || num > Attacks.Count)
-                throw new IndexOutOfRangeException();
-            return Attacks[num];
-        }
-
     }
 
     class EventInventory

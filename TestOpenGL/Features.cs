@@ -28,28 +28,28 @@ namespace TestOpenGL
         double increaseActionPoints;
         
         // Уклонение сущности.
-        int evasion;
+        //int evasion;
         
         ////////////////////////////////////////////////////////////////////////////////////////
 
 
-        public Features(Being owner, int stamina, int power, int agility)
+        public Features(Being owner, int power, int coordination, int mmr, int stamina, int agility, int sense)
         {
             this.owner = owner;
 
-            // Сила = 0
             listFeatures.Add(power);
-            // Выносливость = 1
+            listFeatures.Add(coordination);
+            listFeatures.Add(mmr);
             listFeatures.Add(stamina);
-            // Ловкость = 2
             listFeatures.Add(agility);
+            listFeatures.Add(sense);
 
             Recalculate();
             this.currentHealth = this.maxHealth;
             this.actionPoints = 1;
         }
         public Features(Being owner)
-            : this(owner, 1, 1, 1)
+            : this(owner, 1, 1, 1, 1, 1, 1)
         { }
 
 
@@ -96,8 +96,8 @@ namespace TestOpenGL
             //set { increaseActionPoints = value; }
         }
 
-        public int Evasion
-        { get { return evasion; } }
+        /*public int Evasion
+        { get { return evasion; } }*/
         /////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -110,7 +110,7 @@ namespace TestOpenGL
         {
             this.maxHealth = this.listFeatures[(int)Feature.Stamina] * 10;
             this.regeneration = this.maxHealth / 100;
-            this.evasion = this.listFeatures[(int)Feature.Agility];
+            //this.evasion = this.listFeatures[(int)Feature.Agility];
 
             this.increaseActionPoints = 1 + (double)(this.listFeatures[(int)Feature.Agility] - 1) / 4;
         }
