@@ -20,14 +20,15 @@ namespace TestOpenGL
             AnT.InitializeContexts();
         }
 
-        Block B, Bg;
+        Block B;
+        Background Bg;
         Being Be, Be1;
         Attack A;
         private void Form1_Load(object sender, EventArgs e)
         {
             Program.InitApp(this);
             
-            Bg = Program.OB.GetBlock(1);
+            Bg = Program.OB.GetBackground(1);
             B = Program.OB.GetBlock(2);
 
             
@@ -40,7 +41,7 @@ namespace TestOpenGL
             Be1.inventory.EquipItem(0);
             Program.GCycle.Gamer = (Gamer)Be;
 
-            A = Program.OB.GetAttack(1);
+            //A = Program.OB.GetAttack(1);
 
             //A.coefficient = 10;
             //A.profilingFeature = Feature.Stamina;
@@ -50,7 +51,7 @@ namespace TestOpenGL
             //Be.inventory.PutItem(i);
 
             Be.Spawn(new Coord(0, 0));
-            Be1.Spawn(new Coord(1, 5));
+            //Be1.Spawn(new Coord(1, 5));
 
             Program.P.Camera.SetLookingBeing(Be);
 
@@ -60,12 +61,13 @@ namespace TestOpenGL
         {
             Random rnd = new Random();
             VisualObjectStructure<Block> BS = new VisualObjectStructure<Block>();
+            VisualObjectStructure<Background> BG = new VisualObjectStructure<Background>();
 
             for (int x = 0; x < Program.L.LengthX; x++)
             {
                 for (int y = 0; y < Program.L.LengthY; y++)
                 {
-                    BS.Push(Bg, new Coord(x, y, 0));
+                    BG.Push(Bg, new Coord(x, y));
 
                     if (rnd.Next(0, 10) == 1)
                         BS.Push(B, new Coord(x, y, 1));
@@ -74,6 +76,7 @@ namespace TestOpenGL
                 }
             }
             Program.L.SetBlocks(BS);
+            Program.L.SetBackgrounds(BG);
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -120,6 +123,16 @@ namespace TestOpenGL
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             Program.C.ProcessingKeyPress(e);
+        }
+
+        private void Form1_SizeChanged(object sender, EventArgs e)
+        {
+            button1.Left = this.Width - button1.Width - 28;
+            button2.Left = this.Width - button2.Width - 28;
+            button4.Left = this.Width - button4.Width - 28;
+            AnT.Width = Math.Min(this.Width - (this.Width - button1.Left) - 28, this.Height - 63);
+            AnT.Height = AnT.Width;
+            Program.P.SettingVisibleAreaSize();
         }
     }
 }

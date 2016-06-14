@@ -199,13 +199,13 @@ namespace TestOpenGL.Logic
 
         static public bool IsInCamera(Coord C, Camera camera)
         {
-            if (C.X < camera.ShiftX)
+            if (C.X < camera.MinX)
                 return false;
-            if (C.X > camera.Width + camera.ShiftX - 1)
+            if (C.X > camera.MaxX)
                 return false;
-            if (C.Y < camera.ShiftY)
+            if (C.Y < camera.MinY)
                 return false;
-            if (C.Y > camera.Height + camera.ShiftY - 1)
+            if (C.Y > camera.MaxY)
                 return false;
             return true;
         }

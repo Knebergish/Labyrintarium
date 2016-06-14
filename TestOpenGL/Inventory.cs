@@ -92,9 +92,9 @@ namespace TestOpenGL
                 eventsInventory.InventoryChangeBag();
                 eventsInventory.InventoryChangeEquipment();
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                throw e;
+                throw;
             }
         }
     }

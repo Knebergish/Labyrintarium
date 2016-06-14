@@ -42,15 +42,10 @@ namespace TestOpenGL
             TA = new TexturesAssistant(Directory.GetCurrentDirectory());
             OB = new ObjectsBuilder(DBIO, TA);
             L = new Level(30, 30, 2);
-            P = new Painter(f.AnT);
+            P = new Painter(f.AnT, 10, 10);
             GCycle = new GameCycle();
             C = new Control();
             FA = new FormsAssistant();
         }
     }
 }
-
-// Переделана система инвентаря и предметов. 
-// Добавлена отрисовка одетых предметов на сущности.
-// Изменения в системе обработки нажатия клавиш.
-// Обработка нажатий клавиш и управление дополнительными формами вынесены в отдельные классы.

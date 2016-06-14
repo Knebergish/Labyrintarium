@@ -38,6 +38,17 @@ namespace TestOpenGL.DataIO
                 );
         }
 
+        public Background GetBackground(int num)
+        {
+            DataTable dt = DBIO.ExecuteSQL("SELECT * FROM Backgrounds WHERE Backgrounds.id = " + num);
+            return new Background(
+                num,
+                (string)dt.Rows[0]["name"],
+                (string)dt.Rows[0]["description"],
+                (bool)dt.Rows[0]["passableness"],
+                TA.GetTexture(TypeVisualObject.Background, int.Parse(dt.Rows[0]["imageId"].ToString()))
+                );
+        }
         public Block GetBlock(int num)
         {
             DataTable dt = DBIO.ExecuteSQL("SELECT * FROM Blocks WHERE Blocks.id = " + num);

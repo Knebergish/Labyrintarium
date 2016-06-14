@@ -34,10 +34,18 @@ namespace TestOpenGL
         { get { return height; } }
         public int Width
         { get { return width; } }
-        public int ShiftY
+        /*public int ShiftY
         { get { return shiftY; } }
         public int ShiftX
+        { get { return shiftX; } }*/
+        public int MinX
         { get { return shiftX; } }
+        public int MaxX
+        { get { return shiftX + Width - 1; } }
+        public int MinY
+        { get { return shiftY; } }
+        public int MaxY
+        { get { return shiftY + Height - 1; } }
         
         public void SetLookingBeing(Being b)
         {

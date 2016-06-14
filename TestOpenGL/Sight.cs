@@ -19,8 +19,6 @@ namespace TestOpenGL
             aimDecal = Program.OB.GetDecal(1);
             this.camera = camera;
 
-            //aimDecal.texture = Program.TA.GetTexture(TypeVisualObject.Decal, 1);
-
             this.camera.changeCameraPosition += Check;
         }
 
@@ -51,14 +49,14 @@ namespace TestOpenGL
 
         public void Check()
         {
-            if (aimCoord.X < camera.ShiftX)
-                aimCoord = new Coord(camera.ShiftX, aimCoord.Y);
-            if (aimCoord.X > camera.Width + camera.ShiftX - 1)
-                aimCoord = new Coord(camera.Width + camera.ShiftX - 1, aimCoord.Y);
-            if (aimCoord.Y < camera.ShiftY)
-                aimCoord = new Coord(aimCoord.X, camera.ShiftY);
-            if (aimCoord.Y > camera.Height + camera.ShiftY - 1)
-                aimCoord = new Coord(aimCoord.X, camera.Height + camera.ShiftY - 1);
+            if (aimCoord.X < camera.MinX)
+                aimCoord = new Coord(camera.MinX, aimCoord.Y);
+            if (aimCoord.X > camera.MaxX)
+                aimCoord = new Coord(camera.MaxX, aimCoord.Y);
+            if (aimCoord.Y < camera.MinY)
+                aimCoord = new Coord(aimCoord.X, camera.MinY);
+            if (aimCoord.Y > camera.MaxY)
+                aimCoord = new Coord(aimCoord.X, camera.MaxY);
         }
     }
 }

@@ -23,11 +23,11 @@ namespace TestOpenGL.Logic
         //TODO: отрефакторить эту хрень и метод Redraw.
         delegate void updateVoid();
 
-        // Поток перерисоки дисплея.
         System.Threading.Thread RedrawDisplay;
         ManualResetEvent isNextRedraw = new ManualResetEvent(false);
         ManualResetEvent isTest = new ManualResetEvent(false);
 
+        // Почему internal?..
         internal Camera Camera
         {
             get { return camera; }
@@ -42,10 +42,10 @@ namespace TestOpenGL.Logic
             }
         }
 
-        public Painter(Tao.Platform.Windows.SimpleOpenGlControl GlControl)
+        public Painter(Tao.Platform.Windows.SimpleOpenGlControl GlControl, int startingWidthCamera, int startingHeightCamera)
         {
             this.GlControl = GlControl;
-            camera = new Camera(10, 10);
+            camera = new Camera(startingWidthCamera, startingHeightCamera);
 
             InitializeGraphics();
 
@@ -60,6 +60,7 @@ namespace TestOpenGL.Logic
         public void StopRedraw()
         {
             this.isNextRedraw.Reset();
+            //TODO: возможно, сюда надо вставит короткую поточную паузу, чтобы поток перерисовки успел остановиться.
         }
 
         // На самом деле я не до конца понимаю, как это работает. Но говорят, что это норма.
@@ -82,10 +83,19 @@ namespace TestOpenGL.Logic
                     {
                         for (int y = 0; y < this.camera.Height; y++)
                         {
+                            if (Program.L.GetBackground(new Coord(x + this.camera.MinX, y + this.camera.MinY)) != null)
+                                this.DrawObject(new Coord(x, y), Program.L.GetBackground(new Coord(x + this.camera.MinX, y + this.camera.MinY)).texture);
+                        }
+                    }
+
+                    for (int x = 0; x < this.camera.Width; x++)
+                    {
+                        for (int y = 0; y < this.camera.Height; y++)
+                        {
                             for (int i = 0; i < Program.L.LengthZ; i++)
                             {
-                                if (Program.L.GetBlock(new Coord(x + this.camera.ShiftX, y + this.camera.ShiftY, i)) != null)
-                                    this.DrawObject(new Coord(x, y), Program.L.GetBlock(new Coord(x + this.camera.ShiftX, y + this.camera.ShiftY, i)).texture);
+                                if (Program.L.GetBlock(new Coord(x + this.camera.MinX, y + this.camera.MinY, i)) != null)
+                                    this.DrawObject(new Coord(x, y), Program.L.GetBlock(new Coord(x + this.camera.MinX, y + this.camera.MinY, i)).texture);
                             }
                         }
                     }
@@ -94,18 +104,18 @@ namespace TestOpenGL.Logic
                         if (B.isSpawned)
                             if (Analytics.IsInCamera(B.C, camera))
                             {
-                                this.DrawObject(new Coord(B.C.X - this.camera.ShiftX, B.C.Y - this.camera.ShiftY), B.texture);
+                                this.DrawObject(new Coord(B.C.X - this.camera.MinX, B.C.Y - this.camera.MinY), B.texture);
                                 foreach(Item i in B.inventory.GetEquipmentItems())
                                 {
-                                    this.DrawObject(new Coord(B.C.X - this.camera.ShiftX, B.C.Y - this.camera.ShiftY), i.texture);
+                                    this.DrawObject(new Coord(B.C.X - this.camera.MinX, B.C.Y - this.camera.MinY), i.texture);
                                 }
                             }
 
                     foreach (Decal d in Program.L.GetAllDecals())
                         if (Analytics.IsInCamera(d.C, camera))
-                            this.DrawObject(new Coord(d.C.X - this.camera.ShiftX, d.C.Y - this.camera.ShiftY), d.texture);
+                            this.DrawObject(new Coord(d.C.X - this.camera.MinX, d.C.Y - this.camera.MinY), d.texture);
 
-                    this.DrawObject(new Coord(Program.GCycle.sight.AimCoord.X - this.camera.ShiftX, Program.GCycle.sight.AimCoord.Y - this.camera.ShiftY), Program.GCycle.sight.aimDecal.texture);
+                    this.DrawObject(new Coord(Program.GCycle.sight.AimCoord.X - this.camera.MinX, Program.GCycle.sight.AimCoord.Y - this.camera.MinY), Program.GCycle.sight.aimDecal.texture);
 
                     this.GlControl.SwapBuffers();
                 };
@@ -114,11 +124,36 @@ namespace TestOpenGL.Logic
             }
         }
 
+        public void SettingVisibleAreaSize()
+        {
+            Gl.glViewport(0, 0, this.GlControl.Width, this.GlControl.Height);
+            // устанавливаем проекционную матрицу 
+            Gl.glMatrixMode(Gl.GL_PROJECTION);
+            // очищаем ее 
+            Gl.glLoadIdentity();
+
+
+
+            // теперь необходимо корректно настроить 2D ортогональную проекцию 
+            // в зависимости от того, какая сторона больше 
+            // мы немного варьируем то, как будут сконфигурированы настройки проекции 
+            if (this.GlControl.Width <= this.GlControl.Height)
+                Glu.gluOrtho2D(0.0, camera.Width, 0.0, camera.Height * (float)this.GlControl.Height / (float)this.GlControl.Width);
+            else
+                Glu.gluOrtho2D(0.0, camera.Width * (float)this.GlControl.Width / (float)this.GlControl.Height, 0.0, camera.Height);
+
+            // переходим к объектно-видовой матрице 
+            Gl.glMatrixMode(Gl.GL_MODELVIEW);
+        }
+
         /// <summary>
         /// Инициализация графической системы.
         /// </summary>
         private void InitializeGraphics()
         {
+            // Тупой копипаст из интернет-урока. Я в этом не разбираюсь, и вы смиритесь.
+
+
             Gl.glClear(Gl.GL_COLOR_BUFFER_BIT | Gl.GL_DEPTH_BUFFER_BIT);
 
             // инициализация библиотеки GLUT 
@@ -176,16 +211,16 @@ namespace TestOpenGL.Logic
 
             Gl.glBegin(Gl.GL_QUADS);
 
-            Gl.glTexCoord2f(0.0f + C.X, 0.0f + C.Y);
+            Gl.glTexCoord2f(0.0f, 0.0f);
             Gl.glVertex2d((double)C.X, (double)C.Y);
 
-            Gl.glTexCoord2f(0.0f + C.X, 0.0f + C.Y + size);
+            Gl.glTexCoord2f(0.0f, 0.0f + size);
             Gl.glVertex2d((double)C.X, (double)C.Y + size);
 
-            Gl.glTexCoord2f(0.0f + C.X + size, 0.0f + C.Y + size);
+            Gl.glTexCoord2f(0.0f + size, 0.0f + size);
             Gl.glVertex2d((double)C.X + size, (double)C.Y + size);
 
-            Gl.glTexCoord2f(0.0f + C.X + size, 0.0f + C.Y);
+            Gl.glTexCoord2f(0.0f + size, 0.0f);
             Gl.glVertex2d((double)C.X + size, (double)C.Y);
 
             Gl.glEnd();

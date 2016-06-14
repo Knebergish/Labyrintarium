@@ -49,6 +49,7 @@ namespace TestOpenGL
     /// </summary>
     struct Coord
     {
+        // Координата (0, 0) - левый нижний угол. Ось X - горизонтальная.
         private int x;
         private int y;
         private int z;
@@ -95,7 +96,7 @@ namespace TestOpenGL
     /// <summary>
     /// Перечисление типов визуальных объектов (отображаемых на карте).
     /// </summary>
-    enum TypeVisualObject { Block, Being, Item, Decal };
+    enum TypeVisualObject { Background, Block, Being, Item, Decal };
 
     /// <summary>
     /// Перечисление направлений движения сущности.

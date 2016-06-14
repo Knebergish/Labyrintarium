@@ -18,6 +18,7 @@ namespace TestOpenGL.Logic
     /// </summary>
     class Level
     {
+        private MapBackgrounds mapBackgrounds;
         private MapBlocks mapBlocks;
         private MapBeings mapBeings;
         private MapDecals mapDecals;
@@ -27,6 +28,7 @@ namespace TestOpenGL.Logic
         /// <param name="LengthZ"> Глубина игровой карты.</param>
         public Level(int lengthX, int lengthY, int lengthZ)
         {
+            mapBackgrounds = new MapBackgrounds(lengthX, lengthY);
             mapBlocks = new MapBlocks(lengthX, lengthY, lengthZ);
             mapBeings = new MapBeings();
             mapDecals = new MapDecals();
@@ -67,7 +69,20 @@ namespace TestOpenGL.Logic
         {
             return mapDecals.GetAllDecals();
         }
-        
+
+
+        public Background GetBackground(Coord C)
+        {
+            return mapBackgrounds[C];
+        }
+        public void SetBackground(Background B, Coord C)
+        {
+            mapBackgrounds[C] = B;
+        }
+        public void SetBackgrounds(VisualObjectStructure<Background> backgroundsStructure)
+        {
+            mapBackgrounds.SetBackgrounds(backgroundsStructure);
+        }
 
         public Block GetBlock(Coord C)
         {

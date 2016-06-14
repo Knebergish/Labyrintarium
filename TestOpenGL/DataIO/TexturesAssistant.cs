@@ -17,7 +17,7 @@ namespace TestOpenGL.DataIO
         private TexturesAssistant()
         {
             texturesDataTable = new DataTable();
-            pathes = new string[4];
+            pathes = new string[5];
             this.texturesDataTable.Columns.Add("type", typeof(TypeVisualObject));
             this.texturesDataTable.Columns.Add("imageId", System.Type.GetType("System.Int32"));
             this.texturesDataTable.Columns.Add("textureId", System.Type.GetType("System.Int32"));
@@ -25,10 +25,11 @@ namespace TestOpenGL.DataIO
         public TexturesAssistant(string path): this()
         {
             this.path = path;
-            pathes[0] = this.path + "\\Textures\\Blocks\\";
-            pathes[1] = this.path + "\\Textures\\Beings\\";
-            pathes[2] = this.path + "\\Textures\\Items\\";
-            pathes[3] = this.path + "\\Textures\\Decals\\";
+            pathes[0] = this.path + "\\Textures\\Backgrounds\\";
+            pathes[1] = this.path + "\\Textures\\Blocks\\";
+            pathes[2] = this.path + "\\Textures\\Beings\\";
+            pathes[3] = this.path + "\\Textures\\Items\\";
+            pathes[4] = this.path + "\\Textures\\Decals\\";
         }
 
         private int LoadTexture(TypeVisualObject tvo, int imageId)
@@ -62,9 +63,24 @@ namespace TestOpenGL.DataIO
                 Gl.glBindTexture(Gl.GL_TEXTURE_2D, texObject);
 
                 // устанавливаем режим фильтрации и повторения текстуры
-                Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_WRAP_S, Gl.GL_REPEAT);
-                Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_WRAP_T, Gl.GL_REPEAT);
-                Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MAG_FILTER, Gl.GL_LINEAR);
+                switch(tvo)
+                {
+                    case TypeVisualObject.Decal:
+                        Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_WRAP_S, Gl.GL_CLAMP_TO_EDGE);
+                        Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_WRAP_T, Gl.GL_CLAMP_TO_EDGE);
+                        break;
+                    case TypeVisualObject.Block:
+                        Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_WRAP_S, Gl.GL_CLAMP_TO_EDGE);
+                        Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_WRAP_T, Gl.GL_CLAMP_TO_EDGE);
+                        break;
+                    case TypeVisualObject.Background:
+                        Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_WRAP_S, Gl.GL_REPEAT);
+                        Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_WRAP_T, Gl.GL_REPEAT);
+                        break;
+                }
+                //Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_WRAP_S, Gl.GL_CLAMP_TO_EDGE);//Gl.GL_REPEAT);
+                //Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_WRAP_T, Gl.GL_CLAMP_TO_EDGE);//Gl.GL_REPEAT);
+                Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MAG_FILTER, Gl.GL_LINEAR);//
                 Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MIN_FILTER, Gl.GL_LINEAR);
                 Gl.glTexEnvf(Gl.GL_TEXTURE_ENV, Gl.GL_TEXTURE_ENV_MODE, Gl.GL_REPLACE);
 
