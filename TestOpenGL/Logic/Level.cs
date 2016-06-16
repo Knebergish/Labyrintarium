@@ -18,10 +18,20 @@ namespace TestOpenGL.Logic
     /// </summary>
     class Level
     {
+        private int lengthX, lengthY, lengthZ; //TODO: Эти хрени где только не хранятся. Т.е. суть дублирование.
         private MapBackgrounds mapBackgrounds;
         private MapBlocks mapBlocks;
         private MapBeings mapBeings;
         private MapDecals mapDecals;
+
+        public MapBackgrounds MapBackgrounds
+        { get { return mapBackgrounds; } }
+        public MapBlocks MapBlocks
+        { get { return mapBlocks; } }
+        public MapBeings MapBeings
+        { get { return mapBeings; } }
+        public MapDecals MapDecals
+        { get { return mapDecals; } }
         
         /// <param name="LengthX"> Ширина игровой карты.</param>
         /// <param name="LengthY"> Выстока игровой карты.</param>
@@ -32,102 +42,24 @@ namespace TestOpenGL.Logic
             mapBlocks = new MapBlocks(lengthX, lengthY, lengthZ);
             mapBeings = new MapBeings();
             mapDecals = new MapDecals();
+            this.lengthX = lengthX;
+            this.lengthY = lengthY;
+            this.lengthZ = lengthZ;
         }
 
+
+        public void Pause(int time)
+        {
+            System.Threading.Thread.Sleep(time);
+        }
 
 
         public int LengthX
-        { get { return mapBlocks.LengthX; } }
+        { get { return lengthX; } }
         public int LengthY
-        { get { return mapBlocks.LengthY; } }
+        { get { return lengthY; } }
         public int LengthZ
-        { get { return mapBlocks.LengthZ; } }
-
-        
-        
-        public int AddDecal(Decal d)
-        {
-            return mapDecals.AddDecal(d);
-        }
-        public int AddDecals(VisualObjectStructure<Decal> decalStructure)
-        {
-            return mapDecals.AddDecals(decalStructure);
-        }
-        public void RemoveGroupDecals(int numberGroup)
-        {
-            mapDecals.RemoveGroupDecals(numberGroup);
-        }
-        public int CountDecals
-        {
-            get { return mapDecals.CountDecals; }
-        }
-        public void ClearDecals()
-        {
-            mapDecals.ClearDecals();
-        }
-        public List<Decal> GetAllDecals()
-        {
-            return mapDecals.GetAllDecals();
-        }
-
-
-        public Background GetBackground(Coord C)
-        {
-            return mapBackgrounds[C];
-        }
-        public void SetBackground(Background B, Coord C)
-        {
-            mapBackgrounds[C] = B;
-        }
-        public void SetBackgrounds(VisualObjectStructure<Background> backgroundsStructure)
-        {
-            mapBackgrounds.SetBackgrounds(backgroundsStructure);
-        }
-
-        public Block GetBlock(Coord C)
-        {
-            return mapBlocks.GetBlock(C);
-        }
-        public void SetBlock(Block B, Coord C)
-        {
-            mapBlocks.SetBlock(B, C);
-        }
-        public void SetBlocks(VisualObjectStructure<Block> blocksStructure)
-        {
-            mapBlocks.SetBlocks(blocksStructure);
-        }
-        
-
-
-        public Being GetBeing(Coord C)
-        {
-            return mapBeings.GetBeing(C);
-        }
-        public Being GetBeing(int num)
-        {
-            return mapBeings.GetBeing(num);
-        }
-        public List<Being> GetAllBeings()
-        {
-            return mapBeings.GetAllBeings();
-        }
-        public bool AddBeing(Being B)
-        {
-            return mapBeings.AddBeing(B);
-        }
-        public void RemoveBeing(Coord C)
-        {
-            mapBeings.RemoveBeing(C);
-        }
-        public int CountBeings
-        {
-            get { return mapBeings.CountBeings; }
-        }
-        public void ClearDeadBeings()
-        {
-            mapBeings.ClearDeadBeings();
-        }
-
+        { get { return lengthZ; } }
         
         /// <summary>
         /// Проверяет ячейку на проходимость для сущностей.
@@ -136,19 +68,23 @@ namespace TestOpenGL.Logic
         /// <returns></returns>
         public bool IsPassable(Coord C)
         {
-            bool flag = mapBlocks.IsPassable(C);
+            bool flag;
 
-            if (!mapBeings.IsPassable(C))
-                flag = false;
+            flag = mapBackgrounds.IsPassable(C);
+
+            flag = mapBlocks.IsPassable(C) ? flag : false;
+
+            flag = mapBeings.IsPassable(C) ? flag : false;
 
             return flag;
         }
 
-        public bool IsPermeable(Coord C, Passableness p)
+        //TODO: Passableness используется в IsPermrable, но не используется в IsPassable? Серьёзно?
+        public bool IsPermeable(Coord C, Permeability p)
         {
             bool flag = mapBlocks.IsPassable(C);
 
-            if(p==Passableness.BlockAndBeing)
+            if (p == Permeability.BlockAndBeing)
                 if (!mapBeings.IsPassable(C))
                     flag = false;
 
@@ -164,8 +100,8 @@ namespace TestOpenGL.Logic
             for (int i = 0; i < this.LengthX; i++)
                 for (int j = 0; j < this.LengthY; j++)
                     for (int l = 0; l < this.LengthZ; l++)
-                        if (this.GetBlock(new Coord(i, j, l)) != null)
-                            sw.WriteLine(i.ToString() + " " + j.ToString() + " " + l.ToString() + " " + this.GetBlock(new Coord(i, j, l)).Id.ToString());
+                        if (this.mapBlocks.GetBlock(new Coord(i, j, l)) != null)
+                            sw.WriteLine(i.ToString() + " " + j.ToString() + " " + l.ToString() + " " + this.mapBlocks.GetBlock(new Coord(i, j, l)).Id.ToString());
 
             sw.Close();
         }
@@ -181,10 +117,9 @@ namespace TestOpenGL.Logic
             while(!sr.EndOfStream)
             {
                 s = sr.ReadLine().Split(' ');
-                this.SetBlock(Program.OB.GetBlock(int.Parse(s[3])), new Coord(int.Parse(s[0]), int.Parse(s[1]), int.Parse(s[2])));
+                this.mapBlocks.SetBlock(Program.OB.GetBlock(int.Parse(s[3])), new Coord(int.Parse(s[0]), int.Parse(s[1]), int.Parse(s[2])));
             }
             sr.Close();
-
         }
     }
 }

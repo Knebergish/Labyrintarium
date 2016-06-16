@@ -87,17 +87,19 @@ namespace TestOpenGL.DataIO
                 num,
                 (string)dt.Rows[0]["name"],
                 (string)dt.Rows[0]["description"],
-                TA.GetTexture(TypeVisualObject.Being, int.Parse(dt.Rows[0]["imageId"].ToString()))
+                TA.GetTexture(TypeVisualObject.Being, int.Parse(dt.Rows[0]["imageId"].ToString())),
+                0
                 );
         }
-        public Being GetBot(int num)
+        public Being GetBot(int num, int alliance)
         {
             DataTable dt = DBIO.ExecuteSQL("SELECT * FROM Beings WHERE Beings.id = " + num);
             return new Bot(
                 num,
                 (string)dt.Rows[0]["name"],
                 (string)dt.Rows[0]["description"],
-                TA.GetTexture(TypeVisualObject.Being, int.Parse(dt.Rows[0]["imageId"].ToString()))
+                TA.GetTexture(TypeVisualObject.Being, int.Parse(dt.Rows[0]["imageId"].ToString())),
+                alliance
                 );
         }
 

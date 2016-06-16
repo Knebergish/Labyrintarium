@@ -23,7 +23,7 @@ namespace TestOpenGL
                 {
                     if (Logic.Analytics.IsInArea(new Coord(4, 4), new Coord(9, 9), Program.GCycle.Gamer.C))
                     {
-                        Program.L.RemoveGroupDecals(0);
+                        Program.L.MapDecals.RemoveGroupDecals(0);
                         Triggers.currentTriggers.DeactivateTrigger(0);
                     }
                 }));
@@ -33,10 +33,10 @@ namespace TestOpenGL
                 for(int i = 4; i <10;i++)
                     for(int j = 4; j<10;j++)
                         VOSD.Push(Program.OB.GetDecal(3), new Coord(i,j));
-                Program.L.AddDecals(VOSD);
+                Program.L.MapDecals.AddDecals(VOSD);
 
                 Program.GCycle.Gamer.Spawn(new Coord(0, 0));
-                Program.L.AddBeing(Program.GCycle.Gamer);
+                Program.L.MapBeings.AddBeing(Program.GCycle.Gamer);
             };
             s1.StartStage();
         }

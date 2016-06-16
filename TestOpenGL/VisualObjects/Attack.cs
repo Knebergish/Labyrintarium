@@ -10,7 +10,6 @@ namespace TestOpenGL.VisualObjects
         public Feature profilingFeature;
         private double coefficient;
         private int minDistance, maxDistance;
-        //public int length;
         private int timePause;
 
 
@@ -22,8 +21,27 @@ namespace TestOpenGL.VisualObjects
             this.coefficient = coefficient;
             this.minDistance = minDistance;
             this.maxDistance = maxDistance;
-            //this.length = length;
             this.timePause = timePause;
+        }
+
+        static public void AttackAnimation(Coord start, Coord end, Decal decal, int pause)
+        {
+            Coord c;
+            int temp;
+            Queue<Coord> s = Analytics.CoordsLine(start, end);
+
+            s.Dequeue();
+            while (s.Count > 1)
+            {
+                c = s.Dequeue();
+                if (Program.L.IsPermeable(c, Permeability.Block))
+                    temp = Program.L.MapDecals.AddDecal(decal, c);
+                else break;
+
+                System.Threading.Thread.Sleep(pause);
+
+                Program.L.MapDecals.RemoveGroupDecals(temp);
+            }
         }
 
         public bool UseAttack(Being attacking, Coord C)
@@ -43,20 +61,20 @@ namespace TestOpenGL.VisualObjects
             while (s.Count > 1)
             {
                 c = s.Dequeue();
-                if (Program.L.IsPermeable(c, Passableness.Block))
+                if (Program.L.IsPermeable(c, Permeability.Block))
                     //TODO: херь, исправить
-                    Program.L.AddDecal(new Decal(-1, "test", "test", this.texture, c));
+                    Program.L.MapDecals.AddDecal(new Decal(-1, "test", "test", this.texture, c));
                 else break;
                 //Program.GCycle.isEnabledControl = false;
                 //await Task.Delay(50);//this.timePause);
                 //Program.GCycle.isEnabledControl = true;
                 System.Threading.Thread.Sleep(1000);
                 //Program.L.Pause(1000);
-                Program.L.ClearDecals();
+                Program.L.MapDecals.ClearDecals();
                 //this.timePause);
             }
             //Program.L.UnBlock();
-            Battle.Fight(attacking,/* this,*/ Program.L.GetBeing(s.Dequeue()));
+            Battle.Fight(attacking,/* this,*/ Program.L.MapBeings.GetBeing(s.Dequeue()));
             return true;
         }
 

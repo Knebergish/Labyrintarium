@@ -27,15 +27,6 @@ namespace TestOpenGL.Logic
             mapBlocks = new Block[this.lengthX, this.lengthY, this.lengthZ];
         }
 
-
-        public int LengthX
-        { get { return lengthX; } }
-        public int LengthY
-        { get { return lengthY; } }
-        public int LengthZ
-        { get { return lengthZ; } }
-
-
         public bool IsPassable(Coord C)
         {
             for (int i = 0; i < this.lengthZ; i++)

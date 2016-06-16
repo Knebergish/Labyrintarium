@@ -21,7 +21,7 @@ namespace TestOpenGL
         
         Being looking;
 
-        public Camera(int width, int height)//(Level l, int width, int height)
+        public Camera(int width, int height)
         {
             this.l = Program.L;
             this.width = width;
@@ -34,10 +34,6 @@ namespace TestOpenGL
         { get { return height; } }
         public int Width
         { get { return width; } }
-        /*public int ShiftY
-        { get { return shiftY; } }
-        public int ShiftX
-        { get { return shiftX; } }*/
         public int MinX
         { get { return shiftX; } }
         public int MaxX

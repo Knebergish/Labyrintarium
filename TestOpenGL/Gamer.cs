@@ -9,8 +9,8 @@ namespace TestOpenGL
     {
         ManualResetEvent isEndStep = new ManualResetEvent(false);
 
-        public Gamer(int id, string name, string description, Texture texture)
-            : base(id, name, description, texture)
+        public Gamer(int id, string name, string description, Texture texture, int alliance)
+            : base(id, name, description, texture, alliance)
         {
             this.eventsBeing.EventBeingEndActionPoints += new EventDelegate(EndStep);
         }
@@ -21,8 +21,9 @@ namespace TestOpenGL
         }
         public override void Step()
         {
-            
+            Program.C.isEnabledControl = true;
             isEndStep.WaitOne();
+            Program.C.isEnabledControl = false; ;
             isEndStep.Reset();
         }
     }

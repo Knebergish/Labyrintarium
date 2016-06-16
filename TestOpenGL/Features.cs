@@ -27,9 +27,6 @@ namespace TestOpenGL
         // Восстановление очков действия в ход
         double increaseActionPoints;
         
-        // Уклонение сущности.
-        //int evasion;
-        
         ////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -93,11 +90,7 @@ namespace TestOpenGL
         public double IncreaseActionPoints
         {
             get { return increaseActionPoints; }
-            //set { increaseActionPoints = value; }
         }
-
-        /*public int Evasion
-        { get { return evasion; } }*/
         /////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -110,7 +103,6 @@ namespace TestOpenGL
         {
             this.maxHealth = this.listFeatures[(int)Feature.Stamina] * 10;
             this.regeneration = this.maxHealth / 100;
-            //this.evasion = this.listFeatures[(int)Feature.Agility];
 
             this.increaseActionPoints = 1 + (double)(this.listFeatures[(int)Feature.Agility] - 1) / 4;
         }

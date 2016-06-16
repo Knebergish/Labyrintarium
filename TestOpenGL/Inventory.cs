@@ -34,7 +34,6 @@ namespace TestOpenGL
             {
                 bag.RemoveAt(num);
                 eventsInventory.InventoryChangeBag();
-                //TODO: вызов события без подписчиков вылетит?
             }
             catch(Exception e)
             {

@@ -22,23 +22,23 @@ namespace TestOpenGL
 
         Block B;
         Background Bg;
-        Being Be, Be1;
+        Being Be;//, Be1;
         Attack A;
         private void Form1_Load(object sender, EventArgs e)
         {
             Program.InitApp(this);
-            
+            //Program.P.SetGlControl(this.AnT);
             Bg = Program.OB.GetBackground(1);
             B = Program.OB.GetBlock(2);
 
-            
+
             Be = Program.OB.GetGamer(1);
-            Be1 = Program.OB.GetBot(1);
+            //Be1 = Program.OB.GetBot(1);
             for (int i = 1; i < 10; i++)
                 Be.inventory.PutBagItem(Program.OB.GetItem(i));
 
-            Be1.inventory.PutBagItem(Program.OB.GetItem(8));
-            Be1.inventory.EquipItem(0);
+            //Be1.inventory.PutBagItem(Program.OB.GetItem(8));
+            //Be1.inventory.EquipItem(0);
             Program.GCycle.Gamer = (Gamer)Be;
 
             //A = Program.OB.GetAttack(1);
@@ -49,8 +49,14 @@ namespace TestOpenGL
             //i.visualObjectInfo.name = "Test item.";
             //i.Attacks.Add(A);
             //Be.inventory.PutItem(i);
+            Program.GCycle.StopStep();
 
             Be.Spawn(new Coord(0, 0));
+            
+            Program.OB.GetBot(1, 1).Spawn(new Coord(5, 5));
+            Program.OB.GetBot(1, 0).Spawn(new Coord(5, 10));
+            
+            Program.GCycle.StartStep();
             //Be1.Spawn(new Coord(1, 5));
 
             Program.P.Camera.SetLookingBeing(Be);
@@ -69,26 +75,19 @@ namespace TestOpenGL
                 {
                     BG.Push(Bg, new Coord(x, y));
 
-                    if (rnd.Next(0, 10) == 1)
-                        BS.Push(B, new Coord(x, y, 1));
-                    else
-                        BS.Push(null, new Coord(x, y, 1));
+                    //if (rnd.Next(0, 10) == 1)
+                    //    BS.Push(B, new Coord(x, y, 1));
+                    //else
+                    //    BS.Push(null, new Coord(x, y, 1));
                 }
             }
-            Program.L.SetBlocks(BS);
-            Program.L.SetBackgrounds(BG);
+            Program.L.MapBlocks.SetBlocks(BS);
+            Program.L.MapBackgrounds.SetBackgrounds(BG);
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             Program.FA.ProcessingOpeningForms(1);
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            //Be.Move(2);
-            
-            //A.UseAttack(Be, new Coord(1, 5));
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -98,31 +97,29 @@ namespace TestOpenGL
 
         private void button4_Click(object sender, EventArgs e)
         {
-            /*Program.GCycle.isEnabledControl = false;
+            /*Program.GCycle.isEnabledControl = false;*/
             new System.Threading.Thread(delegate()
                 {
-                    A.UseAttack(Program.GCycle.gamer, Program.GCycle.sight.AimCoord);
-                    Program.GCycle.isEnabledControl = true;
-                }).Start();*/
+                    /*Being B = Program.L.MapBeings.GetBeing(Program.GCycle.sight.AimCoord);
+                    if (B != null)
+                        B.Damage(1);*/
 
+                    //Attack.AttackAnimation(new Coord(0, 0), new Coord(10, 15), Program.OB.GetDecal(2), 100);
+                }).Start();
+            
             /*Program.GCycle.StopStep();
             Stages.Stage_1();
             Program.GCycle.StartStep();*/
 
             //Program.L.FileInMap();
-
-            //Form2 F2 = new Form2();
-            //F2.Show();
-        }
-        private void Test(Delegate del)
-        {
-            A.UseAttack(Program.GCycle.Gamer, Program.GCycle.sight.AimCoord);
-            Program.C.isEnabledControl = true;
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            Program.C.ProcessingKeyPress(e);
+            new System.Threading.Thread(delegate()
+                {
+                    Program.C.ProcessingKeyPress(e);
+                }).Start();
         }
 
         private void Form1_SizeChanged(object sender, EventArgs e)

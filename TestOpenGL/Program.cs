@@ -24,10 +24,9 @@ namespace TestOpenGL
         [STAThread]
         static void Main()
         {
-            
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            
+
             Application.Run(new Form1());
         }
         
@@ -42,7 +41,9 @@ namespace TestOpenGL
             TA = new TexturesAssistant(Directory.GetCurrentDirectory());
             OB = new ObjectsBuilder(DBIO, TA);
             L = new Level(30, 30, 2);
-            P = new Painter(f.AnT, 10, 10);
+            P = new Painter(30, 30);
+            P.SetGlControl(f.AnT);
+            
             GCycle = new GameCycle();
             C = new Control();
             FA = new FormsAssistant();

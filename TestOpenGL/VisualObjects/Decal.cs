@@ -3,12 +3,7 @@
     class Decal : VisualObject
     {
         public Coord C { get; set; }
-        /*public Decal()
-        {
-            texture = new Texture();
-            visualObjectInfo = new VisualObjectInfo();
-            C = new Coord();
-        }*/
+
         public Decal(int id, string name, string description, Texture texture)
             : base(id, name, description, texture)
         { }

@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 
 using TestOpenGL.VisualObjects;
@@ -70,22 +71,27 @@ namespace TestOpenGL.Logic
         {
             ManualResetEvent MRE = (ManualResetEvent)state;
             Being B;
-            //Attack A;
-            //System.Threading.Thread.Sleep(1000);
-            //A = Program.OB.GetAttack(0);
+            //Stopwatch SW = new Stopwatch();
+            
             // Ходы всех сущностей
             while (true)
             {
-                    
-                for (int currentBeing = 0; currentBeing < Program.L.CountBeings; currentBeing++ )
+                
+                for (int currentBeing = 0; currentBeing < Program.L.MapBeings.CountBeings; currentBeing++ )
                 {
-                    B = Program.L.GetBeing(currentBeing);
+                    /*if(currentBeing==1)
+                        SW.Start();*/
+
+                    B = Program.L.MapBeings.GetBeing(currentBeing);
                     if (B.isSpawned)
                         B.Step();
                 }
-                //Program.L.ClearDeadBeings();
+                /*SW.Stop();
+                System.Windows.Forms.MessageBox.Show(SW.ElapsedMilliseconds.ToString());
+                SW.Reset();*/
 
-                // И тут должны идти уровневые триггеры.
+                Program.L.MapBeings.ClearDeadBeings();
+
                 if (Triggers.currentTriggers != null)
                     Triggers.currentTriggers.CallAllTriggers();
 

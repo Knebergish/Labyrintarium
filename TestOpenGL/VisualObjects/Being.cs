@@ -19,17 +19,37 @@ namespace TestOpenGL.VisualObjects
         public delegate void Action();
         public Action ActionAI;
 
+        //Func<List<object>, bool> stepAI;
+
         public EventsBeing eventsBeing;
+
+        private int rangeOfVisibility;
+
+        public int RangeOfVisibility
+        {
+            get { return rangeOfVisibility; }
+            set 
+            { 
+                rangeOfVisibility = value; 
+            }
+        }
+
+        public int Alliance
+        { get; set; }
+
         ////////////////////////////////////////////////////////////////////////////////////////
 
-        public Being(int id, string name, string description, Texture texture)
-            : base (id, name, description, texture)
+        public Being(int id, string name, string description, Texture texture, int alliance)
+            : base(id, name, description, texture)
         {
             this.features = new Features(this);
             this.inventory = new Inventory();
             isSpawned = false;
             this.C = new Coord(0, 0);
             eventsBeing = new EventsBeing();
+            Alliance = alliance;
+            rangeOfVisibility = 10;
+            //stepAI = AI.AIAttacker;
         }
 
         public abstract void Step();
@@ -44,37 +64,31 @@ namespace TestOpenGL.VisualObjects
             {
                 this.isSpawned = true;
                 this.C = C;
-                if (!Program.L.AddBeing(this))
+                if (!Program.L.MapBeings.AddBeing(this))
                     throw new Exception("Попытка добавить сущность в занятую другой сущностью ячейку.");
             }
             this.eventsBeing.BeingChangeCoord();
         }
 
-        public void Move(int course)
+        public bool Move(TestOpenGL.Direction course)
         {
             int dx = 0, dy = 0;
             switch(course)
             {
-                case 0: dx--; break;
-                case 1: dy++; break;
-                case 2: dx++; break;
-                case 3: dy--; break;
+                case Direction.Left: dx--; break;
+                case Direction.Up: dy++; break;
+                case Direction.Right: dx++; break;
+                case Direction.Down: dy--; break;
             }
 
-            try
-            {
+            if (Analytics.CorrectCoordinate(this.C.X + dx, this.C.Y + dy))
                 if (Program.L.IsPassable(new Coord(this.C.X + dx, this.C.Y + dy)))
+                {
                     this.Spawn(new Coord(this.C.X + dx, this.C.Y + dy));
-                else
-                    return;
-
-                this.features.ActionPoints--;
-                return;
-            }
-            catch
-            {
-                return;
-            }
+                    this.features.ActionPoints--;
+                    return true;
+                }
+            return false;
         }
 
         /// <summary>
@@ -86,7 +100,11 @@ namespace TestOpenGL.VisualObjects
             if (count > 0)
             {
                 this.features.CurrentHealth -= count;
-                
+
+
+                int temporaryIndex = Program.L.MapDecals.AddDecal(Program.OB.GetDecal(4), this.C);
+                Program.L.Pause(150);
+                Program.L.MapDecals.RemoveGroupDecals(temporaryIndex);
             }
             else throw new Exception("Урон почему-то отрицательный.");
         }
@@ -107,19 +125,6 @@ namespace TestOpenGL.VisualObjects
             this.isSpawned = false;
             this.eventsBeing.BeingDeath();
             //Program.L.RemoveBeing(this.C); //будет происходить в модуле ходения всех ботов
-        }
-
-        public void AI()
-        {
-            // Действия искина
-            this.Spawn(Analytics.BFS(this.C, new Coord(39, 39)/*, false*/).Pop());
-            //this.Move(2);
-        }
-        public void NoAI()
-        {
-            // Ожидание хода игрока
-            //Program.L.clickEvent.Reset();
-            //Program.L.clickEvent.WaitOne();
         }
     }
 

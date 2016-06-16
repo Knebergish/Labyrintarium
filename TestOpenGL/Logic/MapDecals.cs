@@ -14,15 +14,12 @@ namespace TestOpenGL.Logic
     class MapDecals
     {
         private DataTable DTDecals;
-        //private List<Decal> listDecals;
 
         public MapDecals()
         {
             DTDecals = new DataTable();
             this.DTDecals.Columns.Add("groupId", System.Type.GetType("System.Int32"));
             this.DTDecals.Columns.Add("decal", typeof(Decal));
-            
-            //listDecals = new List<Decal>();
         }
 
         //TODO: Хрень, мне это не нравится. Подумать над переделкой системы декалирования.
@@ -44,6 +41,13 @@ namespace TestOpenGL.Logic
         public int AddDecal(Decal d)
         {
             int currentNumberGroup = NextNumberGroup();
+            DTDecals.Rows.Add(currentNumberGroup, d);
+            return currentNumberGroup;
+        }
+        public int AddDecal(Decal d, Coord C)
+        {
+            int currentNumberGroup = NextNumberGroup();
+            d.C = C;
             DTDecals.Rows.Add(currentNumberGroup, d);
             return currentNumberGroup;
         }

@@ -11,8 +11,8 @@ namespace TestOpenGL.Logic
         {
             //Анимация атаки в ячейку C
 
-            if (Program.L.GetBeing(C) != null)
-                Fight(attacking, Program.L.GetBeing(C));
+            if (Program.L.MapBeings.GetBeing(C) != null)
+                Fight(attacking, Program.L.MapBeings.GetBeing(C));
         }
 
         public static void Fight(Being attacking,Being defending)

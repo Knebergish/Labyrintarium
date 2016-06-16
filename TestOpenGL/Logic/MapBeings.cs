@@ -50,7 +50,11 @@ namespace TestOpenGL.Logic
         }
         public List<Being> GetAllBeings()
         {
-            return listBeings;
+            List<Being> LB = new List<Being>();
+            foreach (Being b in listBeings)
+                if (b.isSpawned)
+                    LB.Add(b);
+            return LB;
         }
         /// <summary>
         /// Добавление сущности в очередь.

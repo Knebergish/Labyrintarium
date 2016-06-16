@@ -20,11 +20,16 @@ namespace TestOpenGL.Logic
             mapBackgrounds = new Background[this.lengthX, this.lengthY];
         }
 
-        public Background this[Coord C]
+        public Background GetBackground(Coord C)
         {
-            get { return mapBackgrounds[C.X, C.Y]; }
-            set { mapBackgrounds[C.X, C.Y] = value; }
+            return mapBackgrounds[C.X, C.Y];
         }
+
+        public void SetBackground(Coord C, Background background)
+        {
+            mapBackgrounds[C.X, C.Y] = background;
+        }
+
         public void SetBackgrounds(VisualObjectStructure<Background> backgroundsStructure)
         {
             Coord C;
@@ -37,11 +42,6 @@ namespace TestOpenGL.Logic
                 this.mapBackgrounds[C.X, C.Y] = backgroundsStructure.PopObject();
             }
         }
-
-        public int LengthX
-        { get { return lengthX; } }
-        public int LengthY
-        { get { return lengthY; } }
 
         public bool IsPassable(Coord C)
         {

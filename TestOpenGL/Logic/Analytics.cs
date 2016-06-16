@@ -52,7 +52,7 @@ namespace TestOpenGL.Logic
         /// <param name="end"> Координаты точки, к которой ищем путь.</param>
         /// <param name="type"> Тип проходимости ячейки: true - учитывются сущности.</param>
         /// <returns></returns>
-        static public Stack<Coord> BFS(Coord start, Coord end)//, bool type)
+        static public Stack<Coord> BFS(Coord start, Coord end)
         {
             //Stopwatch SW = new Stopwatch();
             //SW.Start();
@@ -79,10 +79,8 @@ namespace TestOpenGL.Logic
                         {
                             for (int k = 0; k < 4; k++)
                             {
-                                if (yd + dy[k] >= 0 && yd + dy[k] < Program.L.LengthY && xd + dx[k] >= 0 && xd + dx[k] < Program.L.LengthX)//(Program.L.CorrectCoordinate(xd + dx[k], yd + dy[k]))
+                                if(CorrectCoordinate(xd + dx[k], yd + dy[k]))//(yd + dy[k] >= 0 && yd + dy[k] < Program.L.LengthY && xd + dx[k] >= 0 && xd + dx[k] < Program.L.LengthX)
                                 {
-                                    //try
-                                    //{
                                     if (Program.L.IsPassable(new Coord(xd + dx[k], yd + dy[k])/*, type*/) == true || (xd + dx[k] == end.X && yd + dy[k] == end.Y))
                                     {
                                         if (grid[xd + dx[k], yd + dy[k]] == -1)
@@ -92,8 +90,6 @@ namespace TestOpenGL.Logic
                                         }
                                     }
                                 }
-                                //catch (Exception e) { }
-                                //}
                             }
                         }
                     }
@@ -112,8 +108,6 @@ namespace TestOpenGL.Logic
                 d--;
                 for (int k = 0; k < 4; k++)
                 {
-                    //try
-                    //{
                     if ((ydop + dy[k] >= 0 && ydop + dy[k] < Program.L.LengthY && xdop + dx[k] >= 0 && xdop + dx[k] < Program.L.LengthX))//new Coord(xdop + dx[k], ydop + dy[k]);//
                         if (grid[xdop + dx[k], ydop + dy[k]] == d)
                         {
@@ -121,9 +115,6 @@ namespace TestOpenGL.Logic
                             ydop = ydop + dy[k];
                             break;
                         }
-                    //}
-                    //catch(Exception e){}
-
                 }
             }
             //SW.Stop();
@@ -131,7 +122,26 @@ namespace TestOpenGL.Logic
 
             return SC;
         }
+        static public Direction DirectionToGrid(Coord start, Coord end)
+        {
+            if (start.X <= end.X && start.Y < end.Y)
+                return Direction.Up;
+            if (start.X > end.X && start.Y <= end.Y)
+                return Direction.Left;
+            if (start.X >= end.X && start.Y > end.Y)
+                return Direction.Down;
+            if (start.X < end.X && start.Y >= end.Y)
+                return Direction.Right;
 
+            return Direction.None;
+        }
+
+        /// <summary>
+        /// Возвращает очередь координат, из которых строится линия от ячейки start до ячейки end.
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <returns></returns>
         static public Queue<Coord> CoordsLine(Coord start, Coord end)
         {
             Queue<Coord> coords = new Queue<Coord>(); ;
@@ -190,13 +200,6 @@ namespace TestOpenGL.Logic
             return coords;
         }
 
-        static public int Distance(Coord start, Coord end)
-        {
-            int dX = Math.Abs(start.X - end.X);
-            int dY = Math.Abs(start.Y - end.Y);
-            return dX > dY ? dX : dY;
-        }
-
         static public bool IsInCamera(Coord C, Camera camera)
         {
             if (C.X < camera.MinX)
@@ -236,6 +239,49 @@ namespace TestOpenGL.Logic
             }
 
             return inX && inY;
+        }
+        static public List<VisualObjects.Being> GetBeingInArea(Coord C1, Coord C2)
+        {
+            List<VisualObjects.Being> LB = Program.L.MapBeings.GetAllBeings();
+            List<VisualObjects.Being> answerLB = new List<VisualObjects.Being>();
+
+            foreach (VisualObjects.Being being in LB)
+                if (IsInArea(C1, C2, being.C))
+                    answerLB.Add(being);
+
+            return answerLB;
+        }
+        static public List<VisualObjects.Being> GetAllEnemies(VisualObjects.Being being)
+        {
+            Coord C1, C2;
+            int[] mass = { 
+                             being.C.X - being.RangeOfVisibility, 
+                             being.C.Y - being.RangeOfVisibility,
+                             being.C.X + being.RangeOfVisibility, 
+                             being.C.Y + being.RangeOfVisibility
+                         };
+
+            mass[0] = mass[0] < 0 ? 0 : mass[0];
+            mass[1] = mass[1] < 0 ? 0 : mass[1];
+            mass[2] = mass[2] >= Program.L.LengthX ? Program.L.LengthX - 1 : mass[2];
+            mass[3] = mass[3] >= Program.L.LengthY ? Program.L.LengthY - 1 : mass[3];
+
+            C1 = new Coord(mass[0], mass[1]);
+            C2 = new Coord(mass[2], mass[3]);
+
+            List<VisualObjects.Being> LB = GetBeingInArea(C1, C2);
+            for (int i = LB.Count - 1; i >= 0; i--)
+            {
+                if (LB[i].Alliance == being.Alliance)
+                    LB.RemoveAt(i);
+            }
+
+            return LB;
+        }
+
+        static public int Distance(Coord C1, Coord C2)
+        {
+            return Math.Abs(C1.X - C2.X) + Math.Abs(C1.Y - C2.Y);
         }
     }
 }

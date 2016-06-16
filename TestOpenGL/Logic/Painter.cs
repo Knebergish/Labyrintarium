@@ -18,7 +18,12 @@ namespace TestOpenGL.Logic
     {
         Camera camera;
 
-        private Tao.Platform.Windows.SimpleOpenGlControl GlControl;
+        private Tao.Platform.Windows.SimpleOpenGlControl glControl;
+
+        public Tao.Platform.Windows.SimpleOpenGlControl GlControl
+        {
+            get { return glControl; }
+        }
 
         //TODO: отрефакторить эту хрень и метод Redraw.
         delegate void updateVoid();
@@ -27,8 +32,7 @@ namespace TestOpenGL.Logic
         ManualResetEvent isNextRedraw = new ManualResetEvent(false);
         ManualResetEvent isTest = new ManualResetEvent(false);
 
-        // Почему internal?..
-        internal Camera Camera
+        public Camera Camera
         {
             get { return camera; }
             set 
@@ -42,12 +46,18 @@ namespace TestOpenGL.Logic
             }
         }
 
-        public Painter(Tao.Platform.Windows.SimpleOpenGlControl GlControl, int startingWidthCamera, int startingHeightCamera)
+        public Painter(int startingWidthCamera, int startingHeightCamera)
         {
-            this.GlControl = GlControl;
             camera = new Camera(startingWidthCamera, startingHeightCamera);
 
-            InitializeGraphics();
+        }
+
+        public void SetGlControl(Tao.Platform.Windows.SimpleOpenGlControl GlControl)
+        {
+            this.glControl = GlControl;
+
+            
+            SettingVisibleAreaSize();
 
             RedrawDisplay = new System.Threading.Thread(Redraw);
             RedrawDisplay.Start(this.isNextRedraw);
@@ -64,6 +74,7 @@ namespace TestOpenGL.Logic
         }
 
         // На самом деле я не до конца понимаю, как это работает. Но говорят, что это норма.
+
         /// <summary>
         /// Метод перерисовки изображения на экране
         /// </summary>
@@ -83,8 +94,8 @@ namespace TestOpenGL.Logic
                     {
                         for (int y = 0; y < this.camera.Height; y++)
                         {
-                            if (Program.L.GetBackground(new Coord(x + this.camera.MinX, y + this.camera.MinY)) != null)
-                                this.DrawObject(new Coord(x, y), Program.L.GetBackground(new Coord(x + this.camera.MinX, y + this.camera.MinY)).texture);
+                            if (Program.L.MapBackgrounds.GetBackground(new Coord(x + this.camera.MinX, y + this.camera.MinY)) != null)
+                                this.DrawObject(new Coord(x, y), Program.L.MapBackgrounds.GetBackground(new Coord(x + this.camera.MinX, y + this.camera.MinY)).texture);
                         }
                     }
 
@@ -94,13 +105,13 @@ namespace TestOpenGL.Logic
                         {
                             for (int i = 0; i < Program.L.LengthZ; i++)
                             {
-                                if (Program.L.GetBlock(new Coord(x + this.camera.MinX, y + this.camera.MinY, i)) != null)
-                                    this.DrawObject(new Coord(x, y), Program.L.GetBlock(new Coord(x + this.camera.MinX, y + this.camera.MinY, i)).texture);
+                                if (Program.L.MapBlocks.GetBlock(new Coord(x + this.camera.MinX, y + this.camera.MinY, i)) != null)
+                                    this.DrawObject(new Coord(x, y), Program.L.MapBlocks.GetBlock(new Coord(x + this.camera.MinX, y + this.camera.MinY, i)).texture);
                             }
                         }
                     }
 
-                    foreach (Being B in Program.L.GetAllBeings())
+                    foreach (Being B in Program.L.MapBeings.GetAllBeings())
                         if (B.isSpawned)
                             if (Analytics.IsInCamera(B.C, camera))
                             {
@@ -111,7 +122,7 @@ namespace TestOpenGL.Logic
                                 }
                             }
 
-                    foreach (Decal d in Program.L.GetAllDecals())
+                    foreach (Decal d in Program.L.MapDecals.GetAllDecals())
                         if (Analytics.IsInCamera(d.C, camera))
                             this.DrawObject(new Coord(d.C.X - this.camera.MinX, d.C.Y - this.camera.MinY), d.texture);
 
@@ -149,56 +160,6 @@ namespace TestOpenGL.Logic
         /// <summary>
         /// Инициализация графической системы.
         /// </summary>
-        private void InitializeGraphics()
-        {
-            // Тупой копипаст из интернет-урока. Я в этом не разбираюсь, и вы смиритесь.
-
-
-            Gl.glClear(Gl.GL_COLOR_BUFFER_BIT | Gl.GL_DEPTH_BUFFER_BIT);
-
-            // инициализация библиотеки GLUT 
-            Glut.glutInit();
-
-            // инициализация режима окна 
-            Glut.glutInitDisplayMode(Glut.GLUT_RGBA | Glut.GLUT_DOUBLE);
-
-            // инициализация библиотеки openIL
-            Il.ilInit();
-            Il.ilEnable(Il.IL_ORIGIN_SET);
-
-            // устанавливаем цвет очистки окна 
-            Gl.glClearColor(255, 255, 255, 1);
-
-            // устанавливаем порт вывода, основываясь на размерах элемента управления AnT 
-            Gl.glViewport(0, 0, this.GlControl.Width, this.GlControl.Height);
-            // устанавливаем проекционную матрицу 
-            Gl.glMatrixMode(Gl.GL_PROJECTION);
-            // очищаем ее 
-            Gl.glLoadIdentity();
-
-
-
-            // теперь необходимо корректно настроить 2D ортогональную проекцию 
-            // в зависимости от того, какая сторона больше 
-            // мы немного варьируем то, как будут сконфигурированы настройки проекции 
-            if (this.GlControl.Width <= this.GlControl.Height)
-                Glu.gluOrtho2D(0.0, camera.Width, 0.0, camera.Height * (float)this.GlControl.Height / (float)this.GlControl.Width);
-            else
-                Glu.gluOrtho2D(0.0, camera.Width * (float)this.GlControl.Width / (float)this.GlControl.Height, 0.0, camera.Height);
-
-            // переходим к объектно-видовой матрице 
-            Gl.glMatrixMode(Gl.GL_MODELVIEW);
-
-            ////////////////////////////////////////////////////////////////////////////////////////
-            //Включение поддержки прозрачности текстур
-            Gl.glEnable(Gl.GL_ALPHA_TEST);
-            Gl.glEnable(Gl.GL_BLEND);
-            Gl.glBlendFunc(Gl.GL_SRC_ALPHA, Gl.GL_ONE_MINUS_SRC_ALPHA);
-            Gl.glColor4f(1f, 1f, 1f, 0.75f);
-            ////////////////////////////////////////////////////////////////////////////////////////
-
-            Gl.glClear(Gl.GL_COLOR_BUFFER_BIT | Gl.GL_DEPTH_BUFFER_BIT);
-        }
 
         private void DrawObject(Coord C, Texture texture)
         {

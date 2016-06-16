@@ -22,16 +22,20 @@ namespace TestOpenGL
                     switch (key)
                     {
                         case 'a':
-                            Program.GCycle.Gamer.Move(0);
+                            if (Program.GCycle.Gamer.isSpawned)
+                                Program.GCycle.Gamer.Move(TestOpenGL.Direction.Left);
                             break;
                         case 'w':
-                            Program.GCycle.Gamer.Move(1);
+                            if (Program.GCycle.Gamer.isSpawned)
+                                Program.GCycle.Gamer.Move(TestOpenGL.Direction.Up);
                             break;
                         case 'd':
-                            Program.GCycle.Gamer.Move(2);
+                            if (Program.GCycle.Gamer.isSpawned)
+                                Program.GCycle.Gamer.Move(TestOpenGL.Direction.Right);
                             break;
                         case 's':
-                            Program.GCycle.Gamer.Move(3);
+                            if (Program.GCycle.Gamer.isSpawned)
+                                Program.GCycle.Gamer.Move(TestOpenGL.Direction.Down);
                             break;
 
                         case 'j':

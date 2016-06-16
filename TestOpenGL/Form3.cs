@@ -60,7 +60,7 @@ namespace TestOpenGL
 
         private void button3_Click(object sender, EventArgs e)
         {
-            Program.L.SetBlock(LB[listView1.SelectedIndices[0]],
+            Program.L.MapBlocks.SetBlock(LB[listView1.SelectedIndices[0]],
                 new Coord(
                     Program.GCycle.sight.AimCoord.X, 
                     Program.GCycle.sight.AimCoord.Y, 
@@ -80,7 +80,7 @@ namespace TestOpenGL
             for (int i = 0; i < Program.L.LengthZ; i++)
                 try
                 {
-                    listBox1.Items.Add(Program.L.GetBlock(new Coord(
+                    listBox1.Items.Add(Program.L.MapBlocks.GetBlock(new Coord(
                         Program.GCycle.sight.AimCoord.X,
                         Program.GCycle.sight.AimCoord.Y,
                         i)).visualObjectInfo.Name);
