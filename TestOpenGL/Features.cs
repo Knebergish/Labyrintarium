@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using TestOpenGL.VisualObjects;
 
@@ -43,7 +44,7 @@ namespace TestOpenGL
 
             Recalculate();
             this.currentHealth = this.maxHealth;
-            this.actionPoints = 1;
+            this.actionPoints = 0;
         }
         public Features(Being owner)
             : this(owner, 1, 1, 1, 1, 1, 1)
@@ -80,11 +81,7 @@ namespace TestOpenGL
         {
             get { return actionPoints; }
             set 
-            { 
-                actionPoints = value;
-                if (actionPoints < 1)
-                    owner.eventsBeing.BeingEndActionPoints();
-            }
+            { actionPoints = value; }
         }
 
         public double IncreaseActionPoints

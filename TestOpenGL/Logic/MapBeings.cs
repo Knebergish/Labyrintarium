@@ -10,7 +10,7 @@ namespace TestOpenGL.Logic
     /// <summary>
     /// Организует работу с сущностями на карте.
     /// </summary>
-    class MapBeings
+    /*class MapBeings
     {
         private List<Being> listBeings;
 
@@ -85,5 +85,5 @@ namespace TestOpenGL.Logic
                     listBeings.RemoveAt(i);
             }
         }
-    }
+    }*/
 }

@@ -25,5 +25,18 @@ namespace TestOpenGL.VisualObjects
             this.parts = new List<Part>(parts);
         }
 
+        public override bool Spawn(Coord C)
+        {
+            if (SetNewCoord(C))
+            {
+                Program.L.GetMap<Item>().AddVO(this, C);
+                return true;
+            }
+            return false;
+        }
+        protected override bool IsEmptyCell(Coord C)
+        {
+            return Program.L.GetMap<Item>().GetVO(C) == null ? true : false;
+        }
     }
 }

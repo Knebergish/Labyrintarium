@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using Tao.FreeGlut;
 using Tao.DevIl;
 
 using TestOpenGL;
+using TestOpenGL.DataIO;
 using TestOpenGL.VisualObjects;
 
 namespace TestOpenGL.Logic
@@ -18,41 +20,34 @@ namespace TestOpenGL.Logic
     /// </summary>
     class Level
     {
-        private int lengthX, lengthY, lengthZ; //TODO: Эти хрени где только не хранятся. Т.е. суть дублирование.
-        private MapBackgrounds mapBackgrounds;
-        private MapBlocks mapBlocks;
-        private MapBeings mapBeings;
-        private MapDecals mapDecals;
+        int lengthX, lengthY, lengthZ;
+        List<object> mapList;
 
-        public MapBackgrounds MapBackgrounds
-        { get { return mapBackgrounds; } }
-        public MapBlocks MapBlocks
-        { get { return mapBlocks; } }
-        public MapBeings MapBeings
-        { get { return mapBeings; } }
-        public MapDecals MapDecals
-        { get { return mapDecals; } }
-        
-        /// <param name="LengthX"> Ширина игровой карты.</param>
-        /// <param name="LengthY"> Выстока игровой карты.</param>
-        /// <param name="LengthZ"> Глубина игровой карты.</param>
         public Level(int lengthX, int lengthY, int lengthZ)
         {
-            mapBackgrounds = new MapBackgrounds(lengthX, lengthY);
-            mapBlocks = new MapBlocks(lengthX, lengthY, lengthZ);
-            mapBeings = new MapBeings();
-            mapDecals = new MapDecals();
             this.lengthX = lengthX;
             this.lengthY = lengthY;
             this.lengthZ = lengthZ;
+            mapList = new List<object>();
+            mapList.Add(new MapVisualObjects<Background>());
+            mapList.Add(new MapVisualObjects<Block>());
+            mapList.Add(new MapVisualObjects<Being>());
+            mapList.Add(new MapVisualObjects<Item>());
+            mapList.Add(new MapVisualObjects<Decal>()); 
         }
 
+        public MapVisualObjects<T> GetMap<T>() where T : VisualObject
+        {
+            foreach (Object o in mapList)
+                if (o is MapVisualObjects<T>)
+                    return (MapVisualObjects<T>)o;
+            throw new Exception("Потерян слой. Идите ищите.");
+        }
 
         public void Pause(int time)
         {
             System.Threading.Thread.Sleep(time);
         }
-
 
         public int LengthX
         { get { return lengthX; } }
@@ -60,7 +55,9 @@ namespace TestOpenGL.Logic
         { get { return lengthY; } }
         public int LengthZ
         { get { return lengthZ; } }
+
         
+
         /// <summary>
         /// Проверяет ячейку на проходимость для сущностей.
         /// </summary>
@@ -68,30 +65,44 @@ namespace TestOpenGL.Logic
         /// <returns></returns>
         public bool IsPassable(Coord C)
         {
-            bool flag;
+            bool flag = true;
 
-            flag = mapBackgrounds.IsPassable(C);
+            foreach(Background b in GetMap<Background>().GetCellVO(C))
+            {
+                if (b.Passableness == false)
+                {
+                    flag = false;
+                    break;
+                }
+            }
 
-            flag = mapBlocks.IsPassable(C) ? flag : false;
+            foreach(Block b in GetMap<Block>().GetCellVO(C))
+            {
+                if (b.Passableness == false)
+                {
+                    flag = false;
+                    break;
+                }
+            }
 
-            flag = mapBeings.IsPassable(C) ? flag : false;
+            flag = GetMap<Being>().GetVO(C) != null ? false : flag;
 
             return flag;
         }
 
-        //TODO: Passableness используется в IsPermrable, но не используется в IsPassable? Серьёзно?
+        //TODO: Passableness используется в IsPermeable, но не используется в IsPassable? Серьёзно?
         public bool IsPermeable(Coord C, Permeability p)
         {
-            bool flag = mapBlocks.IsPassable(C);
+            bool flag = true;// = mapBlocks.IsPassable(C);
 
-            if (p == Permeability.BlockAndBeing)
+            /*if (p == Permeability.BlockAndBeing)
                 if (!mapBeings.IsPassable(C))
-                    flag = false;
+                    flag = false;*/
 
             return flag;
         }
 
-        public void MapIfFile()
+        /*public void MapIfFile()
         {
             StreamWriter sw = new StreamWriter("fil.txt");
 
@@ -120,7 +131,7 @@ namespace TestOpenGL.Logic
                 this.mapBlocks.SetBlock(Program.OB.GetBlock(int.Parse(s[3])), new Coord(int.Parse(s[0]), int.Parse(s[1]), int.Parse(s[2])));
             }
             sr.Close();
-        }
+        }*/
     }
 }
 

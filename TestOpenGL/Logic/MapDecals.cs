@@ -11,7 +11,7 @@ namespace TestOpenGL.Logic
     /// <summary>
     /// Организует работу с декалями на карте.
     /// </summary>
-    class MapDecals
+    /*class MapDecals
     {
         private DataTable DTDecals;
 
@@ -24,6 +24,14 @@ namespace TestOpenGL.Logic
 
         //TODO: Хрень, мне это не нравится. Подумать над переделкой системы декалирования.
 
+        public List<Decal> GetDecals(Coord C)
+        {
+            List<Decal> ld = new List<Decal>();
+            for (int i = 0; i < DTDecals.Rows.Count; i++)
+                if (((Decal)DTDecals.Rows[i]["decal"]).C.X == C.X && ((Decal)DTDecals.Rows[i]["decal"]).C.Y == C.Y)
+                    ld.Add((Decal)DTDecals.Rows[i]["decal"]);
+            return ld;
+        }
         public List<Decal> GetAllDecals()
         {
             List<Decal> ld = new List<Decal>();
@@ -44,14 +52,14 @@ namespace TestOpenGL.Logic
             DTDecals.Rows.Add(currentNumberGroup, d);
             return currentNumberGroup;
         }
-        public int AddDecal(Decal d, Coord C)
+        /*public int AddDecal(Decal d, Coord C)
         {
             int currentNumberGroup = NextNumberGroup();
             d.C = C;
             DTDecals.Rows.Add(currentNumberGroup, d);
             return currentNumberGroup;
-        }
-        public int AddDecals(VisualObjectStructure<Decal> decalStructure)
+        }*/
+        /*public int AddDecals(VisualObjectStructure<Decal> decalStructure)
         {
             Decal d;
             int currentNumberGroup = NextNumberGroup();
@@ -79,5 +87,5 @@ namespace TestOpenGL.Logic
         {
             DTDecals.Rows.Clear();
         }
-    }
+    }*/
 }

@@ -14,13 +14,11 @@ namespace TestOpenGL
         public Bot(int id, string name, string description, Texture texture, int alliance)
             : base(id, name, description, texture, alliance)
         {
-            this.eventsBeing.EventBeingEndActionPoints += new EventDelegate(EndStep);
+            
         }
 
-        public override void Step()
+        public override void Action()
         {
-            while (!isEndStep)
-            {
                 /*try
                 {
                     //this.Spawn(Analytics.BFS(this.C, new Coord(Program.GCycle.sight.AimCoord.X, Program.GCycle.sight.AimCoord.Y)).Pop());
@@ -41,7 +39,7 @@ namespace TestOpenGL
                     this.features.ActionPoints--;
                 }**/
 
-                List<Being> LB = Analytics.GetAllEnemies(this);
+                /*List<Being> LB = Analytics.GetAllEnemies(this);
                 if (LB.Count != 0)
                 {
                     LB = (
@@ -56,16 +54,11 @@ namespace TestOpenGL
                     }
                     else
                     {
-                        LB[0].Damage(1);
+                       Battle.Fight(this, LB[0]);
                     }
-                }
-                this.features.ActionPoints--;
-            }
-            isEndStep = false;
-        }
-        private void EndStep()
-        {
-            isEndStep = true;
+                }*/
+                if (!Move(TestOpenGL.Direction.Up))
+                    this.features.ActionPoints--;
         }
     }
 }

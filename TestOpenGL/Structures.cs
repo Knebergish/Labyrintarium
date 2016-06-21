@@ -78,6 +78,14 @@ namespace TestOpenGL
             if (!Analytics.CorrectCoordinate(x, y, z))
                 throw new Exception("Неверненькие координатки пришли. (" + x + ", " + y + ", " + z +")");
         }
+        public static bool operator == (Coord C1, Coord C2)
+        {
+            return C1.X == C2.X && C1.Y == C2.Y && C1.Z == C2.Z ? true : false;
+        }
+        public static bool operator !=(Coord C1, Coord C2)
+        {
+            return C1.X != C2.X || C1.Y != C2.Y || C1.Z != C2.Z ? true : false;
+        }
     }
 
 

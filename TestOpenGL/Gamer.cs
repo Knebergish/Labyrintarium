@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 
 using TestOpenGL.VisualObjects;
 using TestOpenGL;
@@ -12,19 +13,12 @@ namespace TestOpenGL
         public Gamer(int id, string name, string description, Texture texture, int alliance)
             : base(id, name, description, texture, alliance)
         {
-            this.eventsBeing.EventBeingEndActionPoints += new EventDelegate(EndStep);
+            this.eventsBeing.EventBeingStartStep += new EventDelegate(() => { Program.C.IsEnabledControl = true;});
+            this.eventsBeing.EventBeingEndStep += new EventDelegate(() => { Program.C.IsEnabledControl = false; });
         }
 
-        private void EndStep()
+        public override void Action()
         {
-            isEndStep.Set();
-        }
-        public override void Step()
-        {
-            Program.C.isEnabledControl = true;
-            isEndStep.WaitOne();
-            Program.C.isEnabledControl = false; ;
-            isEndStep.Reset();
         }
     }
 }

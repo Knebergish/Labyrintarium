@@ -5,7 +5,7 @@ using TestOpenGL.Logic;
 
 namespace TestOpenGL.VisualObjects
 {
-    class Attack : VisualObject
+    /*class Attack : VisualObject
     {
         public Feature profilingFeature;
         private double coefficient;
@@ -74,7 +74,8 @@ namespace TestOpenGL.VisualObjects
                 //this.timePause);
             }
             //Program.L.UnBlock();
-            Battle.Fight(attacking,/* this,*/ Program.L.MapBeings.GetBeing(s.Dequeue()));
+            //Battle.Fight(attacking, this, 
+    Program.L.MapBeings.GetBeing(s.Dequeue()));
             return true;
         }
 
@@ -94,5 +95,19 @@ namespace TestOpenGL.VisualObjects
         {
             get { return timePause; }
         }
-    }
+
+        public override bool Spawn(Coord C)
+        {
+            if (SetNewCoord(C))
+            {
+                Program.L.GetMap<Block>().AddVO(this, C);
+                return true;
+            }
+            return false;
+        }
+        protected override bool IsEmptyCell(Coord C)
+        {
+            return Program.L.GetMap<Block>().GetVO(C) == null ? true : false;
+        }
+    }*/
 }

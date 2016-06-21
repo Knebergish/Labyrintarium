@@ -8,16 +8,13 @@ namespace TestOpenGL.VisualObjects
 {
     abstract class Being : VisualObject
     {
-        public Coord C;
+        //public Coord C;
 
         public bool isSpawned;
 
         public Features features;
 
         public Inventory inventory;
-
-        public delegate void Action();
-        public Action ActionAI;
 
         //Func<List<object>, bool> stepAI;
 
@@ -45,18 +42,45 @@ namespace TestOpenGL.VisualObjects
             this.features = new Features(this);
             this.inventory = new Inventory();
             isSpawned = false;
-            this.C = new Coord(0, 0);
             eventsBeing = new EventsBeing();
             Alliance = alliance;
             rangeOfVisibility = 10;
-            //stepAI = AI.AIAttacker;
         }
 
-        public abstract void Step();
-
-        public void Spawn(Coord C)
+        protected override bool IsEmptyCell(Coord C)
         {
-            if (this.isSpawned)
+            return Program.L.GetMap<Being>().GetVO(C) == null ? true : false;
+        }
+
+        public void Step()
+        {
+            this.eventsBeing.BeingStartStep();
+            //this.features.ActionPoints += this.features.IncreaseActionPoints;
+            while (!CheckEndStep())
+            {
+                Action();
+                //System.Threading.Thread.Sleep(100);
+                this.eventsBeing.BeingEndAction();
+            }
+            this.eventsBeing.BeingEndStep();
+        }
+        public abstract void Action();
+
+        public bool CheckEndStep()
+        {
+            return this.features.ActionPoints < 1 ? true : false;
+        }
+
+        public override bool Spawn(Coord C)
+        {
+            if(SetNewCoord(C))
+            {
+                Program.L.GetMap<Being>().AddVO(this, C);
+                isSpawned = true;
+                return true;
+            }
+            return false;
+            /*if (this.isSpawned)
             {
                 this.C = C;
             }
@@ -67,9 +91,19 @@ namespace TestOpenGL.VisualObjects
                 if (!Program.L.MapBeings.AddBeing(this))
                     throw new Exception("Попытка добавить сущность в занятую другой сущностью ячейку.");
             }
-            this.eventsBeing.BeingChangeCoord();
+            this.eventsBeing.BeingChangeCoord();*/
         }
 
+        public bool Move(Coord C)
+        {
+            if(this.features.ActionPoints >= 1 && SetNewCoord(C))
+            {
+                Program.L.Pause(100);
+                this.features.ActionPoints--;
+                return true;
+            }
+            return false;
+        }
         public bool Move(TestOpenGL.Direction course)
         {
             int dx = 0, dy = 0;
@@ -84,9 +118,7 @@ namespace TestOpenGL.VisualObjects
             if (Analytics.CorrectCoordinate(this.C.X + dx, this.C.Y + dy))
                 if (Program.L.IsPassable(new Coord(this.C.X + dx, this.C.Y + dy)))
                 {
-                    this.Spawn(new Coord(this.C.X + dx, this.C.Y + dy));
-                    this.features.ActionPoints--;
-                    return true;
+                    return Move(new Coord(this.C.X + dx, this.C.Y + dy));
                 }
             return false;
         }
@@ -101,10 +133,10 @@ namespace TestOpenGL.VisualObjects
             {
                 this.features.CurrentHealth -= count;
 
-
-                int temporaryIndex = Program.L.MapDecals.AddDecal(Program.OB.GetDecal(4), this.C);
+                // Переделать под новый движок
+                //int temporaryIndex = Program.L.MapDecals.AddDecal(Program.OB.GetDecal(4), this.C);
                 Program.L.Pause(150);
-                Program.L.MapDecals.RemoveGroupDecals(temporaryIndex);
+                //Program.L.MapDecals.RemoveGroupDecals(temporaryIndex);
             }
             else throw new Exception("Урон почему-то отрицательный.");
         }
@@ -124,31 +156,43 @@ namespace TestOpenGL.VisualObjects
         {
             this.isSpawned = false;
             this.eventsBeing.BeingDeath();
-            //Program.L.RemoveBeing(this.C); //будет происходить в модуле ходения всех ботов
+            Program.L.GetMap<Being>().RemoveVO(this.C);
         }
     }
 
     class EventsBeing
     {
         
-        public event EventDelegate EventBeingChangeCoord;
+        //public event EventDelegate EventBeingChangeCoord;
         public event EventDelegate EventBeingDeath;
-        public event EventDelegate EventBeingEndActionPoints;
+        public event EventDelegate EventBeingStartStep;
+        public event EventDelegate EventBeingEndStep;
+        public event EventDelegate EventBeingEndAction;
 
-        public void BeingChangeCoord()
+        /*public void BeingChangeCoord()
         {
             if (EventBeingChangeCoord != null)
                 EventBeingChangeCoord();
-        }
+        }*/
         public void BeingDeath()
         {
             if (EventBeingDeath != null)
                 EventBeingDeath();
         }
-        public void BeingEndActionPoints()
+        public void BeingStartStep()
         {
-            if (EventBeingEndActionPoints != null)
-                EventBeingEndActionPoints();
+            if (EventBeingStartStep != null)
+                EventBeingStartStep();
+        }
+        public void BeingEndStep()
+        {
+            if (EventBeingEndStep != null)
+                EventBeingEndStep();
+        }
+        public void BeingEndAction()
+        {
+            if (EventBeingEndAction != null)
+                EventBeingEndAction();
         }
     }
 

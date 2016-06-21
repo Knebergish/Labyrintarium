@@ -30,12 +30,11 @@ namespace TestOpenGL.DataIO
         public TexturesAssistant(string path): this()
         {
             this.path = path;
-            pathes = new string[5];
-            pathes[0] = this.path + "\\Textures\\Backgrounds\\";
-            pathes[1] = this.path + "\\Textures\\Blocks\\";
-            pathes[2] = this.path + "\\Textures\\Beings\\";
-            pathes[3] = this.path + "\\Textures\\Items\\";
-            pathes[4] = this.path + "\\Textures\\Decals\\";
+            string[] namesTypes = Enum.GetNames(typeof(TypeVisualObject));
+            pathes = new string[namesTypes.Length];
+
+            for (int i = 0; i < namesTypes.Length; i++)
+                pathes[i] = this.path + "\\Textures\\" + namesTypes[i] + "s\\";
         }
 
 
@@ -43,7 +42,7 @@ namespace TestOpenGL.DataIO
         {
             // Тупой копипаст из интернет-урока. Я в этом не разбираюсь, и вы смиритесь.
 
-            Gl.glClear(Gl.GL_COLOR_BUFFER_BIT | Gl.GL_DEPTH_BUFFER_BIT);
+            
 
             // инициализация библиотеки GLUT 
             Glut.glutInit();
@@ -54,6 +53,8 @@ namespace TestOpenGL.DataIO
             // инициализация библиотеки openIL
             Il.ilInit();
             Il.ilEnable(Il.IL_ORIGIN_SET);
+
+            Gl.glEnable(Gl.GL_DEPTH_TEST);
 
             // устанавливаем цвет очистки окна 
             Gl.glClearColor(255, 255, 255, 1);
@@ -105,9 +106,7 @@ namespace TestOpenGL.DataIO
                         Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_WRAP_T, Gl.GL_REPEAT);
                         break;
 
-                    case TypeVisualObject.Being:
-                    case TypeVisualObject.Block:
-                    case TypeVisualObject.Decal:
+                    default:
                         Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_WRAP_S, Gl.GL_CLAMP_TO_EDGE);
                         Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_WRAP_T, Gl.GL_CLAMP_TO_EDGE);
                         break;
@@ -134,10 +133,9 @@ namespace TestOpenGL.DataIO
 
         public int LoadTexture(TypeVisualObject tvo, int imageId)
         {
-            return (int)Program.P.GlControl.Invoke(
+            return (int)Program.mainForm.Invoke(
             new Func<int>(() => LoadTextureFromFile(tvo, imageId))
             );
-            
         }
 
         private int SearchLoadedTexture(TypeVisualObject type, int imageId)

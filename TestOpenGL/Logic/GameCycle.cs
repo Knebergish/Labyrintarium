@@ -14,7 +14,7 @@ namespace TestOpenGL.Logic
         System.Threading.Thread Steps;
         bool isStopStep = true;
         ManualResetEvent isNextStep = new ManualResetEvent(false);
-        public Sight sight;
+        //public Sight sight;
         Gamer gamer;
 
         internal Gamer Gamer
@@ -24,7 +24,7 @@ namespace TestOpenGL.Logic
             { 
                 gamer = value;
                 Program.FA.UpdateForms();
-                Program.P.Camera.SetLookingBeing(gamer);
+                Program.P.Camera.SetLookingVO(gamer);
             }
         }
 
@@ -36,9 +36,9 @@ namespace TestOpenGL.Logic
             Steps = new System.Threading.Thread(StepBeings);
             Steps.Start(this.isNextStep);
 
-            sight = new Sight(Program.P.Camera);
+            //sight = new Sight(Program.P.Camera);
 
-            Program.P.StartRedraw();
+            //Program.P.StartRedraw();
             StartStep();
 
             /*VisualObjectStructure<Decal> VOSD = new VisualObjectStructure<Decal>();
@@ -71,26 +71,32 @@ namespace TestOpenGL.Logic
         {
             ManualResetEvent MRE = (ManualResetEvent)state;
             Being B;
-            //Stopwatch SW = new Stopwatch();
+            List<Being> LB = new List<Being>(); ;
+            bool flag;
             
             // Ходы всех сущностей
             while (true)
             {
-                
-                for (int currentBeing = 0; currentBeing < Program.L.MapBeings.CountBeings; currentBeing++ )
+                flag = true;
+                while(flag)
                 {
-                    /*if(currentBeing==1)
-                        SW.Start();*/
-
-                    B = Program.L.MapBeings.GetBeing(currentBeing);
-                    if (B.isSpawned)
-                        B.Step();
+                    flag = false;
+                    LB = Program.L.GetMap<Being>().GetAllVO();
+                    foreach (Being b in LB)
+                    {
+                        if (b.features.ActionPoints >= 1)
+                        {
+                            b.Step();
+                            flag = true;
+                        }
+                    }
                 }
-                /*SW.Stop();
-                System.Windows.Forms.MessageBox.Show(SW.ElapsedMilliseconds.ToString());
-                SW.Reset();*/
-
-                Program.L.MapBeings.ClearDeadBeings();
+                
+                //TODO: как-то надо производить в сущностях
+                foreach(Being b in LB)
+                {
+                    b.features.ActionPoints += b.features.IncreaseActionPoints;
+                }
 
                 if (Triggers.currentTriggers != null)
                     Triggers.currentTriggers.CallAllTriggers();

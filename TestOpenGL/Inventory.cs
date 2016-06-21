@@ -49,6 +49,35 @@ namespace TestOpenGL
         {
             return equipment;
         }
+        private Item GetItemByPart(Part part, List<Item> listItems)
+        {
+            foreach (Item i in listItems)
+                foreach (Part p in i.Parts)
+                    if (p == part)
+                        return i;
+            return null;
+        }
+        public Item GetEquipWeapon()
+        {
+            return GetItemByPart(Part.RHand, equipment);
+        }
+        public Item GetEquipShield()
+        {
+            Item i = GetItemByPart(Part.LHand, equipment);
+            if (i is Shield)
+                return i;
+            return null;
+        }
+        public List<Item> GetEquipArmors()
+        {
+            List<Item> listArmor = new List<Item>();
+            for (int i = 0; i < 3; i++)
+            {
+                listArmor.Add(GetItemByPart((Part)i, equipment));
+            }
+            listArmor.RemoveAll(x => x == null);
+            return listArmor;
+        }
 
         public bool EquipItem(int num)
         {

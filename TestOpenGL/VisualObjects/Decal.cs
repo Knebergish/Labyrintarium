@@ -2,17 +2,22 @@
 {
     class Decal : VisualObject
     {
-        public Coord C { get; set; }
-
         public Decal(int id, string name, string description, Texture texture)
             : base(id, name, description, texture)
         { }
 
-        //TODO: Может и нахрен он не нужен.
-        public Decal(int id, string name, string description, Texture texture, Coord C)
-            : base(id, name, description, texture)
+        public override bool Spawn(Coord C)
         {
-            this.C = C;
+            if (SetNewCoord(C))
+            {
+                Program.L.GetMap<Decal>().AddVO(this, C);
+                return true;
+            }
+            return false;
+        }
+        protected override bool IsEmptyCell(Coord C)
+        {
+            return Program.L.GetMap<Decal>().GetVO(C) == null ? true : false;
         }
     }
 }

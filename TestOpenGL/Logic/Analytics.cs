@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Collections.Generic;
 
 using TestOpenGL;
+using TestOpenGL.VisualObjects;
 
 namespace TestOpenGL.Logic
 {
@@ -40,9 +41,7 @@ namespace TestOpenGL.Logic
             return false;
 
         }
-
-
-
+        
 
 
         /// <summary>
@@ -242,7 +241,7 @@ namespace TestOpenGL.Logic
         }
         static public List<VisualObjects.Being> GetBeingInArea(Coord C1, Coord C2)
         {
-            List<VisualObjects.Being> LB = Program.L.MapBeings.GetAllBeings();
+            List<VisualObjects.Being> LB = Program.L.GetMap<Being>().GetAllVO();
             List<VisualObjects.Being> answerLB = new List<VisualObjects.Being>();
 
             foreach (VisualObjects.Being being in LB)

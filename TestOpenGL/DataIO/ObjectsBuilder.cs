@@ -22,7 +22,7 @@ namespace TestOpenGL.DataIO
             this.TA = TA;
         }
 
-        public Attack GetAttack(int num)
+        /*public Attack GetAttack(int num)
         {
             DataTable dt = DBIO.ExecuteSQL("SELECT * FROM Attacks WHERE Attacks.id = " + num);
             return new Attack(
@@ -36,7 +36,7 @@ namespace TestOpenGL.DataIO
                 int.Parse(dt.Rows[0]["maxDistance"].ToString()),
                 int.Parse(dt.Rows[0]["timePause"].ToString())
                 );
-        }
+        }*/
 
         public Background GetBackground(int num)
         {
@@ -73,12 +73,6 @@ namespace TestOpenGL.DataIO
                 TA.GetTexture(TypeVisualObject.Decal, int.Parse(dt.Rows[0]["imageId"].ToString()))
                 );
         }
-        public Decal GetDecal(int num, Coord C)
-        {
-            Decal D = GetDecal(num);
-            D.C = C;
-            return D;
-        }
 
         public Being GetGamer(int num)
         {
@@ -91,6 +85,7 @@ namespace TestOpenGL.DataIO
                 0
                 );
         }
+        
         public Being GetBot(int num, int alliance)
         {
             DataTable dt = DBIO.ExecuteSQL("SELECT * FROM Beings WHERE Beings.id = " + num);

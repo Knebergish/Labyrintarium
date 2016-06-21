@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 using Tao.OpenGl;
 using Tao.FreeGlut;
@@ -18,20 +19,16 @@ namespace TestOpenGL.Logic
     {
         Camera camera;
 
-        private Tao.Platform.Windows.SimpleOpenGlControl glControl;
-
-        public Tao.Platform.Windows.SimpleOpenGlControl GlControl
-        {
-            get { return glControl; }
-        }
-
-        //TODO: отрефакторить эту хрень и метод Redraw.
         delegate void updateVoid();
 
         System.Threading.Thread RedrawDisplay;
         ManualResetEvent isNextRedraw = new ManualResetEvent(false);
         ManualResetEvent isTest = new ManualResetEvent(false);
 
+        public Tao.Platform.Windows.SimpleOpenGlControl GlControl
+        {
+            get { return Program.mainForm.AnT; }
+        }
         public Camera Camera
         {
             get { return camera; }
@@ -46,21 +43,14 @@ namespace TestOpenGL.Logic
             }
         }
 
-        public Painter(int startingWidthCamera, int startingHeightCamera)
+        public Painter(Camera camera)
         {
-            camera = new Camera(startingWidthCamera, startingHeightCamera);
+            this.camera = camera;
 
-        }
-
-        public void SetGlControl(Tao.Platform.Windows.SimpleOpenGlControl GlControl)
-        {
-            this.glControl = GlControl;
-
-            
             SettingVisibleAreaSize();
-
             RedrawDisplay = new System.Threading.Thread(Redraw);
             RedrawDisplay.Start(this.isNextRedraw);
+            StartRedraw();
         }
 
         public void StartRedraw()
@@ -81,57 +71,67 @@ namespace TestOpenGL.Logic
         /// <param name="state"></param>
         public void Redraw(object state)
         {
+            Stopwatch sw = new Stopwatch();
             ManualResetEvent MRE = (ManualResetEvent)state;
+            int zShift;
+            int millisecond = 0;
+            int pauseMillisecond = 0;
+            int FPS = 60;
             while (true)
             {
+                zShift = 0;
                 MRE.WaitOne();
 
                 updateVoid del = delegate
                 {
-                    Gl.glClear(Gl.GL_COLOR_BUFFER_BIT);
+                    sw.Start();
+                    Gl.glClear(Gl.GL_COLOR_BUFFER_BIT | Gl.GL_DEPTH_BUFFER_BIT);
 
-                    for (int x = 0; x < this.camera.Width; x++)
-                    {
-                        for (int y = 0; y < this.camera.Height; y++)
-                        {
-                            if (Program.L.MapBackgrounds.GetBackground(new Coord(x + this.camera.MinX, y + this.camera.MinY)) != null)
-                                this.DrawObject(new Coord(x, y), Program.L.MapBackgrounds.GetBackground(new Coord(x + this.camera.MinX, y + this.camera.MinY)).texture);
-                        }
-                    }
+                    // Фоны
+                    zShift = 0;
+                    foreach (Background b in Program.L.GetMap<Background>().GetAllVO())
+                        if (Analytics.IsInCamera(b.C, this.Camera))
+                            this.DrawObject(new Coord(b.C.X - Camera.MinX, b.C.Y - Camera.MinY, b.C.Z), b.texture, zShift);
+                    // Конец фонов
 
-                    for (int x = 0; x < this.camera.Width; x++)
-                    {
-                        for (int y = 0; y < this.camera.Height; y++)
-                        {
-                            for (int i = 0; i < Program.L.LengthZ; i++)
-                            {
-                                if (Program.L.MapBlocks.GetBlock(new Coord(x + this.camera.MinX, y + this.camera.MinY, i)) != null)
-                                    this.DrawObject(new Coord(x, y), Program.L.MapBlocks.GetBlock(new Coord(x + this.camera.MinX, y + this.camera.MinY, i)).texture);
-                            }
-                        }
-                    }
 
-                    foreach (Being B in Program.L.MapBeings.GetAllBeings())
-                        if (B.isSpawned)
-                            if (Analytics.IsInCamera(B.C, camera))
-                            {
-                                this.DrawObject(new Coord(B.C.X - this.camera.MinX, B.C.Y - this.camera.MinY), B.texture);
-                                foreach(Item i in B.inventory.GetEquipmentItems())
-                                {
-                                    this.DrawObject(new Coord(B.C.X - this.camera.MinX, B.C.Y - this.camera.MinY), i.texture);
-                                }
-                            }
+                    // Блоки
+                    zShift += Program.L.LengthZ;
+                    foreach(Block b in Program.L.GetMap<Block>().GetAllVO())
+                        if(Analytics.IsInCamera(b.C, this.Camera))
+                            this.DrawObject(new Coord(b.C.X - Camera.MinX, b.C.Y - Camera.MinY, b.C.Z), b.texture, zShift);
+                    // Конец блоков
 
-                    foreach (Decal d in Program.L.MapDecals.GetAllDecals())
-                        if (Analytics.IsInCamera(d.C, camera))
-                            this.DrawObject(new Coord(d.C.X - this.camera.MinX, d.C.Y - this.camera.MinY), d.texture);
 
-                    this.DrawObject(new Coord(Program.GCycle.sight.AimCoord.X - this.camera.MinX, Program.GCycle.sight.AimCoord.Y - this.camera.MinY), Program.GCycle.sight.aimDecal.texture);
+                    // Сущности
+                    zShift += Program.L.LengthZ;
+                    foreach (Being b in Program.L.GetMap<Being>().GetAllVO())
+                        if (b.isSpawned)
+                            if (Analytics.IsInCamera(b.C, this.Camera))
+                                this.DrawObject(new Coord(b.C.X - Camera.MinX, b.C.Y - Camera.MinY), b.texture, zShift);
+                    // Конец сущностей
 
-                    this.GlControl.SwapBuffers();
+                    // Декали
+                    zShift += Program.L.LengthZ;
+                    foreach (Decal d in Program.L.GetMap<Decal>().GetAllVO())
+                        if (Analytics.IsInCamera(d.C, this.Camera))
+                            this.DrawObject(new Coord(d.C.X - this.camera.MinX, d.C.Y - this.camera.MinY, d.C.Z), d.texture, zShift);
+                    // Конец декалей
+
+                    // Прицел
+                    zShift += Program.L.LengthZ;
+                    this.DrawObject(new Coord(camera.Sight.C.X - this.camera.MinX, camera.Sight.C.Y - this.camera.MinY), camera.Sight.AimDecal.texture, zShift);
+
+                    Program.mainForm.AnT.SwapBuffers();
+                    sw.Stop();
+                    millisecond = (int)sw.ElapsedMilliseconds;
+                    Program.mainForm.SetFPS((int)(1000 / ((pauseMillisecond + millisecond) == 0 ? 1 : (pauseMillisecond + millisecond))));
+                    sw.Reset();
                 };
-                this.GlControl.Invoke(del);
-                System.Threading.Thread.Sleep(16);
+                Program.mainForm.Invoke(del);
+                pauseMillisecond = (int)(1000 / FPS - millisecond);
+                pauseMillisecond = pauseMillisecond > 0 ? pauseMillisecond : 0;
+                System.Threading.Thread.Sleep(pauseMillisecond);
             }
         }
 
@@ -143,8 +143,6 @@ namespace TestOpenGL.Logic
             // очищаем ее 
             Gl.glLoadIdentity();
 
-
-
             // теперь необходимо корректно настроить 2D ортогональную проекцию 
             // в зависимости от того, какая сторона больше 
             // мы немного варьируем то, как будут сконфигурированы настройки проекции 
@@ -155,13 +153,11 @@ namespace TestOpenGL.Logic
 
             // переходим к объектно-видовой матрице 
             Gl.glMatrixMode(Gl.GL_MODELVIEW);
+
+            Camera.Look();
         }
 
-        /// <summary>
-        /// Инициализация графической системы.
-        /// </summary>
-
-        private void DrawObject(Coord C, Texture texture)
+        private void DrawObject(Coord C, Texture texture, int zShift)
         {
             int size = 1;
             // включаем режим текстурирования
@@ -173,16 +169,16 @@ namespace TestOpenGL.Logic
             Gl.glBegin(Gl.GL_QUADS);
 
             Gl.glTexCoord2f(0.0f, 0.0f);
-            Gl.glVertex2d((double)C.X, (double)C.Y);
+            Gl.glVertex3d((double)C.X, (double)C.Y, (double)(C.Z + zShift) / 1000);
 
             Gl.glTexCoord2f(0.0f, 0.0f + size);
-            Gl.glVertex2d((double)C.X, (double)C.Y + size);
+            Gl.glVertex3d((double)C.X, (double)C.Y + size, (double)(C.Z + zShift) / 1000);
 
             Gl.glTexCoord2f(0.0f + size, 0.0f + size);
-            Gl.glVertex2d((double)C.X + size, (double)C.Y + size);
+            Gl.glVertex3d((double)C.X + size, (double)C.Y + size, (double)(C.Z + zShift) / 1000);
 
             Gl.glTexCoord2f(0.0f + size, 0.0f);
-            Gl.glVertex2d((double)C.X + size, (double)C.Y);
+            Gl.glVertex3d((double)C.X + size, (double)C.Y, (double)(C.Z + zShift) / 1000);
 
             Gl.glEnd();
 

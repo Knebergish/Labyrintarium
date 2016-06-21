@@ -10,22 +10,27 @@ namespace TestOpenGL
 {
     class Sight
     {
-        private Coord aimCoord;
-        public Decal aimDecal;
+        private Coord c;
+        private Decal aimDecal;
+
+        public Decal AimDecal
+        {
+            get { return aimDecal; }
+        }
         private Camera camera;
         public Sight(Camera camera)
         {
-            aimCoord = new Coord(0, 0);
+            c = new Coord(0, 0);
             aimDecal = Program.OB.GetDecal(1);
             this.camera = camera;
 
             this.camera.changeCameraPosition += Check;
         }
 
-        public Coord AimCoord
+        public Coord C
         {
-            get { return aimCoord; }
-            set { aimCoord = value; Check(); }
+            get { return c; }
+            set { c = value; Check(); }
         }
 
         public void MoveSight(Direction d)
@@ -39,24 +44,22 @@ namespace TestOpenGL
                 case Direction.Down: dy--; break;
             }
 
-            try
-            {
-                aimCoord = new Coord(aimCoord.X + dx, aimCoord.Y + dy);
-            }
-            catch { }
+            if (Logic.Analytics.CorrectCoordinate(c.X + dx, c.Y + dy))
+                c = new Coord(c.X + dx, c.Y + dy);
+            
             Check();
         }
 
         public void Check()
         {
-            if (aimCoord.X < camera.MinX)
-                aimCoord = new Coord(camera.MinX, aimCoord.Y);
-            if (aimCoord.X > camera.MaxX)
-                aimCoord = new Coord(camera.MaxX, aimCoord.Y);
-            if (aimCoord.Y < camera.MinY)
-                aimCoord = new Coord(aimCoord.X, camera.MinY);
-            if (aimCoord.Y > camera.MaxY)
-                aimCoord = new Coord(aimCoord.X, camera.MaxY);
+            if (c.X < camera.MinX)
+                c = new Coord(camera.MinX, c.Y);
+            if (c.X > camera.MaxX)
+                c = new Coord(camera.MaxX, c.Y);
+            if (c.Y < camera.MinY)
+                c = new Coord(c.X, camera.MinY);
+            if (c.Y > camera.MaxY)
+                c = new Coord(c.X, camera.MaxY);
         }
     }
 }

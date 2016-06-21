@@ -10,8 +10,8 @@ namespace TestOpenGL
 {
     class Shield : Item
     {
-        public Shield(int id, string name, string description, Texture texture, int level, int price, List<Part> parts)
-            : base(id, name, description, texture, level, price, parts)
+        public Shield(int id, string name, string description, Texture texture, int level, int price)
+            : base(id, name, description, texture, level, price, new List<Part> { Part.LHand })
         { }
     }
 }

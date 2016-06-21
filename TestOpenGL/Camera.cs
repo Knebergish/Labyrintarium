@@ -19,7 +19,14 @@ namespace TestOpenGL
         // Позиция прицела
         public EventDelegate changeCameraPosition;
         
-        Being looking;
+        VisualObject looking;
+        Sight sight;
+
+        public Sight Sight
+        {
+            get { return sight; }
+        }
+
 
         public Camera(int width, int height)
         {
@@ -27,13 +34,21 @@ namespace TestOpenGL
             this.width = width;
             this.height = height;
 
+            sight = new TestOpenGL.Sight(this);
+
             Look();
         }
 
         public int Height
-        { get { return height; } }
+        { 
+            get { return height; }
+            set { height = value > Program.L.LengthX || value > Program.L.LengthY ? Math.Min(Program.L.LengthX, Program.L.LengthY) : (value < 1 ? 1 : value); } 
+        }
         public int Width
-        { get { return width; } }
+        { 
+            get { return width; }
+            set { width = value > Program.L.LengthX || value > Program.L.LengthY ? Math.Min(Program.L.LengthX, Program.L.LengthY) : (value < 1 ? 1 : value); ; } 
+        }
         public int MinX
         { get { return shiftX; } }
         public int MaxX
@@ -43,13 +58,13 @@ namespace TestOpenGL
         public int MaxY
         { get { return shiftY + Height - 1; } }
         
-        public void SetLookingBeing(Being b)
+        public void SetLookingVO(VisualObject b)
         {
             looking = b;
             Look();
             if (b != null)
             {
-                b.eventsBeing.EventBeingChangeCoord += new EventDelegate(Look);
+                b.eventsVO.EventVOChangeCoord += new EventDelegate(Look);
             }
         }
 
@@ -62,7 +77,7 @@ namespace TestOpenGL
                 shiftX = shiftX > l.LengthX - width ? l.LengthX - width : shiftX;
                 shiftY = looking.C.Y - height / 2;
                 shiftY = shiftY < 0 ? 0 : shiftY;
-                shiftY = shiftY > l.LengthY - height ? l.LengthY - height : shiftY;
+                shiftY = shiftY > l.LengthY - height ? l.LengthY - height : shiftY; //TODO: ВОТ ЗДУСЬ ЖИВУТ ИНОГДА ЧЁРТОВЫ НЕВЕРНЕНЬКИЕ КООРДИНАТКИ!!!
             }
             else
             {

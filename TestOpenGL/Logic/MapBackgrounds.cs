@@ -7,7 +7,7 @@ using TestOpenGL.VisualObjects;
 
 namespace TestOpenGL.Logic
 {
-    class MapBackgrounds
+    /*class MapBackgrounds
     {
         private int lengthX, lengthY;
         private Background [,] mapBackgrounds;
@@ -25,7 +25,7 @@ namespace TestOpenGL.Logic
             return mapBackgrounds[C.X, C.Y];
         }
 
-        public void SetBackground(Coord C, Background background)
+        public void SetBackground(Background background, Coord C)
         {
             mapBackgrounds[C.X, C.Y] = background;
         }
@@ -50,5 +50,5 @@ namespace TestOpenGL.Logic
                     return false;
             return true;
         }
-    }
+    }*/
 }

@@ -11,8 +11,8 @@ namespace TestOpenGL
 
         public FormsAssistant()
         {
-            formInventory = new Form2(new EventDelegate(Program.GCycle.StartStep));
-            formMapEditor = new Form3(new EventDelegate(Program.GCycle.StartStep));
+            formInventory = new Form2(/*new EventDelegate(Program.GCycle.StartStep)*/);
+            formMapEditor = new Form3(/*new EventDelegate(Program.GCycle.StartStep)*/);
         }
 
         public void UpdateForms()
@@ -20,27 +20,40 @@ namespace TestOpenGL
             formInventory.ChangeGamer();
         }
 
+        delegate void openForm();
         public void ProcessingOpeningForms(int num)
         {
+            openForm openForm;
             switch (num)
             {
                 case 1:
-                    ShowInventory();
+                    openForm = ShowInventory;
                     break;
 
                 case 2:
-                    ShowMapEditor();
+                    openForm = ShowMapEditor;
+                    break;
+
+                default:
+                    openForm = (() => { });
                     break;
             }
+            Program.mainForm.Invoke(
+            new Func<int>(() => 
+            {
+                openForm();
+                return 0;
+            }));
+
         }
         public void ShowInventory()
         {
-            Program.GCycle.StopStep();
+            //Program.GCycle.StopStep();
             formInventory.Show();
         }
         public void ShowMapEditor()
         {
-            Program.GCycle.StopStep();
+            //Program.GCycle.StopStep();
             formMapEditor.Show();
         }
     }

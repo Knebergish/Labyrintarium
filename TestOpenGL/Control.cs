@@ -5,15 +5,31 @@ namespace TestOpenGL
 {
     class Control
     {
-        public bool isEnabledControl;
+        public EventDelegate ChangeEnabledControl;
+        private bool isEnabledControl;
+
+        public bool IsEnabledControl
+        {
+            get { return isEnabledControl; }
+            set 
+            { 
+                isEnabledControl = value;
+
+                if (ChangeEnabledControl != null)
+                    ChangeEnabledControl();
+            }
+        }
         public Control()
         {
-            isEnabledControl = true;
+            IsEnabledControl = true;
         }
 
         public void ProcessingKeyPress(KeyEventArgs kea)
         {
-            if (!isEnabledControl) return;
+            if (!IsEnabledControl) 
+                return;
+
+            IsEnabledControl = false;
 
             char key = char.ToLower((char)kea.KeyCode);
             switch (kea.Shift)
@@ -39,16 +55,16 @@ namespace TestOpenGL
                             break;
 
                         case 'j':
-                            Program.GCycle.sight.MoveSight(Direction.Left);
+                            Program.P.Camera.Sight.MoveSight(Direction.Left);
                             break;
                         case 'i':
-                            Program.GCycle.sight.MoveSight(Direction.Up);
+                            Program.P.Camera.Sight.MoveSight(Direction.Up);
                             break;
                         case 'l':
-                            Program.GCycle.sight.MoveSight(Direction.Right);
+                            Program.P.Camera.Sight.MoveSight(Direction.Right);
                             break;
                         case 'k':
-                            Program.GCycle.sight.MoveSight(Direction.Down);
+                            Program.P.Camera.Sight.MoveSight(Direction.Down);
                             break;
                     }
                     break;
@@ -65,6 +81,8 @@ namespace TestOpenGL
                     }
                     break;
             }
+            IsEnabledControl = true;
         }
+
     }
 }
