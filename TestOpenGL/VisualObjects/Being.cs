@@ -164,10 +164,10 @@ namespace TestOpenGL.VisualObjects
     {
         
         //public event EventDelegate EventBeingChangeCoord;
-        public event EventDelegate EventBeingDeath;
-        public event EventDelegate EventBeingStartStep;
-        public event EventDelegate EventBeingEndStep;
-        public event EventDelegate EventBeingEndAction;
+        public event VoidEventDelegate EventBeingDeath;
+        public event VoidEventDelegate EventBeingStartStep;
+        public event VoidEventDelegate EventBeingEndStep;
+        public event VoidEventDelegate EventBeingEndAction;
 
         /*public void BeingChangeCoord()
         {

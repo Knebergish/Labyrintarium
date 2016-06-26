@@ -13,8 +13,8 @@ namespace TestOpenGL
         public Gamer(int id, string name, string description, Texture texture, int alliance)
             : base(id, name, description, texture, alliance)
         {
-            this.eventsBeing.EventBeingStartStep += new EventDelegate(() => { Program.C.IsEnabledControl = true;});
-            this.eventsBeing.EventBeingEndStep += new EventDelegate(() => { Program.C.IsEnabledControl = false; });
+            this.eventsBeing.EventBeingStartStep += new VoidEventDelegate(() => { Program.C.IsEnabledControl = true;});
+            this.eventsBeing.EventBeingEndStep += new VoidEventDelegate(() => { Program.C.IsEnabledControl = false; });
         }
 
         public override void Action()

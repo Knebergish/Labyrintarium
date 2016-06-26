@@ -30,10 +30,10 @@ namespace TestOpenGL
                 }));
             s1.stageLoad = delegate()
             {
-                VisualObjectStructure<VisualObjects.Decal> VOSD = new VisualObjectStructure<VisualObjects.Decal>();
+                /*VisualObjectStructure<VisualObjects.Decal> VOSD = new VisualObjectStructure<VisualObjects.Decal>();
                 for(int i = 4; i <10;i++)
                     for(int j = 4; j<10;j++)
-                        VOSD.Push(Program.OB.GetDecal(3), new Coord(i,j));
+                        VOSD.Push(Program.OB.GetDecal(3), new Coord(i,j));*/
                 //Program.L.MapDecals.AddDecals(VOSD); //Переделать под новый движок
 
                 Program.GCycle.Gamer.Spawn(new Coord(0, 0));

@@ -5,7 +5,7 @@ namespace TestOpenGL
 {
     class Control
     {
-        public EventDelegate ChangeEnabledControl;
+        public VoidEventDelegate ChangeEnabledControl;
         private bool isEnabledControl;
 
         public bool IsEnabledControl

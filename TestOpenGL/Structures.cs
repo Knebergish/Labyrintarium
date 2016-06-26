@@ -1,15 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
+//using System.Collections.Generic;
 
 using TestOpenGL.Logic;
-using TestOpenGL.VisualObjects;
+//using TestOpenGL.VisualObjects;
 
 namespace TestOpenGL
 {
     /// <summary>
     /// Структура для передачи нескольких блоков (или не блоков).
     /// </summary>
-    struct VisualObjectStructure<T>
+    /*struct VisualObjectStructure<T>
     {
         private Queue<T> objects;
         private Queue<Coord> coords;
@@ -40,7 +40,7 @@ namespace TestOpenGL
         {
             get { return objects == null ? 0 : objects.Count; }
         }
-    }
+    }*/
     
 
     /// <summary>
@@ -89,8 +89,8 @@ namespace TestOpenGL
     }
 
 
-    public delegate void EventDelegate();
-
+    public delegate void VoidEventDelegate();
+    public delegate void IntEventDelegate(int value);
 
     /// <summary>
     /// Перечисление частей тела, которые может занимать одетый предмет.

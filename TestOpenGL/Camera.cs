@@ -17,7 +17,7 @@ namespace TestOpenGL
         // Текущее смещение камеры относительно блока (0, 0)
         int shiftX, shiftY;
         // Позиция прицела
-        public EventDelegate changeCameraPosition;
+        public VoidEventDelegate changeCameraPosition;
         
         VisualObject looking;
         Sight sight;
@@ -64,7 +64,7 @@ namespace TestOpenGL
             Look();
             if (b != null)
             {
-                b.eventsVO.EventVOChangeCoord += new EventDelegate(Look);
+                b.eventsVO.EventVOChangeCoord += new VoidEventDelegate(Look);
             }
         }
 

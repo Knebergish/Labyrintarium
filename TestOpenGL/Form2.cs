@@ -75,8 +75,8 @@ namespace TestOpenGL
 
         private void Form2_Load(object sender, EventArgs e)
         {
-            Program.GCycle.Gamer.inventory.eventsInventory.EventInventoryChangeBag += new EventDelegate(ReloadListInventory);
-            Program.GCycle.Gamer.inventory.eventsInventory.EventInventoryChangeEquipment += new EventDelegate(ReloadListInventory);
+            Program.GCycle.Gamer.inventory.eventsInventory.EventInventoryChangeBag += new VoidEventDelegate(ReloadListInventory);
+            Program.GCycle.Gamer.inventory.eventsInventory.EventInventoryChangeEquipment += new VoidEventDelegate(ReloadListInventory);
         }
 
         private void Form2_FormClosing(object sender, FormClosingEventArgs e)

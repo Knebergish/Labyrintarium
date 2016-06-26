@@ -129,8 +129,8 @@ namespace TestOpenGL
 
     class EventInventory
     {
-        public event EventDelegate EventInventoryChangeEquipment;
-        public event EventDelegate EventInventoryChangeBag;
+        public event VoidEventDelegate EventInventoryChangeEquipment;
+        public event VoidEventDelegate EventInventoryChangeBag;
 
         public void InventoryChangeBag()
         {

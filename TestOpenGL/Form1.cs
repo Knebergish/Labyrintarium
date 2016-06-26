@@ -27,8 +27,12 @@ namespace TestOpenGL
             Program.InitApp(this);
 
             this.MouseWheel += new MouseEventHandler(ResizeMatrix);
+            Program.C.ChangeEnabledControl += ChangeColorBorder;
+            Program.P.EventFPSUpdate += SetFPS;
 
             Form1_SizeChanged(sender, e);
+
+
 
             Be = Program.OB.GetGamer(1);
             for (int i = 1; i < 10; i++)
@@ -41,14 +45,15 @@ namespace TestOpenGL
             
             //Program.OB.GetBot(1, 1).Spawn(new Coord(5, 5));
             Program.OB.GetBot(1, 0).Spawn(new Coord(1, 0));
+
+
             
             Program.GCycle.StartStep();
             //Program.P.Camera.SetLookingVO(Be);
 
-            Program.C.ChangeEnabledControl += ChangeColorBorder;
+            
 
             button1_Click(sender, e);
-            
         }
         private void button1_Click(object sender, EventArgs e)
         {
@@ -99,6 +104,7 @@ namespace TestOpenGL
                     if (B != null)
                         B.Damage(1);*/
                     //Attack.AttackAnimation(new Coord(0, 0), new Coord(10, 15), Program.OB.GetDecal(2), 100);
+                    Program.P.StopRender();
                 }).Start();
             
             /*Program.GCycle.StopStep();

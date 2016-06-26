@@ -49,7 +49,7 @@ namespace TestOpenGL.VisualObjects
     }
     class EventsVisualObject
     {
-        public event EventDelegate EventVOChangeCoord;
+        public event VoidEventDelegate EventVOChangeCoord;
         public void VOChangeCoord()
         {
             if (EventVOChangeCoord != null)

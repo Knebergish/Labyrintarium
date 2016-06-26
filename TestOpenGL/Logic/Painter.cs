@@ -1,34 +1,49 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Threading;
 using System.Diagnostics;
 
 using Tao.OpenGl;
-using Tao.FreeGlut;
-using Tao.DevIl;
 
 using TestOpenGL.VisualObjects;
 
 namespace TestOpenGL.Logic
 {
-    /// <summary>
-    /// Рисует игровое поля на переданной форме.
-    /// </summary>
     class Painter
     {
-        Camera camera;
+        public event IntEventDelegate EventFPSUpdate;
 
         delegate void updateVoid();
 
-        System.Threading.Thread RedrawDisplay;
-        ManualResetEvent isNextRedraw = new ManualResetEvent(false);
-        ManualResetEvent isTest = new ManualResetEvent(false);
+        System.Threading.Thread RenderThread;
+        ManualResetEvent isNextRender = new ManualResetEvent(false);
+
+        Camera camera; //TODO: вот как-то она тут не в тему, но куда её убрать?..
+
+        int maxFPS;
+        int pauseMillisecond;
+
+
+
+
+        public Painter(Camera camera)
+        {
+            maxFPS = 60;
+            pauseMillisecond = 0;
+
+            this.camera = camera;
+
+
+            SettingVisibleAreaSize();
+
+            RenderThread = new System.Threading.Thread(Render);
+            RenderThread.Start(this.isNextRender);
+            StartRender();
+        }
 
         public Tao.Platform.Windows.SimpleOpenGlControl GlControl
         {
             get { return Program.mainForm.AnT; }
         }
+
         public Camera Camera
         {
             get { return camera; }
@@ -36,103 +51,41 @@ namespace TestOpenGL.Logic
             {
                 if (value != null)
                 {
-                    StopRedraw();
+                    StopRender();
                     camera = value;
-                    StartRedraw();
+                    StartRender();
                 }
             }
         }
 
-        public Painter(Camera camera)
+        public int MaxFPS
         {
-            this.camera = camera;
-
-            SettingVisibleAreaSize();
-            RedrawDisplay = new System.Threading.Thread(Redraw);
-            RedrawDisplay.Start(this.isNextRedraw);
-            StartRedraw();
+            get { return maxFPS; }
+            set { maxFPS = value > 0 && value < 1000 ? value : 60; }
         }
 
-        public void StartRedraw()
+        
+        void FPSUpdate(int newValue)
         {
-            this.isNextRedraw.Set();
+            if (EventFPSUpdate != null)
+                EventFPSUpdate(newValue);
         }
-        public void StopRedraw()
+        void ProcessingFPS(int renderElapsedTime) //TODO: херовое название, придумать получше.
         {
-            this.isNextRedraw.Reset();
-            //TODO: возможно, сюда надо вставит короткую поточную паузу, чтобы поток перерисовки успел остановиться.
+            FPSUpdate((int)(1000 / ((pauseMillisecond + renderElapsedTime) == 0 ? 1 : (pauseMillisecond + renderElapsedTime))));
+
+            pauseMillisecond = (int)(1000 / MaxFPS - renderElapsedTime);
+            pauseMillisecond = pauseMillisecond > 0 ? pauseMillisecond : 0;
         }
 
-        // На самом деле я не до конца понимаю, как это работает. Но говорят, что это норма.
-
-        /// <summary>
-        /// Метод перерисовки изображения на экране
-        /// </summary>
-        /// <param name="state"></param>
-        public void Redraw(object state)
+        public void StartRender()
         {
-            Stopwatch sw = new Stopwatch();
-            ManualResetEvent MRE = (ManualResetEvent)state;
-            int zShift;
-            int millisecond = 0;
-            int pauseMillisecond = 0;
-            int FPS = 60;
-            while (true)
-            {
-                zShift = 0;
-                MRE.WaitOne();
-
-                updateVoid del = delegate
-                {
-                    sw.Start();
-                    Gl.glClear(Gl.GL_COLOR_BUFFER_BIT | Gl.GL_DEPTH_BUFFER_BIT);
-
-                    // Фоны
-                    zShift = 0;
-                    foreach (Background b in Program.L.GetMap<Background>().GetAllVO())
-                        if (Analytics.IsInCamera(b.C, this.Camera))
-                            this.DrawObject(new Coord(b.C.X - Camera.MinX, b.C.Y - Camera.MinY, b.C.Z), b.texture, zShift);
-                    // Конец фонов
-
-
-                    // Блоки
-                    zShift += Program.L.LengthZ;
-                    foreach(Block b in Program.L.GetMap<Block>().GetAllVO())
-                        if(Analytics.IsInCamera(b.C, this.Camera))
-                            this.DrawObject(new Coord(b.C.X - Camera.MinX, b.C.Y - Camera.MinY, b.C.Z), b.texture, zShift);
-                    // Конец блоков
-
-
-                    // Сущности
-                    zShift += Program.L.LengthZ;
-                    foreach (Being b in Program.L.GetMap<Being>().GetAllVO())
-                        if (b.isSpawned)
-                            if (Analytics.IsInCamera(b.C, this.Camera))
-                                this.DrawObject(new Coord(b.C.X - Camera.MinX, b.C.Y - Camera.MinY), b.texture, zShift);
-                    // Конец сущностей
-
-                    // Декали
-                    zShift += Program.L.LengthZ;
-                    foreach (Decal d in Program.L.GetMap<Decal>().GetAllVO())
-                        if (Analytics.IsInCamera(d.C, this.Camera))
-                            this.DrawObject(new Coord(d.C.X - this.camera.MinX, d.C.Y - this.camera.MinY, d.C.Z), d.texture, zShift);
-                    // Конец декалей
-
-                    // Прицел
-                    zShift += Program.L.LengthZ;
-                    this.DrawObject(new Coord(camera.Sight.C.X - this.camera.MinX, camera.Sight.C.Y - this.camera.MinY), camera.Sight.AimDecal.texture, zShift);
-
-                    Program.mainForm.AnT.SwapBuffers();
-                    sw.Stop();
-                    millisecond = (int)sw.ElapsedMilliseconds;
-                    Program.mainForm.SetFPS((int)(1000 / ((pauseMillisecond + millisecond) == 0 ? 1 : (pauseMillisecond + millisecond))));
-                    sw.Reset();
-                };
-                Program.mainForm.Invoke(del);
-                pauseMillisecond = (int)(1000 / FPS - millisecond);
-                pauseMillisecond = pauseMillisecond > 0 ? pauseMillisecond : 0;
-                System.Threading.Thread.Sleep(pauseMillisecond);
-            }
+            this.isNextRender.Set();
+        }
+        public void StopRender()
+        {
+            this.isNextRender.Reset();
+            Thread.Sleep(1);
         }
 
         public void SettingVisibleAreaSize()
@@ -155,6 +108,83 @@ namespace TestOpenGL.Logic
             Gl.glMatrixMode(Gl.GL_MODELVIEW);
 
             Camera.Look();
+        }
+
+        public void Render(object state)
+        {
+            Stopwatch sw = new Stopwatch();
+            ManualResetEvent nextRender = (ManualResetEvent)state;
+            ManualResetEvent nextFrame = new ManualResetEvent(false);
+
+            while (true)
+            {
+                nextRender.WaitOne();
+
+                nextFrame.Reset();
+
+
+                updateVoid del = delegate
+                {
+                    sw.Start();
+
+                    DrawFrame();
+
+                    sw.Stop();
+                    ProcessingFPS((int)sw.ElapsedMilliseconds);
+                    sw.Reset();
+
+                    nextFrame.Set();
+                };
+                Program.mainForm.Invoke(del);
+
+
+                System.Threading.Thread.Sleep(pauseMillisecond);
+                nextFrame.WaitOne();
+            }
+        }
+
+        private void DrawFrame()
+        {
+            int zShift;
+
+            Gl.glClear(Gl.GL_COLOR_BUFFER_BIT | Gl.GL_DEPTH_BUFFER_BIT);
+
+            // Фоны
+            zShift = 0;
+            foreach (Background b in Program.L.GetMap<Background>().GetAllVO())
+                if (Analytics.IsInCamera(b.C, this.Camera))
+                    this.DrawObject(new Coord(b.C.X - Camera.MinX, b.C.Y - Camera.MinY, b.C.Z), b.texture, zShift);
+            // Конец фонов
+
+
+            // Блоки
+            zShift += Program.L.LengthZ;
+            foreach (Block b in Program.L.GetMap<Block>().GetAllVO())
+                if (Analytics.IsInCamera(b.C, this.Camera))
+                    this.DrawObject(new Coord(b.C.X - Camera.MinX, b.C.Y - Camera.MinY, b.C.Z), b.texture, zShift);
+            // Конец блоков
+
+
+            // Сущности
+            zShift += Program.L.LengthZ;
+            foreach (Being b in Program.L.GetMap<Being>().GetAllVO())
+                if (b.isSpawned)
+                    if (Analytics.IsInCamera(b.C, this.Camera))
+                        this.DrawObject(new Coord(b.C.X - Camera.MinX, b.C.Y - Camera.MinY), b.texture, zShift);
+            // Конец сущностей
+
+            // Декали
+            zShift += Program.L.LengthZ;
+            foreach (Decal d in Program.L.GetMap<Decal>().GetAllVO())
+                if (Analytics.IsInCamera(d.C, this.Camera))
+                    this.DrawObject(new Coord(d.C.X - this.camera.MinX, d.C.Y - this.camera.MinY, d.C.Z), d.texture, zShift);
+            // Конец декалей
+
+            // Прицел
+            zShift += Program.L.LengthZ;
+            this.DrawObject(new Coord(camera.Sight.C.X - this.camera.MinX, camera.Sight.C.Y - this.camera.MinY), camera.Sight.AimDecal.texture, zShift);
+
+            Program.mainForm.AnT.SwapBuffers();
         }
 
         private void DrawObject(Coord C, Texture texture, int zShift)
