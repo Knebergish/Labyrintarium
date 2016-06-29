@@ -14,9 +14,11 @@ namespace TestOpenGL
 {
     public partial class Form2 : Form
     {
-        public Form2()
+        //EventDelegate closeForm;
+        public Form2(/*EventDelegate closeForm*/)
         {
             InitializeComponent();
+            //this.closeForm = closeForm;
         }
 
         public void ChangeGamer()
@@ -81,6 +83,7 @@ namespace TestOpenGL
         {
             this.Hide();
             e.Cancel = true;
+            //closeForm();
         }
     }
 }

@@ -7,6 +7,9 @@ using TestOpenGL.VisualObjects;
 
 namespace TestOpenGL.Logic
 {
+    /// <summary>
+    /// Организует работу с блоками на карте.
+    /// </summary>
     /*class MapBlocks
     {
         // Максимальные измерения карты (LengthZ для глубины карты блоков)

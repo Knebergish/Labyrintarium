@@ -28,31 +28,31 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.GlControl = new Tao.Platform.Windows.SimpleOpenGlControl();
+            this.AnT = new Tao.Platform.Windows.SimpleOpenGlControl();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
-            this.logListBox = new System.Windows.Forms.ListBox();
-            this.ControlEnabledIndicator = new System.Windows.Forms.PictureBox();
-            this.FPSValue = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.ControlEnabledIndicator)).BeginInit();
+            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.label1 = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
-            // GlControl
+            // AnT
             // 
-            this.GlControl.AccumBits = ((byte)(0));
-            this.GlControl.AutoCheckErrors = false;
-            this.GlControl.AutoFinish = false;
-            this.GlControl.AutoMakeCurrent = true;
-            this.GlControl.AutoSwapBuffers = true;
-            this.GlControl.BackColor = System.Drawing.Color.Black;
-            this.GlControl.ColorBits = ((byte)(32));
-            this.GlControl.DepthBits = ((byte)(16));
-            this.GlControl.Location = new System.Drawing.Point(12, 12);
-            this.GlControl.Name = "GlControl";
-            this.GlControl.Size = new System.Drawing.Size(600, 600);
-            this.GlControl.StencilBits = ((byte)(0));
-            this.GlControl.TabIndex = 0;
+            this.AnT.AccumBits = ((byte)(0));
+            this.AnT.AutoCheckErrors = false;
+            this.AnT.AutoFinish = false;
+            this.AnT.AutoMakeCurrent = true;
+            this.AnT.AutoSwapBuffers = true;
+            this.AnT.BackColor = System.Drawing.Color.Black;
+            this.AnT.ColorBits = ((byte)(32));
+            this.AnT.DepthBits = ((byte)(16));
+            this.AnT.Location = new System.Drawing.Point(12, 12);
+            this.AnT.Name = "AnT";
+            this.AnT.Size = new System.Drawing.Size(600, 600);
+            this.AnT.StencilBits = ((byte)(0));
+            this.AnT.TabIndex = 0;
             // 
             // button1
             // 
@@ -84,44 +84,44 @@
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
-            // logListBox
+            // listBox1
             // 
-            this.logListBox.FormattingEnabled = true;
-            this.logListBox.Location = new System.Drawing.Point(618, 99);
-            this.logListBox.Name = "logListBox";
-            this.logListBox.Size = new System.Drawing.Size(221, 95);
-            this.logListBox.TabIndex = 6;
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.Location = new System.Drawing.Point(618, 99);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(221, 95);
+            this.listBox1.TabIndex = 6;
             // 
-            // ControlEnabledIndicator
+            // pictureBox1
             // 
-            this.ControlEnabledIndicator.BackColor = System.Drawing.Color.Red;
-            this.ControlEnabledIndicator.Location = new System.Drawing.Point(0, 1);
-            this.ControlEnabledIndicator.Name = "ControlEnabledIndicator";
-            this.ControlEnabledIndicator.Size = new System.Drawing.Size(10, 10);
-            this.ControlEnabledIndicator.TabIndex = 7;
-            this.ControlEnabledIndicator.TabStop = false;
+            this.pictureBox1.BackColor = System.Drawing.Color.Red;
+            this.pictureBox1.Location = new System.Drawing.Point(12, 12);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(600, 600);
+            this.pictureBox1.TabIndex = 7;
+            this.pictureBox1.TabStop = false;
             // 
-            // FPSValue
+            // label1
             // 
-            this.FPSValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 5.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.FPSValue.Location = new System.Drawing.Point(40, 2);
-            this.FPSValue.Name = "FPSValue";
-            this.FPSValue.Size = new System.Drawing.Size(47, 10);
-            this.FPSValue.TabIndex = 8;
-            this.FPSValue.Text = "99";
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 5.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label1.Location = new System.Drawing.Point(40, 2);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(47, 10);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "99";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(851, 625);
-            this.Controls.Add(this.FPSValue);
-            this.Controls.Add(this.logListBox);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.listBox1);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.GlControl);
-            this.Controls.Add(this.ControlEnabledIndicator);
+            this.Controls.Add(this.AnT);
+            this.Controls.Add(this.pictureBox1);
             this.KeyPreview = true;
             this.Name = "Form1";
             this.Text = "Form1";
@@ -129,7 +129,7 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             this.SizeChanged += new System.EventHandler(this.Form1_SizeChanged);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
-            ((System.ComponentModel.ISupportInitialize)(this.ControlEnabledIndicator)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -137,19 +137,12 @@
         #endregion
 
         private System.Windows.Forms.Button button1;
-
-        /// <summary>
-        /// Элемент формы, на котором рисуется игровое изображение.
-        /// </summary>
-        public Tao.Platform.Windows.SimpleOpenGlControl GlControl;
+        public Tao.Platform.Windows.SimpleOpenGlControl AnT;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button4;
-        /// <summary>
-        /// Компонент listBox для вывода игрового лога.
-        /// </summary>
-        public System.Windows.Forms.ListBox logListBox;
-        private System.Windows.Forms.PictureBox ControlEnabledIndicator;
-        private System.Windows.Forms.Label FPSValue;
+        public System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label label1;
     }
 }
 

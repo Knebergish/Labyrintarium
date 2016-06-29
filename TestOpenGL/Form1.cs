@@ -10,7 +10,6 @@ using TestOpenGL;
 using TestOpenGL.DataIO;
 using TestOpenGL.VisualObjects;
 using TestOpenGL.Logic;
-using System.Diagnostics;
 
 namespace TestOpenGL
 {
@@ -19,7 +18,7 @@ namespace TestOpenGL
         public Form1()
         {
             InitializeComponent();
-            GlControl.InitializeContexts();
+            AnT.InitializeContexts();
         }
 
         Being Be;
@@ -28,7 +27,7 @@ namespace TestOpenGL
             Program.InitApp(this);
 
             this.MouseWheel += new MouseEventHandler(ResizeMatrix);
-            Program.C.ChangeEnabledControl += ChangeColorControlEnabledIndicator;
+            Program.C.ChangeEnabledControl += ChangeColorBorder;
             Program.P.EventFPSUpdate += SetFPS;
 
             Form1_SizeChanged(sender, e);
@@ -77,17 +76,9 @@ namespace TestOpenGL
                     }
                 }
             }
-
-            foreach (Background b in Program.L.GetMap<Background>().GetCellVO(new Coord(4, 4)))
-            {
-                if (b.Passableness == false)
-                {
-                }
-            }
-
             //Program.OB.GetBlock(2).Spawn(new Coord(6, 6, 0));
             //Program.OB.GetBlock(1).Spawn(new Coord(6, 6, 1));
-
+            
             /*List<Block> lt = new List<Block>();
             lt = Program.L.GetMap<Block>().GetCellVO(new Coord(6, 6));
             foreach (Block b in lt)
@@ -107,7 +98,7 @@ namespace TestOpenGL
 
         private void button4_Click(object sender, EventArgs e)
         {
-            new Thread(delegate()
+            new System.Threading.Thread(delegate()
                 {
                     /*Being B = Program.L.MapBeings.GetBeing(Program.GCycle.sight.AimCoord);
                     if (B != null)
@@ -123,7 +114,7 @@ namespace TestOpenGL
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            new Thread(delegate()
+            new System.Threading.Thread(delegate()
                 {
                     Program.C.ProcessingKeyPress(e);
                 }).Start();
@@ -134,33 +125,29 @@ namespace TestOpenGL
             button1.Left = this.Width - button1.Width - 28;
             button2.Left = this.Width - button2.Width - 28;
             button4.Left = this.Width - button4.Width - 28;
-            logListBox.Left = this.Width - logListBox.Width - 28;
-            GlControl.Width = Math.Min(this.Width - (this.Width - button1.Left) - 28, this.Height - 63);
-            GlControl.Height = GlControl.Width;
-            ControlEnabledIndicator.Top = 0;
-            ControlEnabledIndicator.Left = 0;
-            ControlEnabledIndicator.Width = 10;
-            ControlEnabledIndicator.Height = 10;
+            listBox1.Left = this.Width - listBox1.Width - 28;
+            AnT.Width = Math.Min(this.Width - (this.Width - button1.Left) - 28, this.Height - 63);
+            AnT.Height = AnT.Width;
+            pictureBox1.Top = 0;
+            pictureBox1.Left = 0;
+            pictureBox1.Width = 10;
+            pictureBox1.Height = 10;
             Program.P.SettingVisibleAreaSize();
         }
-
-        /// <summary>
-        /// Изменяет цвет индикатора разрешения движения.
-        /// </summary>
-        public void ChangeColorControlEnabledIndicator(bool value)
+        public void ChangeColorBorder()
         {
+            bool b = Program.C.IsEnabledControl;
             Program.mainForm.Invoke(
             new Func<int>(() => 
             {
-                if (value) ControlEnabledIndicator.BackColor = System.Drawing.Color.Green;
-                else ControlEnabledIndicator.BackColor = System.Drawing.Color.Red;
+                if (b) pictureBox1.BackColor = System.Drawing.Color.Green;
+                else pictureBox1.BackColor = System.Drawing.Color.Red;
                 return 0;
             })
             );
         }
 
-
-        private void ResizeMatrix(object sender, MouseEventArgs e)
+        public void ResizeMatrix(object sender, MouseEventArgs e)
         {
             if (e.Delta > 0)
             {
@@ -173,15 +160,11 @@ namespace TestOpenGL
                 Program.P.Camera.Width--;
             }
             Program.P.SettingVisibleAreaSize();
+            
         }
-
-        /// <summary>
-        /// Устанавливает новое значение FPS.
-        /// </summary>
-        /// <param name="value"></param>
         public void SetFPS(int value)
         {
-            FPSValue.Text = value.ToString();
+            label1.Text = value.ToString();
         }
     }
 }

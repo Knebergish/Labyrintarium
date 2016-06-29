@@ -81,10 +81,7 @@ namespace TestOpenGL
         {
             get { return actionPoints; }
             set 
-            {
-                actionPoints = value;
-                owner.eventsBeing.BeingEndActionPoint();
-            }
+            { actionPoints = value; }
         }
 
         public double IncreaseActionPoints

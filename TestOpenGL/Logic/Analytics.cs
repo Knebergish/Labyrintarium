@@ -49,6 +49,7 @@ namespace TestOpenGL.Logic
         /// </summary>
         /// <param name="start"> Стартовые координаты.</param>
         /// <param name="end"> Координаты точки, к которой ищем путь.</param>
+        /// <param name="type"> Тип проходимости ячейки: true - учитывются сущности.</param>
         /// <returns></returns>
         static public Stack<Coord> BFS(Coord start, Coord end)
         {
@@ -238,11 +239,12 @@ namespace TestOpenGL.Logic
 
             return inX && inY;
         }
-        static public List<Being> GetBeingInArea(Coord C1, Coord C2)
+        static public List<VisualObjects.Being> GetBeingInArea(Coord C1, Coord C2)
         {
-            List<Being> answerLB = new List<Being>();
+            List<VisualObjects.Being> LB = Program.L.GetMap<Being>().GetAllVO();
+            List<VisualObjects.Being> answerLB = new List<VisualObjects.Being>();
 
-            foreach (Being being in Program.L.GetMap<Being>().GetAllVO())
+            foreach (VisualObjects.Being being in LB)
                 if (IsInArea(C1, C2, being.C))
                     answerLB.Add(being);
 

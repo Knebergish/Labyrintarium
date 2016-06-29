@@ -80,6 +80,18 @@ namespace TestOpenGL.VisualObjects
                 return true;
             }
             return false;
+            /*if (this.isSpawned)
+            {
+                this.C = C;
+            }
+            else
+            {
+                this.isSpawned = true;
+                this.C = C;
+                if (!Program.L.MapBeings.AddBeing(this))
+                    throw new Exception("Попытка добавить сущность в занятую другой сущностью ячейку.");
+            }
+            this.eventsBeing.BeingChangeCoord();*/
         }
 
         public bool Move(Coord C)
@@ -111,6 +123,10 @@ namespace TestOpenGL.VisualObjects
             return false;
         }
 
+        /// <summary>
+        /// Нанесение урона сущности.
+        /// </summary>
+        /// <param name="count"> Величина наносимого урона. Должна быть > 0.</param>
         public void Damage(int count)
         {
             if (count > 0)
@@ -125,6 +141,10 @@ namespace TestOpenGL.VisualObjects
             else throw new Exception("Урон почему-то отрицательный.");
         }
 
+        /// <summary>
+        /// Исцеление сущности.
+        /// </summary>
+        /// <param name="count"> Величина исцеления. Должна быть > 0.</param>
         public void Heal(int count)
         {
             if (count > 0)
@@ -142,12 +162,18 @@ namespace TestOpenGL.VisualObjects
 
     class EventsBeing
     {
+        
+        //public event EventDelegate EventBeingChangeCoord;
         public event VoidEventDelegate EventBeingDeath;
         public event VoidEventDelegate EventBeingStartStep;
         public event VoidEventDelegate EventBeingEndStep;
         public event VoidEventDelegate EventBeingEndAction;
-        public event VoidEventDelegate EventBeingEndActionPoint;
 
+        /*public void BeingChangeCoord()
+        {
+            if (EventBeingChangeCoord != null)
+                EventBeingChangeCoord();
+        }*/
         public void BeingDeath()
         {
             if (EventBeingDeath != null)
@@ -168,10 +194,6 @@ namespace TestOpenGL.VisualObjects
             if (EventBeingEndAction != null)
                 EventBeingEndAction();
         }
-        public void BeingEndActionPoint()
-        {
-            if (EventBeingEndActionPoint != null)
-                EventBeingEndActionPoint();
-        }
     }
+
 }
