@@ -7,9 +7,6 @@ using TestOpenGL.VisualObjects;
 
 namespace TestOpenGL.Logic
 {
-    /// <summary>
-    /// Организует работу с сущностями на карте.
-    /// </summary>
     /*class MapBeings
     {
         private List<Being> listBeings;

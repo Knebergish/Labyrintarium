@@ -41,7 +41,7 @@ namespace TestOpenGL.Logic
 
         public Tao.Platform.Windows.SimpleOpenGlControl GlControl
         {
-            get { return Program.mainForm.AnT; }
+            get { return Program.mainForm.GlControl; }
         }
 
         public Camera Camera
@@ -67,8 +67,8 @@ namespace TestOpenGL.Logic
         
         void FPSUpdate(int newValue)
         {
-            if (EventFPSUpdate != null)
-                EventFPSUpdate(newValue);
+            //TODO: разобраться, что это за херню мне предложила VS.
+            EventFPSUpdate?.Invoke(newValue);
         }
         void ProcessingFPS(int renderElapsedTime) //TODO: херовое название, придумать получше.
         {
@@ -110,7 +110,7 @@ namespace TestOpenGL.Logic
             Camera.Look();
         }
 
-        public void Render(object state)
+        void Render(object state)
         {
             Stopwatch sw = new Stopwatch();
             ManualResetEvent nextRender = (ManualResetEvent)state;
@@ -131,6 +131,7 @@ namespace TestOpenGL.Logic
 
                     sw.Stop();
                     ProcessingFPS((int)sw.ElapsedMilliseconds);
+                    System.Windows.Forms.MessageBox.Show(sw.ElapsedTicks.ToString());
                     sw.Reset();
 
                     nextFrame.Set();
@@ -138,12 +139,12 @@ namespace TestOpenGL.Logic
                 Program.mainForm.Invoke(del);
 
 
-                System.Threading.Thread.Sleep(pauseMillisecond);
+                Thread.Sleep(pauseMillisecond);
                 nextFrame.WaitOne();
             }
         }
 
-        private void DrawFrame()
+        void DrawFrame()
         {
             int zShift;
 
@@ -184,10 +185,10 @@ namespace TestOpenGL.Logic
             zShift += Program.L.LengthZ;
             this.DrawObject(new Coord(camera.Sight.C.X - this.camera.MinX, camera.Sight.C.Y - this.camera.MinY), camera.Sight.AimDecal.texture, zShift);
 
-            Program.mainForm.AnT.SwapBuffers();
+            Program.mainForm.GlControl.SwapBuffers();
         }
 
-        private void DrawObject(Coord C, Texture texture, int zShift)
+        void DrawObject(Coord C, Texture texture, int zShift)
         {
             int size = 1;
             // включаем режим текстурирования

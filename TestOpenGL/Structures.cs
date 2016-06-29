@@ -7,43 +7,6 @@ using TestOpenGL.Logic;
 namespace TestOpenGL
 {
     /// <summary>
-    /// Структура для передачи нескольких блоков (или не блоков).
-    /// </summary>
-    /*struct VisualObjectStructure<T>
-    {
-        private Queue<T> objects;
-        private Queue<Coord> coords;
-        public VisualObjectStructure(Queue<T> objects, Queue<Coord> coords)
-        {
-            this.coords = coords;
-            this.objects = objects;
-        }
-        public void Push(T O, Coord C)
-        {
-            if (objects == null)
-                objects = new Queue<T>();
-            if (coords == null)
-                coords = new Queue<Coord>();
-
-            objects.Enqueue(O);
-            coords.Enqueue(C);
-        }
-        public T PopObject()
-        {
-            return objects.Dequeue();
-        }
-        public Coord PopCoord()
-        {
-            return coords.Dequeue();
-        }
-        public int Count
-        {
-            get { return objects == null ? 0 : objects.Count; }
-        }
-    }*/
-    
-
-    /// <summary>
     /// Структура для передачи координат.
     /// </summary>
     struct Coord
@@ -91,6 +54,7 @@ namespace TestOpenGL
 
     public delegate void VoidEventDelegate();
     public delegate void IntEventDelegate(int value);
+    public delegate void BoolEventDelegate(bool value);
 
     /// <summary>
     /// Перечисление частей тела, которые может занимать одетый предмет.

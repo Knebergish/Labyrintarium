@@ -4,24 +4,30 @@ using System.Diagnostics;
 
 
 using TestOpenGL.VisualObjects;
-using TestOpenGL;
 
 namespace TestOpenGL.Logic
 {
     class GameCycle
     {
-        // Поток пошаговости.
-        System.Threading.Thread Steps;
-        bool isStopStep = true;
+        Thread Steps;
         ManualResetEvent isNextStep = new ManualResetEvent(false);
-        //public Sight sight;
         Gamer gamer;
 
-        internal Gamer Gamer
+
+        public GameCycle()
+        {
+            Steps = new Thread(StepBeings);
+            Steps.Start(this.isNextStep);
+
+            StartStep();
+        }
+
+
+        public Gamer Gamer
         {
             get { return gamer; }
-            set 
-            { 
+            set
+            {
                 gamer = value;
                 Program.FA.UpdateForms();
                 Program.P.Camera.SetLookingVO(gamer);
@@ -29,48 +35,18 @@ namespace TestOpenGL.Logic
         }
 
 
-        
-        public GameCycle()
-        {
-            
-            Steps = new System.Threading.Thread(StepBeings);
-            Steps.Start(this.isNextStep);
-
-            //sight = new Sight(Program.P.Camera);
-
-            //Program.P.StartRedraw();
-            StartStep();
-
-            /*VisualObjectStructure<Decal> VOSD = new VisualObjectStructure<Decal>();
-            VOSD.Push(Program.OB.GetDecal(3), new Coord(5, 5));
-            VOSD.Push(Program.OB.GetDecal(3), new Coord(5, 6));
-            Program.L.AddDecals(VOSD);
-            Decal d;
-
-
-            d = Program.OB.GetDecal(4);
-            d.C = new Coord(10, 7);
-            Program.L.AddDecal(d);
-
-            Program.L.RemoveGroupDecals(0);*/
-            
-        }
-
         public void StartStep()
         {
-            this.isNextStep.Set();
-            this.isStopStep = false;
+            isNextStep.Set();
         }
         public void StopStep()
         {
-            this.isNextStep.Reset();
-            this.isStopStep = true;
+            isNextStep.Reset();
         }
 
         public void StepBeings(object state)
         {
             ManualResetEvent MRE = (ManualResetEvent)state;
-            Being B;
             List<Being> LB = new List<Being>(); ;
             bool flag;
             
@@ -81,8 +57,8 @@ namespace TestOpenGL.Logic
                 while(flag)
                 {
                     flag = false;
-                    LB = Program.L.GetMap<Being>().GetAllVO();
-                    foreach (Being b in LB)
+                    //LB = Program.L.GetMap<Being>().GetAllVO();
+                    foreach (Being b in Program.L.GetMap<Being>().GetAllVO())//LB)
                     {
                         if (b.features.ActionPoints >= 1)
                         {

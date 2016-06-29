@@ -22,7 +22,18 @@ namespace TestOpenGL.DataIO
                     return t;
             return null;
         }
-        public List<T> GetCellVO(Coord C)
+        public IEnumerable<T> GetCellVO(Coord C)
+        {
+            T t;
+            for (int i = 0; i < Program.L.LengthZ; i++)
+            {
+                t = GetVO(new Coord(C.X, C.Y, i));
+                if (t != null)
+                    yield return t; 
+            }
+        }
+
+        /*public List<T> GetCellVO(Coord C)
         {
             List<T> lt = new List<T>();
             T t;
@@ -33,11 +44,17 @@ namespace TestOpenGL.DataIO
                     lt.Add(t);
             }
             return lt;
+        }*/
+
+        public IEnumerable<T> GetAllVO()
+        {
+            foreach (T t in mapT)
+                yield return t;
         }
-        public List<T> GetAllVO()
+        /*public List<T> GetAllVO()
         {
             return new List<T>(mapT);
-        }
+        }*/
 
         public bool AddVO(T tvo, Coord C)
         {

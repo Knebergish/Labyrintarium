@@ -5,7 +5,7 @@ namespace TestOpenGL
 {
     class Control
     {
-        public VoidEventDelegate ChangeEnabledControl;
+        public BoolEventDelegate ChangeEnabledControl;
         private bool isEnabledControl;
 
         public bool IsEnabledControl
@@ -16,7 +16,7 @@ namespace TestOpenGL
                 isEnabledControl = value;
 
                 if (ChangeEnabledControl != null)
-                    ChangeEnabledControl();
+                    ChangeEnabledControl(isEnabledControl);
             }
         }
         public Control()
