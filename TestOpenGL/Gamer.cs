@@ -13,12 +13,14 @@ namespace TestOpenGL
         public Gamer(int id, string name, string description, Texture texture, int alliance)
             : base(id, name, description, texture, alliance)
         {
-            this.eventsBeing.EventBeingStartStep += new VoidEventDelegate(() => { Program.C.IsEnabledControl = true;});
+            this.eventsBeing.EventBeingStartStep += new VoidEventDelegate(() => { Program.C.IsEnabledControl = true; isEndStep.Reset();  });
             this.eventsBeing.EventBeingEndStep += new VoidEventDelegate(() => { Program.C.IsEnabledControl = false; });
+            this.eventsBeing.EventBeingEndActionPoints += new VoidEventDelegate(() => { isEndStep.Set(); });
         }
 
-        public override void Action()
+        protected override void Action()
         {
+            isEndStep.WaitOne();
         }
     }
 }

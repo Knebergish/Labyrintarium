@@ -8,8 +8,6 @@ namespace TestOpenGL.VisualObjects
 {
     abstract class Being : VisualObject
     {
-        //public Coord C;
-
         public bool isSpawned;
 
         public Features features;
@@ -64,7 +62,8 @@ namespace TestOpenGL.VisualObjects
             }
             this.eventsBeing.BeingEndStep();
         }
-        public abstract void Action();
+
+        protected abstract void Action();
 
         public bool CheckEndStep()
         {
@@ -163,17 +162,12 @@ namespace TestOpenGL.VisualObjects
     class EventsBeing
     {
         
-        //public event EventDelegate EventBeingChangeCoord;
         public event VoidEventDelegate EventBeingDeath;
         public event VoidEventDelegate EventBeingStartStep;
         public event VoidEventDelegate EventBeingEndStep;
         public event VoidEventDelegate EventBeingEndAction;
+        public event VoidEventDelegate EventBeingEndActionPoints;
 
-        /*public void BeingChangeCoord()
-        {
-            if (EventBeingChangeCoord != null)
-                EventBeingChangeCoord();
-        }*/
         public void BeingDeath()
         {
             if (EventBeingDeath != null)
@@ -193,6 +187,11 @@ namespace TestOpenGL.VisualObjects
         {
             if (EventBeingEndAction != null)
                 EventBeingEndAction();
+        }
+        public void BeingEndActionPoints()
+        {
+            if (EventBeingEndActionPoints != null)
+                EventBeingEndActionPoints();
         }
     }
 

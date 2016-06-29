@@ -12,7 +12,7 @@ namespace TestOpenGL.Logic
     {
         // Поток пошаговости.
         System.Threading.Thread Steps;
-        bool isStopStep = true;
+        //bool isStopStep = true;
         ManualResetEvent isNextStep = new ManualResetEvent(false);
         //public Sight sight;
         Gamer gamer;
@@ -59,12 +59,10 @@ namespace TestOpenGL.Logic
         public void StartStep()
         {
             this.isNextStep.Set();
-            this.isStopStep = false;
         }
         public void StopStep()
         {
             this.isNextStep.Reset();
-            this.isStopStep = true;
         }
 
         public void StepBeings(object state)

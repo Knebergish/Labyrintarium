@@ -18,7 +18,7 @@ namespace TestOpenGL
         public Form1()
         {
             InitializeComponent();
-            AnT.InitializeContexts();
+            GlControl.InitializeContexts();
         }
 
         Being Be;
@@ -27,7 +27,7 @@ namespace TestOpenGL
             Program.InitApp(this);
 
             this.MouseWheel += new MouseEventHandler(ResizeMatrix);
-            Program.C.ChangeEnabledControl += ChangeColorBorder;
+            Program.C.ChangeEnabledControl += ChangeColorControlEnabledIndicator;
             Program.P.EventFPSUpdate += SetFPS;
 
             Form1_SizeChanged(sender, e);
@@ -125,23 +125,23 @@ namespace TestOpenGL
             button1.Left = this.Width - button1.Width - 28;
             button2.Left = this.Width - button2.Width - 28;
             button4.Left = this.Width - button4.Width - 28;
-            listBox1.Left = this.Width - listBox1.Width - 28;
-            AnT.Width = Math.Min(this.Width - (this.Width - button1.Left) - 28, this.Height - 63);
-            AnT.Height = AnT.Width;
-            pictureBox1.Top = 0;
-            pictureBox1.Left = 0;
-            pictureBox1.Width = 10;
-            pictureBox1.Height = 10;
+            logListBox.Left = this.Width - logListBox.Width - 28;
+            GlControl.Width = Math.Min(this.Width - (this.Width - button1.Left) - 28, this.Height - 63);
+            GlControl.Height = GlControl.Width;
+            controlEnabledIndicator.Top = 0;
+            controlEnabledIndicator.Left = 0;
+            controlEnabledIndicator.Width = 10;
+            controlEnabledIndicator.Height = 10;
             Program.P.SettingVisibleAreaSize();
         }
-        public void ChangeColorBorder()
+        public void ChangeColorControlEnabledIndicator(bool value)
         {
-            bool b = Program.C.IsEnabledControl;
+            //bool b = Program.C.IsEnabledControl;
             Program.mainForm.Invoke(
             new Func<int>(() => 
             {
-                if (b) pictureBox1.BackColor = System.Drawing.Color.Green;
-                else pictureBox1.BackColor = System.Drawing.Color.Red;
+                if (value) controlEnabledIndicator.BackColor = System.Drawing.Color.Green;
+                else controlEnabledIndicator.BackColor = System.Drawing.Color.Red;
                 return 0;
             })
             );
@@ -164,7 +164,7 @@ namespace TestOpenGL
         }
         public void SetFPS(int value)
         {
-            label1.Text = value.ToString();
+            FPSValueLabel.Text = value.ToString();
         }
     }
 }

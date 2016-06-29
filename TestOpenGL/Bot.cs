@@ -17,7 +17,7 @@ namespace TestOpenGL
             
         }
 
-        public override void Action()
+        protected override void Action()
         {
                 /*try
                 {

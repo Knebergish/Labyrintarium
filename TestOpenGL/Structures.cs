@@ -90,6 +90,7 @@ namespace TestOpenGL
 
 
     public delegate void VoidEventDelegate();
+    public delegate void BoolEventDelegate(bool value);
     public delegate void IntEventDelegate(int value);
 
     /// <summary>

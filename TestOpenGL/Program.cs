@@ -45,7 +45,7 @@ namespace TestOpenGL
             OB = new ObjectsBuilder(DBIO, TA);
             L = new Level(10, 10, 4);
             P = new Painter(new Camera(10, 10));
-            Log = new Logger(f.listBox1);
+            Log = new Logger(f.logListBox);
             
             GCycle = new GameCycle();
             C = new Control();

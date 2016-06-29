@@ -19,9 +19,9 @@ namespace TestOpenGL.DataIO
             {
                 InitDB();
             }
-            catch(Exception ex)
+            catch(Exception)
             {
-                throw ex;
+                throw;
             }
         }
 
