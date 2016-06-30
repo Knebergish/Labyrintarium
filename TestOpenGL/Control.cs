@@ -20,6 +20,8 @@ namespace TestOpenGL
             actionsControlDataTable.Columns.Add("action", typeof(VoidEventDelegate));
 
             IsEnabledControl = true;
+
+            Func<List<RenderObject>> fu = new Func<List<RenderObject>>(() => { return new List<RenderObject>(); });
         }
 
         public void AddNewActionControl(char c, AdditionalKeys ak, VoidEventDelegate ved)

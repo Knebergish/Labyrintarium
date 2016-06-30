@@ -33,15 +33,14 @@ namespace TestOpenGL.Logic
                         return true;
             return false;
         }
-        public static bool CorrectCoordinate(Coord C)
+        /*public static bool CorrectCoordinate(Coord C)
         {
             if (C.X >= 0 && C.X < Program.L.LengthX)
                 if (C.Y >= 0 && C.Y < Program.L.LengthY)
                     if (C.Z >= 0 && C.Z < Program.L.LengthZ)
                         return true;
             return false;
-
-        }
+        }*/
         
 
 

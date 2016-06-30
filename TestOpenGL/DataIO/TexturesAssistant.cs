@@ -53,10 +53,9 @@ namespace TestOpenGL.DataIO
             // инициализация библиотеки openIL
             Il.ilInit();
             Il.ilEnable(Il.IL_ORIGIN_SET);
+            
 
-            Gl.glEnable(Gl.GL_DEPTH_TEST);
-
-            // устанавливаем цвет очистки окна 
+            // устанавливаем цвет очистки окна
             Gl.glClearColor(255, 255, 255, 1);
 
             //Включение поддержки прозрачности текстур
@@ -64,6 +63,8 @@ namespace TestOpenGL.DataIO
             Gl.glEnable(Gl.GL_BLEND);
             Gl.glBlendFunc(Gl.GL_SRC_ALPHA, Gl.GL_ONE_MINUS_SRC_ALPHA);
             Gl.glColor4f(1f, 1f, 1f, 0.75f);
+
+            //Gl.glEnable(Gl.GL_DEPTH_TEST);
 
             Gl.glClear(Gl.GL_COLOR_BUFFER_BIT | Gl.GL_DEPTH_BUFFER_BIT);
         }

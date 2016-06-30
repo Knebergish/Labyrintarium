@@ -1,5 +1,9 @@
-﻿using System.Threading;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Threading;
 using System.Diagnostics;
+using System.Linq;
 
 using Tao.OpenGl;
 
@@ -11,17 +15,15 @@ namespace TestOpenGL.Logic
     {
         public event IntEventDelegate EventFPSUpdate;
 
-        //delegate void updateVoid();
-
-        System.Threading.Thread RenderThread;
+        Thread RenderThread;
         ManualResetEvent isNextRender = new ManualResetEvent(false);
-
-        Camera camera; //TODO: вот как-то она тут не в тему, но куда её убрать?..
 
         int maxFPS;
         int pauseMillisecond;
 
+        List<Func<List<RenderObject>>> shadersList;
 
+        Camera camera; //TODO: вот как-то она тут не в тему, но куда её убрать?..
 
 
         public Painter(Camera camera)
@@ -29,13 +31,15 @@ namespace TestOpenGL.Logic
             maxFPS = 60;
             pauseMillisecond = 0;
 
+            shadersList = new List<Func<List<RenderObject>>>();
+
             this.camera = camera;
 
 
             SettingVisibleAreaSize();
 
-            RenderThread = new System.Threading.Thread(Render);
-            RenderThread.Start(this.isNextRender);
+            RenderThread = new Thread(Render);
+            RenderThread.Start(isNextRender);
             StartRender();
         }
 
@@ -64,7 +68,9 @@ namespace TestOpenGL.Logic
             set { maxFPS = value > 0 && value < 1000 ? value : 60; }
         }
 
-        
+        public List<Func<List<RenderObject>>> ShadersList
+        { get { return shadersList; } }
+
         void FPSUpdate(int newValue)
         {
             if (EventFPSUpdate != null)
@@ -86,28 +92,6 @@ namespace TestOpenGL.Logic
         {
             this.isNextRender.Reset();
             Thread.Sleep(1);
-        }
-
-        public void SettingVisibleAreaSize()
-        {
-            Gl.glViewport(0, 0, this.GlControl.Width, this.GlControl.Height);
-            // устанавливаем проекционную матрицу 
-            Gl.glMatrixMode(Gl.GL_PROJECTION);
-            // очищаем ее 
-            Gl.glLoadIdentity();
-
-            // теперь необходимо корректно настроить 2D ортогональную проекцию 
-            // в зависимости от того, какая сторона больше 
-            // мы немного варьируем то, как будут сконфигурированы настройки проекции 
-            if (this.GlControl.Width <= this.GlControl.Height)
-                Glu.gluOrtho2D(0.0, camera.Width, 0.0, camera.Height * (float)this.GlControl.Height / (float)this.GlControl.Width);
-            else
-                Glu.gluOrtho2D(0.0, camera.Width * (float)this.GlControl.Width / (float)this.GlControl.Height, 0.0, camera.Height);
-
-            // переходим к объектно-видовой матрице 
-            Gl.glMatrixMode(Gl.GL_MODELVIEW);
-
-            Camera.Look();
         }
 
         void Render(object state)
@@ -138,56 +122,69 @@ namespace TestOpenGL.Logic
                 Program.mainForm.Invoke(del);
 
 
-                System.Threading.Thread.Sleep(pauseMillisecond);
+                Thread.Sleep(pauseMillisecond);
                 nextFrame.WaitOne();
             }
         }
 
-        void DrawFrame()
+        public void DrawFrame()
         {
             int zShift;
 
             Gl.glClear(Gl.GL_COLOR_BUFFER_BIT | Gl.GL_DEPTH_BUFFER_BIT);
 
+            List<RenderObject> listRO = new List<RenderObject>();
+
             // Фоны
             zShift = 0;
             foreach (Background b in Program.L.GetMap<Background>().GetAllVO())
                 if (Analytics.IsInCamera(b.C, this.Camera))
-                    this.DrawObject(new Coord(b.C.X - Camera.MinX, b.C.Y - Camera.MinY, b.C.Z), b.texture, zShift);
+                    listRO.Add(new RenderObject(b, (int)TypeVisualObject.Background * (Program.L.LengthZ - 1)));
             // Конец фонов
-
 
             // Блоки
             zShift += Program.L.LengthZ;
             foreach (Block b in Program.L.GetMap<Block>().GetAllVO())
                 if (Analytics.IsInCamera(b.C, this.Camera))
-                    this.DrawObject(new Coord(b.C.X - Camera.MinX, b.C.Y - Camera.MinY, b.C.Z), b.texture, zShift);
+                    listRO.Add(new RenderObject(b, (int)TypeVisualObject.Block * (Program.L.LengthZ - 1)));
             // Конец блоков
-
 
             // Сущности
             zShift += Program.L.LengthZ;
             foreach (Being b in Program.L.GetMap<Being>().GetAllVO())
                 if (b.isSpawned)
                     if (Analytics.IsInCamera(b.C, this.Camera))
-                        this.DrawObject(new Coord(b.C.X - Camera.MinX, b.C.Y - Camera.MinY), b.texture, zShift);
+                        listRO.Add(new RenderObject(b, (int)TypeVisualObject.Being * (Program.L.LengthZ - 1)));
             // Конец сущностей
 
             // Декали
             zShift += Program.L.LengthZ;
             foreach (Decal d in Program.L.GetMap<Decal>().GetAllVO())
                 if (Analytics.IsInCamera(d.C, this.Camera))
-                    this.DrawObject(new Coord(d.C.X - this.camera.MinX, d.C.Y - this.camera.MinY, d.C.Z), d.texture, zShift);
+                    listRO.Add(new RenderObject(d, (int)TypeVisualObject.Decal * (Program.L.LengthZ - 1)));
             // Конец декалей
 
+
+            foreach (Func<List<RenderObject>> func in shadersList)
+                listRO.AddRange(func());
+
+
+            var sort = from ro in listRO
+                   orderby ro.ZIndex
+                   select ro;
+
+            foreach (RenderObject ro in sort)
+                this.DrawObject(ro.Texture, ro.C, 0);
+
+            
+
             // Прицел
-            zShift += Program.L.LengthZ;
-            this.DrawObject(new Coord(camera.Sight.C.X - this.camera.MinX, camera.Sight.C.Y - this.camera.MinY), camera.Sight.AimDecal.texture, zShift);
+            this.DrawObject(camera.Sight.AimDecal.texture, new Coord(camera.Sight.C.X - this.camera.MinX, camera.Sight.C.Y - this.camera.MinY), 100);
 
             Program.mainForm.GlControl.SwapBuffers();
         }
 
-        void DrawObject(Coord C, Texture texture, int zShift)
+        public void DrawObject(Texture texture, Coord C,  int zShift)
         {
             int size = 1;
             // включаем режим текстурирования
@@ -198,22 +195,44 @@ namespace TestOpenGL.Logic
 
             Gl.glBegin(Gl.GL_QUADS);
 
-            Gl.glTexCoord2f(0.0f, 0.0f);
-            Gl.glVertex3d((double)C.X, (double)C.Y, (double)(C.Z + zShift) / 1000);
+            Gl.glTexCoord2d(0.0, 0.0);
+            Gl.glVertex2d((double)C.X, (double)C.Y);
 
-            Gl.glTexCoord2f(0.0f, 0.0f + size);
-            Gl.glVertex3d((double)C.X, (double)C.Y + size, (double)(C.Z + zShift) / 1000);
+            Gl.glTexCoord2d(0.0, 0.0 + size);
+            Gl.glVertex2d((double)C.X, (double)C.Y + size);
 
-            Gl.glTexCoord2f(0.0f + size, 0.0f + size);
-            Gl.glVertex3d((double)C.X + size, (double)C.Y + size, (double)(C.Z + zShift) / 1000);
+            Gl.glTexCoord2d(0.0 + size, 0.0 + size);
+            Gl.glVertex2d((double)C.X + size, (double)C.Y + size);
 
-            Gl.glTexCoord2f(0.0f + size, 0.0f);
-            Gl.glVertex3d((double)C.X + size, (double)C.Y, (double)(C.Z + zShift) / 1000);
+            Gl.glTexCoord2d(0.0 + size, 0.0);
+            Gl.glVertex2d((double)C.X + size, (double)C.Y);
 
             Gl.glEnd();
 
             // отключаем режим текстурирования
             Gl.glDisable(Gl.GL_TEXTURE_2D);
+        }
+
+        public void SettingVisibleAreaSize()
+        {
+            Gl.glViewport(0, 0, this.GlControl.Width, this.GlControl.Height);
+            // устанавливаем проекционную матрицу 
+            Gl.glMatrixMode(Gl.GL_PROJECTION);
+            // очищаем ее 
+            Gl.glLoadIdentity();
+
+            // теперь необходимо корректно настроить 2D ортогональную проекцию 
+            // в зависимости от того, какая сторона больше 
+            // мы немного варьируем то, как будут сконфигурированы настройки проекции 
+            if (this.GlControl.Width <= this.GlControl.Height)
+                Glu.gluOrtho2D(0.0, camera.Width, 0.0, camera.Height * (float)this.GlControl.Height / (float)this.GlControl.Width);
+            else
+                Glu.gluOrtho2D(0.0, camera.Width * (float)this.GlControl.Width / (float)this.GlControl.Height, 0.0, camera.Height);
+
+            // переходим к объектно-видовой матрице 
+            Gl.glMatrixMode(Gl.GL_MODELVIEW);
+
+            Camera.Look();
         }
 
         /*public void DrawColor(Coord C, double colorA, double colorB, double colorC)

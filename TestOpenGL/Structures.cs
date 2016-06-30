@@ -2,7 +2,7 @@
 //using System.Collections.Generic;
 
 using TestOpenGL.Logic;
-//using TestOpenGL.VisualObjects;
+using TestOpenGL.VisualObjects;
 
 namespace TestOpenGL
 {
@@ -42,11 +42,35 @@ namespace TestOpenGL
         }
     }*/
     
+        
+    struct RenderObject
+    {
+        Texture texture;
+        Coord c;
+        double zIndex;
+
+        public RenderObject(VisualObject vo, double zShift) : this(vo.texture, vo.C, zShift)
+        {
+        }
+        public RenderObject(Texture texture, Coord c, double zShift)
+        {
+            this.texture = texture;
+            this.c = c;
+            zIndex = zShift + c.Z;
+        }
+
+        public Texture Texture
+        { get { return texture; } }
+        public Coord C
+        { get { return c; } }
+        public double ZIndex
+        { get { return zIndex; } }
+    }
 
     /// <summary>
     /// Структура для передачи координат.
     /// </summary>
-    struct Coord
+    struct Coord : IComparable
     {
         // Координата (0, 0) - левый нижний угол. Ось X - горизонтальная.
         private int x;
@@ -85,6 +109,11 @@ namespace TestOpenGL
         public static bool operator !=(Coord C1, Coord C2)
         {
             return C1.X != C2.X || C1.Y != C2.Y || C1.Z != C2.Z ? true : false;
+        }
+        public int CompareTo(object obj)
+        {
+            Coord c = (Coord)obj;
+            return this.z > c.z ? 1 : (this.z < c.z ? -1 : 0);
         }
     }
 

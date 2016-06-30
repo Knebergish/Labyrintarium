@@ -46,7 +46,18 @@ namespace TestOpenGL
             //Program.OB.GetBot(1, 1).Spawn(new Coord(5, 5));
             Program.OB.GetBot(1, 0).Spawn(new Coord(1, 0));
 
+            Program.P.ShadersList.Add(new Func<List<RenderObject>>(() => 
+            {
+                Block b = Program.OB.GetBlock(3);
+                List<RenderObject> lro = new List<RenderObject>();
 
+                foreach (Block block in Program.L.GetMap<Block>().GetAllVO())
+                    if (block.Id == 2)
+                        if(Analytics.CorrectCoordinate(block.C.X, block.C.Y + 1) && Analytics.IsInCamera(new Coord(block.C.X, block.C.Y + 1), Program.P.Camera))
+                            lro.Add(new RenderObject(b.texture, new Coord(block.C.X, block.C.Y + 1), (int)TypeVisualObject.Being * (Program.L.LengthZ - 1) + Program.L.LengthZ + 0.5));
+
+                return lro;
+            }));
             
             Program.GCycle.StartStep();
 
@@ -61,23 +72,24 @@ namespace TestOpenGL
             {
                 for (int y = 0; y < Program.L.LengthY - 1; y++)
                 {
-                    //Program.OB.GetDecal(2).Spawn(new Coord(x, y, 1));
                     Program.OB.GetBackground(1).Spawn(new Coord(x, y, 0));
 
                     if (rnd.Next(0, 40) == 1)
                     {
                         Program.OB.GetBlock(2).Spawn(new Coord(x, y, 0));
-                        Program.OB.GetDecal(5).Spawn(new Coord(x, y + 1, 0));
+                        //Program.OB.GetDecal(5).Spawn(new Coord(x, y + 1, 0));
                     }
                     if (rnd.Next(0, 20) == 1)
                     {
                         Program.OB.GetBlock(1).Spawn(new Coord(x, y, 0));
                     }
                 }
-            }
+            }    
+           
+
             //Program.OB.GetBlock(2).Spawn(new Coord(6, 6, 0));
             //Program.OB.GetBlock(1).Spawn(new Coord(6, 6, 1));
-            
+
             /*List<Block> lt = new List<Block>();
             lt = Program.L.GetMap<Block>().GetCellVO(new Coord(6, 6));
             foreach (Block b in lt)
