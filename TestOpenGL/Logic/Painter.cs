@@ -11,7 +11,7 @@ namespace TestOpenGL.Logic
     {
         public event IntEventDelegate EventFPSUpdate;
 
-        delegate void updateVoid();
+        //delegate void updateVoid();
 
         System.Threading.Thread RenderThread;
         ManualResetEvent isNextRender = new ManualResetEvent(false);
@@ -123,7 +123,7 @@ namespace TestOpenGL.Logic
                 nextFrame.Reset();
 
 
-                updateVoid del = delegate
+                VoidEventDelegate del = delegate
                 {
                     sw.Start();
 

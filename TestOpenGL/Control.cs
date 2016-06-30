@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Windows.Forms;
 
 namespace TestOpenGL
@@ -7,6 +9,35 @@ namespace TestOpenGL
     {
         public BoolEventDelegate ChangeEnabledControl;
         private bool isEnabledControl;
+
+        DataTable actionsControlDataTable;
+
+        public Control()
+        {
+            actionsControlDataTable = new DataTable();
+            actionsControlDataTable.Columns.Add("keyChar", typeof(char));
+            actionsControlDataTable.Columns.Add("additionalKey", typeof(AdditionalKeys));
+            actionsControlDataTable.Columns.Add("action", typeof(VoidEventDelegate));
+
+            IsEnabledControl = true;
+        }
+
+        public void AddNewActionControl(char c, AdditionalKeys ak, VoidEventDelegate ved)
+        {
+            for (int i = 0; i < actionsControlDataTable.Rows.Count; i++)
+                if ((char)actionsControlDataTable.Rows[i][0] == char.ToLower(c))
+                    if ((AdditionalKeys)actionsControlDataTable.Rows[i][1] == ak)
+                    {
+                        actionsControlDataTable.Rows[i][2] = ved;
+                        return;
+                    }
+
+            actionsControlDataTable.Rows.Add(c, ak, ved);
+        }
+        public void ClearAllActionsControl()
+        {
+            actionsControlDataTable.Rows.Clear();
+        }
 
         public bool IsEnabledControl
         {
@@ -19,10 +50,6 @@ namespace TestOpenGL
                     ChangeEnabledControl(isEnabledControl);
             }
         }
-        public Control()
-        {
-            IsEnabledControl = true;
-        }
 
         public void ProcessingKeyPress(KeyEventArgs kea)
         {
@@ -31,58 +58,23 @@ namespace TestOpenGL
 
             IsEnabledControl = false;
 
+            AdditionalKeys ak = kea.Shift ? AdditionalKeys.Shift :
+                kea.Control ? AdditionalKeys.Ctrl :
+                kea.Alt ? AdditionalKeys.Alt : 
+                AdditionalKeys.None;
+            VoidEventDelegate uv;
             char key = char.ToLower((char)kea.KeyCode);
-            switch (kea.Shift)
-            {
-                case false:
-                    switch (key)
-                    {
-                        case 'a':
-                            if (Program.GCycle.Gamer.isSpawned)
-                                Program.GCycle.Gamer.Move(TestOpenGL.Direction.Left);
-                            break;
-                        case 'w':
-                            if (Program.GCycle.Gamer.isSpawned)
-                                Program.GCycle.Gamer.Move(TestOpenGL.Direction.Up);
-                            break;
-                        case 'd':
-                            if (Program.GCycle.Gamer.isSpawned)
-                                Program.GCycle.Gamer.Move(TestOpenGL.Direction.Right);
-                            break;
-                        case 's':
-                            if (Program.GCycle.Gamer.isSpawned)
-                                Program.GCycle.Gamer.Move(TestOpenGL.Direction.Down);
-                            break;
 
-                        case 'j':
-                            Program.P.Camera.Sight.MoveSight(Direction.Left);
-                            break;
-                        case 'i':
-                            Program.P.Camera.Sight.MoveSight(Direction.Up);
-                            break;
-                        case 'l':
-                            Program.P.Camera.Sight.MoveSight(Direction.Right);
-                            break;
-                        case 'k':
-                            Program.P.Camera.Sight.MoveSight(Direction.Down);
-                            break;
-                    }
-                    break;
-
-                case true:
-                    switch (key)
+            for (int i = 0; i < actionsControlDataTable.Rows.Count; i++)
+                if ((char)actionsControlDataTable.Rows[i][0] == char.ToLower((char)kea.KeyCode))
+                    if ((AdditionalKeys)actionsControlDataTable.Rows[i][1] == ak)
                     {
-                        case 'i':
-                            Program.FA.ProcessingOpeningForms(1);
-                            break;
-                        case 'm':
-                            Program.FA.ProcessingOpeningForms(2);
-                            break;
+                        uv = (VoidEventDelegate)actionsControlDataTable.Rows[i][2];
+                        uv();
+                        break;
                     }
-                    break;
-            }
+
             IsEnabledControl = true;
         }
-
     }
 }

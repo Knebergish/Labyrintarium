@@ -49,9 +49,8 @@ namespace TestOpenGL
 
             
             Program.GCycle.StartStep();
-            //Program.P.Camera.SetLookingVO(Be);
 
-            
+            VariantsControls.StandartGamerControl();
 
             button1_Click(sender, e);
         }

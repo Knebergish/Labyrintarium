@@ -11,6 +11,7 @@ namespace TestOpenGL.Logic
     class Analytics
     {
         //TODO: почему я смотрю на это, и мне хочется плакать?..
+
         /// <summary>
         /// Проверка переданных координат на корректность.
         /// </summary>
@@ -49,7 +50,6 @@ namespace TestOpenGL.Logic
         /// </summary>
         /// <param name="start"> Стартовые координаты.</param>
         /// <param name="end"> Координаты точки, к которой ищем путь.</param>
-        /// <param name="type"> Тип проходимости ячейки: true - учитывются сущности.</param>
         /// <returns></returns>
         static public Stack<Coord> BFS(Coord start, Coord end)
         {
@@ -121,6 +121,7 @@ namespace TestOpenGL.Logic
 
             return SC;
         }
+
         static public Direction DirectionToGrid(Coord start, Coord end)
         {
             if (start.X <= end.X && start.Y < end.Y)

@@ -70,10 +70,5 @@ namespace TestOpenGL.DataIO
 
             return dt;
         }
-
-        /*~DataBaseIO()
-        {
-            this.conn.Close();
-        }*/
     }
 }

@@ -114,11 +114,16 @@ namespace TestOpenGL
     /// <summary>
     /// Перечисление направлений движения сущности.
     /// </summary>
-    enum Direction { Left, Up, Right, Down, None};
+    enum Direction { Left, Up, Right, Down, None };
 
 
     /// <summary>
     /// Перечисление типов проверки проходимости/проницаемости ячейки.
     /// </summary>
     enum Permeability { Block, BlockAndBeing };
+
+    /// <summary>
+    /// Перечисление дополнительно нажатых клавиш управления.
+    /// </summary>
+    enum AdditionalKeys { None, Shift, Ctrl, Alt};
 }

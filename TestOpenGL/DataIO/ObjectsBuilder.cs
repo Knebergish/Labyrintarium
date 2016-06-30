@@ -22,22 +22,6 @@ namespace TestOpenGL.DataIO
             this.TA = TA;
         }
 
-        /*public Attack GetAttack(int num)
-        {
-            DataTable dt = DBIO.ExecuteSQL("SELECT * FROM Attacks WHERE Attacks.id = " + num);
-            return new Attack(
-                num,
-                (string)dt.Rows[0]["name"],
-                (string)dt.Rows[0]["description"],
-                TA.GetTexture(TypeVisualObject.Decal, int.Parse(dt.Rows[0]["imageId"].ToString())),
-                (Feature)int.Parse(dt.Rows[0]["profilingFeature"].ToString()),
-                (double)dt.Rows[0]["coefficient"],
-                int.Parse(dt.Rows[0]["minDistance"].ToString()),
-                int.Parse(dt.Rows[0]["maxDistance"].ToString()),
-                int.Parse(dt.Rows[0]["timePause"].ToString())
-                );
-        }*/
-
         public Background GetBackground(int num)
         {
             DataTable dt = DBIO.ExecuteSQL("SELECT * FROM Backgrounds WHERE Backgrounds.id = " + num);
@@ -49,6 +33,7 @@ namespace TestOpenGL.DataIO
                 TA.GetTexture(TypeVisualObject.Background, int.Parse(dt.Rows[0]["imageId"].ToString()))
                 );
         }
+
         public Block GetBlock(int num)
         {
             DataTable dt = DBIO.ExecuteSQL("SELECT * FROM Blocks WHERE Blocks.id = " + num);
@@ -115,7 +100,6 @@ namespace TestOpenGL.DataIO
                 int.Parse(dt.Rows[0]["price"].ToString()),
                 lp
                 );
-
         }
     }
 }
