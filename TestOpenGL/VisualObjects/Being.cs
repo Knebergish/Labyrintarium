@@ -8,7 +8,7 @@ namespace TestOpenGL.VisualObjects
 {
     abstract class Being : VisualObject
     {
-        public bool isSpawned;
+        private bool isSpawned;
 
         public Features features;
 
@@ -32,6 +32,12 @@ namespace TestOpenGL.VisualObjects
         public int Alliance
         { get; set; }
 
+        public bool IsSpawned
+        {
+            get { return isSpawned; }
+            //set { isSpawned = value; }
+        }
+
         ////////////////////////////////////////////////////////////////////////////////////////
 
         public Being(int id, string name, string description, Texture texture, int alliance)
@@ -47,7 +53,8 @@ namespace TestOpenGL.VisualObjects
 
         protected override bool IsEmptyCell(Coord C)
         {
-            return Program.L.GetMap<Being>().GetVO(C) == null ? true : false;
+            //if(Program.L.GetMap<Being>().GetCellVO(C)!=null)
+            return Program.L.GetMap<Being>().GetCellVO(C).Count == 0 ? true : false;
         }
 
         public void Step()
@@ -65,37 +72,25 @@ namespace TestOpenGL.VisualObjects
 
         protected abstract void Action();
 
-        public bool CheckEndStep()
+        bool CheckEndStep()
         {
             return this.features.ActionPoints < 1 ? true : false;
         }
 
         public override bool Spawn(Coord C)
         {
-            if(SetNewCoord(C))
+            if(!isSpawned && SetNewCoord(new Coord(C.X, C.Y)))
             {
                 Program.L.GetMap<Being>().AddVO(this, C);
                 isSpawned = true;
                 return true;
             }
             return false;
-            /*if (this.isSpawned)
-            {
-                this.C = C;
-            }
-            else
-            {
-                this.isSpawned = true;
-                this.C = C;
-                if (!Program.L.MapBeings.AddBeing(this))
-                    throw new Exception("Попытка добавить сущность в занятую другой сущностью ячейку.");
-            }
-            this.eventsBeing.BeingChangeCoord();*/
         }
 
         public bool Move(Coord C)
         {
-            if(this.features.ActionPoints >= 1 && SetNewCoord(C))
+            if(isSpawned && this.features.ActionPoints >= 1 && SetNewCoord(C))
             {
                 Program.L.Pause(100);
                 this.features.ActionPoints--;

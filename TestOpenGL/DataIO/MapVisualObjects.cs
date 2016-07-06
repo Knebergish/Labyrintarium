@@ -22,18 +22,18 @@ namespace TestOpenGL.DataIO
                     return t;
             return null;
         }
-        public IEnumerable<T> GetCellVO(Coord C)
+        public List<T> GetCellVO(Coord C)
         {
-            //List<T> lt = new List<T>();
+            List<T> lt = new List<T>();
             T t;
             for (int i = 0; i < Program.L.LengthZ; i++)
             {
                 t = GetVO(new Coord(C.X, C.Y, i));
                 if (t != null)
-                    yield return t;
-                    //lt.Add(t);
+                    //yield return t;
+                    lt.Add(t);
             }
-            //return lt;
+            return lt;
         }
 
         public List<T> GetAllVO()

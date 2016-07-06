@@ -152,7 +152,7 @@ namespace TestOpenGL.Logic
             // Сущности
             zShift += Program.L.LengthZ;
             foreach (Being b in Program.L.GetMap<Being>().GetAllVO())
-                if (b.isSpawned)
+                if (b.IsSpawned)
                     if (Analytics.IsInCamera(b.C, this.Camera))
                         listRO.Add(new RenderObject(b, (int)TypeVisualObject.Being * (Program.L.LengthZ - 1)));
             // Конец сущностей

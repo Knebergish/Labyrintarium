@@ -12,23 +12,19 @@ namespace TestOpenGL
         {
             Program.C.AddNewActionControl('a', AdditionalKeys.None, delegate
             {
-                if (Program.GCycle.Gamer.isSpawned)
-                    Program.GCycle.Gamer.Move(TestOpenGL.Direction.Left);
+                Program.GCycle.Gamer.Move(TestOpenGL.Direction.Left);
             });
             Program.C.AddNewActionControl('w', AdditionalKeys.None, delegate
             {
-                if (Program.GCycle.Gamer.isSpawned)
-                    Program.GCycle.Gamer.Move(TestOpenGL.Direction.Up);
+                Program.GCycle.Gamer.Move(TestOpenGL.Direction.Up);
             });
             Program.C.AddNewActionControl('d', AdditionalKeys.None, delegate
             {
-                if (Program.GCycle.Gamer.isSpawned)
-                    Program.GCycle.Gamer.Move(TestOpenGL.Direction.Right);
+                Program.GCycle.Gamer.Move(TestOpenGL.Direction.Right);
             });
             Program.C.AddNewActionControl('s', AdditionalKeys.None, delegate
             {
-                if (Program.GCycle.Gamer.isSpawned)
-                    Program.GCycle.Gamer.Move(TestOpenGL.Direction.Down);
+                Program.GCycle.Gamer.Move(TestOpenGL.Direction.Down);
             });
 
             Program.C.AddNewActionControl('j', AdditionalKeys.None, delegate

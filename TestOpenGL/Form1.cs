@@ -70,7 +70,7 @@ namespace TestOpenGL
             Random rnd = new Random();
             for (int x = 0; x < Program.L.LengthX; x++)
             {
-                for (int y = 0; y < Program.L.LengthY - 1; y++)
+                for (int y = 0; y < Program.L.LengthY; y++)
                 {
                     Program.OB.GetBackground(1).Spawn(new Coord(x, y, 0));
 
