@@ -39,7 +39,7 @@ namespace TestOpenGL.Logic
             SettingVisibleAreaSize();
 
             RenderThread = new Thread(Render);
-            RenderThread.Start(isNextRender);
+            RenderThread.Start();
             StartRender();
         }
 
@@ -94,36 +94,31 @@ namespace TestOpenGL.Logic
             Thread.Sleep(1);
         }
 
-        void Render(object state)
+        void Render()
         {
             Stopwatch sw = new Stopwatch();
-            ManualResetEvent nextRender = (ManualResetEvent)state;
-            ManualResetEvent nextFrame = new ManualResetEvent(false);
 
             while (true)
             {
-                nextRender.WaitOne();
-
-                nextFrame.Reset();
-
+                isNextRender.WaitOne();
+                StopRender();
 
                 VoidEventDelegate del = delegate
                 {
                     sw.Start();
 
-                    DrawFrame();
+                    DrawFrame(); 
 
                     sw.Stop();
                     ProcessingFPS((int)sw.ElapsedMilliseconds);
                     sw.Reset();
 
-                    nextFrame.Set();
+                    StartRender();
                 };
                 Program.mainForm.Invoke(del);
 
 
                 Thread.Sleep(pauseMillisecond);
-                nextFrame.WaitOne();
             }
         }
 
@@ -174,7 +169,7 @@ namespace TestOpenGL.Logic
                    select ro;
 
             foreach (RenderObject ro in sort)
-                this.DrawObject(ro.Texture, ro.C, 0);
+                this.DrawObject(ro.Texture, new Coord(ro.C.X - Camera.MinX, ro.C.Y - Camera.MinY), 0);
 
             
 

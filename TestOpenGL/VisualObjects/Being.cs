@@ -51,11 +51,17 @@ namespace TestOpenGL.VisualObjects
             rangeOfVisibility = 10;
         }
 
-        protected override bool IsEmptyCell(Coord C)
+        public override bool Spawn(Coord C)
         {
-            //if(Program.L.GetMap<Being>().GetCellVO(C)!=null)
-            return Program.L.GetMap<Being>().GetCellVO(C).Count == 0 ? true : false;
+            if (!isSpawned && SetNewCoord(new Coord(C.X, C.Y)))
+            {
+                Program.L.GetMap<Being>().AddVO(this, C);
+                isSpawned = true;
+                return true;
+            }
+            return false;
         }
+
 
         public void Step()
         {
@@ -76,23 +82,13 @@ namespace TestOpenGL.VisualObjects
         {
             return this.features.ActionPoints < 1 ? true : false;
         }
-
-        public override bool Spawn(Coord C)
-        {
-            if(!isSpawned && SetNewCoord(new Coord(C.X, C.Y)))
-            {
-                Program.L.GetMap<Being>().AddVO(this, C);
-                isSpawned = true;
-                return true;
-            }
-            return false;
-        }
+        
 
         public bool Move(Coord C)
         {
             if(isSpawned && this.features.ActionPoints >= 1 && SetNewCoord(C))
             {
-                Program.L.Pause(100);
+                //Program.L.Pause(100);
                 this.features.ActionPoints--;
                 return true;
             }
@@ -151,6 +147,23 @@ namespace TestOpenGL.VisualObjects
             this.isSpawned = false;
             this.eventsBeing.BeingDeath();
             Program.L.GetMap<Being>().RemoveVO(this.C);
+        }
+
+        public bool Use()
+        {
+            if (Analytics.Distance(this.C, Program.P.Camera.Sight.C) > 1)
+                return false;
+
+            foreach (Block b in Program.L.GetMap<Block>().GetCellVO(Program.P.Camera.Sight.C))
+                if (b is UsedBlock)
+                    ((UsedBlock)b).Use();
+            return true;
+        }
+
+        protected override bool IsEmptyCell(Coord C)
+        {
+            //if(Program.L.GetMap<Being>().GetCellVO(C)!=null)
+            return Program.L.GetMap<Being>().GetCellVO(C).Count == 0 ? true : false;
         }
     }
 

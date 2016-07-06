@@ -26,6 +26,10 @@ namespace TestOpenGL
             {
                 Program.GCycle.Gamer.Move(TestOpenGL.Direction.Down);
             });
+            Program.C.AddNewActionControl('e', AdditionalKeys.None, delegate
+            {
+                Program.GCycle.Gamer.Use();
+            });
 
             Program.C.AddNewActionControl('j', AdditionalKeys.None, delegate
             {

@@ -43,7 +43,7 @@ namespace TestOpenGL
             DBIO = new DataBaseIO(Directory.GetCurrentDirectory());
             TA = new TexturesAssistant(Directory.GetCurrentDirectory());
             OB = new ObjectsBuilder(DBIO, TA);
-            L = new Level(10, 10, 4);
+            L = new Level(30, 30, 4);
             P = new Painter(new Camera(10, 10));
             Log = new Logger(f.logListBox);
             
@@ -54,4 +54,9 @@ namespace TestOpenGL
     }
 }
 
-// Доработан класс Being - проверки на возможность совершения действий вшиты в его методы.
+// Отменены изменения в MapVisualObject: IEnumerable оказался неудобным для использования, а выигрыш в производительности был ничтожен.
+// Внесены изменения в систему текстурирования(TextureAssistant): имя файла теперь задаётся не номером, а строкой.
+// Добавлены классы: UsedBlock (абстрактный класс блоков, поддерживающий использование), ActionBlock (наследник UsedBlock, класс блоков с заданным действием использования), Dorr (наследник UsedBlock, класс двери).
+// В класс Being добавлено действие Use - использование используемых блоков под прицелом.
+// Добавлен шейдер отрисовки надетых предметов.
+// Изменён метод Render для исправления $%`~&?#@ ошибки.

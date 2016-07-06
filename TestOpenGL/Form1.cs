@@ -58,7 +58,18 @@ namespace TestOpenGL
 
                 return lro;
             }));
-            
+            Program.P.ShadersList.Add(new Func<List<RenderObject>>(() =>
+            {
+                List<RenderObject> lro = new List<RenderObject>();
+
+                foreach (Being b in Program.L.GetMap<Being>().GetAllVO())
+                    if (Analytics.IsInCamera(new Coord(b.C.X, b.C.Y), Program.P.Camera))
+                        foreach(Item i in b.inventory.GetEquipmentItems())
+                            lro.Add(new RenderObject(i.texture, b.C, (int)TypeVisualObject.Being * (Program.L.LengthZ - 1) + 0.1));
+
+                return lro;
+            }));
+
             Program.GCycle.StartStep();
 
             VariantsControls.StandartGamerControl();
@@ -73,18 +84,37 @@ namespace TestOpenGL
                 for (int y = 0; y < Program.L.LengthY; y++)
                 {
                     Program.OB.GetBackground(1).Spawn(new Coord(x, y, 0));
-
                     if (rnd.Next(0, 40) == 1)
                     {
                         Program.OB.GetBlock(2).Spawn(new Coord(x, y, 0));
-                        //Program.OB.GetDecal(5).Spawn(new Coord(x, y + 1, 0));
                     }
                     if (rnd.Next(0, 20) == 1)
                     {
                         Program.OB.GetBlock(1).Spawn(new Coord(x, y, 0));
                     }
                 }
-            }    
+            }
+
+            Program.L.GetMap<Block>().AddVO
+                (
+                    new Door
+                    (
+                        new Block
+                            (
+                                14,
+                                "Деревянная дверь",
+                                "Дверь, сделанная из дерева",
+                                false,
+                                false,
+                                false,
+                                Program.TA.GetTexture(TypeVisualObject.Block, "14")
+                            ),
+                        Program.TA.GetTexture(TypeVisualObject.Block, "14-opened"),
+                        true,
+                        false
+                    ), 
+                    new Coord(5, 5, 3)
+                );
            
 
             //Program.OB.GetBlock(2).Spawn(new Coord(6, 6, 0));
@@ -115,7 +145,8 @@ namespace TestOpenGL
                     if (B != null)
                         B.Damage(1);*/
                     //Attack.AttackAnimation(new Coord(0, 0), new Coord(10, 15), Program.OB.GetDecal(2), 100);
-                    Program.P.StopRender();
+                    //Program.P.StopRender();
+                    ((Door)Program.L.GetMap<Block>().GetVO(new Coord(5, 5, 3))).Use();
                 }).Start();
             
             /*Program.GCycle.StopStep();

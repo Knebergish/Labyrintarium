@@ -30,7 +30,7 @@ namespace TestOpenGL.DataIO
                 (string)dt.Rows[0]["name"],
                 (string)dt.Rows[0]["description"],
                 (bool)dt.Rows[0]["passableness"],
-                TA.GetTexture(TypeVisualObject.Background, int.Parse(dt.Rows[0]["imageId"].ToString()))
+                TA.GetTexture(TypeVisualObject.Background, dt.Rows[0]["imageId"].ToString())
                 );
         }
 
@@ -44,7 +44,7 @@ namespace TestOpenGL.DataIO
                 (bool)dt.Rows[0]["passableness"],
                 (bool)dt.Rows[0]["transparency"],
                 (bool)dt.Rows[0]["permeability"],
-                TA.GetTexture(TypeVisualObject.Block, int.Parse(dt.Rows[0]["imageId"].ToString()))
+                TA.GetTexture(TypeVisualObject.Block, dt.Rows[0]["imageId"].ToString())
                 );
         }
 
@@ -55,7 +55,7 @@ namespace TestOpenGL.DataIO
                 num,
                 (string)dt.Rows[0]["name"],
                 (string)dt.Rows[0]["description"],
-                TA.GetTexture(TypeVisualObject.Decal, int.Parse(dt.Rows[0]["imageId"].ToString()))
+                TA.GetTexture(TypeVisualObject.Decal, dt.Rows[0]["imageId"].ToString())
                 );
         }
 
@@ -66,7 +66,7 @@ namespace TestOpenGL.DataIO
                 num,
                 (string)dt.Rows[0]["name"],
                 (string)dt.Rows[0]["description"],
-                TA.GetTexture(TypeVisualObject.Being, int.Parse(dt.Rows[0]["imageId"].ToString())),
+                TA.GetTexture(TypeVisualObject.Being, dt.Rows[0]["imageId"].ToString()),
                 0
                 );
         }
@@ -78,7 +78,7 @@ namespace TestOpenGL.DataIO
                 num,
                 (string)dt.Rows[0]["name"],
                 (string)dt.Rows[0]["description"],
-                TA.GetTexture(TypeVisualObject.Being, int.Parse(dt.Rows[0]["imageId"].ToString())),
+                TA.GetTexture(TypeVisualObject.Being, dt.Rows[0]["imageId"].ToString()),
                 alliance
                 );
         }
@@ -95,7 +95,7 @@ namespace TestOpenGL.DataIO
                 num,
                 (string)dt.Rows[0]["name"],
                 (string)dt.Rows[0]["description"],
-                TA.GetTexture(TypeVisualObject.Item, int.Parse(dt.Rows[0]["imageId"].ToString())),
+                TA.GetTexture(TypeVisualObject.Item, dt.Rows[0]["imageId"].ToString()),
                 int.Parse(dt.Rows[0]["level"].ToString()),
                 int.Parse(dt.Rows[0]["price"].ToString()),
                 lp

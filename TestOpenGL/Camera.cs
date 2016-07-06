@@ -27,7 +27,6 @@ namespace TestOpenGL
             get { return sight; }
         }
 
-
         public Camera(int width, int height)
         {
             this.l = Program.L;
@@ -87,7 +86,6 @@ namespace TestOpenGL
 
             if (changeCameraPosition != null)
                 changeCameraPosition();
-
             return;
         }
     }
