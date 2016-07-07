@@ -50,11 +50,11 @@ namespace TestOpenGL
 
             Program.C.AddNewActionControl('i', AdditionalKeys.Shift, delegate
             {
-                Program.FA.ProcessingOpeningForms(1);
+                Program.FA.ShowInventory();
             });
             Program.C.AddNewActionControl('m', AdditionalKeys.Shift, delegate
             {
-                Program.FA.ProcessingOpeningForms(2);
+                Program.FA.ShowMapEditor();
             });
         }
     }

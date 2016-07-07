@@ -8,11 +8,16 @@ namespace TestOpenGL
     {
         Form2 formInventory;
         Form3 formMapEditor;
+        Form4 formExchangeInventoryes;
+
+        delegate void openForm();
 
         public FormsAssistant()
         {
-            formInventory = new Form2(/*new EventDelegate(Program.GCycle.StartStep)*/);
-            formMapEditor = new Form3(/*new EventDelegate(Program.GCycle.StartStep)*/);
+            formInventory = new Form2();
+            formMapEditor = new Form3();
+            //formExchangeInventoryes = new Form4();
+
         }
 
         public void UpdateForms()
@@ -20,41 +25,28 @@ namespace TestOpenGL
             formInventory.ChangeGamer();
         }
 
-        delegate void openForm();
-        public void ProcessingOpeningForms(int num)
-        {
-            openForm openForm;
-            switch (num)
-            {
-                case 1:
-                    openForm = ShowInventory;
-                    break;
-
-                case 2:
-                    openForm = ShowMapEditor;
-                    break;
-
-                default:
-                    openForm = (() => { });
-                    break;
-            }
-            Program.mainForm.Invoke(
-            new Func<int>(() => 
-            {
-                openForm();
-                return 0;
-            }));
-
-        }
         public void ShowInventory()
         {
-            //Program.GCycle.StopStep();
-            formInventory.Show();
+            ProcessingOpeningForms(delegate { formInventory.Show(); });
         }
         public void ShowMapEditor()
         {
-            //Program.GCycle.StopStep();
-            formMapEditor.Show();
+            ProcessingOpeningForms(delegate { formMapEditor.Show(); });
+        }
+        public void ShowExchangeInventoryes(Inventory primoInventory, Inventory secundoInventory)
+        {
+            formExchangeInventoryes = new Form4(primoInventory, secundoInventory);
+            ProcessingOpeningForms(delegate { formExchangeInventoryes.Show(); });
+        }
+
+        private void ProcessingOpeningForms(openForm delegateOpenForm)
+        {
+            Program.mainForm.Invoke(
+            new Func<int>(() => 
+            {
+                delegateOpenForm();
+                return 0;
+            }));
         }
     }
 }

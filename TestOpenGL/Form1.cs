@@ -115,7 +115,19 @@ namespace TestOpenGL
                     ), 
                     new Coord(5, 5, 3)
                 );
-           
+
+            Inventory i = new Inventory();
+            i.PutBagItem(Program.OB.GetItem(1));
+            i.PutBagItem(Program.OB.GetItem(5));
+            Program.L.GetMap<Block>().AddVO
+                 (
+                     new Chest
+                     (
+                        Program.OB.GetBlock(14),
+                        i
+                     ),
+                     new Coord(3, 3, 1)
+                 );
 
             //Program.OB.GetBlock(2).Spawn(new Coord(6, 6, 0));
             //Program.OB.GetBlock(1).Spawn(new Coord(6, 6, 1));
@@ -129,7 +141,7 @@ namespace TestOpenGL
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Program.FA.ProcessingOpeningForms(1);
+            Program.FA.ShowInventory();
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -141,17 +153,7 @@ namespace TestOpenGL
         {
             new System.Threading.Thread(delegate()
                 {
-                    /*Being B = Program.L.MapBeings.GetBeing(Program.GCycle.sight.AimCoord);
-                    if (B != null)
-                        B.Damage(1);*/
-                    //Attack.AttackAnimation(new Coord(0, 0), new Coord(10, 15), Program.OB.GetDecal(2), 100);
-                    //Program.P.StopRender();
-                    ((Door)Program.L.GetMap<Block>().GetVO(new Coord(5, 5, 3))).Use();
                 }).Start();
-            
-            /*Program.GCycle.StopStep();
-            Stages.Stage_1();
-            Program.GCycle.StartStep();*/
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
