@@ -8,7 +8,7 @@ using TestOpenGL.VisualObjects;
 
 namespace TestOpenGL
 {
-    class Chest : UsedBlock
+    class Chest : Block, IUsable
     {
         Inventory inventory;
 
@@ -24,7 +24,7 @@ namespace TestOpenGL
             set { inventory = value; }
         }
 
-        public override void Use()
+        public void Used()
         {
             Program.FA.ShowExchangeInventoryes(Program.GCycle.Gamer.inventory, inventory);
         }

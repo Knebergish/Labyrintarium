@@ -8,7 +8,7 @@ using TestOpenGL.VisualObjects;
 
 namespace TestOpenGL
 {
-    class Door : UsedBlock
+    class Door : Block, IUsable
     {
         bool isClosed;
         bool isBlocked;
@@ -27,7 +27,7 @@ namespace TestOpenGL
             SetClosedState();
         }
 
-        public override void Use()
+        public void Used()
         {
             if (isBlocked)
                 return;

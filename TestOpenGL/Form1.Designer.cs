@@ -35,7 +35,9 @@
             this.logListBox = new System.Windows.Forms.ListBox();
             this.controlEnabledIndicator = new System.Windows.Forms.PictureBox();
             this.FPSValueLabel = new System.Windows.Forms.Label();
+            this.trackBar1 = new System.Windows.Forms.TrackBar();
             ((System.ComponentModel.ISupportInitialize)(this.controlEnabledIndicator)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.SuspendLayout();
             // 
             // GlControl
@@ -110,11 +112,24 @@
             this.FPSValueLabel.TabIndex = 8;
             this.FPSValueLabel.Text = "99";
             // 
+            // trackBar1
+            // 
+            this.trackBar1.LargeChange = 1;
+            this.trackBar1.Location = new System.Drawing.Point(618, 217);
+            this.trackBar1.Maximum = 100;
+            this.trackBar1.Minimum = 1;
+            this.trackBar1.Name = "trackBar1";
+            this.trackBar1.Size = new System.Drawing.Size(221, 45);
+            this.trackBar1.TabIndex = 9;
+            this.trackBar1.Value = 60;
+            this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(851, 625);
+            this.Controls.Add(this.trackBar1);
             this.Controls.Add(this.FPSValueLabel);
             this.Controls.Add(this.logListBox);
             this.Controls.Add(this.button4);
@@ -130,7 +145,9 @@
             this.SizeChanged += new System.EventHandler(this.Form1_SizeChanged);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.controlEnabledIndicator)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -143,6 +160,7 @@
         public System.Windows.Forms.ListBox logListBox;
         private System.Windows.Forms.PictureBox controlEnabledIndicator;
         private System.Windows.Forms.Label FPSValueLabel;
+        private System.Windows.Forms.TrackBar trackBar1;
     }
 }
 

@@ -155,8 +155,12 @@ namespace TestOpenGL.VisualObjects
                 return false;
 
             foreach (Block b in Program.L.GetMap<Block>().GetCellVO(Program.P.Camera.Sight.C))
-                if (b is UsedBlock)
-                    ((UsedBlock)b).Use();
+                if (b is IUsable)
+                    ((IUsable)b).Used();
+
+            foreach (Being b in Program.L.GetMap<Being>().GetCellVO(Program.P.Camera.Sight.C))
+                if (b is IUsable)
+                    ((IUsable)b).Used();
             return true;
         }
 

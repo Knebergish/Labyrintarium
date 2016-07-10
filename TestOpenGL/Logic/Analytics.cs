@@ -271,7 +271,7 @@ namespace TestOpenGL.Logic
             List<VisualObjects.Being> LB = GetBeingInArea(C1, C2);
             for (int i = LB.Count - 1; i >= 0; i--)
             {
-                if (LB[i].Alliance == being.Alliance)
+                if (LB[i].Alliance == being.Alliance || LB[i].Alliance < 0)
                     LB.RemoveAt(i);
             }
 

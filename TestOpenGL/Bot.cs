@@ -9,7 +9,7 @@ namespace TestOpenGL
 {
     class Bot: Being
     {
-        bool isEndStep = false;
+        //bool isEndStep = false;
 
         public Bot(int id, string name, string description, Texture texture, int alliance)
             : base(id, name, description, texture, alliance)

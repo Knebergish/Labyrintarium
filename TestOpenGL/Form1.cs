@@ -70,6 +70,14 @@ namespace TestOpenGL
                 return lro;
             }));
 
+            new NPC(
+                (Bot)Program.OB.GetBot(1, 1), 
+                "Тестбот", 
+                "Он тестовый", 
+                "Здравствуй, путник!",
+                null
+                ).Spawn(new Coord(4, 3, 3));
+
             Program.GCycle.StartStep();
 
             VariantsControls.StandartGamerControl();
@@ -169,13 +177,19 @@ namespace TestOpenGL
             button1.Left = this.Width - button1.Width - 28;
             button2.Left = this.Width - button2.Width - 28;
             button4.Left = this.Width - button4.Width - 28;
+
             logListBox.Left = this.Width - logListBox.Width - 28;
+
             GlControl.Width = Math.Min(this.Width - (this.Width - button1.Left) - 28, this.Height - 63);
             GlControl.Height = GlControl.Width;
+
             controlEnabledIndicator.Top = 0;
             controlEnabledIndicator.Left = 0;
             controlEnabledIndicator.Width = 10;
             controlEnabledIndicator.Height = 10;
+
+            trackBar1.Left = this.Width - trackBar1.Width - 28;
+
             Program.P.SettingVisibleAreaSize();
         }
         public void ChangeColorControlEnabledIndicator(bool value)
@@ -209,6 +223,11 @@ namespace TestOpenGL
         public void SetFPS(int value)
         {
             FPSValueLabel.Text = value.ToString();
+        }
+
+        private void trackBar1_Scroll(object sender, EventArgs e)
+        {
+            Program.P.MaxFPS = trackBar1.Value;
         }
     }
 }

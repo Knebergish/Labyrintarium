@@ -72,8 +72,7 @@ namespace TestOpenGL
                     if ((AdditionalKeys)actionsControlDataTable.Rows[i][1] == ak)
                     {
                         uv = (Action)actionsControlDataTable.Rows[i][2];
-                        try { uv(); }
-                        catch { }
+                        uv();
                         break;
                     }
 

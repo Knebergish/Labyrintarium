@@ -29,6 +29,7 @@ namespace TestOpenGL
 
         private void Form4_Load(object sender, EventArgs e)
         {
+            Program.mainForm.Enabled = false;
             UpdateListBoxes();
         }
 
@@ -60,6 +61,11 @@ namespace TestOpenGL
         {
             WriteInventoryToListBox(primoInventory, listBox1);
             WriteInventoryToListBox(secundoInventory, listBox2);
+        }
+
+        private void Form4_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Program.mainForm.Enabled = true;
         }
 
         private void WriteInventoryToListBox(Inventory inventory, ListBox listBox)

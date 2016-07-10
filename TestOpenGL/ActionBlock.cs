@@ -8,7 +8,7 @@ using TestOpenGL.VisualObjects;
 
 namespace TestOpenGL
 {
-    class ActionBlock : UsedBlock
+    class ActionBlock : Block, IUsable
     {
         Action action;
 
@@ -21,7 +21,7 @@ namespace TestOpenGL
         public Action Action
         { set { action = value; } }
 
-        public override void Use()
+        public void Used()
         {
             action();
         }

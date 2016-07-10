@@ -54,3 +54,4 @@ namespace TestOpenGL
     }
 }
 
+// Удалён класс UsedBeing. В замену ему введён интерфейс IUsable.
