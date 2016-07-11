@@ -30,7 +30,7 @@ namespace TestOpenGL
         public void Used()
         {
             System.Windows.Forms.MessageBox.Show(talkString);
-            useDelegate();
+            useDelegate?.Invoke();
         }
     }
 }

@@ -11,10 +11,8 @@ namespace TestOpenGL.Logic
     class GameCycle
     {
         // Поток пошаговости.
-        System.Threading.Thread Steps;
-        //bool isStopStep = true;
+        Thread Steps;
         ManualResetEvent isNextStep = new ManualResetEvent(false);
-        //public Sight sight;
         Gamer gamer;
 
         internal Gamer Gamer
@@ -28,53 +26,31 @@ namespace TestOpenGL.Logic
             }
         }
 
-
-        
         public GameCycle()
         {
-            
-            Steps = new System.Threading.Thread(StepBeings);
-            Steps.Start(this.isNextStep);
-
-            //sight = new Sight(Program.P.Camera);
-
-            //Program.P.StartRedraw();
-            StartStep();
-
-            /*VisualObjectStructure<Decal> VOSD = new VisualObjectStructure<Decal>();
-            VOSD.Push(Program.OB.GetDecal(3), new Coord(5, 5));
-            VOSD.Push(Program.OB.GetDecal(3), new Coord(5, 6));
-            Program.L.AddDecals(VOSD);
-            Decal d;
-
-
-            d = Program.OB.GetDecal(4);
-            d.C = new Coord(10, 7);
-            Program.L.AddDecal(d);
-
-            Program.L.RemoveGroupDecals(0);*/
-            
+            Steps = new Thread(StepBeings);
+            Steps.Start();
         }
 
         public void StartStep()
         {
-            this.isNextStep.Set();
+            isNextStep.Set();
         }
         public void StopStep()
         {
-            this.isNextStep.Reset();
+            isNextStep.Reset();
         }
 
-        public void StepBeings(object state)
+        public void StepBeings()
         {
-            ManualResetEvent MRE = (ManualResetEvent)state;
-            Being B;
             List<Being> LB = new List<Being>(); ;
             bool flag;
             
             // Ходы всех сущностей
             while (true)
             {
+                isNextStep.WaitOne();
+
                 flag = true;
                 while(flag)
                 {
@@ -98,8 +74,6 @@ namespace TestOpenGL.Logic
 
                 if (Triggers.currentTriggers != null)
                     Triggers.currentTriggers.CallAllTriggers();
-
-                MRE.WaitOne();
             }
         }
     }

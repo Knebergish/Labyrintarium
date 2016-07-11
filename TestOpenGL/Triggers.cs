@@ -44,8 +44,6 @@ namespace TestOpenGL
     {
         int number;
         bool active;
-        //TODO: может вынести в Structures?
-        public delegate void Action();
         private Action action;
 
         public int Number

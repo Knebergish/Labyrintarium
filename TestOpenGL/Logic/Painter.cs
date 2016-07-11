@@ -13,17 +13,18 @@ namespace TestOpenGL.Logic
 {
     class Painter
     {
-        public event IntEventDelegate EventFPSUpdate;
+        int maxFPS;
+        int pauseMillisecond;
 
         Thread RenderThread;
         ManualResetEvent isNextRender = new ManualResetEvent(false);
 
-        int maxFPS;
-        int pauseMillisecond;
-
         List<Func<List<RenderObject>>> shadersList;
 
-        Camera camera; //TODO: вот как-то она тут не в тему, но куда её убрать?..
+        //TODO: вот как-то она тут не в тему, но куда её убрать?..
+        Camera camera;
+
+        public event IntEventDelegate EventFPSUpdate;
 
 
         public Painter(Camera camera)
@@ -42,6 +43,7 @@ namespace TestOpenGL.Logic
             RenderThread.Start();
             StartRender();
         }
+
 
         public Tao.Platform.Windows.SimpleOpenGlControl GlControl
         {
@@ -71,6 +73,7 @@ namespace TestOpenGL.Logic
         public List<Func<List<RenderObject>>> ShadersList
         { get { return shadersList; } }
 
+
         void FPSUpdate(int newValue)
         {
             if (EventFPSUpdate != null)
@@ -86,11 +89,11 @@ namespace TestOpenGL.Logic
 
         public void StartRender()
         {
-            this.isNextRender.Set();
+            isNextRender.Set();
         }
         public void StopRender()
         {
-            this.isNextRender.Reset();
+            isNextRender.Reset();
             Thread.Sleep(1);
         }
 
@@ -122,7 +125,7 @@ namespace TestOpenGL.Logic
             }
         }
 
-        public void DrawFrame()
+        void DrawFrame()
         {
             int zShift;
 
@@ -179,7 +182,7 @@ namespace TestOpenGL.Logic
             Program.mainForm.GlControl.SwapBuffers();
         }
 
-        public void DrawObject(Texture texture, Coord C,  int zShift)
+        void DrawObject(Texture texture, Coord C,  int zShift)
         {
             int size = 1;
             // включаем режим текстурирования
@@ -228,6 +231,11 @@ namespace TestOpenGL.Logic
             Gl.glMatrixMode(Gl.GL_MODELVIEW);
 
             Camera.Look();
+        }
+
+        public void ClearShadersList()
+        {
+            shadersList.Clear();
         }
 
         /*public void DrawColor(Coord C, double colorA, double colorB, double colorC)

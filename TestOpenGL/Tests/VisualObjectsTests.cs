@@ -25,7 +25,7 @@ namespace TestOpenGL.Tests
         public void TestBengs()
         {
             Program.L = new Logic.Level(10, 10, 5);
-            Being b = new Bot(7, "testName", "testDescription", new Texture { textureId = 13 }, 666);
+            Being b = new Bot(7, "testName", "testDescription", new Texture { textureId = 13 }, 666, null);
 
             if (b.Alliance != 666)
                 throw new Exception();
@@ -37,7 +37,7 @@ namespace TestOpenGL.Tests
                 throw new Exception(b.C.Y.ToString());*/
                 // Странно, вроде координаты стандартно не инициализируются, а они всё равно есть, нулевые.
 
-            Program.L.GetMap<Being>().AddVO(new Bot(1, "", "", new Texture() { textureId = 1 }, 665), new Coord(1, 2, 3));
+            Program.L.GetMap<Being>().AddVO(new Bot(1, "", "", new Texture() { textureId = 1 }, 665, null), new Coord(1, 2, 3));
 
             if(b.SetNewCoord(new Coord(1, 2, 3)))
                 throw new Exception();

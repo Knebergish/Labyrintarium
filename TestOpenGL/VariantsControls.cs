@@ -10,6 +10,8 @@ namespace TestOpenGL
     {
         public static void StandartGamerControl()
         {
+            Program.C.ClearAllActionsControl();
+
             Program.C.AddNewActionControl('a', AdditionalKeys.None, delegate
             {
                 Program.GCycle.Gamer.Move(TestOpenGL.Direction.Left);

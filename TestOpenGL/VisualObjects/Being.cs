@@ -14,8 +14,6 @@ namespace TestOpenGL.VisualObjects
 
         public Inventory inventory;
 
-        //Func<List<object>, bool> stepAI;
-
         public EventsBeing eventsBeing;
 
         private int rangeOfVisibility;
@@ -88,8 +86,8 @@ namespace TestOpenGL.VisualObjects
         {
             if(isSpawned && this.features.ActionPoints >= 1 && SetNewCoord(C))
             {
-                //Program.L.Pause(100);
-                this.features.ActionPoints--;
+                Program.L.Pause(100);
+                features.ActionPoints--;
                 return true;
             }
             return false;
@@ -123,10 +121,9 @@ namespace TestOpenGL.VisualObjects
             {
                 this.features.CurrentHealth -= count;
 
-                // Переделать под новый движок
-                //int temporaryIndex = Program.L.MapDecals.AddDecal(Program.OB.GetDecal(4), this.C);
+                Program.L.GetMap<Decal>().AddVO(Program.OB.GetDecal(4), C);
                 Program.L.Pause(150);
-                //Program.L.MapDecals.RemoveGroupDecals(temporaryIndex);
+                Program.L.GetMap<Decal>().RemoveVO(C);
             }
             else throw new Exception("Урон почему-то отрицательный.");
         }
@@ -162,6 +159,16 @@ namespace TestOpenGL.VisualObjects
                 if (b is IUsable)
                     ((IUsable)b).Used();
             return true;
+        }
+
+        public bool Attack(Coord C)
+        {
+            if(Battle.Attack(this, C))
+            {
+                features.ActionPoints--;
+                return true;
+            }
+            return false;
         }
 
         protected override bool IsEmptyCell(Coord C)

@@ -11,7 +11,6 @@ namespace TestOpenGL
 {
     class Camera
     {
-        Level l;
         // Размеры отображаемой части поля
         int width, height;
         // Текущее смещение камеры относительно блока (0, 0)
@@ -29,7 +28,6 @@ namespace TestOpenGL
 
         public Camera(int width, int height)
         {
-            this.l = Program.L;
             this.width = width;
             this.height = height;
 
@@ -73,10 +71,10 @@ namespace TestOpenGL
             {
                 shiftX = looking.C.X - width / 2;
                 shiftX = shiftX < 0 ? 0 : shiftX;
-                shiftX = shiftX > l.LengthX - width ? l.LengthX - width : shiftX;
+                shiftX = shiftX > Program.L.LengthX - width ? Program.L.LengthX - width : shiftX;
                 shiftY = looking.C.Y - height / 2;
                 shiftY = shiftY < 0 ? 0 : shiftY;
-                shiftY = shiftY > l.LengthY - height ? l.LengthY - height : shiftY; //TODO: ВОТ ЗДУСЬ ЖИВУТ ИНОГДА ЧЁРТОВЫ НЕВЕРНЕНЬКИЕ КООРДИНАТКИ!!!
+                shiftY = shiftY > Program.L.LengthY - height ? Program.L.LengthY - height : shiftY; //TODO: ВОТ ЗДУСЬ ЖИВУТ ИНОГДА ЧЁРТОВЫ НЕВЕРНЕНЬКИЕ КООРДИНАТКИ!!! Вроде исправлено (в заметках про 150+ кадров)
             }
             else
             {

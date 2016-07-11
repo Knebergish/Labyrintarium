@@ -132,6 +132,11 @@ namespace TestOpenGL.Logic
             }
             sr.Close();
         }*/
+
+        ~Level()
+        {
+            //System.Windows.Forms.MessageBox.Show("Убит!");
+        }
     }
 }
 

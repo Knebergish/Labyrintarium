@@ -79,7 +79,8 @@ namespace TestOpenGL.DataIO
                 (string)dt.Rows[0]["name"],
                 (string)dt.Rows[0]["description"],
                 TA.GetTexture(TypeVisualObject.Being, dt.Rows[0]["imageId"].ToString()),
-                alliance
+                alliance,
+                null
                 );
         }
 

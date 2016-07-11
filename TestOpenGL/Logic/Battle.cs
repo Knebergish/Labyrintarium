@@ -8,12 +8,16 @@ namespace TestOpenGL.Logic
 {
     class Battle
     {
-        public static void Attack(Being attacking, Coord C)
+        public static bool Attack(Being attacking, Coord C)
         {
             //Анимация атаки в ячейку C
 
             if (Program.L.GetMap<Being>().GetVO(C) != null)
+            {
                 Fight(attacking, Program.L.GetMap<Being>().GetVO(C));
+                return true;
+            }
+            return false;
         }
 
         public static void Fight(Being attacking,Being defending)

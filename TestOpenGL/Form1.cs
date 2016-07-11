@@ -21,7 +21,6 @@ namespace TestOpenGL
             GlControl.InitializeContexts();
         }
 
-        Being Be;
         private void Form1_Load(object sender, EventArgs e)
         {
             Program.InitApp(this);
@@ -32,57 +31,10 @@ namespace TestOpenGL
 
             Form1_SizeChanged(sender, e);
 
+            //button1_Click(sender, e);
 
-
-            Be = Program.OB.GetGamer(1);
-            for (int i = 1; i < 10; i++)
-                Be.inventory.PutBagItem(Program.OB.GetItem(i));
-
-            Program.GCycle.Gamer = (Gamer)Be;
-
-            Program.GCycle.StopStep();
-            Be.Spawn(new Coord(0, 0));
-            
-            //Program.OB.GetBot(1, 1).Spawn(new Coord(5, 5));
-            Program.OB.GetBot(1, 0).Spawn(new Coord(1, 0));
-
-            Program.P.ShadersList.Add(new Func<List<RenderObject>>(() => 
-            {
-                Block b = Program.OB.GetBlock(3);
-                List<RenderObject> lro = new List<RenderObject>();
-
-                foreach (Block block in Program.L.GetMap<Block>().GetAllVO())
-                    if (block.Id == 2)
-                        if(Analytics.CorrectCoordinate(block.C.X, block.C.Y + 1) && Analytics.IsInCamera(new Coord(block.C.X, block.C.Y + 1), Program.P.Camera))
-                            lro.Add(new RenderObject(b.texture, new Coord(block.C.X, block.C.Y + 1), (int)TypeVisualObject.Being * (Program.L.LengthZ - 1) + Program.L.LengthZ + 0.5));
-
-                return lro;
-            }));
-            Program.P.ShadersList.Add(new Func<List<RenderObject>>(() =>
-            {
-                List<RenderObject> lro = new List<RenderObject>();
-
-                foreach (Being b in Program.L.GetMap<Being>().GetAllVO())
-                    if (Analytics.IsInCamera(new Coord(b.C.X, b.C.Y), Program.P.Camera))
-                        foreach(Item i in b.inventory.GetEquipmentItems())
-                            lro.Add(new RenderObject(i.texture, b.C, (int)TypeVisualObject.Being * (Program.L.LengthZ - 1) + 0.1));
-
-                return lro;
-            }));
-
-            new NPC(
-                (Bot)Program.OB.GetBot(1, 1), 
-                "Тестбот", 
-                "Он тестовый", 
-                "Здравствуй, путник!",
-                null
-                ).Spawn(new Coord(4, 3, 3));
-
-            Program.GCycle.StartStep();
-
-            VariantsControls.StandartGamerControl();
-
-            button1_Click(sender, e);
+            Stages.Stage_1 S1 = new Stages.Stage_1();
+            S1.LoadStage();
         }
         private void button1_Click(object sender, EventArgs e)
         {
@@ -161,6 +113,7 @@ namespace TestOpenGL
         {
             new System.Threading.Thread(delegate()
                 {
+                    Program.GCycle.Gamer.features.ActionPoints--;
                 }).Start();
         }
 
