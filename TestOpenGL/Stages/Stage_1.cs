@@ -55,12 +55,13 @@ namespace TestOpenGL.Stages
                 ).Spawn(new Coord(4, 3, 3));
 
             Bot b = (Bot)Program.OB.GetBot(1, 3);
-            b.AI = AI.AIAttacker;
+            b.AI = AIs.AIAttacker;
             b.Spawn(new Coord(5, 1, 0));
 
             Program.GCycle.Gamer = (Gamer)Program.OB.GetGamer(1);
             for (int i = 1; i < 10; i++)
                 Program.GCycle.Gamer.inventory.PutBagItem(Program.OB.GetItem(i));
+
             Program.GCycle.Gamer.Spawn(new Coord(1, 0, 0));
 
 

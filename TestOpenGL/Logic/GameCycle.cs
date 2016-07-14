@@ -11,9 +11,12 @@ namespace TestOpenGL.Logic
     class GameCycle
     {
         // Поток пошаговости.
-        Thread Steps;
+        Thread ThreadSteps;
         ManualResetEvent isNextStep = new ManualResetEvent(false);
         Gamer gamer;
+        public event VoidEventDelegate EventStepBeings;
+        public event VoidEventDelegate EventStepTriggers;
+        public event VoidEventDelegate EventStepBeingsIncrease;
 
         internal Gamer Gamer
         {
@@ -28,8 +31,8 @@ namespace TestOpenGL.Logic
 
         public GameCycle()
         {
-            Steps = new Thread(StepBeings);
-            Steps.Start();
+            ThreadSteps = new Thread(Steps);
+            ThreadSteps.Start();
         }
 
         public void StartStep()
@@ -41,40 +44,28 @@ namespace TestOpenGL.Logic
             isNextStep.Reset();
         }
 
-        public void StepBeings()
+        public void Steps()
         {
-            List<Being> LB = new List<Being>(); ;
-            bool flag;
-            
-            // Ходы всех сущностей
-            while (true)
+            while(true)
             {
                 isNextStep.WaitOne();
 
-                flag = true;
-                while(flag)
-                {
-                    flag = false;
-                    LB = Program.L.GetMap<Being>().GetAllVO();
-                    foreach (Being b in LB)
-                    {
-                        if (b.features.ActionPoints >= 1)
-                        {
-                            b.Step();
-                            flag = true;
-                        }
-                    }
-                }
-                
-                //TODO: как-то надо производить в сущностях
-                foreach(Being b in LB)
-                {
-                    b.features.ActionPoints += b.features.IncreaseActionPoints;
-                }
-
-                if (Triggers.currentTriggers != null)
-                    Triggers.currentTriggers.CallAllTriggers();
+                StepBeings();
+                StepTriggers();
+                StepBeingsIncrease();
             }
+        }
+        void StepBeings()
+        {
+            EventStepBeings?.Invoke();
+        }
+        void StepTriggers()
+        {
+            EventStepTriggers?.Invoke();
+        }
+        void StepBeingsIncrease()
+        {
+            EventStepBeingsIncrease?.Invoke();
         }
     }
 }

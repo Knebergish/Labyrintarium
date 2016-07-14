@@ -54,6 +54,8 @@ namespace TestOpenGL.VisualObjects
             if (!isSpawned && SetNewCoord(new Coord(C.X, C.Y)))
             {
                 Program.L.GetMap<Being>().AddVO(this, C);
+                Program.GCycle.EventStepBeings += Step;
+                Program.GCycle.EventStepBeingsIncrease += Increace;
                 isSpawned = true;
                 return true;
             }
@@ -171,6 +173,12 @@ namespace TestOpenGL.VisualObjects
             return false;
         }
 
+        public void Increace()
+        {
+            features.ActionPoints += features.IncreaseActionPoints;
+            //TODO: восстановление жизней тут же
+        }
+
         protected override bool IsEmptyCell(Coord C)
         {
             //if(Program.L.GetMap<Being>().GetCellVO(C)!=null)
@@ -180,7 +188,6 @@ namespace TestOpenGL.VisualObjects
 
     class EventsBeing
     {
-        
         public event VoidEventDelegate EventBeingDeath;
         public event VoidEventDelegate EventBeingStartStep;
         public event VoidEventDelegate EventBeingEndStep;

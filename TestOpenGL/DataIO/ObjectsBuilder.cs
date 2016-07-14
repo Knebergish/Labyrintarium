@@ -87,7 +87,7 @@ namespace TestOpenGL.DataIO
         public Item GetItem(int num)
         {
             DataTable dt = DBIO.ExecuteSQL("SELECT * FROM Items WHERE Items.id = " + num);
-            DataTable dt2 = DBIO.ExecuteSQL("SELECT * FROM Parts WHERE Parts.itemId = " + num);
+            DataTable dt2 = DBIO.ExecuteSQL("SELECT * FROM Parts WHERE Parts.idItem = " + num);
             List<Part> lp = new List<Part>();
             for (int i = 0; i < dt2.Rows.Count; i++ )
                 lp.Add((Part)int.Parse(dt2.Rows[i]["part"].ToString()));

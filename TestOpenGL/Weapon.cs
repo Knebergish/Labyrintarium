@@ -17,7 +17,6 @@ namespace TestOpenGL
         {
             this.minDistance = minDistance;
             this.maxDistance = maxDistance;
-            
         }
 
         public int MaxDistance

@@ -8,7 +8,7 @@ using TestOpenGL.VisualObjects;
 
 namespace TestOpenGL
 {
-    class AI
+    class AIs
     {
         public static void AIAttacker(Being b)
         {

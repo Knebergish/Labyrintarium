@@ -38,7 +38,7 @@ namespace TestOpenGL.Logic
                 int countAttack = attacking.features[Feature.Power]
                     + (attacking.inventory.GetEquipWeapon() != null ? attacking.inventory.GetEquipWeapon().Level : 0)
                     + rnd.Next(1, 5);
-
+                
                 int countDefend = defending.features[Feature.Stamina] + rnd.Next(1, 5);
                 List<Item> li = defending.inventory.GetEquipArmors();
                 foreach (Item i in li)
