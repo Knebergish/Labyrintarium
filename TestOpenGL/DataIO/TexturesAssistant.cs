@@ -135,7 +135,7 @@ namespace TestOpenGL.DataIO
             return (int)texObject;
         }
 
-        public int LoadTexture(TypeVisualObject tvo, string imageName)
+        private int LoadTexture(TypeVisualObject tvo, string imageName)
         {
             return (int)Program.mainForm.Invoke(
             new Func<int>(() => LoadTextureFromFile(tvo, imageName))
@@ -172,7 +172,7 @@ namespace TestOpenGL.DataIO
                 SaveTexture(tvo, imageName, currentTextureId);
             }
 
-            return new Texture() { textureId = currentTextureId };
+            return new Texture(currentTextureId);
         }
     }
 }

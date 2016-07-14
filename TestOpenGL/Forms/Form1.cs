@@ -113,7 +113,8 @@ namespace TestOpenGL
         {
             new System.Threading.Thread(delegate()
                 {
-                    Program.GCycle.Gamer.features.ActionPoints--;
+                    Program.GCycle.Gamer.Attack(Program.P.Camera.Sight.C);
+                    //Battle.Attack(Program.GCycle.Gamer, Program.P.Camera.Sight.C);
                 }).Start();
         }
 
