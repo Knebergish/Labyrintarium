@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data;
-using System.Data.SQLite;
+using System;
 
 using TestOpenGL.VisualObjects;
 using TestOpenGL.DataIO;
@@ -25,7 +25,32 @@ namespace TestOpenGL.DataIO
         }
         //=============
 
+        public VisualObject GetVO<T>(int index) where T : VisualObject
+        {
+            switch(typeof(T).Name)
+            {
+                case "Background":
+                    return GetBackground(index);
 
+                case "Block":
+                    return GetBlock(index);
+
+                case "Decal":
+                    return GetDecal(index);
+
+                case "Bot":
+                    return GetBot(index);
+
+                case "Gamer":
+                    return GetGamer(index);
+
+                case "Item":
+                    return GetItem(index);
+
+                default:
+                    return null;
+            }
+        }
 
         public Background GetBackground(int num)
         {
@@ -38,7 +63,7 @@ namespace TestOpenGL.DataIO
                 TA.GetTexture(TypeVisualObject.Background, dt.Rows[0]["imageId"].ToString())
                 );
         }
-
+    
         public Block GetBlock(int num)
         {
             DataTable dt = DBIO.ExecuteSQL("SELECT * FROM Blocks WHERE Blocks.id = " + num);
@@ -76,7 +101,7 @@ namespace TestOpenGL.DataIO
                 );
         }
         
-        public Being GetBot(int num, int alliance)
+        public Being GetBot(int num)
         {
             DataTable dt = DBIO.ExecuteSQL("SELECT * FROM Beings WHERE Beings.id = " + num);
             return new Bot(
@@ -84,7 +109,7 @@ namespace TestOpenGL.DataIO
                 (string)dt.Rows[0]["name"],
                 (string)dt.Rows[0]["description"],
                 TA.GetTexture(TypeVisualObject.Being, dt.Rows[0]["imageId"].ToString()),
-                alliance,
+                0,
                 null
                 );
         }

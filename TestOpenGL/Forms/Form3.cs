@@ -121,7 +121,7 @@ namespace TestOpenGL
                         break;
 
                     case TypeVisualObject.Being:
-                        Program.OB.GetBot(massId[listView1.SelectedIndices[0]], 1).Spawn
+                        Program.OB.GetBot(massId[listView1.SelectedIndices[0]]).Spawn
                             (
                                 new Coord
                                 (

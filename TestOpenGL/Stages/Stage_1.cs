@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics;
 using TestOpenGL.Logic;
 using TestOpenGL.VisualObjects;
 
@@ -17,8 +15,12 @@ namespace TestOpenGL.Stages
 
         public void LoadStage()
         {
+            Stopwatch sw = new Stopwatch();
             StartLoad();
+            sw.Start();
             LoadMap();
+            sw.Stop();
+            System.Windows.Forms.MessageBox.Show(sw.ElapsedMilliseconds.ToString());
             LoadShaders();
             LoadTriggers();
             EndLoad();
@@ -47,15 +49,15 @@ namespace TestOpenGL.Stages
                 Program.OB.GetBlock(2).Spawn(new Coord(0, i, 0));
 
             new NPC(
-                (Bot)Program.OB.GetBot(1, 1),
+                (Bot)Program.OB.GetBot(1),
                 "Тестбот",
                 "Он тестовый",
                 "Здравствуй, путник!",
                 null
                 ).Spawn(new Coord(4, 3, 3));
 
-            Bot b = (Bot)Program.OB.GetBot(1, 3);
-            b.AI = AIs.AIAttacker;
+            Bot b = (Bot)Program.OB.GetBot(1);
+            //b.AI = AIs.AIAttacker;
             b.Spawn(new Coord(5, 1, 0));
 
             Program.GCycle.Gamer = (Gamer)Program.OB.GetGamer(1);
@@ -72,13 +74,14 @@ namespace TestOpenGL.Stages
             // Шейдер крон деревьев
             Program.P.ShadersList.Add(new Func<List<RenderObject>>(() =>
             {
-                Block b = Program.OB.GetBlock(3);
+                Texture t = Program.TA.GetTexture(TypeVisualObject.Block, "3");
+                
                 List<RenderObject> lro = new List<RenderObject>();
 
                 foreach (Block block in Program.L.GetMap<Block>().GetAllVO())
                     if (block.Id == 2)
                         if (Analytics.CorrectCoordinate(block.C.X, block.C.Y + 1) && Analytics.IsInCamera(new Coord(block.C.X, block.C.Y + 1), Program.P.Camera))
-                            lro.Add(new RenderObject(b.texture, new Coord(block.C.X, block.C.Y + 1), (int)TypeVisualObject.Being * (Program.L.LengthZ - 1) + Program.L.LengthZ + 0.5));
+                            lro.Add(new RenderObject(t, new Coord(block.C.X, block.C.Y + 1), (int)TypeVisualObject.Being * (Program.L.LengthZ - 1) + Program.L.LengthZ + 0.5));
 
                 return lro;
             }));

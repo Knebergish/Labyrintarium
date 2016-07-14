@@ -38,6 +38,10 @@ namespace TestOpenGL.VisualObjects
 
         public abstract bool Spawn(Coord C);
 
+        
+
+        //protected abstract VisualObject GetNewExBase(int index);
+
         public bool SetNewCoord(Coord C)
         {
             if (this.IsEmptyCell(C))
@@ -51,6 +55,7 @@ namespace TestOpenGL.VisualObjects
 
         protected abstract bool IsEmptyCell(Coord C);
     }
+
     class EventsVisualObject
     {
         public event VoidEventDelegate EventVOChangeCoord;
