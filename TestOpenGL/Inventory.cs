@@ -15,6 +15,8 @@ namespace TestOpenGL
         List<Item> equipment;
 
         public EventInventory eventsInventory;
+        //-------------
+
 
         public Inventory()
         {
@@ -22,6 +24,8 @@ namespace TestOpenGL
             equipment = new List<Item>();
             eventsInventory = new EventInventory();
         }
+        //=============
+
 
         public void PutBagItem(Item i)
         {
@@ -49,6 +53,7 @@ namespace TestOpenGL
         {
             return equipment;
         }
+
         private Item GetItemByPart(Part part, List<Item> listItems)
         {
             foreach (Item i in listItems)

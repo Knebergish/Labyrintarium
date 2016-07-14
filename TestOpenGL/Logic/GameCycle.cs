@@ -17,23 +17,27 @@ namespace TestOpenGL.Logic
         public event VoidEventDelegate EventStepBeings;
         public event VoidEventDelegate EventStepTriggers;
         public event VoidEventDelegate EventStepBeingsIncrease;
+        //-------------
 
-        internal Gamer Gamer
-        {
-            get { return gamer; }
-            set 
-            { 
-                gamer = value;
-                Program.FA.UpdateForms();
-                Program.P.Camera.SetLookingVO(gamer);
-            }
-        }
 
         public GameCycle()
         {
             ThreadSteps = new Thread(Steps);
             ThreadSteps.Start();
         }
+
+        public Gamer Gamer
+        {
+            get { return gamer; }
+            set
+            {
+                gamer = value;
+                Program.FA.UpdateForms();
+                Program.P.Camera.SetLookingVO(gamer);
+            }
+        }
+        //=============
+
 
         public void StartStep()
         {

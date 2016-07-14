@@ -8,6 +8,17 @@ namespace TestOpenGL.VisualObjects
         int price;
         // Части тела, занимаемые предметом
         List<Part> parts;
+        //-------------
+
+
+        public Item(int id, string name, string description, Texture texture, int level, int price, List<Part> parts)
+        : base(id, name, description, texture)
+        {
+            this.level = level;
+            this.price = price;
+
+            this.parts = new List<Part>(parts);
+        }
 
         public int Level
         { get { return level; } }
@@ -15,15 +26,8 @@ namespace TestOpenGL.VisualObjects
         { get { return price; } }
         internal List<Part> Parts
         { get { return parts; } }
+        //=============
 
-        public Item(int id, string name, string description, Texture texture, int level, int price, List<Part> parts)
-            : base (id, name, description, texture)
-        {
-            this.level = level;
-            this.price = price;
-
-            this.parts = new List<Part>(parts);
-        }
 
         public override bool Spawn(Coord C)
         {

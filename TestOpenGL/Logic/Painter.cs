@@ -25,6 +25,7 @@ namespace TestOpenGL.Logic
         Camera camera;
 
         public event IntEventDelegate EventFPSUpdate;
+        //-------------
 
 
         public Painter(Camera camera)
@@ -43,7 +44,6 @@ namespace TestOpenGL.Logic
             RenderThread.Start();
             StartRender();
         }
-
 
         public Tao.Platform.Windows.SimpleOpenGlControl GlControl
         {
@@ -72,6 +72,7 @@ namespace TestOpenGL.Logic
 
         public List<Func<List<RenderObject>>> ShadersList
         { get { return shadersList; } }
+        //=============
 
 
         void FPSUpdate(int newValue)

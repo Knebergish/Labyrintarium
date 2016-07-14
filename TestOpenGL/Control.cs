@@ -11,6 +11,8 @@ namespace TestOpenGL
         private bool isEnabledControl;
 
         DataTable actionsControlDataTable;
+        //-------------
+
 
         public Control()
         {
@@ -24,6 +26,20 @@ namespace TestOpenGL
             Func<List<RenderObject>> fu = new Func<List<RenderObject>>(() => { return new List<RenderObject>(); });
         }
 
+        public bool IsEnabledControl
+        {
+            get { return isEnabledControl; }
+            set
+            {
+                isEnabledControl = value;
+
+                if (ChangeEnabledControl != null)
+                    ChangeEnabledControl(isEnabledControl);
+            }
+        }
+        //=============
+
+
         public void AddNewActionControl(char c, AdditionalKeys ak, Action ved)
         {
             for (int i = 0; i < actionsControlDataTable.Rows.Count; i++)
@@ -36,21 +52,10 @@ namespace TestOpenGL
 
             actionsControlDataTable.Rows.Add(c, ak, ved);
         }
+
         public void ClearAllActionsControl()
         {
             actionsControlDataTable.Rows.Clear();
-        }
-
-        public bool IsEnabledControl
-        {
-            get { return isEnabledControl; }
-            set 
-            { 
-                isEnabledControl = value;
-
-                if (ChangeEnabledControl != null)
-                    ChangeEnabledControl(isEnabledControl);
-            }
         }
 
         public void ProcessingKeyPress(KeyEventArgs kea)

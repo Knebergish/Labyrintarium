@@ -11,6 +11,8 @@ namespace TestOpenGL
     class Bot: Being
     {
         Action<Being> ai;
+        //-------------
+
 
         public Bot(int id, string name, string description, Texture texture, int alliance, Action<Being> AI)
             : base(id, name, description, texture, alliance)
@@ -20,6 +22,8 @@ namespace TestOpenGL
 
         internal Action<Being> AI
         { set { ai = value; } }
+        //=============
+
 
         protected override void Action()
         {

@@ -12,12 +12,10 @@ namespace TestOpenGL
     {
         private Coord c;
         private Decal aimDecal;
-
-        public Decal AimDecal
-        {
-            get { return aimDecal; }
-        }
         private Camera camera;
+        //-------------
+
+
         public Sight(Camera camera)
         {
             c = new Coord(0, 0);
@@ -27,11 +25,18 @@ namespace TestOpenGL
             this.camera.changeCameraPosition += Check;
         }
 
+        public Decal AimDecal
+        {
+            get { return aimDecal; }
+        }
+        
         public Coord C
         {
             get { return c; }
             set { c = value; Check(); }
         }
+        //=============
+
 
         public void MoveSight(Direction d)
         {

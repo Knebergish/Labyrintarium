@@ -17,6 +17,8 @@ namespace TestOpenGL.DataIO
         private DataTable texturesDataTable;
         private string[] pathes;
         private string path;
+        //-------------
+
 
         private TexturesAssistant()
         {
@@ -36,6 +38,7 @@ namespace TestOpenGL.DataIO
             for (int i = 0; i < namesTypes.Length; i++)
                 pathes[i] = this.path + "\\Textures\\" + namesTypes[i] + "s\\";
         }
+        //=============
 
 
         private void InitializeGraphics()

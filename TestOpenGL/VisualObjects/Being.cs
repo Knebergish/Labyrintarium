@@ -17,26 +17,8 @@ namespace TestOpenGL.VisualObjects
         public EventsBeing eventsBeing;
 
         private int rangeOfVisibility;
+        //-------------
 
-        public int RangeOfVisibility
-        {
-            get { return rangeOfVisibility; }
-            set 
-            { 
-                rangeOfVisibility = value; 
-            }
-        }
-
-        public int Alliance
-        { get; set; }
-
-        public bool IsSpawned
-        {
-            get { return isSpawned; }
-            //set { isSpawned = value; }
-        }
-
-        ////////////////////////////////////////////////////////////////////////////////////////
 
         public Being(int id, string name, string description, Texture texture, int alliance)
             : base(id, name, description, texture)
@@ -48,6 +30,26 @@ namespace TestOpenGL.VisualObjects
             Alliance = alliance;
             rangeOfVisibility = 10;
         }
+
+        public int RangeOfVisibility
+        {
+            get { return rangeOfVisibility; }
+            set
+            {
+                rangeOfVisibility = value;
+            }
+        }
+
+        public int Alliance
+        { get; set; }
+
+        public bool IsSpawned
+        {
+            get { return isSpawned; }
+            //set { isSpawned = value; }
+        }
+        //=============
+
 
         public override bool Spawn(Coord C)
         {
@@ -144,6 +146,10 @@ namespace TestOpenGL.VisualObjects
         public void Death()
         {
             this.isSpawned = false;
+            //TODO: проверить работоспособность этого кода
+            Program.GCycle.EventStepBeings -= Step;
+            Program.GCycle.EventStepBeingsIncrease -= Increace;
+            //
             this.eventsBeing.BeingDeath();
             Program.L.GetMap<Being>().RemoveVO(this.C);
         }
@@ -193,6 +199,8 @@ namespace TestOpenGL.VisualObjects
         public event VoidEventDelegate EventBeingEndStep;
         public event VoidEventDelegate EventBeingEndAction;
         public event VoidEventDelegate EventBeingEndActionPoints;
+        //-------------
+
 
         public void BeingDeath()
         {

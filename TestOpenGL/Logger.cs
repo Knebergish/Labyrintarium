@@ -10,11 +10,15 @@ namespace TestOpenGL
     {
         //TODO: изменить на получение (функтора?).
         System.Windows.Forms.ListBox loggerListBox;
+        //-------------
+
 
         public Logger(System.Windows.Forms.ListBox loggerListBox)
         {
             this.loggerListBox = loggerListBox;
         }
+        //=============
+
 
         public void Log(string message)
         {

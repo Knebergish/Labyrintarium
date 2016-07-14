@@ -20,11 +20,8 @@ namespace TestOpenGL
         
         VisualObject looking;
         Sight sight;
+        //-------------
 
-        public Sight Sight
-        {
-            get { return sight; }
-        }
 
         public Camera(int width, int height)
         {
@@ -34,6 +31,11 @@ namespace TestOpenGL
             sight = new TestOpenGL.Sight(this);
 
             Look();
+        }
+
+        public Sight Sight
+        {
+            get { return sight; }
         }
 
         public int Height
@@ -46,6 +48,7 @@ namespace TestOpenGL
             get { return width; }
             set { width = value > Program.L.LengthX || value > Program.L.LengthY ? Math.Min(Program.L.LengthX, Program.L.LengthY) : (value < 1 ? 1 : value); ; } 
         }
+
         public int MinX
         { get { return shiftX; } }
         public int MaxX
@@ -54,7 +57,9 @@ namespace TestOpenGL
         { get { return shiftY; } }
         public int MaxY
         { get { return shiftY + Height - 1; } }
-        
+        //=============
+
+
         public void SetLookingVO(VisualObject b)
         {
             looking = b;

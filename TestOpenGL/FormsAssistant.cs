@@ -11,6 +11,8 @@ namespace TestOpenGL
         Form4 formExchangeInventoryes;
 
         delegate void openForm();
+        //-------------
+
 
         public FormsAssistant()
         {
@@ -19,10 +21,22 @@ namespace TestOpenGL
             //formExchangeInventoryes = new Form4();
 
         }
+        //=============
 
+        //TODO: дописать этот метод
         public void UpdateForms()
         {
             formInventory.ChangeGamer();
+        }
+
+        private void ProcessingOpeningForms(openForm delegateOpenForm)
+        {
+            Program.mainForm.Invoke(
+            new Func<int>(() => 
+            {
+                delegateOpenForm();
+                return 0;
+            }));
         }
 
         public void ShowInventory()
@@ -37,16 +51,6 @@ namespace TestOpenGL
         {
             formExchangeInventoryes = new Form4(primoInventory, secundoInventory);
             ProcessingOpeningForms(delegate { formExchangeInventoryes.Show(); });
-        }
-
-        private void ProcessingOpeningForms(openForm delegateOpenForm)
-        {
-            Program.mainForm.Invoke(
-            new Func<int>(() => 
-            {
-                delegateOpenForm();
-                return 0;
-            }));
         }
     }
 }

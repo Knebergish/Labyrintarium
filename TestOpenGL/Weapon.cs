@@ -11,6 +11,8 @@ namespace TestOpenGL
     class Weapon : Item
     {
         int minDistance, maxDistance;
+        //-------------
+
 
         public Weapon(int id, string name, string description, Texture texture, int level, int price, List<Part> parts, int minDistance, int maxDistance)
             : base(id, name, description, texture, level, price, parts)
@@ -24,5 +26,6 @@ namespace TestOpenGL
 
         public int MinDistance
         { get { return minDistance; } }    
+        //=============
     }
 }

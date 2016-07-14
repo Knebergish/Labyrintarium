@@ -5,6 +5,7 @@
         bool passableness;
         bool transparency;
         bool permeability;
+        //-------------
 
 
         public Block(int id, string name, string description, bool passableness, bool transparency, bool permeability, Texture texture)
@@ -33,6 +34,8 @@
             get { return permeability; }
             set { permeability = value; }
         }
+        //=============
+
 
         public override bool Spawn(Coord C)
         {

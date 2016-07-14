@@ -21,14 +21,13 @@ namespace TestOpenGL
         // Текущее здоровье сущности.
         int currentHealth;
         // регенерация здоровья в ход
-        int regeneration;
+        int increaceHealth;
         
         // Очки действия сущности
         double actionPoints;
         // Восстановление очков действия в ход
         double increaseActionPoints;
-        
-        ////////////////////////////////////////////////////////////////////////////////////////
+        //-------------
 
 
         public Features(Being owner, int power, int coordination, int mmr, int stamina, int agility, int sense)
@@ -50,7 +49,6 @@ namespace TestOpenGL
             : this(owner, 1, 1, 1, 1, 1, 1)
         { }
 
-
         public int this[Feature F]
         {
             get { return listFeatures[(int)F]; }
@@ -59,9 +57,9 @@ namespace TestOpenGL
         public int MaxHealth
         { get { return maxHealth; } }
 
-        public int Regeneration
+        public int IncreaceHealth
         {
-            get { return regeneration; }
+            get { return increaceHealth; }
         }
 
         public int CurrentHealth
@@ -91,9 +89,7 @@ namespace TestOpenGL
         {
             get { return increaseActionPoints; }
         }
-        /////////////////////////////////////////////////////////////////////////////////////
-
-
+        //=============
 
 
         /// <summary>
@@ -102,7 +98,7 @@ namespace TestOpenGL
         public void Recalculate()
         {
             this.maxHealth = this.listFeatures[(int)Feature.Stamina] * 10;
-            this.regeneration = this.maxHealth / 100;
+            this.increaceHealth = this.maxHealth / 100;
 
             this.increaseActionPoints = 1 + (double)(this.listFeatures[(int)Feature.Agility] - 1) / 4;
         }

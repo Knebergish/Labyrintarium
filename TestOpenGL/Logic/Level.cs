@@ -22,6 +22,8 @@ namespace TestOpenGL.Logic
     {
         int lengthX, lengthY, lengthZ;
         List<object> mapList;
+        //-------------
+
 
         public Level(int lengthX, int lengthY, int lengthZ)
         {
@@ -36,6 +38,15 @@ namespace TestOpenGL.Logic
             mapList.Add(new MapVisualObjects<Decal>()); 
         }
 
+        public int LengthX
+        { get { return lengthX; } }
+        public int LengthY
+        { get { return lengthY; } }
+        public int LengthZ
+        { get { return lengthZ; } }
+        //============
+
+
         public MapVisualObjects<T> GetMap<T>() where T : VisualObject
         {
             foreach (Object o in mapList)
@@ -48,13 +59,6 @@ namespace TestOpenGL.Logic
         {
             System.Threading.Thread.Sleep(time);
         }
-
-        public int LengthX
-        { get { return lengthX; } }
-        public int LengthY
-        { get { return lengthY; } }
-        public int LengthZ
-        { get { return lengthZ; } }
 
         
 

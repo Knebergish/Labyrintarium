@@ -5,6 +5,8 @@
         public Decal(int id, string name, string description, Texture texture)
             : base(id, name, description, texture)
         { }
+        //=============
+
 
         public override bool Spawn(Coord C)
         {

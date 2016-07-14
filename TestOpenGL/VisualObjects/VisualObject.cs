@@ -16,14 +16,9 @@ namespace TestOpenGL.VisualObjects
         public VisualObjectInfo visualObjectInfo;
 
         public Texture texture;
+        //-------------
 
 
-        public int Id { get { return id; } }
-        public Coord C
-        {
-            get { return c; }
-        }
-        
         protected VisualObject(int id, string name, string description, Texture texture)
         {
             this.id = id;
@@ -31,6 +26,15 @@ namespace TestOpenGL.VisualObjects
             this.texture = texture;
             eventsVO = new EventsVisualObject();
         }
+
+        public int Id { get { return id; } }
+
+        public Coord C
+        {
+            get { return c; }
+        }
+        //=============
+
 
         public abstract bool Spawn(Coord C);
 

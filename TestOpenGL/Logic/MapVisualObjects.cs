@@ -10,10 +10,15 @@ namespace TestOpenGL.DataIO
     class MapVisualObjects<T> where T : VisualObject
     {
         List<T> mapT;
+        //-------------
+
+
         public MapVisualObjects()
         {
             mapT = new List<T>();
         }
+        //=============
+
 
         public T GetVO(Coord C)
         {

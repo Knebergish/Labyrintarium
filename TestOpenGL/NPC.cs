@@ -8,19 +8,23 @@ namespace TestOpenGL
     {
         string talkString;
         public VoidEventDelegate useDelegate;
+        //-------------
+
+
+        public NPC(Bot bot, string name, string description, string talkString, VoidEventDelegate useDelegate)
+        : base(bot.Id, name, description, bot.texture, -1)
+        {
+            this.talkString = talkString;
+            this.useDelegate = useDelegate;
+        }
 
         public string TalkString
         {
             get { return talkString; }
             set { talkString = value; }
         }
-
-        public NPC(Bot bot, string name, string description, string talkString, VoidEventDelegate useDelegate) 
-            : base(bot.Id, name, description, bot.texture, -1)
-        {
-            this.talkString = talkString;
-            this.useDelegate = useDelegate;
-        }
+        //=============
+        
 
         protected override void Action()
         {

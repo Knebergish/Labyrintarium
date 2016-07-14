@@ -9,6 +9,8 @@ namespace TestOpenGL
     class Gamer: Being
     {
         ManualResetEvent isEndStep = new ManualResetEvent(false);
+        //-------------
+
 
         public Gamer(int id, string name, string description, Texture texture, int alliance)
             : base(id, name, description, texture, alliance)
@@ -17,6 +19,8 @@ namespace TestOpenGL
             this.eventsBeing.EventBeingEndStep += new VoidEventDelegate(() => { Program.C.IsEnabledControl = false; });
             this.eventsBeing.EventBeingEndActionPoints += new VoidEventDelegate(() => { isEndStep.Set(); });
         }
+        //=============
+
 
         protected override void Action()
         {

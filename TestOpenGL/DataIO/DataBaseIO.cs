@@ -11,6 +11,8 @@ namespace TestOpenGL.DataIO
         public string nameDataBase = "dataBase.db";
         private SQLiteConnection conn;
         private string path;
+        //-------------
+
 
         public DataBaseIO(string path)
         {
@@ -24,6 +26,8 @@ namespace TestOpenGL.DataIO
                 throw;
             }
         }
+        //=============
+
 
         private void InitDB()
         {

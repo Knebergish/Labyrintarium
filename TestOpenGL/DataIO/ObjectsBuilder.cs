@@ -14,13 +14,18 @@ namespace TestOpenGL.DataIO
     {
         private DataBaseIO DBIO;
         private TexturesAssistant TA;
-        
+        //-------------
+
+
         private ObjectsBuilder() { }
         public ObjectsBuilder(DataBaseIO DBIO, TexturesAssistant TA)
         {
             this.DBIO = DBIO;
             this.TA = TA;
         }
+        //=============
+
+
 
         public Background GetBackground(int num)
         {

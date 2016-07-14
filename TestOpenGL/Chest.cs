@@ -11,6 +11,8 @@ namespace TestOpenGL
     class Chest : Block, IUsable
     {
         Inventory inventory;
+        //-------------
+
 
         public Chest(Block blockChest, Inventory inventory)
             : base(blockChest.Id, blockChest.visualObjectInfo.Name, blockChest.visualObjectInfo.Description, blockChest.Passableness, blockChest.Transparency, blockChest.Permeability, blockChest.texture)
@@ -23,6 +25,8 @@ namespace TestOpenGL
             get { return inventory; }
             set { inventory = value; }
         }
+        //=============
+
 
         public void Used()
         {
