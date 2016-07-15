@@ -15,6 +15,7 @@ namespace TestOpenGL.Stages
 {
     class Stage_1
     {
+        int currentAlliance = 2;
         public Stage_1()
         {
 
@@ -40,16 +41,19 @@ namespace TestOpenGL.Stages
 
         void LoadMap()
         {
+            Random rnd = new Random();
             for (int x = 0; x < Program.L.LengthX; x++)
             {
                 for (int y = 0; y < Program.L.LengthY; y++)
                 {
                     Program.OB.GetBackground(1).Spawn(new Coord(x, y, 0));
+                    //if (rnd.Next(1, 7) == 1)
+                    //    Program.OB.GetBlock(2).Spawn(new Coord(x, y, 0));
                 }
             }
 
-            for (int i = 0; i < 20; i += 2)
-                Program.OB.GetBlock(2).Spawn(new Coord(0, i, 0));
+            for (int i = 0; i < 20; i += 1)
+                Program.OB.GetBlock(2).Spawn(new Coord(6, i, 0));
 
             new NPC(
                 (Bot)Program.OB.GetBot(1, 1),
@@ -69,8 +73,9 @@ namespace TestOpenGL.Stages
             Program.GCycle.Gamer.features.CurrentExperience += 100;
 
             Program.GCycle.Gamer.Spawn(new Coord(1, 0, 0));
-
-
+            Program.GCycle.Gamer.Death();
+            Program.P.Camera.Width = 30;
+            Program.P.Camera.Height = 30;
         }
 
         void LoadShaders()
@@ -111,12 +116,12 @@ namespace TestOpenGL.Stages
                     true,
                     delegate 
                     {
-                        if (Program.L.GetMap<Being>().GetAllVO().Count < 3)
+                        int cx = 5;
+                        if (Program.L.GetMap<Being>().GetAllVO().Count < 5)
                         {
-                            Bot b = (Bot)Program.OB.GetBot(1, 3);
-                            b.AI = AIs.AIAttacker;
-                            b.Spawn(new Coord(5, 1, 0));
-                            Program.GCycle.Gamer.features.CurrentHealth = 10;
+                            while (!GetNextBot().Spawn(new Coord(cx, 1)))
+                                cx = ++cx >= 30 ? 0 : ++cx; 
+                            //Program.GCycle.Gamer.features.CurrentHealth = 10;
                         }
                     }
                 ));
@@ -127,6 +132,13 @@ namespace TestOpenGL.Stages
             Program.Log.SetCurrentQuest("Не умри!!");
             Program.P.StartRender();
             Program.GCycle.StartStep();
+        }
+
+        Bot GetNextBot()
+        {
+            Bot b = (Bot)Program.OB.GetBot(1, currentAlliance++);
+            b.AI = AIs.AIAttacker;
+            return b;
         }
     }
 }

@@ -14,13 +14,22 @@ namespace TestOpenGL.BeingContents
             {
                 LB = (
                     from being in LB
-                    orderby Analytics.Distance(being.C, being.C)
+                    orderby Analytics.Distance(b.C, being.C)
                     select being
-                    ).ToList<Being>();
+                    ).ToList();
 
                 if (Analytics.Distance(b.C, LB[0].C) > 1)
                 {
-                    b.Move(Analytics.DirectionToGrid(b.C, LB[0].C));
+                    //if (!b.Move(Analytics.DirectionToGrid(b.C, LB[0].C)))
+
+                    Stack<Coord> sc = Analytics.BFS(b.C, LB[0].C);
+                    if (sc.Count > 0)
+                    {
+                        if (!b.Move(sc.Pop()))
+                            throw new System.Exception("Жп");
+                    }
+                    else
+                        b.features.ActionPoints--;
                 }
                 else
                 {

@@ -20,7 +20,16 @@ namespace TestOpenGL.World
 
         public void AddTrigger(Trigger trigger)
         {
-            this.triggers.Add(trigger);
+            triggers.Add(trigger);
+        }
+        public void RemoveTrigger(int number)
+        {
+            foreach(Trigger t in triggers)
+                if(t.Number == number)
+                {
+                    triggers.Remove(t);
+                    break;
+                }
         }
 
         public void CallAllTriggers()

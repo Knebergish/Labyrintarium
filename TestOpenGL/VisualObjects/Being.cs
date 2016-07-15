@@ -187,8 +187,8 @@ namespace TestOpenGL.VisualObjects
 
         protected override bool IsEmptyCell(Coord C)
         {
-            //if(Program.L.GetMap<Being>().GetCellVO(C)!=null)
-            return Program.L.GetMap<Being>().GetCellVO(C).Count == 0 ? true : false;
+            //return Program.L.GetMap<Being>().GetCellVO(C).Count == 0 ? true : false;
+            return Program.L.IsPassable(C);
         }
     }
 

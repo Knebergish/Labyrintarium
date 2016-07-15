@@ -37,12 +37,20 @@ namespace TestOpenGL.Renders
         public int Height
         { 
             get { return height; }
-            set { height = value > Program.L.LengthX || value > Program.L.LengthY ? Math.Min(Program.L.LengthX, Program.L.LengthY) : (value < 1 ? 1 : value); } 
+            set
+            {
+                height = value > Program.L.LengthX || value > Program.L.LengthY ? Math.Min(Program.L.LengthX, Program.L.LengthY) : (value < 1 ? 1 : value);
+                Program.P.SettingVisibleAreaSize();
+            } 
         }
         public int Width
         { 
             get { return width; }
-            set { width = value > Program.L.LengthX || value > Program.L.LengthY ? Math.Min(Program.L.LengthX, Program.L.LengthY) : (value < 1 ? 1 : value); ; } 
+            set
+            {
+                width = value > Program.L.LengthX || value > Program.L.LengthY ? Math.Min(Program.L.LengthX, Program.L.LengthY) : (value < 1 ? 1 : value); ;
+                Program.P.SettingVisibleAreaSize();
+            } 
         }
 
         public int MinX

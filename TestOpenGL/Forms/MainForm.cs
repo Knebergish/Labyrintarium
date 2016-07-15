@@ -1,15 +1,7 @@
 ﻿using System;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Threading;
-
-
-using TestOpenGL;
-using TestOpenGL.DataIO;
 using TestOpenGL.VisualObjects;
-using TestOpenGL.Logic;
 using TestOpenGL.BeingContents;
 using TestOpenGL.VisualObjects.ChieldsBlock;
 

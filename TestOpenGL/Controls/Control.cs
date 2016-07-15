@@ -21,7 +21,7 @@ namespace TestOpenGL.Controls
             actionsControlDataTable.Columns.Add("additionalKey", typeof(AdditionalKeys));
             actionsControlDataTable.Columns.Add("action", typeof(Action));
 
-            IsEnabledControl = true;
+            IsEnabledControl = false;
 
             Func<List<RenderObject>> fu = new Func<List<RenderObject>>(() => { return new List<RenderObject>(); });
         }
