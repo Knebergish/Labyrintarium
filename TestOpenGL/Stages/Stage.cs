@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TestOpenGL.World;
 
-namespace TestOpenGL
+namespace TestOpenGL.Stages
 {
     class Stage
     {
@@ -18,7 +19,7 @@ namespace TestOpenGL
         public void StartStage()
         {
             //Program.GCycle.triggers = triggers;
-            Program.L = new Logic.Level(lengthX, lengthY, lengthZ);
+            Program.L = new Level(lengthX, lengthY, lengthZ);
             stageLoad();
         }
     }

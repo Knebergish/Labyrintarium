@@ -3,8 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TestOpenGL.BeingContents;
+using TestOpenGL.Controls;
 using TestOpenGL.Logic;
+using TestOpenGL.Renders;
 using TestOpenGL.VisualObjects;
+using TestOpenGL.VisualObjects.ChieldsBeing;
+using TestOpenGL.World;
 
 namespace TestOpenGL.Stages
 {
@@ -29,7 +34,7 @@ namespace TestOpenGL.Stages
             Program.P.StopRender();
             Program.P.ClearShadersList();
             Program.GCycle.StopStep();
-            Program.L = new Logic.Level(20, 20, 4);
+            Program.L = new Level(20, 20, 4);
             VariantsControls.StandartGamerControl();
         }
 
@@ -61,6 +66,7 @@ namespace TestOpenGL.Stages
             Program.GCycle.Gamer = (Gamer)Program.OB.GetGamer(1);
             for (int i = 1; i < 10; i++)
                 Program.GCycle.Gamer.inventory.PutBagItem(Program.OB.GetItem(i));
+            Program.GCycle.Gamer.features.CurrentExperience += 100;
 
             Program.GCycle.Gamer.Spawn(new Coord(1, 0, 0));
 
@@ -72,13 +78,13 @@ namespace TestOpenGL.Stages
             // Шейдер крон деревьев
             Program.P.ShadersList.Add(new Func<List<RenderObject>>(() =>
             {
-                Block b = Program.OB.GetBlock(3);
+                Texture t = Program.TA.GetTexture(TypeVisualObject.Block, "3");
                 List<RenderObject> lro = new List<RenderObject>();
 
                 foreach (Block block in Program.L.GetMap<Block>().GetAllVO())
                     if (block.Id == 2)
                         if (Analytics.CorrectCoordinate(block.C.X, block.C.Y + 1) && Analytics.IsInCamera(new Coord(block.C.X, block.C.Y + 1), Program.P.Camera))
-                            lro.Add(new RenderObject(b.texture, new Coord(block.C.X, block.C.Y + 1), (int)TypeVisualObject.Being * (Program.L.LengthZ - 1) + Program.L.LengthZ + 0.5));
+                            lro.Add(new RenderObject(t, new Coord(block.C.X, block.C.Y + 1), (int)TypeVisualObject.Being * (Program.L.LengthZ - 1) + Program.L.LengthZ + 0.5));
 
                 return lro;
             }));
@@ -104,6 +110,7 @@ namespace TestOpenGL.Stages
 
         void EndLoad()
         {
+            Program.Log.SetCurrentQuest("Не умри!!");
             Program.P.StartRender();
             Program.GCycle.StartStep();
         }

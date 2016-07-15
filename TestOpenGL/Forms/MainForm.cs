@@ -10,12 +10,14 @@ using TestOpenGL;
 using TestOpenGL.DataIO;
 using TestOpenGL.VisualObjects;
 using TestOpenGL.Logic;
+using TestOpenGL.BeingContents;
+using TestOpenGL.VisualObjects.ChieldsBlock;
 
-namespace TestOpenGL
+namespace TestOpenGL.Forms
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
             GlControl.InitializeContexts();
@@ -106,21 +108,22 @@ namespace TestOpenGL
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            System.Environment.Exit(1);
+            Environment.Exit(1);
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            new System.Threading.Thread(delegate()
+            new Thread(delegate()
                 {
-                    Program.GCycle.Gamer.Attack(Program.P.Camera.Sight.C);
+                    Program.FA.ShowCharacter();
+                    //Program.GCycle.Gamer.Attack(Program.P.Camera.Sight.C);
                     //Battle.Attack(Program.GCycle.Gamer, Program.P.Camera.Sight.C);
                 }).Start();
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            new System.Threading.Thread(delegate()
+            new Thread(delegate()
                 {
                     Program.C.ProcessingKeyPress(e);
                 }).Start();

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Windows.Forms;
 
-namespace TestOpenGL
+namespace TestOpenGL.Controls
 {
     class Control
     {

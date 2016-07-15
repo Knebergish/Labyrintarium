@@ -1,6 +1,6 @@
-﻿namespace TestOpenGL
+﻿namespace TestOpenGL.Forms
 {
-    partial class Form4
+    partial class ExchangeInventoryesForm
     {
         /// <summary>
         /// Required designer variable.
@@ -89,7 +89,7 @@
             this.label2.TabIndex = 5;
             this.label2.Text = "label2";
             // 
-            // Form4
+            // ExchangeInventoryesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -100,7 +100,7 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.listBox2);
             this.Controls.Add(this.listBox1);
-            this.Name = "Form4";
+            this.Name = "ExchangeInventoryesForm";
             this.Text = "Обмен вещами";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form4_FormClosed);
             this.Load += new System.EventHandler(this.Form4_Load);

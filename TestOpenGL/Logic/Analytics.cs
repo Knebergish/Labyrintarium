@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Collections.Generic;
 
-using TestOpenGL;
 using TestOpenGL.VisualObjects;
+using TestOpenGL.Renders;
 
 namespace TestOpenGL.Logic
 {

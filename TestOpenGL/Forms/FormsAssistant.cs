@@ -1,14 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
+using TestOpenGL.BeingContents;
 
-namespace TestOpenGL
+namespace TestOpenGL.Forms
 {
     class FormsAssistant
     {
-        Form2 formInventory;
-        Form3 formMapEditor;
-        Form4 formExchangeInventoryes;
+        InventoryForm formInventory;
+        MapEditorForm formMapEditor;
+        ExchangeInventoryesForm formExchangeInventoryes;
+        CharacterForm formCharacter;
 
         delegate void openForm();
         //-------------
@@ -16,8 +16,9 @@ namespace TestOpenGL
 
         public FormsAssistant()
         {
-            formInventory = new Form2();
-            formMapEditor = new Form3();
+            formInventory = new InventoryForm();
+            formMapEditor = new MapEditorForm();
+            formCharacter = new CharacterForm();
             //formExchangeInventoryes = new Form4();
 
         }
@@ -49,8 +50,12 @@ namespace TestOpenGL
         }
         public void ShowExchangeInventoryes(Inventory primoInventory, Inventory secundoInventory)
         {
-            formExchangeInventoryes = new Form4(primoInventory, secundoInventory);
+            formExchangeInventoryes = new ExchangeInventoryesForm(primoInventory, secundoInventory);
             ProcessingOpeningForms(delegate { formExchangeInventoryes.Show(); });
+        }
+        public void ShowCharacter()
+        {
+            ProcessingOpeningForms(delegate { formCharacter.Show(); });
         }
     }
 }

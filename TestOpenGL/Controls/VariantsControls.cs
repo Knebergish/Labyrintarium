@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TestOpenGL
+﻿namespace TestOpenGL.Controls
 {
     class VariantsControls
     {
         public static void StandartGamerControl()
         {
             Program.C.ClearAllActionsControl();
-
+            
             Program.C.AddNewActionControl('a', AdditionalKeys.None, delegate
             {
                 Program.GCycle.Gamer.Move(TestOpenGL.Direction.Left);
@@ -49,6 +43,11 @@ namespace TestOpenGL
             {
                 Program.P.Camera.Sight.MoveSight(Direction.Down);
             });
+            Program.C.AddNewActionControl(' ', AdditionalKeys.None, delegate
+            {
+                Program.GCycle.Gamer.Attack(Program.P.Camera.Sight.C);
+            });
+            
 
             Program.C.AddNewActionControl('i', AdditionalKeys.Shift, delegate
             {

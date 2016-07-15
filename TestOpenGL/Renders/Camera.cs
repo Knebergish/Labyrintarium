@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-using TestOpenGL.Logic;
+using TestOpenGL.OutInfo;
 using TestOpenGL.VisualObjects;
 
-namespace TestOpenGL
+namespace TestOpenGL.Renders
 {
     class Camera
     {
@@ -28,7 +24,7 @@ namespace TestOpenGL
             this.width = width;
             this.height = height;
 
-            sight = new TestOpenGL.Sight(this);
+            sight = new Sight(this);
 
             Look();
         }

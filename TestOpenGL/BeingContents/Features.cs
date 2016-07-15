@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 using TestOpenGL.VisualObjects;
 
-namespace TestOpenGL
+namespace TestOpenGL.BeingContents
 {
     /// <summary>
     /// Класс описания характеристик сущности.
@@ -13,37 +12,62 @@ namespace TestOpenGL
         // Ссылка на хозяина характеристик.
         public Being owner;
 
-        // Ассоциативный массив с характеристиками.
-        private List<int> listFeatures = new List<int>();
+        // Словарь с характеристиками.
+        Dictionary<Feature, int> dictionaryFeatures;
 
         // Максимальное здоровье сущности.
         int maxHealth;
         // Текущее здоровье сущности.
         int currentHealth;
-        // регенерация здоровья в ход
+        // Регенерация здоровья в ход.
         int increaceHealth;
         
-        // Очки действия сущности
+        // Очки действия сущности.
         double actionPoints;
-        // Восстановление очков действия в ход
+        // Восстановление очков действия в ход.
         double increaseActionPoints;
+
+        // Текущий опыт сущности.
+        double currentExperience;
+        // Текущий уровень сущности.
+        int currentLevel;
+        // Необходимый для поднятия уровня опыт.
+        double nextLevelExperience;
+        // Модификатор увеличения требуемого для поднятия уровня количества опыта.
+        double nextLevelModifier;
+        // Свободные для распределения очки характеристик.
+        int freeFeaturesPoints;
         //-------------
 
 
         public Features(Being owner, int power, int coordination, int mmr, int stamina, int agility, int sense)
         {
             this.owner = owner;
+            dictionaryFeatures = new Dictionary<Feature, int>();
 
-            listFeatures.Add(power);
-            listFeatures.Add(coordination);
-            listFeatures.Add(mmr);
-            listFeatures.Add(stamina);
-            listFeatures.Add(agility);
-            listFeatures.Add(sense);
+            dictionaryFeatures.Add(Feature.Power, power);
+            dictionaryFeatures.Add(Feature.Coordination, coordination);
+            dictionaryFeatures.Add(Feature.MMR, mmr);
+            dictionaryFeatures.Add(Feature.Stamina, stamina);
+            dictionaryFeatures.Add(Feature.Agility, agility);
+            dictionaryFeatures.Add(Feature.Sense, sense);
+
+            //maxHealth = 0;
+            currentHealth = 0;
+            //increaceHealth = 0;
+
+            actionPoints = 0;
+            //increaseActionPoints = 0;
+
+            currentExperience = 0;
+            currentLevel = 0;
+            nextLevelExperience = 10;
+            nextLevelModifier = 2;
+            freeFeaturesPoints = 0;
 
             Recalculate();
-            this.currentHealth = this.maxHealth;
-            this.actionPoints = 0;
+
+            currentHealth = maxHealth;
         }
         public Features(Being owner)
             : this(owner, 1, 1, 1, 1, 1, 1)
@@ -51,7 +75,7 @@ namespace TestOpenGL
 
         public int this[Feature F]
         {
-            get { return listFeatures[(int)F]; }
+            get { return dictionaryFeatures[F]; }
         }
 
         public int MaxHealth
@@ -89,6 +113,33 @@ namespace TestOpenGL
         {
             get { return increaseActionPoints; }
         }
+
+        public double CurrentExperience
+        {
+            get {  return currentExperience; }
+
+            set
+            {
+                currentExperience = value > currentExperience ? value : currentExperience;
+                Recalculate();
+            }
+        }
+
+        public double NextLevelExperience
+        { get { return nextLevelExperience; } }
+
+        public int FreeFeaturesPoints
+        {
+            get { return freeFeaturesPoints; }
+
+            set
+            {
+                freeFeaturesPoints = value > freeFeaturesPoints ? value : freeFeaturesPoints;
+            }
+        }
+
+        public int CurrentLevel
+        { get { return currentLevel; } }
         //=============
 
 
@@ -97,10 +148,30 @@ namespace TestOpenGL
         /// </summary>
         public void Recalculate()
         {
-            this.maxHealth = this.listFeatures[(int)Feature.Stamina] * 10;
-            this.increaceHealth = this.maxHealth / 100;
+            maxHealth = this[Feature.Stamina] * 10;
+            //TODO: оно ж интовское, как ты туда запихнёшь одну сотую?..
+            increaceHealth = maxHealth / 100;
 
-            this.increaseActionPoints = 1 + (double)(this.listFeatures[(int)Feature.Agility] - 1) / 4;
+            increaseActionPoints = 1 + (double)(this[Feature.Agility] - 1) / 4;
+
+            while(currentExperience >= nextLevelExperience)
+            {
+                currentLevel++;
+                freeFeaturesPoints++;
+                nextLevelExperience *= nextLevelModifier;
+            }
+        }
+
+        public bool AdditionFeature(Feature feature)
+        {
+            if(freeFeaturesPoints>=1)
+            {
+                freeFeaturesPoints--;
+                dictionaryFeatures[feature]++;
+                Recalculate();
+                return true;
+            }
+            return false;
         }
     }
 }

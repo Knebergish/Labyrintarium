@@ -1,32 +1,41 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Forms;
 
-namespace TestOpenGL
+namespace TestOpenGL.OutInfo
 {
     class Logger
     {
         //TODO: изменить на получение (функтора?).
-        System.Windows.Forms.ListBox loggerListBox;
+        ListBox loggerListBox;
+        Label questLabel;
         //-------------
 
 
-        public Logger(System.Windows.Forms.ListBox loggerListBox)
-        {
-            this.loggerListBox = loggerListBox;
-        }
+        public Logger()
+        { }
+
+        public ListBox LoggerListBox
+        { set { loggerListBox = value; } }
+
+        public Label QuestLabel
+        { set { questLabel = value; } }
         //=============
 
 
         public void Log(string message)
         {
-            loggerListBox.Invoke(new Func<int>(() => 
+            loggerListBox?.Invoke(new Action(() => 
             { 
                 loggerListBox.Items.Add(message);
                 loggerListBox.SelectedIndex = loggerListBox.Items.Count - 1;
-                return 0;
+            }));
+        }
+
+        public void SetCurrentQuest(string questText)
+        {
+            questLabel?.Invoke(new Action(() =>
+            {
+                questLabel.Text = questText;
             }));
         }
     }

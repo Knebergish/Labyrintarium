@@ -1,4 +1,4 @@
-﻿namespace TestOpenGL
+﻿namespace TestOpenGL.Renders
 {
     class Texture
     {

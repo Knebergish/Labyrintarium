@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Data;
-using System.Data.SQLite;
 
 using TestOpenGL.VisualObjects;
-using TestOpenGL.DataIO;
+using TestOpenGL.VisualObjects.ChieldsBeing;
 
 namespace TestOpenGL.DataIO
 {

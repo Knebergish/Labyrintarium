@@ -1,12 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 
-using TestOpenGL.VisualObjects;
-using TestOpenGL.Logic;
-using TestOpenGL;
-using System;
+using TestOpenGL.Renders;
 
-namespace TestOpenGL
+namespace TestOpenGL.VisualObjects.ChieldsBeing
 {
     class Bot: Being
     {

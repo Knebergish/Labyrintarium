@@ -1,10 +1,8 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 
-using TestOpenGL.VisualObjects;
-using TestOpenGL;
+using TestOpenGL.Renders;
 
-namespace TestOpenGL
+namespace TestOpenGL.VisualObjects.ChieldsBeing
 {
     class Gamer: Being
     {

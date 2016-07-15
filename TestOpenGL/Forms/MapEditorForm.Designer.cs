@@ -1,6 +1,6 @@
-﻿namespace TestOpenGL
+﻿namespace TestOpenGL.Forms
 {
-    partial class Form3
+    partial class MapEditorForm
     {
         /// <summary>
         /// Required designer variable.
@@ -147,7 +147,7 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // Form3
+            // MapEditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -164,8 +164,8 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.listView1);
             this.KeyPreview = true;
-            this.Name = "Form3";
-            this.Text = "Form3";
+            this.Name = "MapEditorForm";
+            this.Text = "Редактирование карты";
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form3_FormClosing);
             this.Load += new System.EventHandler(this.Form3_Load);

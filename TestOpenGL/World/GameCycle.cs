@@ -1,12 +1,8 @@
 ﻿using System.Threading;
-using System.Collections.Generic;
-using System.Diagnostics;
 
+using TestOpenGL.VisualObjects.ChieldsBeing;
 
-using TestOpenGL.VisualObjects;
-using TestOpenGL;
-
-namespace TestOpenGL.Logic
+namespace TestOpenGL.World
 {
     class GameCycle
     {

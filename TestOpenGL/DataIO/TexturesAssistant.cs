@@ -5,7 +5,7 @@ using Tao.OpenGl;
 using Tao.DevIl;
 using Tao.FreeGlut;
 
-using TestOpenGL.VisualObjects;
+using TestOpenGL.Renders;
 
 namespace TestOpenGL.DataIO
 {

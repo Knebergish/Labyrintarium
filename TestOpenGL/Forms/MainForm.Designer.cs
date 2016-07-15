@@ -1,6 +1,6 @@
-﻿namespace TestOpenGL
+﻿namespace TestOpenGL.Forms
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         /// Требуется переменная конструктора.
@@ -36,6 +36,8 @@
             this.controlEnabledIndicator = new System.Windows.Forms.PictureBox();
             this.FPSValueLabel = new System.Windows.Forms.Label();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
+            this.label1 = new System.Windows.Forms.Label();
+            this.questLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.controlEnabledIndicator)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.SuspendLayout();
@@ -124,11 +126,30 @@
             this.trackBar1.Value = 60;
             this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
             // 
-            // Form1
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(618, 275);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(100, 13);
+            this.label1.TabIndex = 10;
+            this.label1.Text = "Текущее задание:";
+            // 
+            // questLabel
+            // 
+            this.questLabel.Location = new System.Drawing.Point(618, 288);
+            this.questLabel.Name = "questLabel";
+            this.questLabel.Size = new System.Drawing.Size(221, 138);
+            this.questLabel.TabIndex = 11;
+            this.questLabel.Text = "Задание отсутствует.";
+            // 
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(851, 625);
+            this.Controls.Add(this.questLabel);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.trackBar1);
             this.Controls.Add(this.FPSValueLabel);
             this.Controls.Add(this.logListBox);
@@ -138,8 +159,8 @@
             this.Controls.Add(this.GlControl);
             this.Controls.Add(this.controlEnabledIndicator);
             this.KeyPreview = true;
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.Name = "MainForm";
+            this.Text = "Лабиринтариум - разработка";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.SizeChanged += new System.EventHandler(this.Form1_SizeChanged);
@@ -161,6 +182,8 @@
         private System.Windows.Forms.PictureBox controlEnabledIndicator;
         private System.Windows.Forms.Label FPSValueLabel;
         private System.Windows.Forms.TrackBar trackBar1;
+        private System.Windows.Forms.Label label1;
+        public System.Windows.Forms.Label questLabel;
     }
 }
 

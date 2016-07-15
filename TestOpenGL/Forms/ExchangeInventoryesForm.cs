@@ -7,16 +7,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using TestOpenGL.BeingContents;
 using TestOpenGL.VisualObjects;
 
-namespace TestOpenGL
+namespace TestOpenGL.Forms
 {
-    partial class Form4 : Form
+    partial class ExchangeInventoryesForm : Form
     {
         Inventory primoInventory, secundoInventory;
 
-        public Form4(Inventory primoInventory, Inventory secundoInventory)
+        public ExchangeInventoryesForm(Inventory primoInventory, Inventory secundoInventory)
         {
             if (primoInventory == null || secundoInventory == null)
                 throw new ArgumentNullException();

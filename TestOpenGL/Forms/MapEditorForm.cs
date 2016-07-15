@@ -1,25 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
-
-using TestOpenGL;
 using TestOpenGL.VisualObjects;
 
-namespace TestOpenGL
+namespace TestOpenGL.Forms
 {
-    public partial class Form3 : Form
+    public partial class MapEditorForm : Form
     {
         ImageList IL;
         //EventDelegate closeForm;
         int[] massId;
-        public Form3(/*EventDelegate closeForm*/)
+        public MapEditorForm(/*EventDelegate closeForm*/)
         {
             InitializeComponent();
             //this.closeForm = closeForm;
@@ -158,7 +151,7 @@ namespace TestOpenGL
 
         private void Form3_FormClosing(object sender, FormClosingEventArgs e)
         {
-            this.Hide();
+            Hide();
             e.Cancel = true;
             //closeForm();
         }

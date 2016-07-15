@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using TestOpenGL.Renders;
 
-using TestOpenGL.VisualObjects;
-
-namespace TestOpenGL
+namespace TestOpenGL.VisualObjects.ChieldsBlock
 {
     class Door : Block, IUsable
     {

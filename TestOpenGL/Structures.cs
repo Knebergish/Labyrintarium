@@ -1,7 +1,7 @@
 ﻿using System;
-//using System.Collections.Generic;
 
 using TestOpenGL.Logic;
+using TestOpenGL.Renders;
 using TestOpenGL.VisualObjects;
 
 namespace TestOpenGL

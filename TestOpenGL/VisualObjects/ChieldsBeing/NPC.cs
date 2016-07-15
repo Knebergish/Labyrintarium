@@ -1,8 +1,4 @@
-﻿using System;
-
-using TestOpenGL.VisualObjects;
-
-namespace TestOpenGL
+﻿namespace TestOpenGL.VisualObjects.ChieldsBeing
 {
     class NPC : Being, IUsable
     {

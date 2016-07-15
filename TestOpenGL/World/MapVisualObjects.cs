@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+
 using TestOpenGL.VisualObjects;
 
-namespace TestOpenGL.DataIO
+namespace TestOpenGL.World
 {
     class MapVisualObjects<T> where T : VisualObject
     {

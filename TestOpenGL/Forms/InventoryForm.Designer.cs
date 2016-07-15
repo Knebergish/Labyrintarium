@@ -1,6 +1,6 @@
-﻿namespace TestOpenGL
+﻿namespace TestOpenGL.Forms
 {
-    partial class Form2
+    partial class InventoryForm
     {
         /// <summary>
         /// Required designer variable.
@@ -70,7 +70,7 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // Form2
+            // InventoryForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -79,8 +79,8 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.listBox2);
             this.Controls.Add(this.listBox1);
-            this.Name = "Form2";
-            this.Text = "Form2";
+            this.Name = "InventoryForm";
+            this.Text = "Инвентарь";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form2_FormClosing);
             this.Load += new System.EventHandler(this.Form2_Load);
             this.ResumeLayout(false);

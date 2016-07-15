@@ -10,12 +10,12 @@ using System.Windows.Forms;
 
 using TestOpenGL.VisualObjects;
 
-namespace TestOpenGL
+namespace TestOpenGL.Forms
 {
-    public partial class Form2 : Form
+    public partial class InventoryForm : Form
     {
         //EventDelegate closeForm;
-        public Form2(/*EventDelegate closeForm*/)
+        public InventoryForm(/*EventDelegate closeForm*/)
         {
             InitializeComponent();
             //this.closeForm = closeForm;

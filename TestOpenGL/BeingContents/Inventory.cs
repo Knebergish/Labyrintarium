@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 
 using TestOpenGL.VisualObjects;
-using TestOpenGL;
+using TestOpenGL.VisualObjects.ChieldsItem;
 
-namespace TestOpenGL
+namespace TestOpenGL.BeingContents
 {
     class Inventory
     {

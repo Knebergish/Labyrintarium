@@ -1,19 +1,9 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Diagnostics;
 
-using Tao.OpenGl;
-using Tao.FreeGlut;
-using Tao.DevIl;
-
-using TestOpenGL;
-using TestOpenGL.DataIO;
 using TestOpenGL.VisualObjects;
 
-namespace TestOpenGL.Logic
+namespace TestOpenGL.World
 {
     /// <summary>
     /// Объединяет слои карты.

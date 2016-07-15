@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using TestOpenGL.Renders;
 
 namespace TestOpenGL.VisualObjects
 {

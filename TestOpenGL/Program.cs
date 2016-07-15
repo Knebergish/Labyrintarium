@@ -3,13 +3,16 @@ using System.IO;
 using System.Windows.Forms;
 
 using TestOpenGL.DataIO;
-using TestOpenGL.Logic;
+using TestOpenGL.Forms;
+using TestOpenGL.OutInfo;
+using TestOpenGL.Renders;
+using TestOpenGL.World;
 
 namespace TestOpenGL
 {
     static class Program
     {
-        public static Form1 mainForm;
+        public static MainForm mainForm;
         public static ObjectsBuilder OB;
         public static TexturesAssistant TA;
         public static DataBaseIO DBIO;
@@ -17,7 +20,7 @@ namespace TestOpenGL
         public static Painter P;
         public static Logger Log;
         public static GameCycle GCycle;
-        public static Control C;
+        public static Controls.Control C;
         public static FormsAssistant FA;
 
         /// <summary>
@@ -29,7 +32,7 @@ namespace TestOpenGL
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Application.Run(new Form1());
+            Application.Run(new MainForm());
         }
         
 
@@ -37,7 +40,7 @@ namespace TestOpenGL
         /// Инициализация игровых классов.
         /// </summary>
         /// <param name="f">Ссылка на форму с компонентом вывода изображения.</param>
-        public static void InitApp(Form1 f)
+        public static void InitApp(MainForm f)
         {
             mainForm = f;
             DBIO = new DataBaseIO(Directory.GetCurrentDirectory());
@@ -45,10 +48,10 @@ namespace TestOpenGL
             OB = new ObjectsBuilder(DBIO, TA);
             L = new Level(30, 30, 4);
             P = new Painter(new Camera(10, 10));
-            Log = new Logger(f.logListBox);
+            Log = new Logger(); Log.LoggerListBox = mainForm.logListBox; Log.QuestLabel = mainForm.questLabel;
             
             GCycle = new GameCycle();
-            C = new Control();
+            C = new Controls.Control();
             FA = new FormsAssistant();
         }
     }

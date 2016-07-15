@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 
-using TestOpenGL;
+using TestOpenGL.BeingContents;
 using TestOpenGL.Logic;
+using TestOpenGL.Renders;
 
 namespace TestOpenGL.VisualObjects
 {

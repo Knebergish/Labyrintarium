@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 
 using TestOpenGL.VisualObjects;
-using TestOpenGL;
 
 namespace TestOpenGL.Logic
 {
@@ -34,7 +33,7 @@ namespace TestOpenGL.Logic
 
             Program.Log.Log(attack.ToString() + " против " + defend.ToString());
 
-            if (attack > defend)
+            if (attack < defend)
                 return;
 
 
