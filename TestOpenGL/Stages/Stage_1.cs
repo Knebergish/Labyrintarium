@@ -105,7 +105,21 @@ namespace TestOpenGL.Stages
 
         void LoadTriggers()
         {
-
+            Triggers.currentTriggers.AddTrigger(
+                new Trigger(
+                    1,
+                    true,
+                    delegate 
+                    {
+                        if (Program.L.GetMap<Being>().GetAllVO().Count < 3)
+                        {
+                            Bot b = (Bot)Program.OB.GetBot(1, 3);
+                            b.AI = AIs.AIAttacker;
+                            b.Spawn(new Coord(5, 1, 0));
+                            Program.GCycle.Gamer.features.CurrentHealth = 10;
+                        }
+                    }
+                ));
         }
 
         void EndLoad()

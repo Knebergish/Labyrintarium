@@ -52,12 +52,9 @@ namespace TestOpenGL.BeingContents
             dictionaryFeatures.Add(Feature.Agility, agility);
             dictionaryFeatures.Add(Feature.Sense, sense);
 
-            //maxHealth = 0;
             currentHealth = 0;
-            //increaceHealth = 0;
 
             actionPoints = 0;
-            //increaseActionPoints = 0;
 
             currentExperience = 0;
             currentLevel = 0;

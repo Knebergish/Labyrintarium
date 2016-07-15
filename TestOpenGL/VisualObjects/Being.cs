@@ -23,8 +23,8 @@ namespace TestOpenGL.VisualObjects
         public Being(int id, string name, string description, Texture texture, int alliance)
             : base(id, name, description, texture)
         {
-            this.features = new Features(this);
-            this.inventory = new Inventory();
+            features = new Features(this);
+            inventory = new Inventory();
             isSpawned = false;
             eventsBeing = new EventsBeing();
             Alliance = alliance;

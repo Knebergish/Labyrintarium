@@ -61,7 +61,8 @@ namespace TestOpenGL.World
         }
         void StepTriggers()
         {
-            EventStepTriggers?.Invoke();
+            //EventStepTriggers?.Invoke();
+            Triggers.currentTriggers.CallAllTriggers();
         }
         void StepBeingsIncrease()
         {

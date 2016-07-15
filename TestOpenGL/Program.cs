@@ -49,7 +49,8 @@ namespace TestOpenGL
             L = new Level(30, 30, 4);
             P = new Painter(new Camera(10, 10));
             Log = new Logger(); Log.LoggerListBox = mainForm.logListBox; Log.QuestLabel = mainForm.questLabel;
-            
+
+            Triggers.currentTriggers = new Triggers();
             GCycle = new GameCycle();
             C = new Controls.Control();
             FA = new FormsAssistant();

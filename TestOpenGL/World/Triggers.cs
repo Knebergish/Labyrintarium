@@ -12,7 +12,7 @@ namespace TestOpenGL.World
 
         public Triggers()
         {
-            Triggers.currentTriggers = this;
+            //currentTriggers = this;
             triggers = new List<Trigger>();
         }
         //=============
