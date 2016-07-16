@@ -72,7 +72,7 @@ namespace TestOpenGL.DataIO
             Gl.glClear(Gl.GL_COLOR_BUFFER_BIT | Gl.GL_DEPTH_BUFFER_BIT);
         }
 
-        private int LoadTextureFromFile(TypeVisualObject tvo, string imageName)//, int imageId)
+        private int LoadTextureFromFile(TypeVisualObject tvo, string imageName)
         {
             string url = pathes[(int)tvo] + imageName + ".png";
             int image = 0;
@@ -148,9 +148,9 @@ namespace TestOpenGL.DataIO
             {
                 if ((TypeVisualObject)this.texturesDataTable.Rows[i]["type"] == type)
                 {
-                    if (this.texturesDataTable.Rows[i]["imageName"].ToString() == imageName)
+                    if (texturesDataTable.Rows[i]["imageName"].ToString() == imageName)
                     {
-                        return (int)this.texturesDataTable.Rows[i]["textureId"];
+                        return (int)texturesDataTable.Rows[i]["textureId"];
                     }
                 }
             }

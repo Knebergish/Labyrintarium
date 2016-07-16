@@ -101,7 +101,6 @@ namespace TestOpenGL.Stages
                     if (Analytics.IsInCamera(new Coord(b.C.X, b.C.Y), Program.P.Camera))
                         foreach (Item i in b.Inventory.GetEquipmentItems())
                             lro.Add(new RenderObject(i.Texture, b.C, (int)TypeVisualObject.Being * (Program.L.LengthZ - 1) + 0.1));
-
                 return lro;
             }));
         }

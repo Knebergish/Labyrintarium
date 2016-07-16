@@ -169,22 +169,23 @@ namespace TestOpenGL.Renders
                 listRO.AddRange(func());
 
 
+
             var sort = from ro in listRO
                    orderby ro.ZIndex
                    select ro;
 
             foreach (RenderObject ro in sort)
-                this.DrawObject(ro.Texture, new Coord(ro.C.X - Camera.MinX, ro.C.Y - Camera.MinY), 0);
+                DrawObject(ro.Texture, new Coord(ro.C.X - Camera.MinX, ro.C.Y - Camera.MinY), 0);
 
             
 
             // Прицел
-            this.DrawObject(camera.Sight.AimDecal.Texture, new Coord(camera.Sight.C.X - this.camera.MinX, camera.Sight.C.Y - this.camera.MinY), 100);
+            DrawObject(camera.Sight.AimDecal.Texture, new Coord(camera.Sight.C.X - camera.MinX, camera.Sight.C.Y - camera.MinY), 100);
 
             Program.mainForm.GlControl.SwapBuffers();
         }
 
-        void DrawObject(Texture texture, Coord C,  int zShift)
+        void DrawObject(Texture texture, Coord C, int zShift)
         {
             int size = 1;
             // включаем режим текстурирования

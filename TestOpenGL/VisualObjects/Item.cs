@@ -6,9 +6,11 @@ namespace TestOpenGL.VisualObjects
 {
     class Item: IInfoble
     {
+        Texture texture;
+
         int level;
         int price;
-        Texture texture;
+        
         // Части тела, занимаемые предметом
         List<Part> parts;
 
@@ -20,6 +22,8 @@ namespace TestOpenGL.VisualObjects
             :this(item.ObjectInfo.Id, item.ObjectInfo.Name, item.ObjectInfo.Description, item.Texture, item.Level, item.Price, item.Parts) { }
         public Item(int id, string name, string description, Texture texture, int level, int price, List<Part> parts)
         {
+            this.texture = texture;
+
             this.level = level;
             this.price = price;
 
