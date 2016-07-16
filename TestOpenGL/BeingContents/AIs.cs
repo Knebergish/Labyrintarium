@@ -24,10 +24,7 @@ namespace TestOpenGL.BeingContents
 
                     Stack<Coord> sc = Analytics.BFS(b.C, LB[0].C);
                     if (sc.Count > 0)
-                    {
-                        if (!b.Move(sc.Pop()))
-                            throw new System.Exception("Жп");
-                    }
+                        b.Move(sc.Pop());
                     else
                         b.features.ActionPoints--;
                 }

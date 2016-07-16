@@ -66,12 +66,28 @@ namespace TestOpenGL.BeingContents
         {
             return GetItemByPart(Part.RHand, equipment);
         }
+        public int GetEquipWeaponLevel()
+        {
+            Item i = GetEquipWeapon();
+            if (i != null)
+                return i.Level;
+            else
+                return 0;
+        }
         public Item GetEquipShield()
         {
             Item i = GetItemByPart(Part.LHand, equipment);
             if (i is Shield)
                 return i;
             return null;
+        }
+        public int GetEquipShieldLevel()
+        {
+            Item i = GetEquipShield();
+            if (i != null)
+                return i.Level;
+            else
+                return 0;
         }
         public List<Item> GetEquipArmors()
         {
@@ -82,6 +98,19 @@ namespace TestOpenGL.BeingContents
             }
             listArmor.RemoveAll(x => x == null);
             return listArmor;
+        }
+        public int GetEquipArmorsLevel()
+        {
+            List<Item> li = GetEquipArmors();
+            if (li.Count == 0)
+                return 0;
+            else
+            {
+                int count = 0;
+                foreach (Item i in li)
+                    count += i.Level;
+                return count;
+            }
         }
 
         public bool EquipItem(int num)

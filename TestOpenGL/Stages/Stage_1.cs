@@ -73,7 +73,7 @@ namespace TestOpenGL.Stages
             Program.GCycle.Gamer.features.CurrentExperience += 100;
 
             Program.GCycle.Gamer.Spawn(new Coord(1, 0, 0));
-            Program.GCycle.Gamer.Death();
+            //Program.GCycle.Gamer.Death();
             Program.P.Camera.Width = 30;
             Program.P.Camera.Height = 30;
         }

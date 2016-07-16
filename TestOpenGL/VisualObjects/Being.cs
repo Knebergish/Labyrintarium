@@ -123,7 +123,7 @@ namespace TestOpenGL.VisualObjects
         {
             if (count > 0)
             {
-                this.features.CurrentHealth -= count;
+                features.CurrentHealth -= count;
 
                 Program.L.GetMap<Decal>().AddVO(Program.OB.GetDecal(4), C);
                 Program.L.Pause(150);
@@ -199,33 +199,38 @@ namespace TestOpenGL.VisualObjects
         public event VoidEventDelegate EventBeingEndStep;
         public event VoidEventDelegate EventBeingEndAction;
         public event VoidEventDelegate EventBeingEndActionPoints;
+        public event VoidEventDelegate EventBeingChangeActionPoints;
+        public event VoidEventDelegate EventBeingChangeHealth;
         //-------------
 
 
         public void BeingDeath()
         {
-            if (EventBeingDeath != null)
-                EventBeingDeath();
+            EventBeingDeath?.Invoke();
         }
         public void BeingStartStep()
         {
-            if (EventBeingStartStep != null)
-                EventBeingStartStep();
+            EventBeingStartStep?.Invoke();
         }
         public void BeingEndStep()
         {
-            if (EventBeingEndStep != null)
-                EventBeingEndStep();
+                EventBeingEndStep?.Invoke();
         }
         public void BeingEndAction()
         {
-            if (EventBeingEndAction != null)
-                EventBeingEndAction();
+                EventBeingEndAction?.Invoke();
         }
         public void BeingEndActionPoints()
         {
-            if (EventBeingEndActionPoints != null)
-                EventBeingEndActionPoints();
+                EventBeingEndActionPoints?.Invoke();
+        }
+        public void BeingChangeActionPoints()
+        {
+            EventBeingChangeActionPoints?.Invoke();
+        }
+        public void BeingChangeHealth()
+        {
+            EventBeingChangeHealth?.Invoke();
         }
     }
 

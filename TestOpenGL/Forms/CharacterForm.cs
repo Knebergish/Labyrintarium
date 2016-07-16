@@ -32,6 +32,14 @@ namespace TestOpenGL.Forms
 
             label6.Text = Program.GCycle.Gamer.features.FreeFeaturesPoints.ToString();
             button1.Enabled = Program.GCycle.Gamer.features.FreeFeaturesPoints >= 1 ? true : false;
+
+            label3.Text = Program.GCycle.Gamer.features.CurrentLevel.ToString();
+            label9.Text = Program.GCycle.Gamer.features.CurrentHealth.ToString() + "/" + Program.GCycle.Gamer.features.MaxHealth.ToString();
+            label11.Text = Program.GCycle.Gamer.features.IncreaceHealth.ToString();
+            label13.Text = Program.GCycle.Gamer.features.ActionPoints.ToString();
+            label15.Text = Program.GCycle.Gamer.features.IncreaseActionPoints.ToString();
+            label17.Text = Program.GCycle.Gamer.features.CurrentExperience.ToString() + "/" + Program.GCycle.Gamer.features.NextLevelExperience.ToString();
+            label18.Text = "Эммануил Закусейлович";
         }
 
         private void button1_Click(object sender, EventArgs e)

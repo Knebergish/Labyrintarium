@@ -11,8 +11,6 @@ namespace TestOpenGL.VisualObjects
 
         public EventsVisualObject eventsVO;
         
-        protected TypeVisualObject tvo;
-
         public VisualObjectInfo visualObjectInfo;
 
         public Texture texture;

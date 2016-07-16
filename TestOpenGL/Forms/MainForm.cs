@@ -29,7 +29,12 @@ namespace TestOpenGL.Forms
 
             Stages.Stage_1 S1 = new Stages.Stage_1();
             S1.LoadStage();
+
+            Program.GCycle.Gamer.eventsBeing.EventBeingChangeHealth += ReloadGamerInfo;
+            Program.GCycle.Gamer.eventsBeing.EventBeingChangeActionPoints += ReloadGamerInfo;
+            ReloadGamerInfo();
         }
+
         private void button1_Click(object sender, EventArgs e)
         {
             Random rnd = new Random();
@@ -98,11 +103,6 @@ namespace TestOpenGL.Forms
             Program.FA.ShowInventory();
         }
 
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            Environment.Exit(1);
-        }
-
         private void button4_Click(object sender, EventArgs e)
         {
             new Thread(delegate()
@@ -113,12 +113,57 @@ namespace TestOpenGL.Forms
                 }).Start();
         }
 
+        
+        public void ChangeColorControlEnabledIndicator(bool value)
+        {
+            Program.mainForm.Invoke(
+            new Action(() => 
+            {
+                if (value) controlEnabledIndicator.BackColor = System.Drawing.Color.Green;
+                else controlEnabledIndicator.BackColor = System.Drawing.Color.Red;
+            })
+            );
+        }
+
+        public void ResizeMatrix(object sender, MouseEventArgs e)
+        {
+            if (e.Delta > 0)
+            {
+                Program.P.Camera.Height++;
+                Program.P.Camera.Width++;
+            }
+            else
+            {
+                Program.P.Camera.Height--;
+                Program.P.Camera.Width--;
+            }
+            Program.P.SettingVisibleAreaSize();
+            
+        }
+
+        public void SetFPS(int value)
+        {
+            FPSValueLabel.Text = value.ToString();
+        }
+
+        public void ReloadGamerInfo()
+        {
+            Program.mainForm.Invoke(
+            new Action(() =>
+            {
+                label3.Text = Program.GCycle.Gamer.features.CurrentHealth + "/" + Program.GCycle.Gamer.features.MaxHealth;
+                label5.Text = Program.GCycle.Gamer.features.ActionPoints.ToString();
+            })
+            );
+            
+        }
+
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            new Thread(delegate()
-                {
-                    Program.C.ProcessingKeyPress(e);
-                }).Start();
+            new Thread(delegate ()
+            {
+                Program.C.ProcessingKeyPress(e);
+            }).Start();
         }
 
         private void Form1_SizeChanged(object sender, EventArgs e)
@@ -141,42 +186,15 @@ namespace TestOpenGL.Forms
 
             Program.P.SettingVisibleAreaSize();
         }
-        public void ChangeColorControlEnabledIndicator(bool value)
-        {
-            //bool b = Program.C.IsEnabledControl;
-            Program.mainForm.Invoke(
-            new Func<int>(() => 
-            {
-                if (value) controlEnabledIndicator.BackColor = System.Drawing.Color.Green;
-                else controlEnabledIndicator.BackColor = System.Drawing.Color.Red;
-                return 0;
-            })
-            );
-        }
-
-        public void ResizeMatrix(object sender, MouseEventArgs e)
-        {
-            if (e.Delta > 0)
-            {
-                Program.P.Camera.Height++;
-                Program.P.Camera.Width++;
-            }
-            else
-            {
-                Program.P.Camera.Height--;
-                Program.P.Camera.Width--;
-            }
-            Program.P.SettingVisibleAreaSize();
-            
-        }
-        public void SetFPS(int value)
-        {
-            FPSValueLabel.Text = value.ToString();
-        }
 
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
             Program.P.MaxFPS = trackBar1.Value;
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Environment.Exit(1);
         }
     }
 }

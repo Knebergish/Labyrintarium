@@ -43,17 +43,19 @@ namespace TestOpenGL.Logic
 
 
             int countAttack = attacking.features[Feature.Power]
-                + (attacking.inventory.GetEquipWeapon() != null ? attacking.inventory.GetEquipWeapon().Level : 0)
+                + attacking.inventory.GetEquipWeaponLevel()
                 + rnd.Next(1, 5);
 
-            int countDefend = defending.features[Feature.Stamina] + rnd.Next(1, 5);
-            List<Item> li = defending.inventory.GetEquipArmors();
-            foreach (Item i in li)
-                countDefend += i.Level;
+            int countDefend = defending.features[Feature.Stamina] 
+                + defending.inventory.GetEquipArmorsLevel()
+                + rnd.Next(1, 5);
 
             Program.Log.Log(countAttack.ToString() + " против " + countDefend.ToString());
             if (countAttack > countDefend)
-                defending.Damage(1);
+                //if ((attacking.inventory.GetEquipWeapon() != null ? attacking.inventory.GetEquipWeapon().Level : 0) > 0)
+                defending.Damage(1);// (attacking.inventory.GetEquipWeapon().Level);
+                //else
+                //    defending.features.ActionPoints--;
             
         }
     }

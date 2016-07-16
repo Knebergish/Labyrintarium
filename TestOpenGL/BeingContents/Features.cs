@@ -89,6 +89,7 @@ namespace TestOpenGL.BeingContents
             set
             {
                 currentHealth = value;
+                owner.eventsBeing.BeingChangeHealth();
                 if (currentHealth <= 0)
                     owner.Death();
                 if (currentHealth > maxHealth)
@@ -102,7 +103,10 @@ namespace TestOpenGL.BeingContents
             set 
             {
                 actionPoints = value;
-                owner.eventsBeing.BeingEndActionPoints();
+                owner.eventsBeing.BeingChangeActionPoints();
+
+                if(actionPoints < 1)
+                    owner.eventsBeing.BeingEndActionPoints();
             }
         }
 
