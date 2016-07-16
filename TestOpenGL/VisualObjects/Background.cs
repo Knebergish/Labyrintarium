@@ -5,9 +5,7 @@ namespace TestOpenGL.VisualObjects
     class Background : Block
     {
         public Background(int id, string name, string description, bool passableness, Texture texture)
-            : base(id, name, description, passableness, true, true, texture)
-        {
-        }
+            : base(id, name, description, passableness, true, true, texture) { }
         //=============
 
 

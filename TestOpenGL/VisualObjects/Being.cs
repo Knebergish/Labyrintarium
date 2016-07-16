@@ -6,29 +6,39 @@ using TestOpenGL.Renders;
 
 namespace TestOpenGL.VisualObjects
 {
-    abstract class Being : VisualObject
+    class Being : VisualObject, IInfoble
     {
-        private bool isSpawned;
+        bool isSpawned;
+        int rangeOfVisibility;
 
-        public Features features;
+        ObjectInfo objectInfo;
 
-        public Inventory inventory;
+        Features features;
+        Inventory inventory;
 
-        public EventsBeing eventsBeing;
-
-        private int rangeOfVisibility;
+        EventsBeing eventsBeing;
         //-------------
 
 
+        public Being(Being being)
+            : this(being.ObjectInfo.Id, being.ObjectInfo.Name, being.ObjectInfo.Description, being.Texture, being.Alliance) { }
         public Being(int id, string name, string description, Texture texture, int alliance)
-            : base(id, name, description, texture)
+            : this(id, name, description, texture, alliance, null, null)
+        { }
+        public Being(int id, string name, string description, Texture texture, int alliance, Features features, Inventory inventory)
+            : base(texture)
         {
-            features = new Features(this);
-            inventory = new Inventory();
             isSpawned = false;
-            eventsBeing = new EventsBeing();
-            Alliance = alliance;
             rangeOfVisibility = 10;
+
+            objectInfo = new ObjectInfo(id, name, description);
+
+            this.features = features != null ? features : new Features(this);
+            this.inventory = inventory != null ? inventory : new Inventory();
+
+            eventsBeing = new EventsBeing();
+
+            Alliance = alliance;
         }
 
         public int RangeOfVisibility
@@ -48,6 +58,19 @@ namespace TestOpenGL.VisualObjects
             get { return isSpawned; }
             //set { isSpawned = value; }
         }
+
+        public ObjectInfo ObjectInfo
+        { get { return objectInfo; } }
+
+        public Features Features
+        { get { return features; } }
+
+        public Inventory Inventory
+        { get { return inventory; } }
+
+        internal EventsBeing EventsBeing
+        { get { return eventsBeing; } }
+
         //=============
 
 
@@ -64,7 +87,6 @@ namespace TestOpenGL.VisualObjects
             return false;
         }
 
-
         public void Step()
         {
             this.eventsBeing.BeingStartStep();
@@ -78,7 +100,7 @@ namespace TestOpenGL.VisualObjects
             this.eventsBeing.BeingEndStep();
         }
 
-        protected abstract void Action();
+        protected virtual void Action() { }
 
         bool CheckEndStep()
         {

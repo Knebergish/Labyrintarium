@@ -9,7 +9,7 @@ namespace TestOpenGL.VisualObjects.ChieldsBlock
 
 
         public Chest(Block blockChest, Inventory inventory)
-            : base(blockChest.Id, blockChest.visualObjectInfo.Name, blockChest.visualObjectInfo.Description, blockChest.Passableness, blockChest.Transparency, blockChest.Permeability, blockChest.texture)
+            : base(blockChest)
         {
             this.inventory = inventory;
         }
@@ -24,7 +24,7 @@ namespace TestOpenGL.VisualObjects.ChieldsBlock
 
         public void Used()
         {
-            Program.FA.ShowExchangeInventoryes(Program.GCycle.Gamer.inventory, inventory);
+            Program.FA.ShowExchangeInventoryes(Program.GCycle.Gamer.Inventory, inventory);
         }
     }
 }

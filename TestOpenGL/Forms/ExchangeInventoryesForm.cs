@@ -73,7 +73,7 @@ namespace TestOpenGL.Forms
             listBox.Items.Clear();
 
             foreach (Item i in inventory.GetBagItems())
-                listBox.Items.Add(i.visualObjectInfo.Name);
+                listBox.Items.Add(i.ObjectInfo.Name);
         }
     }
 }

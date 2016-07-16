@@ -1,7 +1,5 @@
 ﻿using System;
 
-using TestOpenGL.Renders;
-
 namespace TestOpenGL.VisualObjects.ChieldsBlock
 {
     class ActionBlock : Block, IUsable
@@ -10,8 +8,8 @@ namespace TestOpenGL.VisualObjects.ChieldsBlock
         //-------------
 
 
-        public ActionBlock(int id, string name, string description, bool passableness, bool transparency, bool permeability, Texture texture, Action action) 
-            : base(id, name, description, passableness, transparency, permeability, texture)
+        public ActionBlock(Block block, Action action) 
+            : base(block)
         {
             this.action = action;
         }

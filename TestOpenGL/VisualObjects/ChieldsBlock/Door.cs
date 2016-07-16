@@ -12,9 +12,9 @@ namespace TestOpenGL.VisualObjects.ChieldsBlock
 
 
         public Door(Block blockDoor, Texture openedDoorTexture, bool isClosed, bool isBlocked) 
-            : base(blockDoor.Id, blockDoor.visualObjectInfo.Name, blockDoor.visualObjectInfo.Description, blockDoor.Passableness, blockDoor.Transparency, blockDoor.Permeability, blockDoor.texture)
+            : base(blockDoor)
         {
-            closedDoorTexture = blockDoor.texture;
+            closedDoorTexture = blockDoor.Texture;
             this.openedDoorTexture = openedDoorTexture;
 
             this.isClosed = isClosed;
@@ -37,7 +37,7 @@ namespace TestOpenGL.VisualObjects.ChieldsBlock
 
         private void SetClosedState()
         {
-            texture = isClosed ? closedDoorTexture : openedDoorTexture;
+            Texture = isClosed ? closedDoorTexture : openedDoorTexture;
             Passableness = !isClosed;
             Transparency = !isClosed;
         }

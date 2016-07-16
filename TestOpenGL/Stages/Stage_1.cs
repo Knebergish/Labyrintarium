@@ -56,21 +56,19 @@ namespace TestOpenGL.Stages
                 Program.OB.GetBlock(2).Spawn(new Coord(6, i, 0));
 
             new NPC(
-                (Bot)Program.OB.GetBot(1, 1),
-                "Тестбот",
-                "Он тестовый",
+                Program.OB.GetBeing(1),
                 "Здравствуй, путник!",
                 null
                 ).Spawn(new Coord(4, 3, 3));
 
-            Bot b = (Bot)Program.OB.GetBot(1, 3);
-            b.AI = AIs.AIAttacker;
+            Bot b = new Bot(Program.OB.GetBeing(1), AIs.AIAttacker);
             b.Spawn(new Coord(5, 1, 0));
 
-            Program.GCycle.Gamer = (Gamer)Program.OB.GetGamer(1);
+
+            Program.GCycle.Gamer = new Gamer(Program.OB.GetBeing(1));
             for (int i = 1; i < 10; i++)
-                Program.GCycle.Gamer.inventory.PutBagItem(Program.OB.GetItem(i));
-            Program.GCycle.Gamer.features.CurrentExperience += 100;
+                Program.GCycle.Gamer.Inventory.PutBagItem(Program.OB.GetItem(i));
+            Program.GCycle.Gamer.Features.CurrentExperience += 100;
 
             Program.GCycle.Gamer.Spawn(new Coord(1, 0, 0));
             //Program.GCycle.Gamer.Death();
@@ -87,7 +85,7 @@ namespace TestOpenGL.Stages
                 List<RenderObject> lro = new List<RenderObject>();
 
                 foreach (Block block in Program.L.GetMap<Block>().GetAllVO())
-                    if (block.Id == 2)
+                    if (block.ObjectInfo.Id == 2)
                         if (Analytics.CorrectCoordinate(block.C.X, block.C.Y + 1) && Analytics.IsInCamera(new Coord(block.C.X, block.C.Y + 1), Program.P.Camera))
                             lro.Add(new RenderObject(t, new Coord(block.C.X, block.C.Y + 1), (int)TypeVisualObject.Being * (Program.L.LengthZ - 1) + Program.L.LengthZ + 0.5));
 
@@ -101,8 +99,8 @@ namespace TestOpenGL.Stages
 
                 foreach (Being b in Program.L.GetMap<Being>().GetAllVO())
                     if (Analytics.IsInCamera(new Coord(b.C.X, b.C.Y), Program.P.Camera))
-                        foreach (Item i in b.inventory.GetEquipmentItems())
-                            lro.Add(new RenderObject(i.texture, b.C, (int)TypeVisualObject.Being * (Program.L.LengthZ - 1) + 0.1));
+                        foreach (Item i in b.Inventory.GetEquipmentItems())
+                            lro.Add(new RenderObject(i.Texture, b.C, (int)TypeVisualObject.Being * (Program.L.LengthZ - 1) + 0.1));
 
                 return lro;
             }));
@@ -136,8 +134,8 @@ namespace TestOpenGL.Stages
 
         Bot GetNextBot()
         {
-            Bot b = (Bot)Program.OB.GetBot(1, currentAlliance++);
-            b.AI = AIs.AIAttacker;
+            Bot b = new Bot(Program.OB.GetBeing(1), AIs.AIAttacker);
+            b.Alliance = currentAlliance++;
             return b;
         }
     }

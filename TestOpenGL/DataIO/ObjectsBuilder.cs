@@ -56,37 +56,34 @@ namespace TestOpenGL.DataIO
         {
             DataTable dt = DBIO.ExecuteSQL("SELECT * FROM Decals WHERE Decals.id = " + num);
             return new Decal(
-                num,
-                (string)dt.Rows[0]["name"],
-                (string)dt.Rows[0]["description"],
                 TA.GetTexture(TypeVisualObject.Decal, dt.Rows[0]["imageId"].ToString())
                 );
         }
 
-        public Being GetGamer(int num)
+        //TODO: считывать инвентарь и характеристики.
+        public Being GetBeing(int num)
         {
             DataTable dt = DBIO.ExecuteSQL("SELECT * FROM Beings WHERE Beings.id = " + num);
-            return new Gamer(
+            return new Being(
                 num,
                 (string)dt.Rows[0]["name"],
                 (string)dt.Rows[0]["description"],
                 TA.GetTexture(TypeVisualObject.Being, dt.Rows[0]["imageId"].ToString()),
-                0
+                int.Parse(dt.Rows[0]["alliance"].ToString())
                 );
         }
-        
-        public Being GetBot(int num, int alliance)
+
+        /*public Gamer GetGamer(int num)
         {
-            DataTable dt = DBIO.ExecuteSQL("SELECT * FROM Beings WHERE Beings.id = " + num);
-            return new Bot(
-                num,
-                (string)dt.Rows[0]["name"],
-                (string)dt.Rows[0]["description"],
-                TA.GetTexture(TypeVisualObject.Being, dt.Rows[0]["imageId"].ToString()),
-                alliance,
-                null
-                );
+            return new Gamer(GetBeing(num));
         }
+
+        public Bot GetBot(int num)
+        {
+            return new Bot(GetBeing(num));
+        }*/
+
+
 
         public Item GetItem(int num)
         {

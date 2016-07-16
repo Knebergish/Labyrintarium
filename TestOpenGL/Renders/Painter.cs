@@ -179,7 +179,7 @@ namespace TestOpenGL.Renders
             
 
             // Прицел
-            this.DrawObject(camera.Sight.AimDecal.texture, new Coord(camera.Sight.C.X - this.camera.MinX, camera.Sight.C.Y - this.camera.MinY), 100);
+            this.DrawObject(camera.Sight.AimDecal.Texture, new Coord(camera.Sight.C.X - this.camera.MinX, camera.Sight.C.Y - this.camera.MinY), 100);
 
             Program.mainForm.GlControl.SwapBuffers();
         }

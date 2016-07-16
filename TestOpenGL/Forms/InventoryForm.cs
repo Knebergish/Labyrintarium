@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using TestOpenGL.VisualObjects;
@@ -25,8 +18,8 @@ namespace TestOpenGL.Forms
         {
             if (Program.GCycle.Gamer != null)
             {
-                Program.GCycle.Gamer.inventory.eventsInventory.EventInventoryChangeBag += this.ReloadListInventory;
-                Program.GCycle.Gamer.inventory.eventsInventory.EventInventoryChangeEquipment += this.ReloadListInventory;
+                Program.GCycle.Gamer.Inventory.eventsInventory.EventInventoryChangeBag += this.ReloadListInventory;
+                Program.GCycle.Gamer.Inventory.eventsInventory.EventInventoryChangeEquipment += this.ReloadListInventory;
             }
             ReloadListInventory();
         }
@@ -35,7 +28,7 @@ namespace TestOpenGL.Forms
         {
             try
             {
-                Program.GCycle.Gamer.inventory.UnequipItem(listBox1.SelectedIndex);
+                Program.GCycle.Gamer.Inventory.UnequipItem(listBox1.SelectedIndex);
             }
             catch(ArgumentOutOfRangeException)
             {
@@ -47,7 +40,7 @@ namespace TestOpenGL.Forms
         {
             try
             {
-                if(!Program.GCycle.Gamer.inventory.EquipItem(listBox2.SelectedIndex))
+                if(!Program.GCycle.Gamer.Inventory.EquipItem(listBox2.SelectedIndex))
                 {
                     MessageBox.Show("Невозможно надеть вещь.");
                 }
@@ -63,25 +56,25 @@ namespace TestOpenGL.Forms
             listBox1.Items.Clear();
             listBox2.Items.Clear();
 
-            foreach(Item i in Program.GCycle.Gamer.inventory.GetBagItems())
+            foreach(Item i in Program.GCycle.Gamer.Inventory.GetBagItems())
             {
-                listBox2.Items.Add(i.visualObjectInfo.Name);
+                listBox2.Items.Add(i.ObjectInfo.Name);
             }
-            foreach (Item i in Program.GCycle.Gamer.inventory.GetEquipmentItems())
+            foreach (Item i in Program.GCycle.Gamer.Inventory.GetEquipmentItems())
             {
-                listBox1.Items.Add(i.visualObjectInfo.Name);
+                listBox1.Items.Add(i.ObjectInfo.Name);
             }
         }
 
         private void Form2_Load(object sender, EventArgs e)
         {
-            Program.GCycle.Gamer.inventory.eventsInventory.EventInventoryChangeBag += new VoidEventDelegate(ReloadListInventory);
-            Program.GCycle.Gamer.inventory.eventsInventory.EventInventoryChangeEquipment += new VoidEventDelegate(ReloadListInventory);
+            Program.GCycle.Gamer.Inventory.eventsInventory.EventInventoryChangeBag += new VoidEventDelegate(ReloadListInventory);
+            Program.GCycle.Gamer.Inventory.eventsInventory.EventInventoryChangeEquipment += new VoidEventDelegate(ReloadListInventory);
         }
 
         private void Form2_FormClosing(object sender, FormClosingEventArgs e)
         {
-            this.Hide();
+            Hide();
             e.Cancel = true;
             //closeForm();
         }

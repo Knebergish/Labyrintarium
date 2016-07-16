@@ -70,7 +70,7 @@ namespace TestOpenGL.Renders
             Look();
             if (b != null)
             {
-                b.eventsVO.EventVOChangeCoord += new VoidEventDelegate(Look);
+                b.EventsVO.EventVOChangeCoord += new VoidEventDelegate(Look);
             }
         }
 

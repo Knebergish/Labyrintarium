@@ -1,21 +1,28 @@
-﻿using TestOpenGL.Renders;
+﻿using System;
+using TestOpenGL.Renders;
 
 namespace TestOpenGL.VisualObjects
 {
-    class Block: VisualObject
+    class Block: VisualObject, IInfoble
     {
         bool passableness;
         bool transparency;
         bool permeability;
+
+        ObjectInfo objectInfo;
         //-------------
 
 
+        public Block(Block block)
+            : this(block.ObjectInfo.Id, block.ObjectInfo.Name, block.ObjectInfo.Description, block.Passableness, block.Transparency, block.Permeability, block.Texture) { }
         public Block(int id, string name, string description, bool passableness, bool transparency, bool permeability, Texture texture)
-            : base(id, name, description, texture)
+            : base(texture)
         {
             this.passableness = passableness;
             this.transparency = transparency;
             this.permeability = permeability;
+
+            objectInfo = new ObjectInfo(id, name, description);
         }
 
         //Проходимость (для сущностей)
@@ -36,6 +43,9 @@ namespace TestOpenGL.VisualObjects
             get { return permeability; }
             set { permeability = value; }
         }
+
+        public ObjectInfo ObjectInfo
+        { get { return objectInfo; } }
         //=============
 
 

@@ -7,8 +7,8 @@
         //-------------
 
 
-        public NPC(Bot bot, string name, string description, string talkString, VoidEventDelegate useDelegate)
-        : base(bot.Id, name, description, bot.texture, -1)
+        public NPC(Being being, string talkString, VoidEventDelegate useDelegate)
+        : base(being.ObjectInfo.Id, being.ObjectInfo.Name, being.ObjectInfo.Description, being.Texture, being.Alliance)
         {
             this.talkString = talkString;
             this.useDelegate = useDelegate;
@@ -24,7 +24,7 @@
 
         protected override void Action()
         {
-            features.ActionPoints = 0;
+            Features.ActionPoints = 0;
         }
 
         public void Used()

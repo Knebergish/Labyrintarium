@@ -10,13 +10,13 @@ namespace TestOpenGL.VisualObjects.ChieldsBeing
         //-------------
 
 
-        public Bot(int id, string name, string description, Texture texture, int alliance, Action<Being> AI)
-            : base(id, name, description, texture, alliance)
+        public Bot(Being being, Action<Being> AI)
+            : base(being)
         {
             ai = AI;
         }
 
-        internal Action<Being> AI
+        public Action<Being> AI
         { set { ai = value; } }
         //=============
 
@@ -26,7 +26,7 @@ namespace TestOpenGL.VisualObjects.ChieldsBeing
             if (ai != null)
                 ai(this);
             else
-                features.ActionPoints--;
+                Features.ActionPoints--;
         }
     }
 }

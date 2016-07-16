@@ -30,8 +30,8 @@ namespace TestOpenGL.Forms
             Stages.Stage_1 S1 = new Stages.Stage_1();
             S1.LoadStage();
 
-            Program.GCycle.Gamer.eventsBeing.EventBeingChangeHealth += ReloadGamerInfo;
-            Program.GCycle.Gamer.eventsBeing.EventBeingChangeActionPoints += ReloadGamerInfo;
+            Program.GCycle.Gamer.EventsBeing.EventBeingChangeHealth += ReloadGamerInfo;
+            Program.GCycle.Gamer.EventsBeing.EventBeingChangeActionPoints += ReloadGamerInfo;
             ReloadGamerInfo();
         }
 
@@ -151,8 +151,8 @@ namespace TestOpenGL.Forms
             Program.mainForm.Invoke(
             new Action(() =>
             {
-                label3.Text = Program.GCycle.Gamer.features.CurrentHealth + "/" + Program.GCycle.Gamer.features.MaxHealth;
-                label5.Text = Program.GCycle.Gamer.features.ActionPoints.ToString();
+                label3.Text = Program.GCycle.Gamer.Features.CurrentHealth + "/" + Program.GCycle.Gamer.Features.MaxHealth;
+                label5.Text = Program.GCycle.Gamer.Features.ActionPoints.ToString();
             })
             );
             

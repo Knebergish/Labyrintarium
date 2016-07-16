@@ -4,9 +4,10 @@ namespace TestOpenGL.VisualObjects
 {
     class Decal : VisualObject
     {
-        public Decal(int id, string name, string description, Texture texture)
-            : base(id, name, description, texture)
-        { }
+        public Decal(Decal decal)
+            : this(decal.Texture) { }
+        public Decal(Texture texture)
+            : base(texture) { }
         //=============
 
 

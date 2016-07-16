@@ -49,14 +49,14 @@ namespace TestOpenGL.Forms
             }
         }
 
-        private void FillListContent<T>() where T : VisualObject
+        private void FillListContent<T>() where T : VisualObject, IInfoble
         {
             listBox1.Items.Clear();
             foreach (T b in Program.L.GetMap<T>().GetCellVO(new Coord(
                 Program.P.Camera.Sight.C.X,
                 Program.P.Camera.Sight.C.Y
                 )))
-                listBox1.Items.Add(b.C.Z + ". " + b.visualObjectInfo.Name);
+                listBox1.Items.Add(b.C.Z + ". " + b.ObjectInfo.Name);
         }
         private void ReloadListContent()
         {
@@ -72,14 +72,6 @@ namespace TestOpenGL.Forms
 
                 case TypeVisualObject.Being:
                     FillListContent<Being>();
-                    break;
-
-                case TypeVisualObject.Item:
-                    FillListContent<Item>();
-                    break;
-
-                case TypeVisualObject.Decal:
-                    FillListContent<Decal>();
                     break;
             }
         }
@@ -114,7 +106,7 @@ namespace TestOpenGL.Forms
                         break;
 
                     case TypeVisualObject.Being:
-                        Program.OB.GetBot(massId[listView1.SelectedIndices[0]], 1).Spawn
+                        Program.OB.GetBeing(massId[listView1.SelectedIndices[0]]).Spawn
                             (
                                 new Coord
                                 (

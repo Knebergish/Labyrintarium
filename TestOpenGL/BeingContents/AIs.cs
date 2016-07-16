@@ -26,7 +26,7 @@ namespace TestOpenGL.BeingContents
                     if (sc.Count > 0)
                         b.Move(sc.Pop());
                     else
-                        b.features.ActionPoints--;
+                        b.Features.ActionPoints--;
                 }
                 else
                 {
@@ -34,7 +34,7 @@ namespace TestOpenGL.BeingContents
                 }
             }
             else
-                b.features.ActionPoints--;
+                b.Features.ActionPoints--;
         }
     }
 }

@@ -49,7 +49,7 @@ namespace TestOpenGL
         Coord c;
         double zIndex;
 
-        public RenderObject(VisualObject vo, double zShift) : this(vo.texture, vo.C, zShift)
+        public RenderObject(VisualObject vo, double zShift) : this(vo.Texture, vo.C, zShift)
         {
         }
         public RenderObject(Texture texture, Coord c, double zShift)

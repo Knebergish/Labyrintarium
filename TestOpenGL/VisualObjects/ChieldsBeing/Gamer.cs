@@ -1,7 +1,5 @@
 ﻿using System.Threading;
 
-using TestOpenGL.Renders;
-
 namespace TestOpenGL.VisualObjects.ChieldsBeing
 {
     class Gamer: Being
@@ -10,12 +8,12 @@ namespace TestOpenGL.VisualObjects.ChieldsBeing
         //-------------
 
 
-        public Gamer(int id, string name, string description, Texture texture, int alliance)
-            : base(id, name, description, texture, alliance)
+        public Gamer(Being being)
+            : base(being)
         {
-            this.eventsBeing.EventBeingStartStep += new VoidEventDelegate(() => { Program.C.IsEnabledControl = true; isEndStep.Reset();  });
-            this.eventsBeing.EventBeingEndStep += new VoidEventDelegate(() => { Program.C.IsEnabledControl = false; });
-            this.eventsBeing.EventBeingEndActionPoints += new VoidEventDelegate(() => { isEndStep.Set(); });
+            EventsBeing.EventBeingStartStep += new VoidEventDelegate(() => { Program.C.IsEnabledControl = true; isEndStep.Reset();  });
+            EventsBeing.EventBeingEndStep += new VoidEventDelegate(() => { Program.C.IsEnabledControl = false; });
+            EventsBeing.EventBeingEndActionPoints += new VoidEventDelegate(() => { isEndStep.Set(); });
         }
         //=============
 
