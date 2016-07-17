@@ -14,7 +14,7 @@ namespace TestOpenGL.BeingContents
         // Экипированные вещи.
         List<Item> equipment;
 
-        public EventInventory eventsInventory;
+        EventInventory eventsInventory;
         //-------------
 
 
@@ -24,6 +24,9 @@ namespace TestOpenGL.BeingContents
             equipment = new List<Item>();
             eventsInventory = new EventInventory();
         }
+
+        internal EventInventory EventsInventory
+        { get { return eventsInventory; } }
         //=============
 
 
@@ -34,15 +37,8 @@ namespace TestOpenGL.BeingContents
         }
         public void ThrowBagItem(int num)
         {
-            try
-            {
-                bag.RemoveAt(num);
-                eventsInventory.InventoryChangeBag();
-            }
-            catch(Exception e)
-            {
-                throw e;
-            }
+            bag.RemoveAt(num);
+            eventsInventory.InventoryChangeBag();
         }
 
         public List<Item> GetBagItems()
@@ -54,6 +50,7 @@ namespace TestOpenGL.BeingContents
             return equipment;
         }
 
+        //TODO: возможно сделать static, как советует MS
         private Item GetItemByPart(Part part, List<Item> listItems)
         {
             foreach (Item i in listItems)
@@ -62,88 +59,106 @@ namespace TestOpenGL.BeingContents
                         return i;
             return null;
         }
-        public Item GetEquipWeapon()
+        private List<T> GetItemByType<T>(List<Item> listItems) where T : Item
         {
-            return GetItemByPart(Part.RHand, equipment);
+            List<T> lt = new List<T>();
+
+            foreach (Item i in listItems)
+                if (i is T)
+                    lt.Add((T)i);
+            return lt;
         }
-        public int GetEquipWeaponLevel()
+        public List<T> GetEquipmentItemsByType<T>() where T : Item, IEquipable
         {
-            Item i = GetEquipWeapon();
+            return GetItemByType<T>(equipment);
+        }
+        public int GetLevelEquipmentItemsByType<T>() where T : Item, IEquipable
+        {
+            int level = 0;
+            List<T> lt = GetEquipmentItemsByType<T>();
+            foreach (T t in lt)
+                level += t.Level;
+
+            return level;
+        }
+
+        /*
+        public Weapon GetEquipWeapon()
+        {
+            List<Weapon> lw = GetItemByType<Weapon>(equipment);
+            return lw.Count != 0 ? lw[0] : null;
+        }
+        public Shield GetEquipShield()
+        {
+            List<Shield> ls = GetItemByType<Shield>(equipment);
+            return ls.Count != 0 ? ls[0] : null;
+        }
+        public List<Armor> GetEquipArmors()
+        {
+            return GetItemByType<Armor>(equipment);
+        }
+        */
+
+        /*public int GetEquipWeaponLevel()
+        {
+            Weapon i = GetEquipWeapon();
             if (i != null)
                 return i.Level;
             else
                 return 0;
         }
-        public Item GetEquipShield()
-        {
-            Item i = GetItemByPart(Part.LHand, equipment);
-            if (i is Shield)
-                return i;
-            return null;
-        }
+        
         public int GetEquipShieldLevel()
         {
-            Item i = GetEquipShield();
+            Shield i = GetEquipShield();
             if (i != null)
                 return i.Level;
             else
                 return 0;
         }
-        public List<Item> GetEquipArmors()
-        {
-            List<Item> listArmor = new List<Item>();
-            for (int i = 0; i < 3; i++)
-            {
-                listArmor.Add(GetItemByPart((Part)i, equipment));
-            }
-            listArmor.RemoveAll(x => x == null);
-            return listArmor;
-        }
+        
         public int GetEquipArmorsLevel()
         {
-            List<Item> li = GetEquipArmors();
+            List<Armor> li = GetEquipArmors();
             if (li.Count == 0)
                 return 0;
             else
             {
                 int count = 0;
-                foreach (Item i in li)
+                foreach (Armor i in li)
                     count += i.Level;
                 return count;
             }
         }
+        */
+
+
 
         public bool EquipItem(int num)
         {
-            try
+            Item ei = bag[num];
+            if (!(ei is IEquipable))
+                return false;
+
+            foreach (Item i in equipment)
             {
-                Item ei = bag[num];
-
-
-                foreach (Item i in equipment)
+                foreach (Part p in i.Parts)
                 {
-                    foreach (Part p in i.Parts)
+                    foreach (Part pp in ei.Parts)
                     {
-                        foreach (Part pp in ei.Parts)
+                        if (p == pp)
                         {
-                            if (p == pp)
-                            {
-                                return false;
-                            }
+                            return false;
                         }
                     }
                 }
+            }
 
-                equipment.Add(ei);
-                bag.Remove(ei);
-                eventsInventory.InventoryChangeBag();
-                eventsInventory.InventoryChangeEquipment();
-                return true;
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            equipment.Add(ei);
+            bag.Remove(ei);
+            eventsInventory.InventoryChangeBag();
+            eventsInventory.InventoryChangeEquipment();
+            return true;
         }
         public void UnequipItem(int num)
         {
@@ -168,13 +183,11 @@ namespace TestOpenGL.BeingContents
 
         public void InventoryChangeBag()
         {
-            if (EventInventoryChangeBag != null)
-                EventInventoryChangeBag();
+            EventInventoryChangeBag?.Invoke();
         }
         public void InventoryChangeEquipment()
         {
-            if (EventInventoryChangeEquipment != null)
-                EventInventoryChangeEquipment();
+            EventInventoryChangeEquipment?.Invoke();
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 using TestOpenGL.VisualObjects;
+using TestOpenGL.VisualObjects.ChieldsItem;
 
 namespace TestOpenGL.Logic
 {
@@ -43,11 +44,11 @@ namespace TestOpenGL.Logic
 
 
             int countAttack = attacking.Features[Feature.Power]
-                + attacking.Inventory.GetEquipWeaponLevel()
+                + attacking.Inventory.GetLevelEquipmentItemsByType<Weapon>()
                 + rnd.Next(1, 5);
 
             int countDefend = defending.Features[Feature.Stamina] 
-                + defending.Inventory.GetEquipArmorsLevel()
+                + defending.Inventory.GetLevelEquipmentItemsByType<Armor>()
                 + rnd.Next(1, 5);
 
             Program.Log.Log(countAttack.ToString() + " против " + countDefend.ToString());

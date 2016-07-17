@@ -9,7 +9,7 @@ namespace TestOpenGL.Stages
 {
     class Stage
     {
-        public string name;
+        /*public string name;
         public string description;
         public int lengthX, lengthY, lengthZ;
         public Triggers triggers;
@@ -21,6 +21,6 @@ namespace TestOpenGL.Stages
             //Program.GCycle.triggers = triggers;
             Program.L = new Level(lengthX, lengthY, lengthZ);
             stageLoad();
-        }
+        }*/
     }
 }

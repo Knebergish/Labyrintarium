@@ -18,8 +18,8 @@ namespace TestOpenGL.Forms
         {
             if (Program.GCycle.Gamer != null)
             {
-                Program.GCycle.Gamer.Inventory.eventsInventory.EventInventoryChangeBag += this.ReloadListInventory;
-                Program.GCycle.Gamer.Inventory.eventsInventory.EventInventoryChangeEquipment += this.ReloadListInventory;
+                Program.GCycle.Gamer.Inventory.EventsInventory.EventInventoryChangeBag += this.ReloadListInventory;
+                Program.GCycle.Gamer.Inventory.EventsInventory.EventInventoryChangeEquipment += this.ReloadListInventory;
             }
             ReloadListInventory();
         }
@@ -68,8 +68,8 @@ namespace TestOpenGL.Forms
 
         private void Form2_Load(object sender, EventArgs e)
         {
-            Program.GCycle.Gamer.Inventory.eventsInventory.EventInventoryChangeBag += new VoidEventDelegate(ReloadListInventory);
-            Program.GCycle.Gamer.Inventory.eventsInventory.EventInventoryChangeEquipment += new VoidEventDelegate(ReloadListInventory);
+            Program.GCycle.Gamer.Inventory.EventsInventory.EventInventoryChangeBag += new VoidEventDelegate(ReloadListInventory);
+            Program.GCycle.Gamer.Inventory.EventsInventory.EventInventoryChangeEquipment += new VoidEventDelegate(ReloadListInventory);
         }
 
         private void Form2_FormClosing(object sender, FormClosingEventArgs e)

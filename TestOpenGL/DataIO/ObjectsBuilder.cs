@@ -2,7 +2,7 @@
 using System.Data;
 
 using TestOpenGL.VisualObjects;
-using TestOpenGL.VisualObjects.ChieldsBeing;
+using TestOpenGL.VisualObjects.ChieldsItem;
 
 namespace TestOpenGL.DataIO
 {
@@ -73,24 +73,12 @@ namespace TestOpenGL.DataIO
                 );
         }
 
-        /*public Gamer GetGamer(int num)
-        {
-            return new Gamer(GetBeing(num));
-        }
-
-        public Bot GetBot(int num)
-        {
-            return new Bot(GetBeing(num));
-        }*/
-
-
-
         public Item GetItem(int num)
         {
             DataTable dt = DBIO.ExecuteSQL("SELECT * FROM Items WHERE Items.id = " + num);
             DataTable dt2 = DBIO.ExecuteSQL("SELECT * FROM Parts WHERE Parts.idItem = " + num);
             List<Part> lp = new List<Part>();
-            for (int i = 0; i < dt2.Rows.Count; i++ )
+            for (int i = 0; i < dt2.Rows.Count; i++)
                 lp.Add((Part)int.Parse(dt2.Rows[i]["part"].ToString()));
 
             return new Item(
@@ -98,9 +86,39 @@ namespace TestOpenGL.DataIO
                 (string)dt.Rows[0]["name"],
                 (string)dt.Rows[0]["description"],
                 TA.GetTexture(TypeVisualObject.Item, dt.Rows[0]["imageId"].ToString()),
-                int.Parse(dt.Rows[0]["level"].ToString()),
                 int.Parse(dt.Rows[0]["price"].ToString()),
                 lp
+                );
+        }
+
+        public Armor GetArmor(int num)
+        {
+            DataTable dt = DBIO.ExecuteSQL("SELECT * FROM Armors WHERE Armors.id = " + num);
+
+            return new Armor(
+                GetItem(int.Parse(dt.Rows[0]["idItem"].ToString())),
+                int.Parse(dt.Rows[0]["level"].ToString())
+                );
+        }
+        public Shield GetShield(int num)
+        {
+            DataTable dt = DBIO.ExecuteSQL("SELECT * FROM Shields WHERE Shields.id = " + num);
+
+            return new Shield(
+                GetItem(int.Parse(dt.Rows[0]["idItem"].ToString())),
+                int.Parse(dt.Rows[0]["level"].ToString())
+                );
+        }
+        public Weapon GetWeapon(int num)
+        {
+            DataTable dt = DBIO.ExecuteSQL("SELECT * FROM Weapons WHERE Weapons.id = " + num);
+
+            return new Weapon(
+                GetItem(int.Parse(dt.Rows[0]["idItem"].ToString())),
+                int.Parse(dt.Rows[0]["level"].ToString()),
+                int.Parse(dt.Rows[0]["minDistance"].ToString()),
+                int.Parse(dt.Rows[0]["maxDistance"].ToString()),
+                int.Parse(dt.Rows[0]["damage"].ToString())
                 );
         }
     }

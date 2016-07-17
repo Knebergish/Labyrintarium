@@ -23,7 +23,7 @@ namespace TestOpenGL.Controls
 
             IsEnabledControl = false;
 
-            Func<List<RenderObject>> fu = new Func<List<RenderObject>>(() => { return new List<RenderObject>(); });
+            //Func<List<RenderObject>> fu = new Func<List<RenderObject>>(() => { return new List<RenderObject>(); });
         }
 
         public bool IsEnabledControl

@@ -4,14 +4,20 @@ using TestOpenGL.Renders;
 
 namespace TestOpenGL.VisualObjects.ChieldsItem
 {
-    class Armor : Item
+    class Armor : Item, IEquipable
     {
+        int level;
         //-------------
 
 
-        public Armor(int id, string name, string description, Texture texture, int level, int price, List<Part> parts)
-            : base(id, name, description, texture, level, price, parts)
-        { }
+        public Armor(Item item, int level)
+            : base(item)
+        {
+            this.level = level;
+        }
+
+        public int Level
+        { get { return level; } }
         //=============
     }
 }

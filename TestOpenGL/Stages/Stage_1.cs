@@ -67,11 +67,11 @@ namespace TestOpenGL.Stages
 
             Program.GCycle.Gamer = new Gamer(Program.OB.GetBeing(1));
             for (int i = 1; i < 10; i++)
-                Program.GCycle.Gamer.Inventory.PutBagItem(Program.OB.GetItem(i));
+                Program.GCycle.Gamer.Inventory.PutBagItem(Program.OB.GetArmor(i));
+            Program.GCycle.Gamer.Inventory.PutBagItem(Program.OB.GetWeapon(1));
             Program.GCycle.Gamer.Features.CurrentExperience += 100;
 
             Program.GCycle.Gamer.Spawn(new Coord(1, 0, 0));
-            //Program.GCycle.Gamer.Death();
             Program.P.Camera.Width = 30;
             Program.P.Camera.Height = 30;
         }

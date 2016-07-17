@@ -126,11 +126,6 @@ namespace TestOpenGL.World
             }
             sr.Close();
         }*/
-
-        ~Level()
-        {
-            //System.Windows.Forms.MessageBox.Show("Убит!");
-        }
     }
 }
 
