@@ -24,7 +24,6 @@ namespace TestOpenGL.World
             mapList.Add(new MapVisualObjects<Background>());
             mapList.Add(new MapVisualObjects<Block>());
             mapList.Add(new MapVisualObjects<Being>());
-            //mapList.Add(new MapVisualObjects<Item>());
             mapList.Add(new MapVisualObjects<Decal>()); 
         }
 

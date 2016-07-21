@@ -78,8 +78,7 @@ namespace TestOpenGL.Renders
 
         void FPSUpdate(int newValue)
         {
-            if (EventFPSUpdate != null)
-                EventFPSUpdate(newValue);
+            EventFPSUpdate?.Invoke(newValue);
         }
         void ProcessingFPS(int renderElapsedTime) //TODO: херовое название, придумать получше.
         {

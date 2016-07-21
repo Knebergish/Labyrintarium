@@ -7,7 +7,7 @@ using TestOpenGL.Renders;
 namespace TestOpenGL.Logic
 {
     // Проверку корректности координат провожу вручную, т.к. множественные срабатывания исключений конкретно тормозят алгоритм. Знаю, что костыль, но пока не придумал, как сделать лучше.
-    class Analytics
+    static class Analytics
     {
         //TODO: почему я смотрю на это, и мне хочется плакать?..
 
@@ -40,8 +40,15 @@ namespace TestOpenGL.Logic
                         return true;
             return false;
         }*/
-        
 
+        /*static public Func<int, int, int> add = (x, y) => x + y;
+        
+        static public Func<int, Func<int, int>> curriedAdd = add.Curry();
+        static public Func<int, int> inc = curriedAdd(1);
+        static public Func<A, Func<B, R>> Curry<A, B, R>(this Func<A, B, R> f)
+        {
+            return a => b => f(a, b);
+        }*/
 
         /// <summary>
         /// Поиск пути в ширину.

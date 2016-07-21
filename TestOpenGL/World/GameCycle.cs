@@ -53,6 +53,8 @@ namespace TestOpenGL.World
                 StepBeings();
                 StepTriggers();
                 StepBeingsIncrease();
+
+                Program.mainForm.ReloadData();
             }
         }
         void StepBeings()

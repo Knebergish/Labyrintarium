@@ -1,4 +1,5 @@
 ﻿using System;
+//using System.Linq;
 using System.Collections.Generic;
 
 using TestOpenGL.VisualObjects;
@@ -62,11 +63,9 @@ namespace TestOpenGL.BeingContents
         private List<T> GetItemByType<T>(List<Item> listItems) where T : Item
         {
             List<T> lt = new List<T>();
+            listItems.ForEach((Item i) => { if (i is T) lt.Add((T)i); });
 
-            foreach (Item i in listItems)
-                if (i is T)
-                    lt.Add((T)i);
-            return lt;
+            return lt.Count == 0 ? null : lt;
         }
         public List<T> GetEquipmentItemsByType<T>() where T : Item, IEquipable
         {
@@ -75,9 +74,7 @@ namespace TestOpenGL.BeingContents
         public int GetLevelEquipmentItemsByType<T>() where T : Item, IEquipable
         {
             int level = 0;
-            List<T> lt = GetEquipmentItemsByType<T>();
-            foreach (T t in lt)
-                level += t.Level;
+            GetEquipmentItemsByType<T>()?.ForEach((T t) => { level += t.Level; });
 
             return level;
         }

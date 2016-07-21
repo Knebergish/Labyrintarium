@@ -30,7 +30,8 @@ namespace TestOpenGL.BeingContents
                 }
                 else
                 {
-                    b.Attack(LB[0].C);
+                    if(!b.Attack(LB[0].C))
+                        b.Features.ActionPoints--;
                 }
             }
             else

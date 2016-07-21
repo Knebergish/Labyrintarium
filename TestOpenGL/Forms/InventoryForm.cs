@@ -18,8 +18,8 @@ namespace TestOpenGL.Forms
         {
             if (Program.GCycle.Gamer != null)
             {
-                Program.GCycle.Gamer.Inventory.EventsInventory.EventInventoryChangeBag += this.ReloadListInventory;
-                Program.GCycle.Gamer.Inventory.EventsInventory.EventInventoryChangeEquipment += this.ReloadListInventory;
+                Program.GCycle.Gamer.Inventory.EventsInventory.EventInventoryChangeBag += ReloadListInventory;
+                Program.GCycle.Gamer.Inventory.EventsInventory.EventInventoryChangeEquipment += ReloadListInventory;
             }
             ReloadListInventory();
         }

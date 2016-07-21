@@ -4,6 +4,7 @@ using System.Threading;
 using TestOpenGL.VisualObjects;
 using TestOpenGL.BeingContents;
 using TestOpenGL.VisualObjects.ChieldsBlock;
+using System.Collections.Generic;
 
 namespace TestOpenGL.Forms
 {
@@ -22,6 +23,7 @@ namespace TestOpenGL.Forms
             this.MouseWheel += new MouseEventHandler(ResizeMatrix);
             Program.C.ChangeEnabledControl += ChangeColorControlEnabledIndicator;
             Program.P.EventFPSUpdate += SetFPS;
+            Program.P.Camera.Sight.EventSight.EventSightChangeCoord += ReloadGoalInfo;
 
             Form1_SizeChanged(sender, e);
 
@@ -146,6 +148,12 @@ namespace TestOpenGL.Forms
             FPSValueLabel.Text = value.ToString();
         }
 
+        public void ReloadData()
+        {
+            ReloadGamerInfo();
+            ReloadGoalInfo();
+        }
+
         public void ReloadGamerInfo()
         {
             Program.mainForm.Invoke(
@@ -155,7 +163,19 @@ namespace TestOpenGL.Forms
                 label5.Text = Program.GCycle.Gamer.Features.ActionPoints.ToString();
             })
             );
-            
+        }
+        public void ReloadGoalInfo()
+        {
+            Program.mainForm.Invoke(
+            new Action(() =>
+            {
+                Being b = Program.L.GetMap<Being>().GetVO(Program.P.Camera.Sight.C);
+                if (b == null)
+                    label8.Text = "0/0";
+                else
+                    label8.Text = b.Features.CurrentHealth + "/" + b.Features.MaxHealth;
+            })
+            );
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)

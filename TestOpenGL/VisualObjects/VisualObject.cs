@@ -12,6 +12,8 @@ namespace TestOpenGL.VisualObjects
 
         protected VisualObject(Texture texture)
         {
+            //TODO: Я не знаю. Если Coord сделать классом, без этой инициализации всё крашится. А если struct, то норм.
+            //c = new Coord(0, 0); 
             this.texture = texture;
             eventsVO = new EventsVisualObject();
         }

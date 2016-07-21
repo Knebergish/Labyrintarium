@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 
 using TestOpenGL.BeingContents;
 using TestOpenGL.Logic;
 using TestOpenGL.Renders;
+using TestOpenGL.VisualObjects.ChieldsItem;
 
 namespace TestOpenGL.VisualObjects
 {
@@ -33,8 +35,8 @@ namespace TestOpenGL.VisualObjects
 
             objectInfo = new ObjectInfo(id, name, description);
 
-            this.features = features != null ? features : new Features(this);
-            this.inventory = inventory != null ? inventory : new Inventory();
+            this.features =  features ?? new Features(this);
+            this.inventory =  inventory ?? new Inventory();
 
             eventsBeing = new EventsBeing();
 
@@ -76,9 +78,10 @@ namespace TestOpenGL.VisualObjects
 
         public override bool Spawn(Coord C)
         {
-            if (!isSpawned && SetNewCoord(new Coord(C.X, C.Y)))
+            Coord newCoord = new Coord(C.X, C.Y);
+            if (!isSpawned && SetNewCoord(newCoord))
             {
-                Program.L.GetMap<Being>().AddVO(this, C);
+                Program.L.GetMap<Being>().AddVO(this, newCoord);
                 Program.GCycle.EventStepBeings += Step;
                 Program.GCycle.EventStepBeingsIncrease += Increace;
                 isSpawned = true;
@@ -191,13 +194,20 @@ namespace TestOpenGL.VisualObjects
             return true;
         }
 
+        //TODO: говнокод
         public bool Attack(Coord C)
         {
-            if(Battle.Attack(this, C))
-            {
-                features.ActionPoints--;
-                return true;
-            }
+            List<Weapon> lw = Inventory.GetEquipmentItemsByType<Weapon>() ?? new List<Weapon>(); //...
+            if (lw.Count != 0)
+                if (
+                    lw[0].MinDistance <= Analytics.Distance(this.C, C)
+                    && lw[0].MaxDistance >= Analytics.Distance(this.C, C)
+                    )
+                    if (Battle.Attack(this, C))
+                    {
+                        features.ActionPoints--;
+                        return true;
+                    }
             return false;
         }
 

@@ -53,11 +53,17 @@ namespace TestOpenGL.Logic
 
             Program.Log.Log(countAttack.ToString() + " против " + countDefend.ToString());
             if (countAttack > countDefend)
-                //if ((attacking.inventory.GetEquipWeapon() != null ? attacking.inventory.GetEquipWeapon().Level : 0) > 0)
-                defending.Damage(1);// (attacking.inventory.GetEquipWeapon().Level);
-                //else
-                //    defending.features.ActionPoints--;
-            
+            {
+                List<Weapon> lw = attacking.Inventory.GetEquipmentItemsByType<Weapon>();
+                int damage = lw == null ? 0 : lw[0].Damage;
+
+                if (damage > 0)
+                    defending.Damage(damage);
+                else
+                    defending.Features.ActionPoints--; //TODO: формализовать
+            }
+
+
         }
     }
 }

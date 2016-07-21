@@ -32,7 +32,6 @@ namespace TestOpenGL.World
             {
                 t = GetVO(new Coord(C.X, C.Y, i));
                 if (t != null)
-                    //yield return t;
                     lt.Add(t);
             }
             return lt;
@@ -55,7 +54,7 @@ namespace TestOpenGL.World
 
         public void RemoveVO(Coord C)
         {
-            T t = this.GetVO(C);
+            T t = GetVO(C);
             if (t != null)
                 mapT.Remove(t);
         }

@@ -91,8 +91,7 @@ namespace TestOpenGL.Renders
                 shiftY = 0;
             }
 
-            if (changeCameraPosition != null)
-                changeCameraPosition();
+            changeCameraPosition?.Invoke();
             return;
         }
     }

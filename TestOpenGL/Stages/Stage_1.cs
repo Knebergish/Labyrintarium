@@ -9,6 +9,7 @@ using TestOpenGL.Logic;
 using TestOpenGL.Renders;
 using TestOpenGL.VisualObjects;
 using TestOpenGL.VisualObjects.ChieldsBeing;
+using TestOpenGL.VisualObjects.ChieldsItem;
 using TestOpenGL.World;
 
 namespace TestOpenGL.Stages
@@ -64,11 +65,12 @@ namespace TestOpenGL.Stages
             Bot b = new Bot(Program.OB.GetBeing(1), AIs.AIAttacker);
             b.Spawn(new Coord(5, 1, 0));
 
-
             Program.GCycle.Gamer = new Gamer(Program.OB.GetBeing(1));
             for (int i = 1; i < 10; i++)
                 Program.GCycle.Gamer.Inventory.PutBagItem(Program.OB.GetArmor(i));
-            Program.GCycle.Gamer.Inventory.PutBagItem(Program.OB.GetWeapon(1));
+            for (int i = 1; i < 5; i++)
+                Program.GCycle.Gamer.Inventory.PutBagItem(Program.OB.GetWeapon(i));
+            Program.GCycle.Gamer.Inventory.PutBagItem(Program.OB.GetShield(1));
             Program.GCycle.Gamer.Features.CurrentExperience += 100;
 
             Program.GCycle.Gamer.Spawn(new Coord(1, 0, 0));
@@ -99,8 +101,20 @@ namespace TestOpenGL.Stages
 
                 foreach (Being b in Program.L.GetMap<Being>().GetAllVO())
                     if (Analytics.IsInCamera(new Coord(b.C.X, b.C.Y), Program.P.Camera))
-                        foreach (Item i in b.Inventory.GetEquipmentItems())
+                    {
+                        List<Armor> la = b.Inventory.GetEquipmentItemsByType<Armor>() ?? new List<Armor>();
+                        foreach (Item i in la)
                             lro.Add(new RenderObject(i.Texture, b.C, (int)TypeVisualObject.Being * (Program.L.LengthZ - 1) + 0.1));
+
+                        List<Weapon> lw = b.Inventory.GetEquipmentItemsByType<Weapon>() ?? new List<Weapon>();
+                        foreach (Item i in lw)
+                            lro.Add(new RenderObject(i.Texture, b.C, (int)TypeVisualObject.Being * (Program.L.LengthZ - 1) + 0.1));
+
+                        List<Shield> ls = b.Inventory.GetEquipmentItemsByType<Shield>() ?? new List<Shield>();
+                        foreach (Item i in ls)
+                            lro.Add(new RenderObject(i.Texture, b.C, (int)TypeVisualObject.Being * (Program.L.LengthZ - 1) + 0.1));
+                    }
+                        
                 return lro;
             }));
         }

@@ -5,9 +5,10 @@ namespace TestOpenGL.OutInfo
 {
     class Sight
     {
-        private Coord c;
-        private Decal aimDecal;
-        private Camera camera;
+        Coord c;
+        Decal aimDecal;
+        Camera camera;
+        EventSight eventSight;
         //-------------
 
 
@@ -16,6 +17,7 @@ namespace TestOpenGL.OutInfo
             c = new Coord(0, 0);
             aimDecal = Program.OB.GetDecal(1);
             this.camera = camera;
+            eventSight = new EventSight();
 
             this.camera.changeCameraPosition += Check;
         }
@@ -28,8 +30,12 @@ namespace TestOpenGL.OutInfo
         public Coord C
         {
             get { return c; }
-            set { c = value; Check(); }
+            set { c = value; Check(); eventSight.SightChangeCoord(); }
         }
+
+        internal EventSight EventSight
+        { get { return eventSight; } }
+
         //=============
 
 
@@ -45,9 +51,7 @@ namespace TestOpenGL.OutInfo
             }
 
             if (Logic.Analytics.CorrectCoordinate(c.X + dx, c.Y + dy))
-                c = new Coord(c.X + dx, c.Y + dy);
-            
-            Check();
+                C = new Coord(c.X + dx, c.Y + dy);
         }
 
         public void Check()
@@ -60,6 +64,15 @@ namespace TestOpenGL.OutInfo
                 c = new Coord(c.X, camera.MinY);
             if (c.Y > camera.MaxY)
                 c = new Coord(c.X, camera.MaxY);
+        }
+    }
+
+    class EventSight
+    {
+        public event VoidEventDelegate EventSightChangeCoord;
+        public void SightChangeCoord()
+        {
+            EventSightChangeCoord?.Invoke();
         }
     }
 }

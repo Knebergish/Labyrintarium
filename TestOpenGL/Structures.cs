@@ -76,24 +76,13 @@ namespace TestOpenGL
         private int x;
         private int y;
         private int z;
+        //-------------
 
-        public int X
-        {
-            get { return x; }
-        }
-        public int Y
-        {
-            get { return y; }
-        }
 
-        public int Z
-        {
-            get { return z; }
-        }
-
+        public Coord(UnsafeCoord uc)
+            : this(uc.X, uc.Y, uc.Z) { }
         public Coord(int x, int y)
-            : this(x, y, 0)
-        { }
+            : this(x, y, 0) { }
         public Coord(int x, int y, int z)
         {
             this.x = x;
@@ -102,6 +91,18 @@ namespace TestOpenGL
             if (!Analytics.CorrectCoordinate(x, y, z))
                 throw new Exception("Неверненькие координатки пришли. (" + x + ", " + y + ", " + z +")");
         }
+
+        public int X
+        { get { return x; } }
+
+        public int Y
+        { get { return y; } }
+
+        public int Z
+        { get { return z; } }
+        //=============
+
+
         public static bool operator == (Coord C1, Coord C2)
         {
             return C1.X == C2.X && C1.Y == C2.Y && C1.Z == C2.Z ? true : false;
@@ -113,10 +114,42 @@ namespace TestOpenGL
         public int CompareTo(object obj)
         {
             Coord c = (Coord)obj;
-            return this.z > c.z ? 1 : (this.z < c.z ? -1 : 0);
+            return z > c.z ? 1 : (z < c.z ? -1 : 0);
         }
     }
 
+    struct UnsafeCoord
+    {
+        private int x;
+        private int y;
+        private int z;
+        //-------------
+        
+
+        public UnsafeCoord(int x, int y)
+            : this(x, y, 0) { }
+        public UnsafeCoord(int x, int y, int z)
+        {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+        }
+
+        public int X
+        { get { return x; } }
+
+        public int Y
+        { get { return y; } }
+
+        public int Z
+        { get { return z; } }
+        //=============
+
+
+        public bool IsCorrect()
+        { return Analytics.CorrectCoordinate(x, y, z); }
+    }
+    
 
     public delegate void VoidEventDelegate();
     public delegate void BoolEventDelegate(bool value);

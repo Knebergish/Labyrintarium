@@ -33,8 +33,7 @@ namespace TestOpenGL.Controls
             {
                 isEnabledControl = value;
 
-                if (ChangeEnabledControl != null)
-                    ChangeEnabledControl(isEnabledControl);
+                ChangeEnabledControl?.Invoke(isEnabledControl);
             }
         }
         //=============
