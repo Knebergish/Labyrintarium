@@ -8,7 +8,7 @@
 
 
         public NPC(Being being, string talkString, VoidEventDelegate useDelegate)
-        : base(being.ObjectInfo.Id, being.ObjectInfo.Name, being.ObjectInfo.Description, being.Texture, being.Alliance)
+        : base(being)
         {
             this.talkString = talkString;
             this.useDelegate = useDelegate;

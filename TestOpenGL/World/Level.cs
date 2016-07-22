@@ -36,7 +36,7 @@ namespace TestOpenGL.World
         //============
 
 
-        public MapVisualObjects<T> GetMap<T>() where T : VisualObject
+        public MapVisualObjects<T> GetMap<T>() where T : PhisicalObject
         {
             foreach (Object o in mapList)
                 if (o is MapVisualObjects<T>)
@@ -56,11 +56,11 @@ namespace TestOpenGL.World
         /// </summary>
         /// <param name="C"></param>
         /// <returns></returns>
-        public bool IsPassable(Coord C)
+        public bool IsPassable(int partLayer, Coord coord) //TODO: Нахрен тут partLayer?
         {
             bool flag = true;
 
-            foreach(Background b in GetMap<Background>().GetCellVO(C))
+            foreach(Background b in GetMap<Background>().GetCellObject(coord))
             {
                 if (b.Passableness == false)
                 {
@@ -69,7 +69,7 @@ namespace TestOpenGL.World
                 }
             }
 
-            foreach(Block b in GetMap<Block>().GetCellVO(C))
+            foreach(Block b in GetMap<Block>().GetCellObject(coord))
             {
                 if (b.Passableness == false)
                 {
@@ -78,7 +78,7 @@ namespace TestOpenGL.World
                 }
             }
 
-            flag = GetMap<Being>().GetVO(C) != null ? false : flag;
+            flag = GetMap<Being>().GetObject(partLayer, coord) != null ? false : flag;
 
             return flag;
         }

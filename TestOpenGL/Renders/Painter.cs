@@ -17,10 +17,12 @@ namespace TestOpenGL.Renders
         int maxFPS;
         int pauseMillisecond;
 
+        List<GraphicsObject> listGraphicsObject;
+
         Thread RenderThread;
         ManualResetEvent isNextRender = new ManualResetEvent(false);
 
-        List<Func<List<RenderObject>>> shadersList;
+        List<Func<List<Cell>>> shadersList;
 
         //TODO: вот как-то она тут не в тему, но куда её убрать?..
         Camera camera;
@@ -34,7 +36,9 @@ namespace TestOpenGL.Renders
             maxFPS = 60;
             pauseMillisecond = 0;
 
-            shadersList = new List<Func<List<RenderObject>>>();
+            listGraphicsObject = new List<GraphicsObject>();
+
+            shadersList = new List<Func<List<Cell>>>();
 
             this.camera = camera;
 
@@ -71,10 +75,18 @@ namespace TestOpenGL.Renders
             set { maxFPS = value > 0 && value < 1000 ? value : 60; }
         }
 
-        public List<Func<List<RenderObject>>> ShadersList
+        public List<Func<List<Cell>>> ShadersList
         { get { return shadersList; } }
         //=============
 
+        public void AddGraphicsObject(GraphicsObject graphicsObject)
+        {
+            listGraphicsObject.Add(graphicsObject);
+        }
+        public void RemoveGraphicsObject(GraphicsObject graphicsObject)
+        {
+            listGraphicsObject.Remove(graphicsObject);
+        }
 
         void FPSUpdate(int newValue)
         {
@@ -111,7 +123,7 @@ namespace TestOpenGL.Renders
                 {
                     sw.Start();
 
-                    DrawFrame(); 
+                    DrawFrame(listGraphicsObject); 
 
                     sw.Stop();
                     ProcessingFPS((int)sw.ElapsedMilliseconds);
@@ -126,86 +138,98 @@ namespace TestOpenGL.Renders
             }
         }
 
-        void DrawFrame()
+        void DrawFrame(List<GraphicsObject> listGraphicsObject)
         {
-            int zShift;
+            List<GraphicsObject> lGO = new List<GraphicsObject>();
+            List<Cell> lC = new List<Cell>();
+
+            lGO.AddRange(listGraphicsObject); //TODO: Проверить, может и без этого норм.
 
             Gl.glClear(Gl.GL_COLOR_BUFFER_BIT | Gl.GL_DEPTH_BUFFER_BIT);
 
-            List<RenderObject> listRO = new List<RenderObject>();
-
+            
+            
+            /*
             // Фоны
-            zShift = 0;
+            //zShift = 0;
             foreach (Background b in Program.L.GetMap<Background>().GetAllVO())
                 if (Analytics.IsInCamera(b.C, this.Camera))
-                    listRO.Add(new RenderObject(b, (int)TypeVisualObject.Background * (Program.L.LengthZ - 1)));
+                    listRO.AddRange(b.GetRenderObjects());//(new RenderObject(b, (int)TypeVisualObject.Background * (Program.L.LengthZ - 1)));
             // Конец фонов
 
             // Блоки
-            zShift += Program.L.LengthZ;
+            //zShift += Program.L.LengthZ;
             foreach (Block b in Program.L.GetMap<Block>().GetAllVO())
                 if (Analytics.IsInCamera(b.C, this.Camera))
-                    listRO.Add(new RenderObject(b, (int)TypeVisualObject.Block * (Program.L.LengthZ - 1)));
+                    //listRO.Add(new RenderObject(b, (int)TypeVisualObject.Block * (Program.L.LengthZ - 1)));
+                    listRO.AddRange(b.GetRenderObjects());
             // Конец блоков
 
             // Сущности
-            zShift += Program.L.LengthZ;
+            //zShift += Program.L.LengthZ;
             foreach (Being b in Program.L.GetMap<Being>().GetAllVO())
                 if (b.IsSpawned)
                     if (Analytics.IsInCamera(b.C, this.Camera))
-                        listRO.Add(new RenderObject(b, (int)TypeVisualObject.Being * (Program.L.LengthZ - 1)));
+                        //listRO.Add(new RenderObject(b, (int)TypeVisualObject.Being * (Program.L.LengthZ - 1)));
+                        listRO.AddRange(b.GetRenderObjects());
             // Конец сущностей
 
             // Декали
-            zShift += Program.L.LengthZ;
+            //zShift += Program.L.LengthZ;
             foreach (Decal d in Program.L.GetMap<Decal>().GetAllVO())
                 if (Analytics.IsInCamera(d.C, this.Camera))
-                    listRO.Add(new RenderObject(d, (int)TypeVisualObject.Decal * (Program.L.LengthZ - 1)));
+                    //listRO.Add(new RenderObject(d, (int)TypeVisualObject.Decal * (Program.L.LengthZ - 1)));
+                    listRO.AddRange(d.GetRenderObjects());
             // Конец декалей
+            */
+
+            foreach(GraphicsObject go in lGO)
+            {
+                lC.AddRange(go.GetCells());
+            }
+
+            foreach (Func<List<Cell>> func in shadersList)
+                lC.AddRange(func());
 
 
-            foreach (Func<List<RenderObject>> func in shadersList)
-                listRO.AddRange(func());
 
+            var sort = from cell in lC
+                   orderby cell.GlobalDepth
+                   select cell;
 
-
-            var sort = from ro in listRO
-                   orderby ro.ZIndex
-                   select ro;
-
-            foreach (RenderObject ro in sort)
-                DrawObject(ro.Texture, new Coord(ro.C.X - Camera.MinX, ro.C.Y - Camera.MinY), 0);
+            foreach (Cell cell in sort)
+                DrawCell(cell);
 
             
 
             // Прицел
-            DrawObject(camera.Sight.AimDecal.Texture, new Coord(camera.Sight.C.X - camera.MinX, camera.Sight.C.Y - camera.MinY), 100);
+            //DrawCell(camera.Sight.AimDecal.GraphicsObject.GetCells()[0]);
 
             Program.mainForm.GlControl.SwapBuffers();
         }
 
-        void DrawObject(Texture texture, Coord C, int zShift)
+        void DrawCell(Cell cell)
         {
             int size = 1;
             // включаем режим текстурирования
             Gl.glEnable(Gl.GL_TEXTURE_2D);
 
             // включаем режим текстурирования
-            Gl.glBindTexture(Gl.GL_TEXTURE_2D, texture.textureId);
+            Gl.glBindTexture(Gl.GL_TEXTURE_2D, cell.Texture.textureId);
 
             Gl.glBegin(Gl.GL_QUADS);
 
             Gl.glTexCoord2d(0.0, 0.0);
-            Gl.glVertex2d((double)C.X, (double)C.Y);
+            Gl.glVertex2d((double)cell.C.X, (double)cell.C.Y);
 
             Gl.glTexCoord2d(0.0, 0.0 + size);
-            Gl.glVertex2d((double)C.X, (double)C.Y + size);
+            Gl.glVertex2d((double)cell.C.X, (double)cell.C.Y + size);
 
             Gl.glTexCoord2d(0.0 + size, 0.0 + size);
-            Gl.glVertex2d((double)C.X + size, (double)C.Y + size);
+            Gl.glVertex2d((double)cell.C.X + size, (double)cell.C.Y + size);
 
             Gl.glTexCoord2d(0.0 + size, 0.0);
-            Gl.glVertex2d((double)C.X + size, (double)C.Y);
+            Gl.glVertex2d((double)cell.C.X + size, (double)cell.C.Y);
 
             Gl.glEnd();
 

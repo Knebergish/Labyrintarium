@@ -14,15 +14,15 @@ namespace TestOpenGL.BeingContents
             {
                 LB = (
                     from being in LB
-                    orderby Analytics.Distance(b.C, being.C)
+                    orderby Analytics.Distance(b.Coord, being.Coord)
                     select being
                     ).ToList();
 
-                if (Analytics.Distance(b.C, LB[0].C) > 1)
+                if (Analytics.Distance(b.Coord, LB[0].Coord) > 1)
                 {
                     //if (!b.Move(Analytics.DirectionToGrid(b.C, LB[0].C)))
 
-                    Stack<Coord> sc = Analytics.BFS(b.C, LB[0].C);
+                    Stack<Coord> sc = Analytics.BFS(b.Coord, LB[0].Coord);
                     if (sc.Count > 0)
                         b.Move(sc.Pop());
                     else
@@ -30,7 +30,7 @@ namespace TestOpenGL.BeingContents
                 }
                 else
                 {
-                    if(!b.Attack(LB[0].C))
+                    if(!b.Attack(LB[0].Coord))
                         b.Features.ActionPoints--;
                 }
             }

@@ -1,26 +1,32 @@
-﻿using TestOpenGL.Renders;
-
-namespace TestOpenGL.VisualObjects
+﻿namespace TestOpenGL.VisualObjects
 {
     class Background : Block
     {
-        public Background(int id, string name, string description, bool passableness, Texture texture)
-            : base(id, name, description, passableness, true, true, texture) { }
+        public Background(ObjectInfo objectInfo, bool passableness, GraphicsObject graphicsObject)
+            : base(objectInfo, passableness, true, true, graphicsObject) { }
         //=============
 
 
-        public override bool Spawn(Coord C)
+        public override bool Spawn(int partLayer, Coord coord)
         {
-            if (SetNewCoord(C))
+            if (SetNewPosition(partLayer, coord))
             {
-                Program.L.GetMap<Background>().AddVO(this, C);
+                Program.L.GetMap<Background>().AddObject(this);
+                Program.P.AddGraphicsObject(GraphicsObject);
                 return true;
             }
             return false;
         }
-        protected override bool IsEmptyCell(Coord C)
+
+        protected override bool IsEmptyPosition(int partLayer, Coord coord)
         {
-            return Program.L.GetMap<Background>().GetVO(C) == null ? true : false;
+            return Program.L.GetMap<Background>().GetObject(partLayer, coord) == null ? true : false;
+        }
+
+        public override void Despawn()
+        {
+            Program.L.GetMap<Background>().RemoveObject(PartLayer, Coord);
+            Program.P.RemoveGraphicsObject(GraphicsObject);
         }
     }
 }

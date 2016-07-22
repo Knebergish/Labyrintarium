@@ -85,7 +85,7 @@ namespace TestOpenGL.Logic
                             {
                                 if(CorrectCoordinate(xd + dx[k], yd + dy[k]))//(yd + dy[k] >= 0 && yd + dy[k] < Program.L.LengthY && xd + dx[k] >= 0 && xd + dx[k] < Program.L.LengthX)
                                 {
-                                    if (Program.L.IsPassable(new Coord(xd + dx[k], yd + dy[k])/*, type*/) == true || (xd + dx[k] == end.X && yd + dy[k] == end.Y))
+                                    if (Program.L.IsPassable(0, new Coord(xd + dx[k], yd + dy[k])) == true || (xd + dx[k] == end.X && yd + dy[k] == end.Y))
                                     {
                                         if (grid[xd + dx[k], yd + dy[k]] == -1)
                                         {
@@ -247,11 +247,11 @@ namespace TestOpenGL.Logic
         }
         static public List<VisualObjects.Being> GetBeingInArea(Coord C1, Coord C2)
         {
-            List<VisualObjects.Being> LB = Program.L.GetMap<Being>().GetAllVO();
+            List<VisualObjects.Being> LB = Program.L.GetMap<Being>().GetAllObject();
             List<VisualObjects.Being> answerLB = new List<VisualObjects.Being>();
 
             foreach (VisualObjects.Being being in LB)
-                if (IsInArea(C1, C2, being.C))
+                if (IsInArea(C1, C2, being.Coord))
                     answerLB.Add(being);
 
             return answerLB;
@@ -260,10 +260,10 @@ namespace TestOpenGL.Logic
         {
             Coord C1, C2;
             int[] mass = { 
-                             being.C.X - being.RangeOfVisibility, 
-                             being.C.Y - being.RangeOfVisibility,
-                             being.C.X + being.RangeOfVisibility, 
-                             being.C.Y + being.RangeOfVisibility
+                             being.Coord.X - being.RangeOfVisibility, 
+                             being.Coord.Y - being.RangeOfVisibility,
+                             being.Coord.X + being.RangeOfVisibility, 
+                             being.Coord.Y + being.RangeOfVisibility
                          };
 
             mass[0] = mass[0] < 0 ? 0 : mass[0];

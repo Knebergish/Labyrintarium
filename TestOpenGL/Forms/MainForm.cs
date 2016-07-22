@@ -44,27 +44,28 @@ namespace TestOpenGL.Forms
             {
                 for (int y = 0; y < Program.L.LengthY; y++)
                 {
-                    Program.OB.GetBackground(1).Spawn(new Coord(x, y, 0));
+                    Program.OB.GetBackground(1).Spawn(0, new Coord(x, y));
                     if (rnd.Next(0, 40) == 1)
                     {
-                        Program.OB.GetBlock(2).Spawn(new Coord(x, y, 0));
+                        Program.OB.GetBlock(2).Spawn(0, new Coord(x, y));
                     }
                     if (rnd.Next(0, 20) == 1)
                     {
-                        Program.OB.GetBlock(1).Spawn(new Coord(x, y, 0));
+                        Program.OB.GetBlock(1).Spawn(0, new Coord(x, y));
                     }
                 }
             }
 
-            Program.L.GetMap<Block>().AddVO
+            /*Program.L.GetMap<Block>().AddObject
                 (
                     new Door
                     (
                         new Block
                             (
+                            new ObjectInfo(
                                 14,
                                 "Деревянная дверь",
-                                "Дверь, сделанная из дерева",
+                                "Дверь, сделанная из дерева"),
                                 false,
                                 false,
                                 false,
@@ -75,20 +76,18 @@ namespace TestOpenGL.Forms
                         false
                     ), 
                     new Coord(5, 5, 3)
-                );
+                );*/
 
             Inventory i = new Inventory();
             i.PutBagItem(Program.OB.GetItem(1));
             i.PutBagItem(Program.OB.GetItem(5));
-            Program.L.GetMap<Block>().AddVO
-                 (
-                     new Chest
-                     (
-                        Program.OB.GetBlock(14),
-                        i
-                     ),
-                     new Coord(3, 3, 1)
-                 );
+
+            new Chest
+            (
+            Program.OB.GetBlock(14),
+            i
+            ).Spawn(1, new Coord(3, 3));
+
 
             //Program.OB.GetBlock(2).Spawn(new Coord(6, 6, 0));
             //Program.OB.GetBlock(1).Spawn(new Coord(6, 6, 1));
@@ -156,6 +155,9 @@ namespace TestOpenGL.Forms
 
         public void ReloadGamerInfo()
         {
+            if (Program.GCycle.Gamer == null)
+                return;
+
             Program.mainForm.Invoke(
             new Action(() =>
             {
@@ -169,7 +171,7 @@ namespace TestOpenGL.Forms
             Program.mainForm.Invoke(
             new Action(() =>
             {
-                Being b = Program.L.GetMap<Being>().GetVO(Program.P.Camera.Sight.C);
+                Being b = Program.L.GetMap<Being>().GetObject(0, Program.P.Camera.Sight.C);
                 if (b == null)
                     label8.Text = "0/0";
                 else

@@ -72,9 +72,9 @@ namespace TestOpenGL.DataIO
             Gl.glClear(Gl.GL_COLOR_BUFFER_BIT | Gl.GL_DEPTH_BUFFER_BIT);
         }
 
-        private int LoadTextureFromFile(TypeVisualObject tvo, string imageName)
+        private int LoadTextureFromFile(Layer layer, string imageName)
         {
-            string url = pathes[(int)tvo] + imageName + ".png";
+            string url = pathes[(int)layer] + imageName + ".png";
             int image = 0;
             // создаем изображение с идентификатором imageId
             Il.ilGenImages(1, out image);
@@ -103,9 +103,9 @@ namespace TestOpenGL.DataIO
                 Gl.glBindTexture(Gl.GL_TEXTURE_2D, texObject);
 
                 // устанавливаем режим фильтрации и повторения текстуры
-                switch (tvo)
+                switch (layer)
                 {
-                    case TypeVisualObject.Background:
+                    case Layer.Background:
                         Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_WRAP_S, Gl.GL_REPEAT);
                         Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_WRAP_T, Gl.GL_REPEAT);
                         break;
@@ -135,18 +135,18 @@ namespace TestOpenGL.DataIO
             return (int)texObject;
         }
 
-        private int LoadTexture(TypeVisualObject tvo, string imageName)
+        private int LoadTexture(Layer layer, string imageName)
         {
             return (int)Program.mainForm.Invoke(
-            new Func<int>(() => LoadTextureFromFile(tvo, imageName))
+            new Func<int>(() => LoadTextureFromFile(layer, imageName))
             );
         }
 
-        private int SearchLoadedTexture(TypeVisualObject type, string imageName)
+        private int SearchLoadedTexture(Layer layer, string imageName)
         {
             for (int i = 0; i < this.texturesDataTable.Rows.Count; i++)
             {
-                if ((TypeVisualObject)this.texturesDataTable.Rows[i]["type"] == type)
+                if ((Layer)this.texturesDataTable.Rows[i]["type"] == layer)
                 {
                     if (texturesDataTable.Rows[i]["imageName"].ToString() == imageName)
                     {
@@ -156,20 +156,20 @@ namespace TestOpenGL.DataIO
             }
             return -1;
         }
-        private void SaveTexture(TypeVisualObject type, string imageName, int textureId)
+        private void SaveTexture(Layer layer, string imageName, int textureId)
         {
-            this.texturesDataTable.Rows.Add(type, imageName, textureId);
+            this.texturesDataTable.Rows.Add(layer, imageName, textureId);
         }
 
 
-        public Texture GetTexture(TypeVisualObject tvo, string imageName)
+        public Texture GetTexture(Layer layer, string imageName)
         {
-            int currentTextureId = SearchLoadedTexture(tvo, imageName);
+            int currentTextureId = SearchLoadedTexture(layer, imageName);
 
             if (currentTextureId == -1)
             {
-                currentTextureId = LoadTexture(tvo, imageName);
-                SaveTexture(tvo, imageName, currentTextureId);
+                currentTextureId = LoadTexture(layer, imageName);
+                SaveTexture(layer, imageName, currentTextureId);
             }
 
             return new Texture(currentTextureId);

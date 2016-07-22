@@ -14,7 +14,7 @@ namespace TestOpenGL.Renders
         // Позиция прицела
         public VoidEventDelegate changeCameraPosition;
         
-        VisualObject looking;
+        PhisicalObject looking;
         Sight sight;
         //-------------
 
@@ -64,13 +64,13 @@ namespace TestOpenGL.Renders
         //=============
 
 
-        public void SetLookingVO(VisualObject b)
+        public void SetLookingVO(PhisicalObject b)
         {
             looking = b;
             Look();
             if (b != null)
             {
-                b.EventsVO.EventVOChangeCoord += new VoidEventDelegate(Look);
+                b.Events.EventChangeCoord += new VoidEventDelegate(Look);
             }
         }
 
@@ -78,10 +78,10 @@ namespace TestOpenGL.Renders
         {
             if (looking != null)
             {
-                shiftX = looking.C.X - width / 2;
+                shiftX = looking.Coord.X - width / 2;
                 shiftX = shiftX < 0 ? 0 : shiftX;
                 shiftX = shiftX > Program.L.LengthX - width ? Program.L.LengthX - width : shiftX;
-                shiftY = looking.C.Y - height / 2;
+                shiftY = looking.Coord.Y - height / 2;
                 shiftY = shiftY < 0 ? 0 : shiftY;
                 shiftY = shiftY > Program.L.LengthY - height ? Program.L.LengthY - height : shiftY; //TODO: ВОТ ЗДУСЬ ЖИВУТ ИНОГДА ЧЁРТОВЫ НЕВЕРНЕНЬКИЕ КООРДИНАТКИ!!! Вроде исправлено (в заметках про 150+ кадров)
             }

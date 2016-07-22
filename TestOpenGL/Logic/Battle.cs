@@ -12,16 +12,16 @@ namespace TestOpenGL.Logic
         public static bool Attack(Being attacking, Coord C)
         {
             //Анимация атаки в ячейку C
-            Program.L.GetMap<Decal>().AddVO(Program.OB.GetDecal(2), attacking.C);
-            Program.L.GetMap<Decal>().AddVO(Program.OB.GetDecal(2), C);
+            /*Program.L.GetMap<Decal>().AddObject(Program.OB.GetDecal(2), attacking.C);
+            Program.L.GetMap<Decal>().AddObject(Program.OB.GetDecal(2), C);
             Program.L.Pause(150);
-            Program.L.GetMap<Decal>().RemoveVO(attacking.C);
-            Program.L.GetMap<Decal>().RemoveVO(C);
+            Program.L.GetMap<Decal>().RemoveObject(attacking.C);
+            Program.L.GetMap<Decal>().RemoveObject(C);
+            */
 
-
-            if (Program.L.GetMap<Being>().GetVO(C) != null)
+            if (Program.L.GetMap<Being>().GetObject(0, C) != null)
             {
-                Fight(attacking, Program.L.GetMap<Being>().GetVO(C));
+                Fight(attacking, Program.L.GetMap<Being>().GetObject(0, C));
                 return true;
             }
             return false;

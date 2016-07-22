@@ -91,7 +91,7 @@ namespace TestOpenGL.BeingContents
                 currentHealth = value;
                 owner.EventsBeing.BeingChangeHealth();
                 if (currentHealth <= 0)
-                    owner.Death();
+                    owner.Despawn();
                 if (currentHealth > maxHealth)
                     currentHealth = maxHealth;
             }

@@ -43,15 +43,13 @@ namespace TestOpenGL
     }*/
     
         
-    struct RenderObject
+    /*struct RenderObject
     {
         Texture texture;
         Coord c;
         double zIndex;
 
-        public RenderObject(VisualObject vo, double zShift) : this(vo.Texture, vo.C, zShift)
-        {
-        }
+        public RenderObject(PhisicalObject vo, double zShift) : this(vo.Texture, vo.C, zShift) { }
         public RenderObject(Texture texture, Coord c, double zShift)
         {
             this.texture = texture;
@@ -65,31 +63,27 @@ namespace TestOpenGL
         { get { return c; } }
         public double ZIndex
         { get { return zIndex; } }
-    }
+    }*/
 
     /// <summary>
     /// Структура для передачи координат.
     /// </summary>
-    struct Coord : IComparable
+    struct Coord// : IComparable
     {
         // Координата (0, 0) - левый нижний угол. Ось X - горизонтальная.
         private int x;
         private int y;
-        private int z;
         //-------------
 
 
         public Coord(UnsafeCoord uc)
-            : this(uc.X, uc.Y, uc.Z) { }
+            : this(uc.X, uc.Y) { }
         public Coord(int x, int y)
-            : this(x, y, 0) { }
-        public Coord(int x, int y, int z)
         {
             this.x = x;
             this.y = y;
-            this.z = z;
-            if (!Analytics.CorrectCoordinate(x, y, z))
-                throw new Exception("Неверненькие координатки пришли. (" + x + ", " + y + ", " + z +")");
+            if (!Analytics.CorrectCoordinate(x, y))
+                throw new Exception("Неверненькие координатки пришли. (" + x + ", " + y + ")");
         }
 
         public int X
@@ -97,42 +91,35 @@ namespace TestOpenGL
 
         public int Y
         { get { return y; } }
-
-        public int Z
-        { get { return z; } }
         //=============
 
 
         public static bool operator == (Coord C1, Coord C2)
         {
-            return C1.X == C2.X && C1.Y == C2.Y && C1.Z == C2.Z ? true : false;
+            return C1.X == C2.X && C1.Y == C2.Y ? true : false;
         }
         public static bool operator !=(Coord C1, Coord C2)
         {
-            return C1.X != C2.X || C1.Y != C2.Y || C1.Z != C2.Z ? true : false;
+            return C1.X != C2.X || C1.Y != C2.Y ? true : false;
         }
-        public int CompareTo(object obj)
+        /*public int CompareTo(object obj)
         {
             Coord c = (Coord)obj;
             return z > c.z ? 1 : (z < c.z ? -1 : 0);
-        }
+        }*/
     }
 
     struct UnsafeCoord
     {
         private int x;
         private int y;
-        private int z;
         //-------------
         
 
         public UnsafeCoord(int x, int y)
-            : this(x, y, 0) { }
-        public UnsafeCoord(int x, int y, int z)
         {
             this.x = x;
             this.y = y;
-            this.z = z;
         }
 
         public int X
@@ -140,14 +127,11 @@ namespace TestOpenGL
 
         public int Y
         { get { return y; } }
-
-        public int Z
-        { get { return z; } }
         //=============
 
 
         public bool IsCorrect()
-        { return Analytics.CorrectCoordinate(x, y, z); }
+        { return Analytics.CorrectCoordinate(x, y); }
     }
     
 
@@ -168,9 +152,50 @@ namespace TestOpenGL
 
 
     /// <summary>
-    /// Перечисление типов визуальных объектов (отображаемых на карте).
+    /// Перечисление типов визуальных объектов (отображаемых на карте). Порядок важен.
     /// </summary>
     enum TypeVisualObject { Background, Block, Being, Item, Decal };
+
+    //ТЕСТЫТЕСТЫТЕСТЫТЕСТЫ///////////////////////////////////////////////////////
+    enum Layer { Background, Block, Being, Item, Decal };
+    enum ModifyDepth { None, UnderLayer, ToLayer, UnderPartLayer, ToPartLayer }
+    struct Position
+    {
+        Layer layer;
+        int partLayer;
+        Coord c;
+
+
+        public Layer Layer
+        {
+            get
+            {
+                return layer;
+            }
+        }
+
+        public int PartLayer
+        {
+            get
+            {
+                return partLayer;
+            }
+        }
+
+        public Coord C
+        {
+            get
+            {
+                return c;
+            }
+        }
+        //=============
+
+
+    }
+    //////////////////////////////////////////////////////////////////////////////
+
+
 
 
     /// <summary>

@@ -6,39 +6,41 @@ namespace TestOpenGL.VisualObjects
 {
     class Item: IInfoble
     {
-        Texture texture;
+        //Texture texture;
         int price;
         
         // Части тела, занимаемые предметом
         List<Part> parts;
+
+        GraphicsObject graphicsObject;
 
         ObjectInfo objectInfo;
         //-------------
 
 
         public Item(Item item)
-            :this(item.ObjectInfo.Id, item.ObjectInfo.Name, item.ObjectInfo.Description, item.Texture, item.Price, item.Parts) { }
-        public Item(int id, string name, string description, Texture texture, int price, List<Part> parts)
+            :this(item.ObjectInfo, item.GraphicsObject, item.Price, item.Parts) { }
+        public Item(ObjectInfo objectInfo, GraphicsObject graphicsObject, int price, List<Part> parts)
         {
-            this.texture = texture;
+            this.graphicsObject = graphicsObject;
 
             this.price = price;
 
             this.parts = new List<Part>(parts);
-            objectInfo = new ObjectInfo(id, name, description);
+            this.objectInfo = objectInfo;
         }
 
         public int Price
         { get { return price; } }
-
-        public Texture Texture
-        { get { return texture; } }
 
         internal List<Part> Parts
         { get { return parts; } }
 
         public ObjectInfo ObjectInfo
         { get { return objectInfo; } }
+
+        public GraphicsObject GraphicsObject
+        { get { return graphicsObject; } }
         //=============
     }
 }

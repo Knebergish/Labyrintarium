@@ -4,7 +4,7 @@ using TestOpenGL.VisualObjects;
 
 namespace TestOpenGL.World
 {
-    class MapVisualObjects<T> where T : VisualObject
+    class MapVisualObjects<T> where T : PhisicalObject
     {
         List<T> mapT;
         //-------------
@@ -17,44 +17,39 @@ namespace TestOpenGL.World
         //=============
 
 
-        public T GetVO(Coord C)
+        public T GetObject(int partLayer, Coord c)
         {
             foreach (T t in mapT)
-                if (t.C == C)
+                if (t.PartLayer == partLayer && t.Coord == c)
                     return t;
             return null;
         }
-        public List<T> GetCellVO(Coord C)
+        public List<T> GetCellObject(Coord C)
         {
             List<T> lt = new List<T>();
             T t;
             for (int i = 0; i < Program.L.LengthZ; i++)
             {
-                t = GetVO(new Coord(C.X, C.Y, i));
+                t = GetObject(i, new Coord(C.X, C.Y));
                 if (t != null)
                     lt.Add(t);
             }
             return lt;
         }
 
-        public List<T> GetAllVO()
+        public List<T> GetAllObject()
         {
             return new List<T>(mapT);
         }
 
-        public bool AddVO(T tvo, Coord C)
+        public void AddObject(T t)
         {
-            if (tvo.SetNewCoord(C))
-            {
-                mapT.Add(tvo);
-                return true;
-            }
-            return false;
+            mapT.Add(t);
         }
 
-        public void RemoveVO(Coord C)
+        public void RemoveObject(int partLayer, Coord coord)
         {
-            T t = GetVO(C);
+            T t = GetObject(partLayer, coord);
             if (t != null)
                 mapT.Remove(t);
         }

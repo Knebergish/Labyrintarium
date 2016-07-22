@@ -49,14 +49,14 @@ namespace TestOpenGL.Forms
             }
         }
 
-        private void FillListContent<T>() where T : VisualObject, IInfoble
+        private void FillListContent<T>() where T : PhisicalObject, IInfoble
         {
             listBox1.Items.Clear();
-            foreach (T b in Program.L.GetMap<T>().GetCellVO(new Coord(
+            foreach (T b in Program.L.GetMap<T>().GetCellObject(new Coord(
                 Program.P.Camera.Sight.C.X,
                 Program.P.Camera.Sight.C.Y
                 )))
-                listBox1.Items.Add(b.C.Z + ". " + b.ObjectInfo.Name);
+                listBox1.Items.Add(b.PartLayer + ". " + b.ObjectInfo.Name);
         }
         private void ReloadListContent()
         {
@@ -84,11 +84,11 @@ namespace TestOpenGL.Forms
                     case TypeVisualObject.Background:
                         Program.OB.GetBackground(massId[listView1.SelectedIndices[0]]).Spawn
                             (
+                                comboBox1.SelectedIndex,
                                 new Coord
                                 (
                                 Program.P.Camera.Sight.C.X,
-                                Program.P.Camera.Sight.C.Y,
-                                comboBox1.SelectedIndex
+                                Program.P.Camera.Sight.C.Y
                                 )
                             );
                         break;
@@ -96,11 +96,11 @@ namespace TestOpenGL.Forms
                     case TypeVisualObject.Block:
                         Program.OB.GetBlock(massId[listView1.SelectedIndices[0]]).Spawn
                             (
+                                comboBox1.SelectedIndex,
                                 new Coord
                                 (
                                 Program.P.Camera.Sight.C.X,
-                                Program.P.Camera.Sight.C.Y,
-                                comboBox1.SelectedIndex
+                                Program.P.Camera.Sight.C.Y
                                 )
                             );
                         break;
@@ -108,11 +108,11 @@ namespace TestOpenGL.Forms
                     case TypeVisualObject.Being:
                         Program.OB.GetBeing(massId[listView1.SelectedIndices[0]]).Spawn
                             (
+                                0,
                                 new Coord
                                 (
                                 Program.P.Camera.Sight.C.X,
-                                Program.P.Camera.Sight.C.Y,
-                                0
+                                Program.P.Camera.Sight.C.Y
                                 )
                             );
                         break;
@@ -120,11 +120,11 @@ namespace TestOpenGL.Forms
                     case TypeVisualObject.Decal:
                         Program.OB.GetDecal(massId[listView1.SelectedIndices[0]]).Spawn
                             (
+                                comboBox1.SelectedIndex,
                                 new Coord
                                 (
                                 Program.P.Camera.Sight.C.X,
-                                Program.P.Camera.Sight.C.Y,
-                                comboBox1.SelectedIndex
+                                Program.P.Camera.Sight.C.Y
                                 )
                             );
                         break;
@@ -165,49 +165,49 @@ namespace TestOpenGL.Forms
             switch ((TypeVisualObject)comboBox2.SelectedIndex)
             {
                 case TypeVisualObject.Background:
-                    Program.L.GetMap<Background>().RemoveVO
+                    Program.L.GetMap<Background>().RemoveObject
                         (
+                            comboBox1.SelectedIndex,
                             new Coord
                             (
                             Program.P.Camera.Sight.C.X,
-                            Program.P.Camera.Sight.C.Y,
-                            comboBox1.SelectedIndex
+                            Program.P.Camera.Sight.C.Y
                             )
                         );
                     break;
 
                 case TypeVisualObject.Block:
-                    Program.L.GetMap<Block>().RemoveVO
+                    Program.L.GetMap<Block>().RemoveObject
                         (
+                            comboBox1.SelectedIndex,
                             new Coord
                             (
                             Program.P.Camera.Sight.C.X,
-                            Program.P.Camera.Sight.C.Y,
-                            comboBox1.SelectedIndex
+                            Program.P.Camera.Sight.C.Y
                             )
                         );
                     break;
 
                 case TypeVisualObject.Being:
-                    Program.L.GetMap<Being>().RemoveVO
+                    Program.L.GetMap<Being>().RemoveObject
                         (
+                            0,
                             new Coord
                             (
                             Program.P.Camera.Sight.C.X,
-                            Program.P.Camera.Sight.C.Y,
-                            0
+                            Program.P.Camera.Sight.C.Y
                             )
                         );
                     break;
 
                 case TypeVisualObject.Decal:
-                    Program.L.GetMap<Decal>().RemoveVO
+                    Program.L.GetMap<Decal>().RemoveObject
                         (
+                            comboBox1.SelectedIndex,
                             new Coord
                             (
                             Program.P.Camera.Sight.C.X,
-                            Program.P.Camera.Sight.C.Y,
-                            comboBox1.SelectedIndex
+                            Program.P.Camera.Sight.C.Y
                             )
                         );
                     break;

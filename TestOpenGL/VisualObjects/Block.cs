@@ -1,9 +1,6 @@
-﻿using System;
-using TestOpenGL.Renders;
-
-namespace TestOpenGL.VisualObjects
+﻿namespace TestOpenGL.VisualObjects
 {
-    class Block: VisualObject, IInfoble
+    class Block: GameObject, IInfoble
     {
         bool passableness;
         bool transparency;
@@ -14,15 +11,15 @@ namespace TestOpenGL.VisualObjects
 
 
         public Block(Block block)
-            : this(block.ObjectInfo.Id, block.ObjectInfo.Name, block.ObjectInfo.Description, block.Passableness, block.Transparency, block.Permeability, block.Texture) { }
-        public Block(int id, string name, string description, bool passableness, bool transparency, bool permeability, Texture texture)
-            : base(texture)
+            : this(block.ObjectInfo, block.Passableness, block.Transparency, block.Permeability, block.GraphicsObject) { }
+        public Block(ObjectInfo objectInfo, bool passableness, bool transparency, bool permeability, GraphicsObject graphictObject)
+            : base(graphictObject)
         {
+            this.objectInfo = objectInfo;
+
             this.passableness = passableness;
             this.transparency = transparency;
             this.permeability = permeability;
-
-            objectInfo = new ObjectInfo(id, name, description);
         }
 
         //Проходимость (для сущностей)
@@ -49,18 +46,25 @@ namespace TestOpenGL.VisualObjects
         //=============
 
 
-        public override bool Spawn(Coord C)
+        public override bool Spawn(int partLayer, Coord coord)
         {
-            if (SetNewCoord(C))
+            if (SetNewPosition(partLayer, coord))
             {
-                Program.L.GetMap<Block>().AddVO(this, C);
+                Program.L.GetMap<Block>().AddObject(this);
+                Program.P.AddGraphicsObject(GraphicsObject);
                 return true;
             }
             return false;
         }
-        protected override bool IsEmptyCell(Coord C)
+        protected override bool IsEmptyPosition(int partLayer, Coord coord)
         {
-            return Program.L.GetMap<Block>().GetVO(C) == null ? true : false;
+            return Program.L.GetMap<Block>().GetObject(partLayer, coord) == null ? true : false;
+        }
+
+        public override void Despawn()
+        {
+            Program.L.GetMap<Block>().RemoveObject(PartLayer, Coord);
+            Program.P.RemoveGraphicsObject(GraphicsObject);
         }
     }
 }

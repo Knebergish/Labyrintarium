@@ -47,23 +47,23 @@ namespace TestOpenGL.Stages
             {
                 for (int y = 0; y < Program.L.LengthY; y++)
                 {
-                    Program.OB.GetBackground(1).Spawn(new Coord(x, y, 0));
+                    Program.OB.GetBackground(1).Spawn(0, new Coord(x, y));
                     //if (rnd.Next(1, 7) == 1)
                     //    Program.OB.GetBlock(2).Spawn(new Coord(x, y, 0));
                 }
             }
 
             for (int i = 0; i < 20; i += 1)
-                Program.OB.GetBlock(2).Spawn(new Coord(6, i, 0));
+                Program.OB.GetBlock(2).Spawn(0, new Coord(6, i));
 
             new NPC(
                 Program.OB.GetBeing(1),
                 "Здравствуй, путник!",
                 null
-                ).Spawn(new Coord(4, 3, 3));
+                ).Spawn(3, new Coord(4, 3));
 
             Bot b = new Bot(Program.OB.GetBeing(1), AIs.AIAttacker);
-            b.Spawn(new Coord(5, 1, 0));
+            b.Spawn(0, new Coord(5, 1));
 
             Program.GCycle.Gamer = new Gamer(Program.OB.GetBeing(1));
             for (int i = 1; i < 10; i++)
@@ -73,7 +73,7 @@ namespace TestOpenGL.Stages
             Program.GCycle.Gamer.Inventory.PutBagItem(Program.OB.GetShield(1));
             Program.GCycle.Gamer.Features.CurrentExperience += 100;
 
-            Program.GCycle.Gamer.Spawn(new Coord(1, 0, 0));
+            Program.GCycle.Gamer.Spawn(0, new Coord(1, 0));
             Program.P.Camera.Width = 30;
             Program.P.Camera.Height = 30;
         }
@@ -81,7 +81,7 @@ namespace TestOpenGL.Stages
         void LoadShaders()
         {
             // Шейдер крон деревьев
-            Program.P.ShadersList.Add(new Func<List<RenderObject>>(() =>
+            /*Program.P.ShadersList.Add(new Func<List<RenderObject>>(() =>
             {
                 Texture t = Program.TA.GetTexture(TypeVisualObject.Block, "3");
                 List<RenderObject> lro = new List<RenderObject>();
@@ -92,10 +92,10 @@ namespace TestOpenGL.Stages
                             lro.Add(new RenderObject(t, new Coord(block.C.X, block.C.Y + 1), (int)TypeVisualObject.Being * (Program.L.LengthZ - 1) + Program.L.LengthZ + 0.5));
 
                 return lro;
-            }));
+            }));*/
 
             // Шейдер экипированных вещей
-            Program.P.ShadersList.Add(new Func<List<RenderObject>>(() =>
+            /*Program.P.ShadersList.Add(new Func<List<RenderObject>>(() =>
             {
                 List<RenderObject> lro = new List<RenderObject>();
 
@@ -116,7 +116,7 @@ namespace TestOpenGL.Stages
                     }
                         
                 return lro;
-            }));
+            }));*/
         }
 
         void LoadTriggers()
@@ -128,9 +128,9 @@ namespace TestOpenGL.Stages
                     delegate 
                     {
                         int cx = 5;
-                        if (Program.L.GetMap<Being>().GetAllVO().Count < 5)
+                        if (Program.L.GetMap<Being>().GetAllObject().Count < 5)
                         {
-                            while (!GetNextBot().Spawn(new Coord(cx, 1)))
+                            while (!GetNextBot().Spawn(0, new Coord(cx, 1)))
                                 cx = ++cx >= 30 ? 0 : ++cx; 
                             //Program.GCycle.Gamer.features.CurrentHealth = 10;
                         }
