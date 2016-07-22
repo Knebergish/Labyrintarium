@@ -147,41 +147,6 @@ namespace TestOpenGL.Renders
 
             Gl.glClear(Gl.GL_COLOR_BUFFER_BIT | Gl.GL_DEPTH_BUFFER_BIT);
 
-            
-            
-            /*
-            // Фоны
-            //zShift = 0;
-            foreach (Background b in Program.L.GetMap<Background>().GetAllVO())
-                if (Analytics.IsInCamera(b.C, this.Camera))
-                    listRO.AddRange(b.GetRenderObjects());//(new RenderObject(b, (int)TypeVisualObject.Background * (Program.L.LengthZ - 1)));
-            // Конец фонов
-
-            // Блоки
-            //zShift += Program.L.LengthZ;
-            foreach (Block b in Program.L.GetMap<Block>().GetAllVO())
-                if (Analytics.IsInCamera(b.C, this.Camera))
-                    //listRO.Add(new RenderObject(b, (int)TypeVisualObject.Block * (Program.L.LengthZ - 1)));
-                    listRO.AddRange(b.GetRenderObjects());
-            // Конец блоков
-
-            // Сущности
-            //zShift += Program.L.LengthZ;
-            foreach (Being b in Program.L.GetMap<Being>().GetAllVO())
-                if (b.IsSpawned)
-                    if (Analytics.IsInCamera(b.C, this.Camera))
-                        //listRO.Add(new RenderObject(b, (int)TypeVisualObject.Being * (Program.L.LengthZ - 1)));
-                        listRO.AddRange(b.GetRenderObjects());
-            // Конец сущностей
-
-            // Декали
-            //zShift += Program.L.LengthZ;
-            foreach (Decal d in Program.L.GetMap<Decal>().GetAllVO())
-                if (Analytics.IsInCamera(d.C, this.Camera))
-                    //listRO.Add(new RenderObject(d, (int)TypeVisualObject.Decal * (Program.L.LengthZ - 1)));
-                    listRO.AddRange(d.GetRenderObjects());
-            // Конец декалей
-            */
 
             foreach(GraphicsObject go in lGO)
             {
@@ -191,7 +156,9 @@ namespace TestOpenGL.Renders
             foreach (Func<List<Cell>> func in shadersList)
                 lC.AddRange(func());
 
-
+            for (int i = lC.Count - 1; i >= 0; i--)
+                if (!Analytics.IsInCamera(lC[i].C, camera))
+                    lC.RemoveAt(i);
 
             var sort = from cell in lC
                    orderby cell.GlobalDepth
@@ -203,13 +170,16 @@ namespace TestOpenGL.Renders
             
 
             // Прицел
-            //DrawCell(camera.Sight.AimDecal.GraphicsObject.GetCells()[0]);
+            // DrawCell(camera.Sight.AimDecal.GraphicsObject.GetCells()[0]);
 
             Program.mainForm.GlControl.SwapBuffers();
         }
 
         void DrawCell(Cell cell)
         {
+            int deltaX = camera.MinX;
+            int deltaY = camera.MinY;
+
             int size = 1;
             // включаем режим текстурирования
             Gl.glEnable(Gl.GL_TEXTURE_2D);
@@ -220,16 +190,16 @@ namespace TestOpenGL.Renders
             Gl.glBegin(Gl.GL_QUADS);
 
             Gl.glTexCoord2d(0.0, 0.0);
-            Gl.glVertex2d((double)cell.C.X, (double)cell.C.Y);
+            Gl.glVertex2d((double)cell.C.X - deltaX, (double)cell.C.Y - deltaY);
 
             Gl.glTexCoord2d(0.0, 0.0 + size);
-            Gl.glVertex2d((double)cell.C.X, (double)cell.C.Y + size);
+            Gl.glVertex2d((double)cell.C.X - deltaX, (double)cell.C.Y + size - deltaY);
 
             Gl.glTexCoord2d(0.0 + size, 0.0 + size);
-            Gl.glVertex2d((double)cell.C.X + size, (double)cell.C.Y + size);
+            Gl.glVertex2d((double)cell.C.X + size - deltaX, (double)cell.C.Y + size - deltaY);
 
             Gl.glTexCoord2d(0.0 + size, 0.0);
-            Gl.glVertex2d((double)cell.C.X + size, (double)cell.C.Y);
+            Gl.glVertex2d((double)cell.C.X + size - deltaX, (double)cell.C.Y - deltaY);
 
             Gl.glEnd();
 

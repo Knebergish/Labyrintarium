@@ -36,9 +36,9 @@ namespace TestOpenGL
             Application.Run(new MainForm());
         }
 
-        static int layerDepth;
         static public double GetGlobalDepth(Layer layer, int partLayer, ModifyDepth modifyDepth)
         {
+            int layerDepth = Program.L.LengthZ;
             double resultDepth = (int)layer * layerDepth;
             double delta = 0.5;
 

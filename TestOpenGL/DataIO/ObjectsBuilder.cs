@@ -34,9 +34,9 @@ namespace TestOpenGL.DataIO
                     new UnsafeCoord(
                         int.Parse(dt.Rows[i]["deltaX"].ToString()), 
                         int.Parse(dt.Rows[i]["deltaY"].ToString())), 
-                    int.Parse(dt.Rows[0]["deltaLayer"].ToString()), 
-                    (ModifyDepth)int.Parse(dt.Rows[0]["modifyDepth"].ToString()), 
-                    TA.GetTexture(layer, dt.Rows[0]["imageName"].ToString()));
+                    int.Parse(dt.Rows[i]["deltaLayer"].ToString()), 
+                    (ModifyDepth)int.Parse(dt.Rows[i]["modifyDepth"].ToString()), 
+                    TA.GetTexture(layer, dt.Rows[i]["imageName"].ToString()));
 
             return go;
         }

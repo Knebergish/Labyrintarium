@@ -25,9 +25,9 @@ namespace TestOpenGL.DataIO
             InitializeGraphics();
 
             texturesDataTable = new DataTable();
-            this.texturesDataTable.Columns.Add("type", typeof(TypeVisualObject));
-            this.texturesDataTable.Columns.Add("imageName", typeof(string));
-            this.texturesDataTable.Columns.Add("textureId", System.Type.GetType("System.Int32"));
+            texturesDataTable.Columns.Add("type", typeof(TypeVisualObject));
+            texturesDataTable.Columns.Add("imageName", typeof(string));
+            texturesDataTable.Columns.Add("textureId", Type.GetType("System.Int32"));
         }
         public TexturesAssistant(string path): this()
         {
@@ -130,6 +130,8 @@ namespace TestOpenGL.DataIO
                 //if(texObject == 1)
                 //    Gl.glDeleteTextures(1, ref texObject);
             }
+            else
+                System.Windows.Forms.MessageBox.Show("Ошибка загрузки изображения по пути: " + url);
 
             // возвращаем идентификатор текстурного объекта
             return (int)texObject;
