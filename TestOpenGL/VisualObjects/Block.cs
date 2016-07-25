@@ -1,22 +1,18 @@
 ﻿namespace TestOpenGL.VisualObjects
 {
-    class Block: GameObject, IInfoble
+    class Block: PhisicalObject
     {
         bool passableness;
         bool transparency;
         bool permeability;
-
-        ObjectInfo objectInfo;
         //-------------
 
 
         public Block(Block block)
-            : this(block.ObjectInfo, block.Passableness, block.Transparency, block.Permeability, block.GraphicsObject) { }
-        public Block(ObjectInfo objectInfo, bool passableness, bool transparency, bool permeability, GraphicsObject graphictObject)
-            : base(graphictObject)
+            : this(block.GraphicObjectsPack, block.ObjectInfo, block.Passableness, block.Transparency, block.Permeability) { }
+        public Block(GraphicObjectsPack graphicObjectsPack, ObjectInfo objectInfo, bool passableness, bool transparency, bool permeability)
+            : base(graphicObjectsPack, objectInfo)
         {
-            this.objectInfo = objectInfo;
-
             this.passableness = passableness;
             this.transparency = transparency;
             this.permeability = permeability;
@@ -40,9 +36,6 @@
             get { return permeability; }
             set { permeability = value; }
         }
-
-        public ObjectInfo ObjectInfo
-        { get { return objectInfo; } }
         //=============
 
 
@@ -51,7 +44,7 @@
             if (SetNewPosition(partLayer, coord))
             {
                 Program.L.GetMap<Block>().AddObject(this);
-                Program.P.AddGraphicsObject(GraphicsObject);
+                Program.P.AddRenderObject(GraphicObjectsPack);
                 return true;
             }
             return false;
@@ -64,7 +57,7 @@
         public override void Despawn()
         {
             Program.L.GetMap<Block>().RemoveObject(PartLayer, Coord);
-            Program.P.RemoveGraphicsObject(GraphicsObject);
+            Program.P.RemoveRenderObject(GraphicObjectsPack);
         }
     }
 }

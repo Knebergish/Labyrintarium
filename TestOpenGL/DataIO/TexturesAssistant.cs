@@ -11,7 +11,7 @@ namespace TestOpenGL.DataIO
 {
     class TexturesAssistant
     {
-        delegate int updateVoid(TypeVisualObject tvo, int imageId);
+        delegate int updateVoid(Layer layer, int imageId);
 
         // Таблица подгруженных текстур блоков.
         private DataTable texturesDataTable;
@@ -25,18 +25,18 @@ namespace TestOpenGL.DataIO
             InitializeGraphics();
 
             texturesDataTable = new DataTable();
-            texturesDataTable.Columns.Add("type", typeof(TypeVisualObject));
+            texturesDataTable.Columns.Add("layer", typeof(Layer));
             texturesDataTable.Columns.Add("imageName", typeof(string));
             texturesDataTable.Columns.Add("textureId", Type.GetType("System.Int32"));
         }
         public TexturesAssistant(string path): this()
         {
             this.path = path;
-            string[] namesTypes = Enum.GetNames(typeof(TypeVisualObject));
-            pathes = new string[namesTypes.Length];
+            string[] namesLayers = Enum.GetNames(typeof(Layer));
+            pathes = new string[namesLayers.Length];
 
-            for (int i = 0; i < namesTypes.Length; i++)
-                pathes[i] = this.path + "\\Textures\\" + namesTypes[i] + "s\\";
+            for (int i = 0; i < namesLayers.Length; i++)
+                pathes[i] = this.path + "\\Textures\\" + namesLayers[i] + "s\\";
         }
         //=============
 
@@ -146,9 +146,9 @@ namespace TestOpenGL.DataIO
 
         private int SearchLoadedTexture(Layer layer, string imageName)
         {
-            for (int i = 0; i < this.texturesDataTable.Rows.Count; i++)
+            for (int i = 0; i < texturesDataTable.Rows.Count; i++)
             {
-                if ((Layer)this.texturesDataTable.Rows[i]["type"] == layer)
+                if ((Layer)texturesDataTable.Rows[i]["layer"] == layer)
                 {
                     if (texturesDataTable.Rows[i]["imageName"].ToString() == imageName)
                     {

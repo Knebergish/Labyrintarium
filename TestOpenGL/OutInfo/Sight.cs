@@ -5,8 +5,9 @@ namespace TestOpenGL.OutInfo
 {
     class Sight
     {
-        Coord c;
-        Decal aimDecal;
+        Coord coord;
+        //Decal aimDecal;
+        GraphicObject graphicObject;
         Camera camera;
         EventSight eventSight;
         //-------------
@@ -14,23 +15,25 @@ namespace TestOpenGL.OutInfo
 
         public Sight(Camera camera)
         {
-            c = new Coord(0, 0);
-            aimDecal = Program.OB.GetDecal(1);
+            coord = new Coord(0, 0);
+            graphicObject = Program.OB.GetGraphicObject(6, Layer.Decal);
             this.camera = camera;
             eventSight = new EventSight();
-
+            
             this.camera.changeCameraPosition += Check;
-        }
-
-        public Decal AimDecal
-        {
-            get { return aimDecal; }
+            Program.P.AddRenderObject(graphicObject);
         }
         
-        public Coord C
+        public Coord Coord
         {
-            get { return c; }
-            set { c = value; Check(); eventSight.SightChangeCoord(); }
+            get { return coord; }
+            set
+            {
+                coord = value;
+                graphicObject.SetNewPosition(0, coord);
+                Check();
+                eventSight.SightChangeCoord();
+            }
         }
 
         internal EventSight EventSight
@@ -50,20 +53,20 @@ namespace TestOpenGL.OutInfo
                 case Direction.Down: dy--; break;
             }
 
-            if (Logic.Analytics.CorrectCoordinate(c.X + dx, c.Y + dy))
-                C = new Coord(c.X + dx, c.Y + dy);
+            if (Logic.Analytics.CorrectCoordinate(coord.X + dx, coord.Y + dy))
+                Coord = new Coord(coord.X + dx, coord.Y + dy);
         }
 
         public void Check()
         {
-            if (c.X < camera.MinX)
-                c = new Coord(camera.MinX, c.Y);
-            if (c.X > camera.MaxX)
-                c = new Coord(camera.MaxX, c.Y);
-            if (c.Y < camera.MinY)
-                c = new Coord(c.X, camera.MinY);
-            if (c.Y > camera.MaxY)
-                c = new Coord(c.X, camera.MaxY);
+            if (coord.X < camera.MinX)
+                Coord = new Coord(camera.MinX, coord.Y);
+            if (coord.X > camera.MaxX)
+                Coord = new Coord(camera.MaxX, coord.Y);
+            if (coord.Y < camera.MinY)
+                Coord = new Coord(coord.X, camera.MinY);
+            if (coord.Y > camera.MaxY)
+                Coord = new Coord(coord.X, camera.MaxY);
         }
     }
 

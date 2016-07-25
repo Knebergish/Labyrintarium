@@ -8,12 +8,10 @@ using TestOpenGL.VisualObjects.ChieldsItem;
 
 namespace TestOpenGL.VisualObjects
 {
-    class Being : GameObject, IInfoble
+    class Being : PhisicalObject
     {
         bool isSpawned;
         int rangeOfVisibility;
-
-        ObjectInfo objectInfo;
 
         Features features;
         Inventory inventory;
@@ -23,24 +21,22 @@ namespace TestOpenGL.VisualObjects
 
 
         public Being(Being being)
-            : this(being.ObjectInfo, being.GraphicsObject, being.Alliance) { }
+            : this(being.GraphicObjectsPack, being.ObjectInfo, being.Alliance) { }
 
-        public Being(ObjectInfo objectInfo, GraphicsObject graphicsObject, int alliance)
-            : this(objectInfo, graphicsObject, alliance, null, null)
-        { }
+        public Being(GraphicObjectsPack graphicObjectPack, ObjectInfo objectInfo, int alliance)
+            : this(graphicObjectPack, objectInfo, alliance, null, null) { }
 
-        public Being(ObjectInfo objectInfo, GraphicsObject graphicsObject, int alliance, Features features, Inventory inventory)
-            : base(graphicsObject)
+        public Being(GraphicObjectsPack graphicObjectPack, ObjectInfo objectInfo, int alliance, Features features, Inventory inventory)
+            : base(graphicObjectPack, objectInfo)
         {
             NewPositionCheck += Program.L.IsPassable;
 
             isSpawned = false;
             rangeOfVisibility = 10;
 
-            this.objectInfo = objectInfo;
-
             this.features =  features ?? new Features(this);
             this.inventory =  inventory ?? new Inventory();
+            this.inventory.Owner = this;
 
             eventsBeing = new EventsBeing();
 
@@ -61,9 +57,6 @@ namespace TestOpenGL.VisualObjects
             get { return isSpawned; }
         }
 
-        public ObjectInfo ObjectInfo
-        { get { return objectInfo; } }
-
         public Features Features
         { get { return features; } }
 
@@ -83,7 +76,7 @@ namespace TestOpenGL.VisualObjects
             if (!isSpawned && SetNewPosition(0, coord))
             {
                 Program.L.GetMap<Being>().AddObject(this);
-                Program.P.AddGraphicsObject(GraphicsObject);
+                Program.P.AddRenderObject(GraphicObjectsPack);
                 Program.GCycle.EventStepBeings += Step;
                 Program.GCycle.EventStepBeingsIncrease += Increace;
                 isSpawned = true;
@@ -105,11 +98,9 @@ namespace TestOpenGL.VisualObjects
             Program.GCycle.EventStepBeingsIncrease -= Increace;
             //
             Program.L.GetMap<Being>().RemoveObject(PartLayer, Coord);
-            Program.P.RemoveGraphicsObject(GraphicsObject);
+            Program.P.RemoveRenderObject(GraphicObjectsPack);
             eventsBeing.BeingDeath();
         }
-
-
 
         public void Step()
         {
@@ -131,7 +122,6 @@ namespace TestOpenGL.VisualObjects
             return this.features.ActionPoints < 1 ? true : false;
         }
         
-
         public bool Move(Coord coord)
         {
             if(isSpawned && this.features.ActionPoints >= 1 && SetNewPosition(0, coord))
@@ -170,11 +160,9 @@ namespace TestOpenGL.VisualObjects
             if (count > 0)
             {
                 features.CurrentHealth -= count;
-
-
-                /*Program.L.GetMap<Decal>().AddObject(Program.OB.GetDecal(4));
+                Action removeDecal = Program.DA.AddDecal(Program.OB.GetDecal(3), Coord);
                 Program.L.Pause(150);
-                Program.L.GetMap<Decal>().RemoveObject(C);*/
+                removeDecal();
             }
             else throw new Exception("Урон почему-то отрицательный.");
         }
@@ -190,18 +178,16 @@ namespace TestOpenGL.VisualObjects
             else throw new Exception("Исцеление почему-то отрицательное.");
         }
 
-
-
         public bool Use()
         {
-            if (Analytics.Distance(Coord, Program.P.Camera.Sight.C) > 1)
+            if (Analytics.Distance(Coord, Program.P.Camera.Sight.Coord) > 1)
                 return false;
 
-            foreach (Block b in Program.L.GetMap<Block>().GetCellObject(Program.P.Camera.Sight.C))
+            foreach (Block b in Program.L.GetMap<Block>().GetCellObject(Program.P.Camera.Sight.Coord))
                 if (b is IUsable)
                     ((IUsable)b).Used();
 
-            foreach (Being b in Program.L.GetMap<Being>().GetCellObject(Program.P.Camera.Sight.C))
+            foreach (Being b in Program.L.GetMap<Being>().GetCellObject(Program.P.Camera.Sight.Coord))
                 if (b is IUsable)
                     ((IUsable)b).Used();
             return true;
@@ -229,8 +215,6 @@ namespace TestOpenGL.VisualObjects
             features.ActionPoints += features.IncreaseActionPoints;
             //TODO: восстановление жизней тут же
         }
-
-
     }
 
     class EventsBeing

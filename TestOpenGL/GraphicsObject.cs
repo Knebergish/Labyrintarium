@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
-using System.Text;
-using System.Threading.Tasks;
 
 using TestOpenGL.Renders;
+using TestOpenGL.Logic;
 
 namespace TestOpenGL
 {
-    class GraphicsObject : IPositionable
+    class GraphicObject : IPositionable, IRenderable
     {
         Layer layer;
         int partLayer;
@@ -17,7 +15,7 @@ namespace TestOpenGL
         //-------------
 
 
-        public GraphicsObject(Layer layer)
+        public GraphicObject(Layer layer)
         {
             cellsDataTable = new DataTable();
             cellsDataTable.Columns.Add("deltaCoord", typeof(UnsafeCoord));
@@ -61,8 +59,8 @@ namespace TestOpenGL
                     listCells.Add(
                         new Cell(
                             new Coord(uc),
-                            Program.GetGlobalDepth(resultLayer, partLayer, modifyDepth),
-                             texture
+                            Analytics.GetGlobalDepth(resultLayer, partLayer, modifyDepth),
+                            texture
                             ));
                 }
             }

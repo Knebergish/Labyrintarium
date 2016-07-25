@@ -7,14 +7,16 @@ using TestOpenGL.VisualObjects;
 
 namespace TestOpenGL.Forms
 {
-    public partial class MapEditorForm : Form
+    partial class MapEditorForm : Form
     {
         ImageList IL;
         //EventDelegate closeForm;
         int[] massId;
+
         public MapEditorForm(/*EventDelegate closeForm*/)
         {
             InitializeComponent();
+            contentControl1.SetSight(Program.P.Camera.Sight);
             //this.closeForm = closeForm;
         }
 
@@ -26,51 +28,72 @@ namespace TestOpenGL.Forms
             comboBox1.SelectedIndex = 0;
 
             comboBox2.Items.Clear();
-            foreach (string s in Enum.GetNames(typeof(TypeVisualObject)))
+            foreach (string s in Enum.GetNames(typeof(Layer)))
                 comboBox2.Items.Add(s);
             comboBox2.SelectedIndex = 0;
+
+            
         }
 
         private void ReloadImages()
         {
-            TypeVisualObject tvo = (TypeVisualObject)comboBox2.SelectedIndex;
+            Layer layer = (Layer)comboBox2.SelectedIndex;
             IL = new ImageList();
             listView1.LargeImageList = IL;
             listView1.Items.Clear();
             
-            DataTable DT = Program.DBIO.ExecuteSQL("SELECT * FROM " + tvo.ToString() + "s");
+            DataTable DT = Program.DBIO.ExecuteSQL("SELECT * FROM " + layer.ToString() + "s");
             massId = new int[DT.Rows.Count];
 
-            for (int i = 0; i <= DT.Rows.Count - 1; i++)
+            /*for (int i = 0; i <= DT.Rows.Count - 1; i++)
             {
                 IL.Images.Add(Image.FromFile(Directory.GetCurrentDirectory() + "\\Textures\\" + tvo.ToString() + "s\\" + DT.Rows[i][3].ToString() + ".png"));
                 listView1.Items.Add(DT.Rows[i][1].ToString(), i);
                 massId[i] = int.Parse(DT.Rows[i][0].ToString());
-            }
+            }*/
+            PictureBox pb = new PictureBox();
+            Controls.Add(pb);
+            pb.Width = 100;
+            pb.Height = 200;
+            pb.Top = 0;
+            pb.Left = 0;
+            //Image ima = Image.FromFile(Directory.GetCurrentDirectory() + "\\Textures\\Beings\\2.png");
+            Image ima1 = Image.FromFile(Directory.GetCurrentDirectory() + "\\Textures\\Beings\\3-2.png");
+            Image ima2 = Image.FromFile(Directory.GetCurrentDirectory() + "\\Textures\\Beings\\3-5.png");
+            ImageList il = new ImageList();
+            //il.TransparentColor = Color.FromArgb(1, 1, 1);
+            il.Images.Add(ima1);
+            il.Images.Add(ima2);
+
+            Bitmap b = new Bitmap(100, 200);
+            
+            il.Draw(Graphics.FromImage(pb.Image), 0, 0, 0);
+            il.Draw(Graphics.FromImage(pb.Image), 0, 100, 1);
+            
         }
 
         private void FillListContent<T>() where T : PhisicalObject, IInfoble
         {
             listBox1.Items.Clear();
             foreach (T b in Program.L.GetMap<T>().GetCellObject(new Coord(
-                Program.P.Camera.Sight.C.X,
-                Program.P.Camera.Sight.C.Y
+                Program.P.Camera.Sight.Coord.X,
+                Program.P.Camera.Sight.Coord.Y
                 )))
                 listBox1.Items.Add(b.PartLayer + ". " + b.ObjectInfo.Name);
         }
         private void ReloadListContent()
         {
-            switch ((TypeVisualObject)comboBox2.SelectedIndex)
+            switch ((Layer)comboBox2.SelectedIndex)
             {
-                case TypeVisualObject.Background:
+                case Layer.Background:
                     FillListContent<Background>();
                     break;
 
-                case TypeVisualObject.Block:
+                case Layer.Block:
                     FillListContent<Block>();
                     break;
 
-                case TypeVisualObject.Being:
+                case Layer.Being:
                     FillListContent<Being>();
                     break;
             }
@@ -79,52 +102,52 @@ namespace TestOpenGL.Forms
         private void button3_Click(object sender, EventArgs e)
         {
             if(listView1.SelectedIndices.Count > 0)
-                switch ((TypeVisualObject)comboBox2.SelectedIndex)
+                switch ((Layer)comboBox2.SelectedIndex)
                 {
-                    case TypeVisualObject.Background:
+                    case Layer.Background:
                         Program.OB.GetBackground(massId[listView1.SelectedIndices[0]]).Spawn
                             (
                                 comboBox1.SelectedIndex,
                                 new Coord
                                 (
-                                Program.P.Camera.Sight.C.X,
-                                Program.P.Camera.Sight.C.Y
+                                Program.P.Camera.Sight.Coord.X,
+                                Program.P.Camera.Sight.Coord.Y
                                 )
                             );
                         break;
 
-                    case TypeVisualObject.Block:
+                    case Layer.Block:
                         Program.OB.GetBlock(massId[listView1.SelectedIndices[0]]).Spawn
                             (
                                 comboBox1.SelectedIndex,
                                 new Coord
                                 (
-                                Program.P.Camera.Sight.C.X,
-                                Program.P.Camera.Sight.C.Y
+                                Program.P.Camera.Sight.Coord.X,
+                                Program.P.Camera.Sight.Coord.Y
                                 )
                             );
                         break;
 
-                    case TypeVisualObject.Being:
+                    case Layer.Being:
                         Program.OB.GetBeing(massId[listView1.SelectedIndices[0]]).Spawn
                             (
                                 0,
                                 new Coord
                                 (
-                                Program.P.Camera.Sight.C.X,
-                                Program.P.Camera.Sight.C.Y
+                                Program.P.Camera.Sight.Coord.X,
+                                Program.P.Camera.Sight.Coord.Y
                                 )
                             );
                         break;
 
-                    case TypeVisualObject.Decal:
+                    case Layer.Decal:
                         Program.OB.GetDecal(massId[listView1.SelectedIndices[0]]).Spawn
                             (
                                 comboBox1.SelectedIndex,
                                 new Coord
                                 (
-                                Program.P.Camera.Sight.C.X,
-                                Program.P.Camera.Sight.C.Y
+                                Program.P.Camera.Sight.Coord.X,
+                                Program.P.Camera.Sight.Coord.Y
                                 )
                             );
                         break;
@@ -135,8 +158,8 @@ namespace TestOpenGL.Forms
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            TypeVisualObject tvo = (TypeVisualObject)comboBox2.SelectedIndex;
-            DataTable DT = Program.DBIO.ExecuteSQL("SELECT * FROM " + (tvo.ToString() + "s WHERE " + ((TypeVisualObject)comboBox2.SelectedIndex).ToString() + "s.id=" + massId[listView1.SelectedIndices[0]].ToString()));
+            Layer layer = (Layer)comboBox2.SelectedIndex;
+            DataTable DT = Program.DBIO.ExecuteSQL("SELECT * FROM " + (layer.ToString() + "s WHERE " + ((Layer)comboBox2.SelectedIndex).ToString() + "s.id=" + massId[listView1.SelectedIndices[0]].ToString()));
             label3.Text = DT.Rows[0][1].ToString();
             label4.Text = DT.Rows[0][2].ToString();
         }
@@ -162,52 +185,52 @@ namespace TestOpenGL.Forms
 
         private void button1_Click(object sender, EventArgs e)
         {
-            switch ((TypeVisualObject)comboBox2.SelectedIndex)
+            switch ((Layer)comboBox2.SelectedIndex)
             {
-                case TypeVisualObject.Background:
+                case Layer.Background:
                     Program.L.GetMap<Background>().RemoveObject
                         (
                             comboBox1.SelectedIndex,
                             new Coord
                             (
-                            Program.P.Camera.Sight.C.X,
-                            Program.P.Camera.Sight.C.Y
+                            Program.P.Camera.Sight.Coord.X,
+                            Program.P.Camera.Sight.Coord.Y
                             )
                         );
                     break;
 
-                case TypeVisualObject.Block:
+                case Layer.Block:
                     Program.L.GetMap<Block>().RemoveObject
                         (
                             comboBox1.SelectedIndex,
                             new Coord
                             (
-                            Program.P.Camera.Sight.C.X,
-                            Program.P.Camera.Sight.C.Y
+                            Program.P.Camera.Sight.Coord.X,
+                            Program.P.Camera.Sight.Coord.Y
                             )
                         );
                     break;
 
-                case TypeVisualObject.Being:
+                case Layer.Being:
                     Program.L.GetMap<Being>().RemoveObject
                         (
                             0,
                             new Coord
                             (
-                            Program.P.Camera.Sight.C.X,
-                            Program.P.Camera.Sight.C.Y
+                            Program.P.Camera.Sight.Coord.X,
+                            Program.P.Camera.Sight.Coord.Y
                             )
                         );
                     break;
 
-                case TypeVisualObject.Decal:
+                case Layer.Decal:
                     Program.L.GetMap<Decal>().RemoveObject
                         (
                             comboBox1.SelectedIndex,
                             new Coord
                             (
-                            Program.P.Camera.Sight.C.X,
-                            Program.P.Camera.Sight.C.Y
+                            Program.P.Camera.Sight.Coord.X,
+                            Program.P.Camera.Sight.Coord.Y
                             )
                         );
                     break;

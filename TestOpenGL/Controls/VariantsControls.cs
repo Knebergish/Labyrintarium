@@ -45,7 +45,7 @@
             });
             Program.C.AddNewActionControl(' ', AdditionalKeys.None, delegate
             {
-                Program.GCycle.Gamer.Attack(Program.P.Camera.Sight.C);
+                Program.GCycle.Gamer.Attack(Program.P.Camera.Sight.Coord);
             });
             
 

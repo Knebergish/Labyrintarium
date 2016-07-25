@@ -26,8 +26,8 @@ namespace TestOpenGL.Stages
         {
             StartLoad();
             LoadMap();
-            LoadShaders();
-            LoadTriggers();
+            //LoadShaders();
+            //LoadTriggers();
             EndLoad();
         }
 
@@ -55,15 +55,12 @@ namespace TestOpenGL.Stages
 
             for (int i = 0; i < 20; i += 3)
                 Program.OB.GetBlock(2).Spawn(0, new Coord(6, i));
+            
 
-            new NPC(
-                Program.OB.GetBeing(3),
-                "Здравствуй, путник!",
-                null
-                ).Spawn(0, new Coord(4, 3));
 
             //Bot b = new Bot(Program.OB.GetBeing(1), AIs.AIAttacker);
             //b.Spawn(0, new Coord(5, 1));
+
 
             Program.GCycle.Gamer = new Gamer(Program.OB.GetBeing(2));
             for (int i = 1; i < 10; i++)
@@ -72,8 +69,14 @@ namespace TestOpenGL.Stages
                 Program.GCycle.Gamer.Inventory.PutBagItem(Program.OB.GetWeapon(i));
             Program.GCycle.Gamer.Inventory.PutBagItem(Program.OB.GetShield(1));
             Program.GCycle.Gamer.Features.CurrentExperience += 100;
-
             Program.GCycle.Gamer.Spawn(0, new Coord(0, 0));
+
+            new NPC(
+                Program.OB.GetBeing(3),
+                "Здравствуй, путник!",
+                null
+                ).Spawn(0, new Coord(4, 3));
+
             Program.P.Camera.Width = 30;
             Program.P.Camera.Height = 30;
         }
@@ -121,7 +124,7 @@ namespace TestOpenGL.Stages
 
         void LoadTriggers()
         {
-            /*Triggers.currentTriggers.AddTrigger(
+            Triggers.currentTriggers.AddTrigger(
                 new Trigger(
                     1,
                     true,
@@ -132,10 +135,10 @@ namespace TestOpenGL.Stages
                         {
                             while (!GetNextBot().Spawn(0, new Coord(cx, 1)))
                                 cx = ++cx >= 30 ? 0 : ++cx; 
-                            //Program.GCycle.Gamer.features.CurrentHealth = 10;
+                            Program.GCycle.Gamer.Features.CurrentHealth = 10;
                         }
                     }
-                ));*/
+                ));
         }
 
         void EndLoad()

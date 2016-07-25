@@ -11,6 +11,15 @@ namespace TestOpenGL.Logic
     {
         //TODO: почему я смотрю на это, и мне хочется плакать?..
 
+        public static Func<B, R> Partial<A, B, R>(this Func<A, B, R> f, A a)
+        {
+            return b => f(a, b);
+        }
+        public static Action RemoverDecal<A>(this Action<A> f, A a)
+        {
+            return () => f(a);
+        }
+
         /// <summary>
         /// Проверка переданных координат на корректность.
         /// </summary>
@@ -205,6 +214,38 @@ namespace TestOpenGL.Logic
             return coords;
         }
 
+        static public double GetGlobalDepth(Layer layer, int partLayer, ModifyDepth modifyDepth)
+        {
+            int layerDepth = Program.L.LengthZ;
+            double resultDepth = (int)layer * layerDepth;
+            double delta = 0.5;
+
+            switch (modifyDepth)
+            {
+                case ModifyDepth.None:
+                    resultDepth += partLayer;
+                    break;
+
+                case ModifyDepth.UnderLayer:
+                    resultDepth -= delta;
+                    break;
+
+                case ModifyDepth.ToLayer:
+                    resultDepth += layerDepth - delta;
+                    break;
+
+                case ModifyDepth.UnderPartLayer:
+                    resultDepth += partLayer - delta;
+                    break;
+
+                case ModifyDepth.ToPartLayer:
+                    resultDepth += partLayer + delta;
+                    break;
+            }
+
+            return resultDepth;
+        }
+
         static public bool IsInCamera(Coord C, Camera camera)
         {
             if (C.X < camera.MinX)
@@ -245,7 +286,7 @@ namespace TestOpenGL.Logic
 
             return inX && inY;
         }
-        static public List<VisualObjects.Being> GetBeingInArea(Coord C1, Coord C2)
+        static public List<Being> GetBeingInArea(Coord C1, Coord C2)
         {
             List<VisualObjects.Being> LB = Program.L.GetMap<Being>().GetAllObject();
             List<VisualObjects.Being> answerLB = new List<VisualObjects.Being>();
@@ -256,7 +297,7 @@ namespace TestOpenGL.Logic
 
             return answerLB;
         }
-        static public List<VisualObjects.Being> GetAllEnemies(VisualObjects.Being being)
+        static public List<Being> GetAllEnemies(Being being)
         {
             Coord C1, C2;
             int[] mass = { 

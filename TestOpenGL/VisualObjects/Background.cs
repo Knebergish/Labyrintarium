@@ -2,8 +2,8 @@
 {
     class Background : Block
     {
-        public Background(ObjectInfo objectInfo, bool passableness, GraphicsObject graphicsObject)
-            : base(objectInfo, passableness, true, true, graphicsObject) { }
+        public Background(GraphicObjectsPack graphicObjectsPack, ObjectInfo objectInfo, bool passableness)
+            : base(graphicObjectsPack, objectInfo, passableness, true, true) { }
         //=============
 
 
@@ -12,7 +12,7 @@
             if (SetNewPosition(partLayer, coord))
             {
                 Program.L.GetMap<Background>().AddObject(this);
-                Program.P.AddGraphicsObject(GraphicsObject);
+                Program.P.AddRenderObject(GraphicObjectsPack);
                 return true;
             }
             return false;
@@ -26,7 +26,7 @@
         public override void Despawn()
         {
             Program.L.GetMap<Background>().RemoveObject(PartLayer, Coord);
-            Program.P.RemoveGraphicsObject(GraphicsObject);
+            Program.P.RemoveRenderObject(GraphicObjectsPack);
         }
     }
 }

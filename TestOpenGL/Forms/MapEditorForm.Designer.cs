@@ -39,6 +39,14 @@
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.button1 = new System.Windows.Forms.Button();
+            this.contentControl1 = new TestOpenGL.ContentControl();
+            this.infoControl2 = new TestOpenGL.InfoControl();
+            this.infoControl = new TestOpenGL.InfoControl();
+            this.ad = new TestOpenGL.InfoControl();
+            this.infoControl1 = new TestOpenGL.InfoControl();
+            this.infoControl3 = new TestOpenGL.InfoControl();
+            this.infoControl4 = new TestOpenGL.InfoControl();
+            this.infoControl5 = new TestOpenGL.InfoControl();
             this.SuspendLayout();
             // 
             // listView1
@@ -147,11 +155,68 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // contentControl1
+            // 
+            this.contentControl1.Location = new System.Drawing.Point(287, 117);
+            this.contentControl1.Name = "contentControl1";
+            this.contentControl1.Size = new System.Drawing.Size(326, 120);
+            this.contentControl1.TabIndex = 12;
+            // 
+            // infoControl2
+            // 
+            this.infoControl2.Location = new System.Drawing.Point(130, 5);
+            this.infoControl2.Name = "infoControl2";
+            this.infoControl2.Size = new System.Drawing.Size(196, 110);
+            this.infoControl2.TabIndex = 0;
+            // 
+            // infoControl
+            // 
+            this.infoControl.Location = new System.Drawing.Point(130, 5);
+            this.infoControl.Name = "infoControl";
+            this.infoControl.Size = new System.Drawing.Size(196, 110);
+            this.infoControl.TabIndex = 0;
+            // 
+            // ad
+            // 
+            this.ad.Location = new System.Drawing.Point(0, 0);
+            this.ad.Name = "ad";
+            this.ad.Size = new System.Drawing.Size(210, 130);
+            this.ad.TabIndex = 0;
+            // 
+            // infoControl1
+            // 
+            this.infoControl1.Location = new System.Drawing.Point(130, 5);
+            this.infoControl1.Name = "infoControl1";
+            this.infoControl1.Size = new System.Drawing.Size(196, 110);
+            this.infoControl1.TabIndex = 0;
+            // 
+            // infoControl3
+            // 
+            this.infoControl3.Location = new System.Drawing.Point(130, 5);
+            this.infoControl3.Name = "infoControl3";
+            this.infoControl3.Size = new System.Drawing.Size(196, 110);
+            this.infoControl3.TabIndex = 0;
+            // 
+            // infoControl4
+            // 
+            this.infoControl4.Location = new System.Drawing.Point(130, 5);
+            this.infoControl4.Name = "infoControl4";
+            this.infoControl4.Size = new System.Drawing.Size(196, 110);
+            this.infoControl4.TabIndex = 0;
+            // 
+            // infoControl5
+            // 
+            this.infoControl5.Location = new System.Drawing.Point(130, 5);
+            this.infoControl5.Name = "infoControl5";
+            this.infoControl5.Size = new System.Drawing.Size(196, 110);
+            this.infoControl5.TabIndex = 0;
+            // 
             // MapEditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(616, 325);
+            this.Controls.Add(this.contentControl1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.comboBox2);
             this.Controls.Add(this.listBox1);
@@ -166,7 +231,6 @@
             this.KeyPreview = true;
             this.Name = "MapEditorForm";
             this.Text = "Редактирование карты";
-            this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form3_FormClosing);
             this.Load += new System.EventHandler(this.Form3_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form3_KeyDown);
@@ -188,5 +252,13 @@
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.Button button1;
+        private InfoControl infoControl;
+        private InfoControl infoControl2;
+        private InfoControl ad;
+        private InfoControl infoControl1;
+        private InfoControl infoControl3;
+        private InfoControl infoControl4;
+        private ContentControl contentControl1;
+        private InfoControl infoControl5;
     }
 }

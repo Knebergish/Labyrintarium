@@ -13,6 +13,7 @@ namespace TestOpenGL.VisualObjects.ChieldsItem
         public Shield(Item item, int level)
             : base(item)
         {
+            GraphicObject.SetNewPosition(2, new Coord(0, 0));
             this.level = level;
         }
 

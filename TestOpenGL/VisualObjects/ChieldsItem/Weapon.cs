@@ -12,6 +12,7 @@
         public Weapon(Item item, int level, int minDistance, int maxDistance, int damage)
             : base(item)
         {
+            GraphicObject.SetNewPosition(1, new Coord(0, 0));
             this.level = level;
             this.minDistance = minDistance;
             this.maxDistance = maxDistance;

@@ -9,6 +9,8 @@ namespace TestOpenGL.BeingContents
 {
     class Inventory
     {
+        Being owner;
+
         // Неэкипированные вещи, хранящиеся в мешке.
         List<Item> bag;
 
@@ -28,6 +30,12 @@ namespace TestOpenGL.BeingContents
 
         internal EventInventory EventsInventory
         { get { return eventsInventory; } }
+
+        public Being Owner
+        {
+            get { return owner;  }
+            set { owner = value;  }
+        }
         //=============
 
 
@@ -153,8 +161,10 @@ namespace TestOpenGL.BeingContents
 
             equipment.Add(ei);
             bag.Remove(ei);
+            owner.GraphicObjectsPack.AddGraphicObject(ei.GetType().Name, ChangePartLayer.No, ei.GraphicObject);
             eventsInventory.InventoryChangeBag();
             eventsInventory.InventoryChangeEquipment();
+
             return true;
         }
         public void UnequipItem(int num)
@@ -162,7 +172,9 @@ namespace TestOpenGL.BeingContents
             try
             {
                 bag.Add(equipment[num]);
+                owner.GraphicObjectsPack.RemoveGraphicObject(equipment[num].GetType().Name);
                 equipment.RemoveAt(num);
+                
                 eventsInventory.InventoryChangeBag();
                 eventsInventory.InventoryChangeEquipment();
             }

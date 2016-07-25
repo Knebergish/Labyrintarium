@@ -1,14 +1,11 @@
-﻿using System;
-using TestOpenGL.Renders;
-
-namespace TestOpenGL.VisualObjects
+﻿namespace TestOpenGL.VisualObjects
 {
-    class Decal : GameObject
+    class Decal : PhisicalObject
     {
         public Decal(Decal decal)
-            : this(decal.GraphicsObject) { }
-        public Decal(GraphicsObject graphicsObject)
-            : base(graphicsObject) { }
+            : this(decal.GraphicObjectsPack) { }
+        public Decal(GraphicObjectsPack graphicObjectsPack)
+            : base(graphicObjectsPack, new ObjectInfo(0, "", "")) { }
         //=============
 
 
@@ -17,7 +14,7 @@ namespace TestOpenGL.VisualObjects
             if (SetNewPosition(partLayer, coord))
             {
                 Program.L.GetMap<Decal>().AddObject(this);
-                Program.P.AddGraphicsObject(GraphicsObject);
+                Program.P.AddRenderObject(GraphicObjectsPack);
                 return true;
             }
             return false;
@@ -31,7 +28,7 @@ namespace TestOpenGL.VisualObjects
         public override void Despawn()
         {
             Program.L.GetMap<Decal>().RemoveObject(PartLayer, Coord);
-            Program.P.RemoveGraphicsObject(GraphicsObject);
+            Program.P.RemoveRenderObject(GraphicObjectsPack);
         }
     }
 }

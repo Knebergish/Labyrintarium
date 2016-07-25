@@ -171,7 +171,7 @@ namespace TestOpenGL.Forms
             Program.mainForm.Invoke(
             new Action(() =>
             {
-                Being b = Program.L.GetMap<Being>().GetObject(0, Program.P.Camera.Sight.C);
+                Being b = Program.L.GetMap<Being>().GetObject(0, Program.P.Camera.Sight.Coord);
                 if (b == null)
                     label8.Text = "0/0";
                 else

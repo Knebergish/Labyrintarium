@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-
-using TestOpenGL.Renders;
-
-namespace TestOpenGL.VisualObjects.ChieldsItem
+﻿namespace TestOpenGL.VisualObjects.ChieldsItem
 {
     class Armor : Item, IEquipable
     {
@@ -13,6 +9,7 @@ namespace TestOpenGL.VisualObjects.ChieldsItem
         public Armor(Item item, int level)
             : base(item)
         {
+            GraphicObject.SetNewPosition(0, new Coord(0, 0));
             this.level = level;
         }
 

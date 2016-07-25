@@ -17,7 +17,7 @@ namespace TestOpenGL.Renders
         int maxFPS;
         int pauseMillisecond;
 
-        List<GraphicsObject> listGraphicsObject;
+        List<IRenderable> listRenderObject;
 
         Thread RenderThread;
         ManualResetEvent isNextRender = new ManualResetEvent(false);
@@ -31,16 +31,14 @@ namespace TestOpenGL.Renders
         //-------------
 
 
-        public Painter(Camera camera)
+        public Painter()
         {
             maxFPS = 60;
             pauseMillisecond = 0;
 
-            listGraphicsObject = new List<GraphicsObject>();
+            listRenderObject = new List<IRenderable>();
 
             shadersList = new List<Func<List<Cell>>>();
-
-            this.camera = camera;
 
 
             SettingVisibleAreaSize();
@@ -60,12 +58,9 @@ namespace TestOpenGL.Renders
             get { return camera; }
             set 
             {
-                if (value != null)
-                {
-                    StopRender();
-                    camera = value;
-                    StartRender();
-                }
+                StopRender();
+                camera = value;
+                StartRender();
             }
         }
 
@@ -79,13 +74,13 @@ namespace TestOpenGL.Renders
         { get { return shadersList; } }
         //=============
 
-        public void AddGraphicsObject(GraphicsObject graphicsObject)
+        public void AddRenderObject(IRenderable renderObject)
         {
-            listGraphicsObject.Add(graphicsObject);
+            listRenderObject.Add(renderObject);
         }
-        public void RemoveGraphicsObject(GraphicsObject graphicsObject)
+        public void RemoveRenderObject(IRenderable renderObject)
         {
-            listGraphicsObject.Remove(graphicsObject);
+            listRenderObject.Remove(renderObject);
         }
 
         void FPSUpdate(int newValue)
@@ -123,7 +118,7 @@ namespace TestOpenGL.Renders
                 {
                     sw.Start();
 
-                    DrawFrame(listGraphicsObject); 
+                    DrawFrame(listRenderObject); 
 
                     sw.Stop();
                     ProcessingFPS((int)sw.ElapsedMilliseconds);
@@ -138,19 +133,19 @@ namespace TestOpenGL.Renders
             }
         }
 
-        void DrawFrame(List<GraphicsObject> listGraphicsObject)
+        void DrawFrame(List<IRenderable> listRenderObject)
         {
-            List<GraphicsObject> lGO = new List<GraphicsObject>();
+            List<IRenderable> lGO = new List<IRenderable>();
             List<Cell> lC = new List<Cell>();
 
-            lGO.AddRange(listGraphicsObject); //TODO: Проверить, может и без этого норм.
+            lGO.AddRange(listRenderObject); //TODO: Проверить, может и без этого норм.
 
             Gl.glClear(Gl.GL_COLOR_BUFFER_BIT | Gl.GL_DEPTH_BUFFER_BIT);
 
 
-            foreach(GraphicsObject go in lGO)
+            foreach(IRenderable ro in lGO)
             {
-                lC.AddRange(go.GetCells());
+                lC.AddRange(ro.GetCells());
             }
 
             foreach (Func<List<Cell>> func in shadersList)
@@ -177,8 +172,8 @@ namespace TestOpenGL.Renders
 
         void DrawCell(Cell cell)
         {
-            int deltaX = camera.MinX;
-            int deltaY = camera.MinY;
+            int deltaX = camera?.MinX ?? 0;
+            int deltaY = camera?.MinY ?? 0;
 
             int size = 1;
             // включаем режим текстурирования
@@ -209,7 +204,9 @@ namespace TestOpenGL.Renders
 
         public void SettingVisibleAreaSize()
         {
-            Gl.glViewport(0, 0, this.GlControl.Width, this.GlControl.Height);
+            int cW = camera?.Width ?? 10;
+            int cH = camera?.Height ?? 10;
+            Gl.glViewport(0, 0, GlControl.Width, GlControl.Height);
             // устанавливаем проекционную матрицу 
             Gl.glMatrixMode(Gl.GL_PROJECTION);
             // очищаем ее 
@@ -218,15 +215,15 @@ namespace TestOpenGL.Renders
             // теперь необходимо корректно настроить 2D ортогональную проекцию 
             // в зависимости от того, какая сторона больше 
             // мы немного варьируем то, как будут сконфигурированы настройки проекции 
-            if (this.GlControl.Width <= this.GlControl.Height)
-                Glu.gluOrtho2D(0.0, camera.Width, 0.0, camera.Height * (float)this.GlControl.Height / (float)this.GlControl.Width);
+            if (GlControl.Width <= GlControl.Height)
+                Glu.gluOrtho2D(0.0, cW, 0.0, cH * (float)GlControl.Height / (float)GlControl.Width);
             else
-                Glu.gluOrtho2D(0.0, camera.Width * (float)this.GlControl.Width / (float)this.GlControl.Height, 0.0, camera.Height);
+                Glu.gluOrtho2D(0.0, cW * (float)GlControl.Width / (float)GlControl.Height, 0.0, cH);
 
             // переходим к объектно-видовой матрице 
             Gl.glMatrixMode(Gl.GL_MODELVIEW);
 
-            Camera.Look();
+            Camera?.Look();
         }
 
         public void ClearShadersList()

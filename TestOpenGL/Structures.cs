@@ -151,15 +151,12 @@ namespace TestOpenGL
     enum Feature { Power, Coordination, MMR, Stamina, Agility, Sense };
 
 
-    /// <summary>
-    /// Перечисление типов визуальных объектов (отображаемых на карте). Порядок важен.
-    /// </summary>
-    enum TypeVisualObject { Background, Block, Being, Item, Decal };
-
-    //ТЕСТЫТЕСТЫТЕСТЫТЕСТЫ///////////////////////////////////////////////////////
     enum Layer { Background, Block, Being, Item, Decal };
+
     enum ModifyDepth { None, UnderLayer, ToLayer, UnderPartLayer, ToPartLayer }
-    struct Position
+
+    enum ChangePartLayer { No, Yes }
+    /*struct Position
     {
         Layer layer;
         int partLayer;
@@ -192,8 +189,8 @@ namespace TestOpenGL
         //=============
 
 
-    }
-    //////////////////////////////////////////////////////////////////////////////
+    }*/
+
 
 
 

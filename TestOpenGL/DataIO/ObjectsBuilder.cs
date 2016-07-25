@@ -24,10 +24,10 @@ namespace TestOpenGL.DataIO
         }
         //=============
 
-        GraphicsObject GetGraphicsObject(int num, Layer layer)
+        public GraphicObject GetGraphicObject(int num, Layer layer)
         {
-            DataTable dt = DBIO.ExecuteSQL("SELECT * FROM Cells WHERE Cells.idGraphicsObject = " + num);
-            GraphicsObject go = new GraphicsObject(layer);
+            DataTable dt = DBIO.ExecuteSQL("SELECT * FROM Cells WHERE Cells.idGraphicObject = " + num);
+            GraphicObject go = new GraphicObject(layer);
 
             for(int i = 0; i < dt.Rows.Count; i++)
                 go.AddCell(
@@ -44,37 +44,66 @@ namespace TestOpenGL.DataIO
         public Background GetBackground(int num)
         {
             DataTable dt = DBIO.ExecuteSQL("SELECT * FROM Backgrounds WHERE Backgrounds.id = " + num);
-            
-            return new Background(
-                new ObjectInfo(
+
+            GraphicObjectsPack gop = new GraphicObjectsPack();
+            gop.AddGraphicObject(
+                "main", 
+                ChangePartLayer.Yes, 
+                GetGraphicObject(int.Parse(dt.Rows[0]["idGraphicObject"].ToString()), Layer.Background)
+                );
+
+            ObjectInfo oi = new ObjectInfo(
                 num,
                 (string)dt.Rows[0]["name"],
-                (string)dt.Rows[0]["description"]),
-                (bool)dt.Rows[0]["passableness"],
-                GetGraphicsObject(int.Parse(dt.Rows[0]["idGraphicsObject"].ToString()), Layer.Background)
+                (string)dt.Rows[0]["description"]
+                );
+
+            return new Background(
+                gop,
+                oi,
+                (bool)dt.Rows[0]["passableness"]
                 );
         }
 
         public Block GetBlock(int num)
         {
             DataTable dt = DBIO.ExecuteSQL("SELECT * FROM Blocks WHERE Blocks.id = " + num);
-            return new Block(
-                new ObjectInfo(
+
+            GraphicObjectsPack gop = new GraphicObjectsPack();
+            gop.AddGraphicObject(
+                "main",
+                ChangePartLayer.Yes,
+                GetGraphicObject(int.Parse(dt.Rows[0]["idGraphicObject"].ToString()), Layer.Block)
+                );
+
+            ObjectInfo oi = new ObjectInfo(
                 num,
                 (string)dt.Rows[0]["name"],
-                (string)dt.Rows[0]["description"]),
+                (string)dt.Rows[0]["description"]
+                );
+
+            return new Block(
+                gop,
+                oi,
                 (bool)dt.Rows[0]["passableness"],
                 (bool)dt.Rows[0]["transparency"],
-                (bool)dt.Rows[0]["permeability"],
-                GetGraphicsObject(int.Parse(dt.Rows[0]["idGraphicsObject"].ToString()), Layer.Block)
+                (bool)dt.Rows[0]["permeability"]
                 );
         }
 
         public Decal GetDecal(int num)
         {
             DataTable dt = DBIO.ExecuteSQL("SELECT * FROM Decals WHERE Decals.id = " + num);
+
+            GraphicObjectsPack gop = new GraphicObjectsPack();
+            gop.AddGraphicObject(
+                "main",
+                ChangePartLayer.Yes,
+                GetGraphicObject(int.Parse(dt.Rows[0]["idGraphicObject"].ToString()), Layer.Decal)
+                );
+
             return new Decal(
-                GetGraphicsObject(int.Parse(dt.Rows[0]["idGraphicsObject"].ToString()), Layer.Decal)
+                gop
                 );
         }
 
@@ -82,12 +111,23 @@ namespace TestOpenGL.DataIO
         public Being GetBeing(int num)
         {
             DataTable dt = DBIO.ExecuteSQL("SELECT * FROM Beings WHERE Beings.id = " + num);
-            return new Being(
-                new ObjectInfo(
+
+            GraphicObjectsPack gop = new GraphicObjectsPack();
+            gop.AddGraphicObject(
+                "main",
+                ChangePartLayer.Yes,
+                GetGraphicObject(int.Parse(dt.Rows[0]["idGraphicObject"].ToString()), Layer.Being)
+                );
+
+            ObjectInfo oi = new ObjectInfo(
                 num,
                 (string)dt.Rows[0]["name"],
-                (string)dt.Rows[0]["description"]),
-                GetGraphicsObject(int.Parse(dt.Rows[0]["idGraphicsObject"].ToString()), Layer.Being),
+                (string)dt.Rows[0]["description"]
+                );
+
+            return new Being(
+                gop,
+                oi,
                 int.Parse(dt.Rows[0]["alliance"].ToString())
                 );
         }
@@ -95,17 +135,22 @@ namespace TestOpenGL.DataIO
         public Item GetItem(int num)
         {
             DataTable dt = DBIO.ExecuteSQL("SELECT * FROM Items WHERE Items.id = " + num);
+
             DataTable dt2 = DBIO.ExecuteSQL("SELECT * FROM Parts WHERE Parts.idItem = " + num);
             List<Part> lp = new List<Part>();
             for (int i = 0; i < dt2.Rows.Count; i++)
                 lp.Add((Part)int.Parse(dt2.Rows[i]["part"].ToString()));
 
-            return new Item(
-                new ObjectInfo(
+            ObjectInfo oi = new ObjectInfo(
                 num,
                 (string)dt.Rows[0]["name"],
-                (string)dt.Rows[0]["description"]),
-                GetGraphicsObject(int.Parse(dt.Rows[0]["idGraphicsObject"].ToString()), Layer.Item),
+                (string)dt.Rows[0]["description"]
+                );
+
+
+            return new Item(
+                GetGraphicObject(int.Parse(dt.Rows[0]["idGraphicObject"].ToString()), Layer.Item),
+                oi,
                 int.Parse(dt.Rows[0]["price"].ToString()),
                 lp
                 );

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using TestOpenGL.Renders;
+﻿using System.Collections.Generic;
 
 namespace TestOpenGL.VisualObjects
 {
@@ -12,17 +10,17 @@ namespace TestOpenGL.VisualObjects
         // Части тела, занимаемые предметом
         List<Part> parts;
 
-        GraphicsObject graphicsObject;
+        GraphicObject graphicObject;
 
         ObjectInfo objectInfo;
         //-------------
 
 
         public Item(Item item)
-            :this(item.ObjectInfo, item.GraphicsObject, item.Price, item.Parts) { }
-        public Item(ObjectInfo objectInfo, GraphicsObject graphicsObject, int price, List<Part> parts)
+            :this(item.GraphicObject, item.ObjectInfo, item.Price, item.Parts) { }
+        public Item(GraphicObject graphicObject, ObjectInfo objectInfo, int price, List<Part> parts)
         {
-            this.graphicsObject = graphicsObject;
+            this.graphicObject = graphicObject;
 
             this.price = price;
 
@@ -39,8 +37,8 @@ namespace TestOpenGL.VisualObjects
         public ObjectInfo ObjectInfo
         { get { return objectInfo; } }
 
-        public GraphicsObject GraphicsObject
-        { get { return graphicsObject; } }
+        public GraphicObject GraphicObject
+        { get { return graphicObject; } }
         //=============
     }
 }
