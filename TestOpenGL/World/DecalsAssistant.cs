@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using TestOpenGL.Logic;
 using TestOpenGL.VisualObjects;
 
-namespace TestOpenGL
+namespace TestOpenGL.World
 {
     class DecalsAssistant
     {

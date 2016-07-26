@@ -11,6 +11,7 @@ namespace TestOpenGL.Logic
     {
         //TODO: почему я смотрю на это, и мне хочется плакать?..
 
+        
         public static Func<B, R> Partial<A, B, R>(this Func<A, B, R> f, A a)
         {
             return b => f(a, b);
@@ -19,6 +20,7 @@ namespace TestOpenGL.Logic
         {
             return () => f(a);
         }
+        
 
         /// <summary>
         /// Проверка переданных координат на корректность.
@@ -41,14 +43,6 @@ namespace TestOpenGL.Logic
                         return true;
             return false;
         }
-        /*public static bool CorrectCoordinate(Coord C)
-        {
-            if (C.X >= 0 && C.X < Program.L.LengthX)
-                if (C.Y >= 0 && C.Y < Program.L.LengthY)
-                    if (C.Z >= 0 && C.Z < Program.L.LengthZ)
-                        return true;
-            return false;
-        }*/
 
         /*static public Func<int, int, int> add = (x, y) => x + y;
         

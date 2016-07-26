@@ -3,6 +3,8 @@ using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
+
+using TestOpenGL.Forms;
 using TestOpenGL.VisualObjects;
 
 namespace TestOpenGL.Forms

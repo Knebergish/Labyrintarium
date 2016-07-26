@@ -4,7 +4,7 @@ using System.Data;
 using TestOpenGL.Renders;
 using TestOpenGL.Logic;
 
-namespace TestOpenGL
+namespace TestOpenGL.Renders
 {
     class GraphicObject : IPositionable, IRenderable
     {

@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace TestOpenGL.Forms
 {
-    public partial class MainForm : Form
+    partial class MainForm : Form
     {
         public MainForm()
         {

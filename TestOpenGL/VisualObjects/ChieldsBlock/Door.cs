@@ -7,15 +7,15 @@ namespace TestOpenGL.VisualObjects.ChieldsBlock
         bool isClosed;
         bool isBlocked;
 
-        Texture openedDoorTexture, closedDoorTexture;
+        GraphicObject openedDoorGraphicObject, closedDoorGraphicObject;
         //-------------
 
 
-        public Door(Block blockDoor, Texture openedDoorTexture, bool isClosed, bool isBlocked) 
+        public Door(Block blockDoor, GraphicObject openedDoorGraphicObject, bool isClosed, bool isBlocked) 
             : base(blockDoor)
         {
-            //closedDoorTexture = blockDoor.Texture;
-            this.openedDoorTexture = openedDoorTexture;
+            closedDoorGraphicObject = blockDoor.GraphicObjectsPack.GetAllGraphicObjects()[0];
+            this.openedDoorGraphicObject = openedDoorGraphicObject;
 
             this.isClosed = isClosed;
             this.isBlocked = isBlocked;
@@ -37,7 +37,8 @@ namespace TestOpenGL.VisualObjects.ChieldsBlock
 
         private void SetClosedState()
         {
-            //Texture = isClosed ? closedDoorTexture : openedDoorTexture;
+            GraphicObjectsPack.RemoveGraphicObject("main");
+            GraphicObjectsPack.AddGraphicObject("main", ChangePartLayer.Yes, isClosed ? closedDoorGraphicObject : openedDoorGraphicObject);
             Passableness = !isClosed;
             Transparency = !isClosed;
         }

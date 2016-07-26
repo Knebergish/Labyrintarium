@@ -1,4 +1,4 @@
-﻿namespace TestOpenGL
+﻿namespace TestOpenGL.Forms.Controls
 {
     partial class InfoControl
     {

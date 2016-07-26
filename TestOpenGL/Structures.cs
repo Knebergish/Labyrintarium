@@ -1,74 +1,14 @@
 ﻿using System;
 
 using TestOpenGL.Logic;
-using TestOpenGL.Renders;
-using TestOpenGL.VisualObjects;
+
 
 namespace TestOpenGL
 {
     /// <summary>
-    /// Структура для передачи нескольких блоков (или не блоков).
-    /// </summary>
-    /*struct VisualObjectStructure<T>
-    {
-        private Queue<T> objects;
-        private Queue<Coord> coords;
-        public VisualObjectStructure(Queue<T> objects, Queue<Coord> coords)
-        {
-            this.coords = coords;
-            this.objects = objects;
-        }
-        public void Push(T O, Coord C)
-        {
-            if (objects == null)
-                objects = new Queue<T>();
-            if (coords == null)
-                coords = new Queue<Coord>();
-
-            objects.Enqueue(O);
-            coords.Enqueue(C);
-        }
-        public T PopObject()
-        {
-            return objects.Dequeue();
-        }
-        public Coord PopCoord()
-        {
-            return coords.Dequeue();
-        }
-        public int Count
-        {
-            get { return objects == null ? 0 : objects.Count; }
-        }
-    }*/
-    
-        
-    /*struct RenderObject
-    {
-        Texture texture;
-        Coord c;
-        double zIndex;
-
-        public RenderObject(PhisicalObject vo, double zShift) : this(vo.Texture, vo.C, zShift) { }
-        public RenderObject(Texture texture, Coord c, double zShift)
-        {
-            this.texture = texture;
-            this.c = c;
-            zIndex = zShift + c.Z;
-        }
-
-        public Texture Texture
-        { get { return texture; } }
-        public Coord C
-        { get { return c; } }
-        public double ZIndex
-        { get { return zIndex; } }
-    }*/
-
-    /// <summary>
     /// Структура для передачи координат.
     /// </summary>
-    struct Coord// : IComparable
+    struct Coord
     {
         // Координата (0, 0) - левый нижний угол. Ось X - горизонтальная.
         private int x;
@@ -133,81 +73,65 @@ namespace TestOpenGL
         public bool IsCorrect()
         { return Analytics.CorrectCoordinate(x, y); }
     }
-    
 
+    struct Position
+    {
+        Layer layer;
+        int partLayer;
+        Coord coord;
+
+        /*public bool SetNewPartLayer(int newPartLayer)
+        {
+
+        }*/
+    }
+    
     public delegate void VoidEventDelegate();
     public delegate void BoolEventDelegate(bool value);
     public delegate void IntEventDelegate(int value);
 
     /// <summary>
-    /// Перечисление частей тела, которые может занимать одетый предмет.
+    /// Части тела, которые может занимать одетый предмет.
     /// </summary>
     enum Part { Head, Body, Leg, LHand, RHand };
 
+    /// <summary>
+    /// Секции инвентаря, занимаемые предметом.
+    /// </summary>
+    enum Section { NoEquipable, Armor, Weapon, Shield }
 
     /// <summary>
-    /// Перечисление характеристик, которые имеет сущность.
+    /// Характеристики, которые имеет сущность.
     /// </summary>
     enum Feature { Power, Coordination, MMR, Stamina, Agility, Sense };
 
-
+    /// <summary>
+    /// Слои отрисовки в порядке отрисовки.
+    /// </summary>
     enum Layer { Background, Block, Being, Item, Decal };
 
+    /// <summary>
+    /// Модификаторы вычисления глубины размещения текстуры.
+    /// </summary>
     enum ModifyDepth { None, UnderLayer, ToLayer, UnderPartLayer, ToPartLayer }
 
+    /// <summary>
+    /// Изменять ли часть слоя текстуры при изменении оного у физического объекта.
+    /// </summary>
     enum ChangePartLayer { No, Yes }
-    /*struct Position
-    {
-        Layer layer;
-        int partLayer;
-        Coord c;
-
-
-        public Layer Layer
-        {
-            get
-            {
-                return layer;
-            }
-        }
-
-        public int PartLayer
-        {
-            get
-            {
-                return partLayer;
-            }
-        }
-
-        public Coord C
-        {
-            get
-            {
-                return c;
-            }
-        }
-        //=============
-
-
-    }*/
-
-
-
-
 
     /// <summary>
-    /// Перечисление направлений движения сущности.
+    /// Направления движения сущности.
     /// </summary>
     enum Direction { Left, Up, Right, Down, None };
 
-
     /// <summary>
-    /// Перечисление типов проверки проходимости/проницаемости ячейки.
+    /// Типы проверки проходимости/проницаемости ячейки.
     /// </summary>
     enum Permeability { Block, BlockAndBeing };
 
     /// <summary>
-    /// Перечисление дополнительно нажатых клавиш управления.
+    /// Дополнительно нажатые клавиши управления.
     /// </summary>
     enum AdditionalKeys { None, Shift, Ctrl, Alt};
 }

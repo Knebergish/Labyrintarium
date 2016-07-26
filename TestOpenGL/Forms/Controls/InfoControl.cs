@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace TestOpenGL
+namespace TestOpenGL.Forms.Controls
 {
     partial class InfoControl : UserControl
     {

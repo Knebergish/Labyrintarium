@@ -21,7 +21,7 @@ namespace TestOpenGL.Tests
         }
     }*/
     [TestClass]
-    public class VisualObjectsTests
+    class VisualObjectsTests
     {
         [TestMethod]
         public void TestBengs()

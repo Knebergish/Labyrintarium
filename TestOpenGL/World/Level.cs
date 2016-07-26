@@ -12,6 +12,7 @@ namespace TestOpenGL.World
     {
         int lengthX, lengthY, lengthZ;
         List<object> mapList;
+        int[] layersDepth;
         //-------------
 
 
@@ -53,8 +54,6 @@ namespace TestOpenGL.World
         /// <summary>
         /// Проверяет ячейку на проходимость для сущностей.
         /// </summary>
-        /// <param name="C"></param>
-        /// <returns></returns>
         public bool IsPassable(int partLayer, Coord coord) //TODO: Нахрен тут partLayer?
         {
             bool flag = true;

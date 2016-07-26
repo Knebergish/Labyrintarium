@@ -1,6 +1,8 @@
 ﻿using System;
-using System.Data;
+
+using TestOpenGL.Renders;
 using TestOpenGL.VisualObjects;
+
 
 namespace TestOpenGL
 {

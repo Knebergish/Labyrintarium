@@ -39,14 +39,14 @@
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.button1 = new System.Windows.Forms.Button();
-            this.contentControl1 = new TestOpenGL.ContentControl();
-            this.infoControl2 = new TestOpenGL.InfoControl();
-            this.infoControl = new TestOpenGL.InfoControl();
-            this.ad = new TestOpenGL.InfoControl();
-            this.infoControl1 = new TestOpenGL.InfoControl();
-            this.infoControl3 = new TestOpenGL.InfoControl();
-            this.infoControl4 = new TestOpenGL.InfoControl();
-            this.infoControl5 = new TestOpenGL.InfoControl();
+            this.contentControl1 = new TestOpenGL.Forms.Controls.ContentControl();
+            this.infoControl2 = new TestOpenGL.Forms.Controls.InfoControl();
+            this.infoControl = new TestOpenGL.Forms.Controls.InfoControl();
+            this.ad = new TestOpenGL.Forms.Controls.InfoControl();
+            this.infoControl1 = new TestOpenGL.Forms.Controls.InfoControl();
+            this.infoControl3 = new TestOpenGL.Forms.Controls.InfoControl();
+            this.infoControl4 = new TestOpenGL.Forms.Controls.InfoControl();
+            this.infoControl5 = new TestOpenGL.Forms.Controls.InfoControl();
             this.SuspendLayout();
             // 
             // listView1
@@ -252,13 +252,13 @@
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.Button button1;
-        private InfoControl infoControl;
-        private InfoControl infoControl2;
-        private InfoControl ad;
-        private InfoControl infoControl1;
-        private InfoControl infoControl3;
-        private InfoControl infoControl4;
-        private ContentControl contentControl1;
-        private InfoControl infoControl5;
+        private TestOpenGL.Forms.Controls.InfoControl infoControl;
+        private TestOpenGL.Forms.Controls.InfoControl infoControl2;
+        private TestOpenGL.Forms.Controls.InfoControl ad;
+        private TestOpenGL.Forms.Controls.InfoControl infoControl1;
+        private TestOpenGL.Forms.Controls.InfoControl infoControl3;
+        private TestOpenGL.Forms.Controls.InfoControl infoControl4;
+        private TestOpenGL.Forms.Controls.ContentControl contentControl1;
+        private TestOpenGL.Forms.Controls.InfoControl infoControl5;
     }
 }

@@ -1,15 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TestOpenGL.BeingContents;
 using TestOpenGL.Controls;
-using TestOpenGL.Logic;
-using TestOpenGL.Renders;
 using TestOpenGL.VisualObjects;
 using TestOpenGL.VisualObjects.ChieldsBeing;
-using TestOpenGL.VisualObjects.ChieldsItem;
 using TestOpenGL.World;
 
 namespace TestOpenGL.Stages
@@ -76,6 +69,13 @@ namespace TestOpenGL.Stages
                 "Здравствуй, путник!",
                 null
                 ).Spawn(0, new Coord(4, 3));
+
+            new VisualObjects.ChieldsBlock.Door(
+                Program.OB.GetBlock(15), 
+                Program.OB.GetGraphicObject(12, Layer.Block), 
+                true, 
+                false
+                ).Spawn(0, new Coord(1, 4));
 
             Program.P.Camera.Width = 30;
             Program.P.Camera.Height = 30;

@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace TestOpenGL.Forms
 {
-    public partial class CharacterForm : Form
+    partial class CharacterForm : Form
     {
         public CharacterForm()
         {

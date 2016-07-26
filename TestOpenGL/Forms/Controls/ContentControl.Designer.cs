@@ -1,4 +1,4 @@
-﻿namespace TestOpenGL
+﻿namespace TestOpenGL.Forms.Controls
 {
     partial class ContentControl
     {
@@ -30,7 +30,7 @@
         {
             this.contentList = new System.Windows.Forms.ListBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.infoControl = new TestOpenGL.InfoControl();
+            this.infoControl = new TestOpenGL.Forms.Controls.InfoControl();
             this.SuspendLayout();
             // 
             // contentList

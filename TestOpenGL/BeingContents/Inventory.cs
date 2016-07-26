@@ -1,9 +1,8 @@
 ﻿using System;
-//using System.Linq;
 using System.Collections.Generic;
 
 using TestOpenGL.VisualObjects;
-using TestOpenGL.VisualObjects.ChieldsItem;
+
 
 namespace TestOpenGL.BeingContents
 {
@@ -28,7 +27,7 @@ namespace TestOpenGL.BeingContents
             eventsInventory = new EventInventory();
         }
 
-        internal EventInventory EventsInventory
+        public EventInventory EventsInventory
         { get { return eventsInventory; } }
 
         public Being Owner
@@ -86,58 +85,6 @@ namespace TestOpenGL.BeingContents
 
             return level;
         }
-
-        /*
-        public Weapon GetEquipWeapon()
-        {
-            List<Weapon> lw = GetItemByType<Weapon>(equipment);
-            return lw.Count != 0 ? lw[0] : null;
-        }
-        public Shield GetEquipShield()
-        {
-            List<Shield> ls = GetItemByType<Shield>(equipment);
-            return ls.Count != 0 ? ls[0] : null;
-        }
-        public List<Armor> GetEquipArmors()
-        {
-            return GetItemByType<Armor>(equipment);
-        }
-        */
-
-        /*public int GetEquipWeaponLevel()
-        {
-            Weapon i = GetEquipWeapon();
-            if (i != null)
-                return i.Level;
-            else
-                return 0;
-        }
-        
-        public int GetEquipShieldLevel()
-        {
-            Shield i = GetEquipShield();
-            if (i != null)
-                return i.Level;
-            else
-                return 0;
-        }
-        
-        public int GetEquipArmorsLevel()
-        {
-            List<Armor> li = GetEquipArmors();
-            if (li.Count == 0)
-                return 0;
-            else
-            {
-                int count = 0;
-                foreach (Armor i in li)
-                    count += i.Level;
-                return count;
-            }
-        }
-        */
-
-
 
         public bool EquipItem(int num)
         {

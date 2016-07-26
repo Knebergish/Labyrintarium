@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Data;
 
-namespace TestOpenGL
+using TestOpenGL.Renders;
+
+
+namespace TestOpenGL.Renders
 {
     class GraphicObjectsPack : IRenderable
     {
@@ -43,7 +46,7 @@ namespace TestOpenGL
 
             if (positionObject != null)
                 for (int i = 0; i < graphicObjectsDataTable.Rows.Count; i++)
-                    lc.AddRange(((GraphicObject)graphicObjectsDataTable.Rows[i][2]).GetCells());
+                    lc.AddRange(((GraphicObject)graphicObjectsDataTable.Rows[i]["graphicObject"]).GetCells());
 
             return lc;
         }
@@ -83,6 +86,16 @@ namespace TestOpenGL
                             positionObject.Coord
                             );
             }
+        }
+
+        public List<GraphicObject> GetAllGraphicObjects()
+        {
+            List<GraphicObject> lgo = new List<GraphicObject>();
+
+            for (int i = 0; i < graphicObjectsDataTable.Rows.Count; i++)
+                lgo.Add((GraphicObject)graphicObjectsDataTable.Rows[i]["graphicObject"]);
+
+            return lgo;
         }
     }
 }

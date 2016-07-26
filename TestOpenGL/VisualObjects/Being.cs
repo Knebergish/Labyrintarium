@@ -6,6 +6,7 @@ using TestOpenGL.Logic;
 using TestOpenGL.Renders;
 using TestOpenGL.VisualObjects.ChieldsItem;
 
+
 namespace TestOpenGL.VisualObjects
 {
     class Being : PhisicalObject

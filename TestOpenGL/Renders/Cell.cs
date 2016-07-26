@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TestOpenGL.Renders;
 
-namespace TestOpenGL
+namespace TestOpenGL.Renders
 {
     class Cell
     {

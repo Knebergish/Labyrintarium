@@ -7,7 +7,6 @@ using TestOpenGL.Forms;
 using TestOpenGL.OutInfo;
 using TestOpenGL.Renders;
 using TestOpenGL.World;
-using TestOpenGL.Logic;
 
 namespace TestOpenGL
 {

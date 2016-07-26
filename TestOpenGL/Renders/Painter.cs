@@ -7,7 +7,6 @@ using System.Linq;
 
 using Tao.OpenGl;
 
-using TestOpenGL.VisualObjects;
 using TestOpenGL.Logic;
 
 namespace TestOpenGL.Renders

@@ -1,4 +1,7 @@
-﻿namespace TestOpenGL.VisualObjects
+﻿using TestOpenGL.Renders;
+
+
+namespace TestOpenGL.VisualObjects
 {
     class Block: PhisicalObject
     {

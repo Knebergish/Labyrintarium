@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using TestOpenGL.OutInfo;
 using TestOpenGL.VisualObjects;
 
-namespace TestOpenGL
+namespace TestOpenGL.Forms.Controls
 {
     partial class ContentControl : UserControl
     {
@@ -64,7 +64,6 @@ namespace TestOpenGL
             infoControl.Width = Width - contentList.Width - 10;
             infoControl.Height = Height - 10;
             
-
             contentList.Height = Height - 25;
         }
 
