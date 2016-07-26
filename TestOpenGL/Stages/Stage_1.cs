@@ -29,7 +29,7 @@ namespace TestOpenGL.Stages
             Program.P.StopRender();
             Program.P.ClearShadersList();
             Program.GCycle.StopStep();
-            Program.L = new Level(20, 20, 4);
+            Program.L = new Level(20, 20, new int[5] { 4, 4, 1, 4, 1 });
             VariantsControls.StandartGamerControl();
         }
 
@@ -47,9 +47,7 @@ namespace TestOpenGL.Stages
             }
 
             for (int i = 0; i < 20; i += 3)
-                Program.OB.GetBlock(2).Spawn(0, new Coord(6, i));
-            
-
+                Program.OB.GetBlock(2).Spawn(2, new Coord(6, i));
 
             //Bot b = new Bot(Program.OB.GetBeing(1), AIs.AIAttacker);
             //b.Spawn(0, new Coord(5, 1));

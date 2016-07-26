@@ -28,13 +28,13 @@ namespace TestOpenGL.Forms
             Form1_SizeChanged(sender, e);
 
             //button1_Click(sender, e);
-
             Stages.Stage_1 S1 = new Stages.Stage_1();
             S1.LoadStage();
 
             Program.GCycle.Gamer.EventsBeing.EventBeingChangeHealth += ReloadGamerInfo;
             Program.GCycle.Gamer.EventsBeing.EventBeingChangeActionPoints += ReloadGamerInfo;
             ReloadGamerInfo();
+
         }
 
         private void button1_Click(object sender, EventArgs e)

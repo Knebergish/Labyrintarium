@@ -14,7 +14,7 @@ namespace TestOpenGL.VisualObjects
         public Block(Block block)
             : this(block.GraphicObjectsPack, block.ObjectInfo, block.Passableness, block.Transparency, block.Permeability) { }
         public Block(GraphicObjectsPack graphicObjectsPack, ObjectInfo objectInfo, bool passableness, bool transparency, bool permeability)
-            : base(graphicObjectsPack, objectInfo)
+            : base(Layer.Block, graphicObjectsPack, objectInfo)
         {
             this.passableness = passableness;
             this.transparency = transparency;

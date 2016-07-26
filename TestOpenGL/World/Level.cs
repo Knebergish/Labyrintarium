@@ -10,29 +10,30 @@ namespace TestOpenGL.World
     /// </summary>
     class Level
     {
-        int lengthX, lengthY, lengthZ;
+        int lengthX, lengthY;//, lengthZ;
         List<object> mapList;
-        int[] layersDepth;
+        int[] depthLayers;
         //-------------
 
 
-        public Level(int lengthX, int lengthY, int lengthZ)
+        public Level(int lengthX, int lengthY, int[] depthLayers)
         {
             this.lengthX = lengthX;
             this.lengthY = lengthY;
-            this.lengthZ = lengthZ;
+            this.depthLayers = depthLayers;
+
             mapList = new List<object>();
-            mapList.Add(new MapVisualObjects<Background>());
-            mapList.Add(new MapVisualObjects<Block>());
-            mapList.Add(new MapVisualObjects<Being>());
+            mapList.Add(new MapVisualObjects<Background>(Layer.Background));
+            mapList.Add(new MapVisualObjects<Block>(Layer.Block));
+            mapList.Add(new MapVisualObjects<Being>(Layer.Being));
         }
 
         public int LengthX
         { get { return lengthX; } }
         public int LengthY
         { get { return lengthY; } }
-        public int LengthZ
-        { get { return lengthZ; } }
+        /*public int LengthZ
+        { get { return lengthZ; } }*/
         //============
 
 
@@ -49,6 +50,10 @@ namespace TestOpenGL.World
             System.Threading.Thread.Sleep(time);
         }
 
+        public int GetDepthLayer(Layer layer)
+        {
+            return depthLayers[(int)layer];
+        }
         
 
         /// <summary>

@@ -8,7 +8,7 @@ namespace TestOpenGL.VisualObjects
         public Decal(Decal decal)
             : this(decal.GraphicObjectsPack) { }
         public Decal(GraphicObjectsPack graphicObjectsPack)
-            : base(graphicObjectsPack, new ObjectInfo(0, "", "")) { }
+            : base(Layer.Decal, graphicObjectsPack, new ObjectInfo(0, "", "")) { }
         //=============
 
 

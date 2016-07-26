@@ -12,20 +12,18 @@ namespace TestOpenGL.Forms
     partial class MapEditorForm : Form
     {
         ImageList IL;
-        //EventDelegate closeForm;
         int[] massId;
 
-        public MapEditorForm(/*EventDelegate closeForm*/)
+        public MapEditorForm()
         {
             InitializeComponent();
             contentControl1.SetSight(Program.P.Camera.Sight);
-            //this.closeForm = closeForm;
         }
 
         private void Form3_Load(object sender, EventArgs e)
         {
             comboBox1.Items.Clear();
-            for (int i = 0; i <= Program.L.LengthZ - 1; i++)
+            for (int i = 0; i <= 13; i++)
                 comboBox1.Items.Add(i.ToString());
             comboBox1.SelectedIndex = 0;
 

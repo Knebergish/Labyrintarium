@@ -8,8 +8,7 @@ namespace TestOpenGL
 {
     abstract class PhisicalObject : IPositionable, ISpawnable, IInfoble
     {
-        int partLayer;
-        Coord coord;
+        Position position;
         Events events;
         GraphicObjectsPack graphicObjectsPack;
         ObjectInfo objectInfo;
@@ -19,13 +18,14 @@ namespace TestOpenGL
         //-------------
 
 
-        private PhisicalObject()
+        private PhisicalObject(Layer layer)
         {
+            position = new Position(layer);
             NewPositionCheck += IsEmptyPosition;
             events = new Events();
         }
-        public PhisicalObject(GraphicObjectsPack graphicObjectsPack, ObjectInfo objectInfo)
-            : this()
+        public PhisicalObject(Layer layer, GraphicObjectsPack graphicObjectsPack, ObjectInfo objectInfo)
+            : this(layer)
         {
             this.graphicObjectsPack = graphicObjectsPack ?? new GraphicObjectsPack();
             graphicObjectsPack.PositionObject = this;
@@ -34,10 +34,10 @@ namespace TestOpenGL
         }
 
         public int PartLayer
-        { get { return partLayer; } }
+        { get { return position.PartLayer; } }
 
         public Coord Coord
-        { get { return coord; } }
+        { get { return position.Coord; } }
 
         public Events Events
         { get { return events; } }
@@ -63,8 +63,8 @@ namespace TestOpenGL
 
             if (flag)
             {
-                partLayer = newPartLayer;
-                coord = newCoord;
+                position.SetNewPartLayer(newPartLayer);
+                position.Coord = newCoord;
 
                 graphicObjectsPack.UpdatePosition();
 

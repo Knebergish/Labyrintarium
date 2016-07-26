@@ -28,7 +28,7 @@ namespace TestOpenGL.VisualObjects
             : this(graphicObjectPack, objectInfo, alliance, null, null) { }
 
         public Being(GraphicObjectsPack graphicObjectPack, ObjectInfo objectInfo, int alliance, Features features, Inventory inventory)
-            : base(graphicObjectPack, objectInfo)
+            : base(Layer.Being, graphicObjectPack, objectInfo)
         {
             NewPositionCheck += Program.L.IsPassable;
 

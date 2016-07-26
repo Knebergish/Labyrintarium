@@ -8,9 +8,7 @@ namespace TestOpenGL.Renders
 {
     class GraphicObject : IPositionable, IRenderable
     {
-        Layer layer;
-        int partLayer;
-        Coord coord;
+        Position position;
         DataTable cellsDataTable;
         //-------------
 
@@ -23,17 +21,19 @@ namespace TestOpenGL.Renders
             cellsDataTable.Columns.Add("modifyDepth", typeof(ModifyDepth));
             cellsDataTable.Columns.Add("texture", typeof(Texture));
 
-            this.layer = layer;
+            position = new Position(layer);
         }
 
+        public Layer Layer
+        { get { return position.Layer; } }
+
         public int PartLayer
-        { get { return partLayer; } }
+        { get { return position.PartLayer; } }
 
         public Coord Coord
-        { get { return coord; } }
+        { get { return position.Coord; } }
 
-        public Layer Layer
-        { get { return layer; } }
+        
         //=============
 
 
@@ -49,17 +49,17 @@ namespace TestOpenGL.Renders
             for(int i = 0; i < cellsDataTable.Rows.Count; i++)
             {
                 UnsafeCoord dc = (UnsafeCoord)cellsDataTable.Rows[i][0];
-                UnsafeCoord uc = new UnsafeCoord(coord.X + dc.X, coord.Y + dc.Y);
+                UnsafeCoord uc = new UnsafeCoord(position.Coord.X + dc.X, position.Coord.Y + dc.Y);
                 if(uc.IsCorrect())
                 {
-                    Layer resultLayer = (Layer)((int)layer + (int)(Layer)cellsDataTable.Rows[i][1]);
+                    Layer resultLayer = (Layer)((int)position.Layer + (int)(Layer)cellsDataTable.Rows[i][1]);
                     ModifyDepth modifyDepth = (ModifyDepth)cellsDataTable.Rows[i][2];
                     Texture texture = (Texture)cellsDataTable.Rows[i][3];
 
                     listCells.Add(
                         new Cell(
                             new Coord(uc),
-                            Analytics.GetGlobalDepth(resultLayer, partLayer, modifyDepth),
+                            Analytics.GetGlobalDepth(resultLayer, position.PartLayer, modifyDepth),
                             texture
                             ));
                 }
@@ -70,8 +70,8 @@ namespace TestOpenGL.Renders
 
         public bool SetNewPosition(int newPartLayer, Coord newCoord)
         {
-            partLayer = newPartLayer;
-            coord = newCoord;
+            position.SetNewPartLayer(newPartLayer);
+            position.Coord = newCoord;
             return true;
         }
     }

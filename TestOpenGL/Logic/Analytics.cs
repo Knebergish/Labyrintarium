@@ -35,14 +35,6 @@ namespace TestOpenGL.Logic
                     return true;
             return false;
         }
-        public static bool CorrectCoordinate(int x, int y, int z)
-        {
-            if (x >= 0 && x < Program.L.LengthX)
-                if (y >= 0 && y < Program.L.LengthY)
-                    if (z >= 0 && z < Program.L.LengthZ)
-                        return true;
-            return false;
-        }
 
         /*static public Func<int, int, int> add = (x, y) => x + y;
         
@@ -210,8 +202,10 @@ namespace TestOpenGL.Logic
 
         static public double GetGlobalDepth(Layer layer, int partLayer, ModifyDepth modifyDepth)
         {
-            int layerDepth = Program.L.LengthZ;
-            double resultDepth = (int)layer * layerDepth;
+            double resultDepth = 0;
+            for (int i = 0; i < (int)layer; i++)
+                resultDepth += Program.L.GetDepthLayer((Layer)i);
+
             double delta = 0.5;
 
             switch (modifyDepth)
@@ -225,7 +219,7 @@ namespace TestOpenGL.Logic
                     break;
 
                 case ModifyDepth.ToLayer:
-                    resultDepth += layerDepth - delta;
+                    resultDepth += Program.L.GetDepthLayer(layer) - delta;
                     break;
 
                 case ModifyDepth.UnderPartLayer:

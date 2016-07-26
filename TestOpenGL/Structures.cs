@@ -5,9 +5,12 @@ using TestOpenGL.Logic;
 
 namespace TestOpenGL
 {
-    /// <summary>
-    /// Структура для передачи координат.
-    /// </summary>
+    public delegate void VoidEventDelegate();
+    public delegate void BoolEventDelegate(bool value);
+    public delegate void IntEventDelegate(int value);
+
+
+
     struct Coord
     {
         // Координата (0, 0) - левый нижний угол. Ось X - горизонтальная.
@@ -23,7 +26,7 @@ namespace TestOpenGL
             this.x = x;
             this.y = y;
             if (!Analytics.CorrectCoordinate(x, y))
-                throw new Exception("Неверненькие координатки пришли. (" + x + ", " + y + ")");
+                ExceptionAssistant.NewException(new Exception("Неверненькие координатки пришли. (" + x + ", " + y + ")"));
         }
 
         public int X
@@ -79,16 +82,46 @@ namespace TestOpenGL
         Layer layer;
         int partLayer;
         Coord coord;
+        //-------------
 
-        /*public bool SetNewPartLayer(int newPartLayer)
+        
+        public Position(Layer layer)
         {
+            this.layer = layer;
+            partLayer = 0;
+            coord = new Coord();
+        }
+        public Position(Layer layer, int partLayer, Coord coord)
+            : this(layer)
+        {
+            SetNewPartLayer(partLayer);
+            this.coord = coord;
+        }
 
-        }*/
+        public Layer Layer
+        { get { return layer; } }
+        public int PartLayer
+        { get { return partLayer; } }
+        public Coord Coord
+        {
+            get { return coord; }
+            set { coord = value; }
+        }
+        //=============
+
+
+        public void SetNewPartLayer(int newPartLayer)
+        {
+            if (Program.L.GetDepthLayer(layer) > newPartLayer)
+            {
+                partLayer = newPartLayer;
+                return;
+            }
+            ExceptionAssistant.NewException(new Exception($"Некорректная часть слоя! Слой: {layer.ToString()}, часть слоя: {partLayer}, новая часть слоя: {newPartLayer}, координаты: {coord.X} {coord.Y}"));
+        }
     }
     
-    public delegate void VoidEventDelegate();
-    public delegate void BoolEventDelegate(bool value);
-    public delegate void IntEventDelegate(int value);
+
 
     /// <summary>
     /// Части тела, которые может занимать одетый предмет.

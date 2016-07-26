@@ -1,17 +1,18 @@
 ﻿using System.Collections.Generic;
 
-using TestOpenGL.VisualObjects;
 
 namespace TestOpenGL.World
 {
     class MapVisualObjects<T> where T : PhisicalObject
     {
         List<T> mapT;
+        Layer layer;
         //-------------
 
 
-        public MapVisualObjects()
+        public MapVisualObjects(Layer layer)
         {
+            this.layer = layer;
             mapT = new List<T>();
         }
         //=============
@@ -28,7 +29,7 @@ namespace TestOpenGL.World
         {
             List<T> lt = new List<T>();
             T t;
-            for (int i = 0; i < Program.L.LengthZ; i++)
+            for (int i = 0; i < Program.L.GetDepthLayer(layer); i++)
             {
                 t = GetObject(i, new Coord(C.X, C.Y));
                 if (t != null)

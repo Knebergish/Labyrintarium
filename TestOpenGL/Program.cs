@@ -12,6 +12,7 @@ namespace TestOpenGL
 {
     static class Program
     {
+        //public static ExceptionAssistant exceptionAssistant;
         public static MainForm mainForm;
         public static ObjectsBuilder OB;
         public static TexturesAssistant TA;
@@ -43,11 +44,12 @@ namespace TestOpenGL
         /// <param name="f">Ссылка на форму с компонентом вывода изображения.</param>
         public static void InitApp(MainForm f)
         {
+            //exceptionAssistant = new ExceptionAssistant();
             mainForm = f;
             DBIO = new DataBaseIO(Directory.GetCurrentDirectory());
             TA = new TexturesAssistant(Directory.GetCurrentDirectory());
             OB = new ObjectsBuilder(DBIO, TA);
-            L = new Level(30, 30, 4);
+            L = new Level(30, 30, new int[5] { 4, 4, 1, 4, 1 });
             P = new Painter();
             DA = new DecalsAssistant();
             P.Camera = new Camera(10, 10);
