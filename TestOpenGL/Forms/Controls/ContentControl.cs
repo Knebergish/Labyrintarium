@@ -28,7 +28,7 @@ namespace TestOpenGL.Forms.Controls
             this.sight = sight;
             if (this.sight != null)
                 sight.EventSight.EventSightChangeCoord += ReloadContents;
-
+            //TODO: УПР. Исправить.
             ReloadContents();
         }
 

@@ -12,17 +12,18 @@ using TestOpenGL.VisualObjects;
 
 namespace TestOpenGL.Forms
 {
-    partial class ExchangeInventoryesForm : Form
+    partial class ExchangeBagsForm : Form
     {
-        Inventory primoInventory, secundoInventory;
 
-        public ExchangeInventoryesForm(Inventory primoInventory, Inventory secundoInventory)
+        IBagable primoBag, secundoBag;
+
+        public ExchangeBagsForm(IBagable primoBag, IBagable secundoBag)
         {
-            if (primoInventory == null || secundoInventory == null)
+            if (primoBag == null || secundoBag == null)
                 throw new ArgumentNullException();
 
-            this.primoInventory = primoInventory;
-            this.secundoInventory = secundoInventory;
+            this.primoBag = primoBag;
+            this.secundoBag = secundoBag;
 
             InitializeComponent();
         }
@@ -38,9 +39,9 @@ namespace TestOpenGL.Forms
             if (listBox2.SelectedIndex == -1)
                 return;
 
-            Item i = secundoInventory.GetBagItems()[listBox2.SelectedIndex];
-            secundoInventory.ThrowBagItem(listBox2.SelectedIndex);
-            primoInventory.PutBagItem(i);
+            //Item i = secundoInventory.GetBagItems()[listBox2.SelectedIndex];
+            //secundoInventory.ThrowBagItem(listBox2.SelectedIndex);
+            //primoInventory.PutBagItem(i);
 
             UpdateListBoxes();
         }
@@ -50,17 +51,17 @@ namespace TestOpenGL.Forms
             if (listBox1.SelectedIndex == -1)
                 return;
 
-            Item i = primoInventory.GetBagItems()[listBox1.SelectedIndex];
-            primoInventory.ThrowBagItem(listBox1.SelectedIndex);
-            secundoInventory.PutBagItem(i);
+            //Item i = primoInventory.GetBagItems()[listBox1.SelectedIndex];
+            //primoInventory.ThrowBagItem(listBox1.SelectedIndex);
+            //secundoInventory.PutBagItem(i);
 
             UpdateListBoxes();
         }
 
         private void UpdateListBoxes()
         {
-            WriteInventoryToListBox(primoInventory, listBox1);
-            WriteInventoryToListBox(secundoInventory, listBox2);
+            //WriteInventoryToListBox(primoInventory, listBox1);
+            //WriteInventoryToListBox(secundoInventory, listBox2);
         }
 
         private void Form4_FormClosed(object sender, FormClosedEventArgs e)
@@ -68,12 +69,13 @@ namespace TestOpenGL.Forms
             Program.mainForm.Enabled = true;
         }
 
-        private void WriteInventoryToListBox(Inventory inventory, ListBox listBox)
+        /*private void WriteInventoryToListBox(Inventory inventory, ListBox listBox)
         {
             listBox.Items.Clear();
 
             foreach (Item i in inventory.GetBagItems())
                 listBox.Items.Add(i.ObjectInfo.Name);
-        }
+        }*/
+        
     }
 }

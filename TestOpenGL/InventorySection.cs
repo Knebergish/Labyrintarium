@@ -5,44 +5,39 @@ namespace TestOpenGL
 {
     class InventorySection
     {
-        Item sectionItem;
+        Section section;
+        Item item;
         bool isBlocked;
         //-------------
 
 
-        public InventorySection()
+        public InventorySection(Section section)
         {
-
+            this.section = section;
         }
 
-        public Item SectionItem
-        { get { return sectionItem; } }
+        public Item Item
+        { get { return item; } }
 
         public bool IsBlocked
         {
             get { return isBlocked; }
             set { isBlocked = value; }
         }
+
+        public Section Section
+        { get { return section; } }
         //=============
 
 
-        public bool Equip(Item item)
+        public void Equip(Item item)
         {
-            if(sectionItem == null && !isBlocked)
-            {
-                sectionItem = item;
-                return true;
-            }
-            return false;
+            this.item = item;
         }
         public Item Unequip()
         {
-            Item buffer = null;
-            if (!isBlocked)
-            {
-                buffer = sectionItem;
-                sectionItem = null;
-            }
+            Item buffer = item;
+            item = null;
             return buffer;
         }
     }

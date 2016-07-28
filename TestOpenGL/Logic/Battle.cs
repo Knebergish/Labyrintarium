@@ -44,17 +44,17 @@ namespace TestOpenGL.Logic
 
 
             int countAttack = attacking.Features[Feature.Power]
-                + attacking.Inventory.GetLevelEquipmentItemsByType<Weapon>()
+                //+ attacking.Inventory.GetLevelEquipmentItemsByType<Weapon>()
                 + rnd.Next(1, 5);
 
             int countDefend = defending.Features[Feature.Stamina] 
-                + defending.Inventory.GetLevelEquipmentItemsByType<Armor>()
+                //+ defending.Inventory.GetLevelEquipmentItemsByType<Armor>()
                 + rnd.Next(1, 5);
 
             Program.Log.Log(countAttack.ToString() + " против " + countDefend.ToString());
             if (countAttack > countDefend)
             {
-                List<Weapon> lw = attacking.Inventory.GetEquipmentItemsByType<Weapon>();
+                List<Weapon> lw = null;// = attacking.Inventory.GetEquipmentItemsByType<Weapon>();
                 int damage = lw == null ? 0 : lw[0].Damage;
 
                 if (damage > 0)

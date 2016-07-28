@@ -3,6 +3,7 @@ using TestOpenGL.BeingContents;
 using TestOpenGL.Controls;
 using TestOpenGL.VisualObjects;
 using TestOpenGL.VisualObjects.ChieldsBeing;
+using TestOpenGL.VisualObjects.ChieldsBlock;
 using TestOpenGL.World;
 
 namespace TestOpenGL.Stages
@@ -29,7 +30,7 @@ namespace TestOpenGL.Stages
             Program.P.StopRender();
             Program.P.ClearShadersList();
             Program.GCycle.StopStep();
-            Program.L = new Level(20, 20, new int[5] { 4, 4, 1, 4, 1 });
+            Program.L = new Level(20, 20, new int[5] { 4, 4, 1, 3, 1 });
             VariantsControls.StandartGamerControl();
         }
 
@@ -55,10 +56,10 @@ namespace TestOpenGL.Stages
 
             Program.GCycle.Gamer = new Gamer(Program.OB.GetBeing(2));
             for (int i = 1; i < 10; i++)
-                Program.GCycle.Gamer.Inventory.PutBagItem(Program.OB.GetArmor(i));
+                Program.GCycle.Gamer.Inventory.AddItemInBag(Program.OB.GetArmor(i));
             for (int i = 1; i < 5; i++)
-                Program.GCycle.Gamer.Inventory.PutBagItem(Program.OB.GetWeapon(i));
-            Program.GCycle.Gamer.Inventory.PutBagItem(Program.OB.GetShield(1));
+                Program.GCycle.Gamer.Inventory.AddItemInBag(Program.OB.GetWeapon(i));
+            Program.GCycle.Gamer.Inventory.AddItemInBag(Program.OB.GetShield(1));
             Program.GCycle.Gamer.Features.CurrentExperience += 100;
             Program.GCycle.Gamer.Spawn(0, new Coord(0, 0));
 
@@ -68,12 +69,22 @@ namespace TestOpenGL.Stages
                 null
                 ).Spawn(0, new Coord(4, 3));
 
-            new VisualObjects.ChieldsBlock.Door(
+            new Door(
                 Program.OB.GetBlock(15), 
                 Program.OB.GetGraphicObject(12, Layer.Block), 
                 true, 
                 false
                 ).Spawn(0, new Coord(1, 4));
+
+            IBagable bag = new Bag(20);
+            bag.AddItemInBag(Program.OB.GetItem(1));
+            bag.AddItemInBag(Program.OB.GetItem(5));
+
+            new Chest
+            (
+            Program.OB.GetBlock(14),
+            bag
+            ).Spawn(1, new Coord(3, 3));
 
             Program.P.Camera.Width = 30;
             Program.P.Camera.Height = 30;

@@ -138,10 +138,10 @@ namespace TestOpenGL.DataIO
         {
             DataTable dt = DBIO.ExecuteSQL("SELECT * FROM Items WHERE Items.id = " + num);
 
-            DataTable dt2 = DBIO.ExecuteSQL("SELECT * FROM Parts WHERE Parts.idItem = " + num);
-            List<Part> lp = new List<Part>();
+            DataTable dt2 = DBIO.ExecuteSQL("SELECT * FROM ClosedSections WHERE ClosedSections.idItem = " + num);
+            List<Section> ls = new List<Section>();
             for (int i = 0; i < dt2.Rows.Count; i++)
-                lp.Add((Part)int.Parse(dt2.Rows[i]["part"].ToString()));
+                ls.Add((Section)int.Parse(dt2.Rows[i]["section"].ToString()));
 
             ObjectInfo oi = new ObjectInfo(
                 num,
@@ -154,7 +154,8 @@ namespace TestOpenGL.DataIO
                 GetGraphicObject(int.Parse(dt.Rows[0]["idGraphicObject"].ToString()), Layer.Item),
                 oi,
                 int.Parse(dt.Rows[0]["price"].ToString()),
-                lp
+                (Section)int.Parse(dt.Rows[0]["section"].ToString()),
+                ls
                 );
         }
 

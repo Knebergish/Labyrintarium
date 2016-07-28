@@ -15,7 +15,7 @@ namespace TestOpenGL.VisualObjects
         int rangeOfVisibility;
 
         Features features;
-        Inventory inventory;
+        IInventoryble inventory;
 
         EventsBeing eventsBeing;
         //-------------
@@ -27,7 +27,7 @@ namespace TestOpenGL.VisualObjects
         public Being(GraphicObjectsPack graphicObjectPack, ObjectInfo objectInfo, int alliance)
             : this(graphicObjectPack, objectInfo, alliance, null, null) { }
 
-        public Being(GraphicObjectsPack graphicObjectPack, ObjectInfo objectInfo, int alliance, Features features, Inventory inventory)
+        public Being(GraphicObjectsPack graphicObjectPack, ObjectInfo objectInfo, int alliance, Features features, IInventoryble inventory)
             : base(Layer.Being, graphicObjectPack, objectInfo)
         {
             NewPositionCheck += Program.L.IsPassable;
@@ -36,8 +36,9 @@ namespace TestOpenGL.VisualObjects
             rangeOfVisibility = 10;
 
             this.features =  features ?? new Features(this);
-            this.inventory =  inventory ?? new Inventory();
-            this.inventory.Owner = this;
+
+            Bag bag = new Bag(20);
+            this.inventory = inventory ?? new StandartInventory(new Equipment(bag), bag);
 
             eventsBeing = new EventsBeing();
 
@@ -61,7 +62,7 @@ namespace TestOpenGL.VisualObjects
         public Features Features
         { get { return features; } }
 
-        public Inventory Inventory
+        public IInventoryble Inventory
         { get { return inventory; } }
 
         public  EventsBeing EventsBeing
@@ -197,17 +198,16 @@ namespace TestOpenGL.VisualObjects
         //TODO: говнокод
         public bool Attack(Coord coord)
         {
-            List<Weapon> lw = Inventory.GetEquipmentItemsByType<Weapon>() ?? new List<Weapon>(); //...
-            if (lw.Count != 0)
-                if (
-                    lw[0].MinDistance <= Analytics.Distance(Coord, coord)
-                    && lw[0].MaxDistance >= Analytics.Distance(Coord, coord)
-                    )
-                    if (Battle.Attack(this, coord))
-                    {
-                        features.ActionPoints--;
-                        return true;
-                    }
+            Weapon weapon = (Weapon)inventory.GetEquipedItem(Section.Weapon);
+            if (
+                weapon.MinDistance <= Analytics.Distance(Coord, coord)
+                && weapon.MaxDistance >= Analytics.Distance(Coord, coord)
+                )
+                if (Battle.Attack(this, coord))
+                {
+                    features.ActionPoints--;
+                    return true;
+                }
             return false;
         }
 

@@ -8,7 +8,9 @@ namespace TestOpenGL
     public delegate void VoidEventDelegate();
     public delegate void BoolEventDelegate(bool value);
     public delegate void IntEventDelegate(int value);
-
+    public delegate void TEventDelegate<T>(T t);
+    public delegate void ADelegate<A>(A a);
+    public delegate A ABDelegate<A, B>(B b);
 
 
     struct Coord

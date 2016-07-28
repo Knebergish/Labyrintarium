@@ -7,11 +7,13 @@ namespace TestOpenGL.VisualObjects
 {
     class Item: IInfoble
     {
-        //Texture texture;
         int price;
         
         // Части тела, занимаемые предметом
-        List<Part> parts;
+        //List<Part> parts;
+
+        Section section;
+        List<Section> closedSectionsList;
 
         GraphicObject graphicObject;
 
@@ -20,28 +22,30 @@ namespace TestOpenGL.VisualObjects
 
 
         public Item(Item item)
-            :this(item.GraphicObject, item.ObjectInfo, item.Price, item.Parts) { }
-        public Item(GraphicObject graphicObject, ObjectInfo objectInfo, int price, List<Part> parts)
+            :this(item.GraphicObject, item.ObjectInfo, item.Price, item.Section, item.ClosedSections) { }
+        public Item(GraphicObject graphicObject, ObjectInfo objectInfo, int price, Section section, List<Section> closedSectionsList)
         {
             this.graphicObject = graphicObject;
-
-            this.price = price;
-
-            this.parts = new List<Part>(parts);
             this.objectInfo = objectInfo;
+            this.price = price;
+            this.section = section;
+            this.closedSectionsList = new List<Section>(closedSectionsList);
         }
 
         public int Price
         { get { return price; } }
-
-        internal List<Part> Parts
-        { get { return parts; } }
 
         public ObjectInfo ObjectInfo
         { get { return objectInfo; } }
 
         public GraphicObject GraphicObject
         { get { return graphicObject; } }
+
+        public Section Section
+        { get { return section; } }
+
+        public List<Section> ClosedSections
+        { get { return closedSectionsList; } }
         //=============
     }
 }

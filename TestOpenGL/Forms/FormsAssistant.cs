@@ -7,7 +7,7 @@ namespace TestOpenGL.Forms
     {
         InventoryForm formInventory;
         MapEditorForm formMapEditor;
-        ExchangeInventoryesForm formExchangeInventoryes;
+        ExchangeBagsForm formExchangeBags;
         CharacterForm formCharacter;
 
         delegate void openForm();
@@ -27,7 +27,7 @@ namespace TestOpenGL.Forms
         //TODO: дописать этот метод
         public void UpdateForms()
         {
-            formInventory.ChangeGamer();
+            formInventory.SetInventory(Program.GCycle?.Gamer.Inventory);
         }
 
         private void ProcessingOpeningForms(openForm delegateOpenForm)
@@ -48,11 +48,11 @@ namespace TestOpenGL.Forms
         {
             ProcessingOpeningForms(delegate { formMapEditor.Show(); });
         }
-        public void ShowExchangeInventoryes(Inventory primoInventory, Inventory secundoInventory)
+        /*public void ShowExchangeInventoryes(Inventory primoInventory, Inventory secundoInventory)
         {
             formExchangeInventoryes = new ExchangeInventoryesForm(primoInventory, secundoInventory);
             ProcessingOpeningForms(delegate { formExchangeInventoryes.Show(); });
-        }
+        }*/
         public void ShowCharacter()
         {
             ProcessingOpeningForms(delegate { formCharacter.Show(); });

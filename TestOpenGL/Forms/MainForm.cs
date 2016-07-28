@@ -78,15 +78,7 @@ namespace TestOpenGL.Forms
                     new Coord(5, 5, 3)
                 );*/
 
-            Inventory i = new Inventory();
-            i.PutBagItem(Program.OB.GetItem(1));
-            i.PutBagItem(Program.OB.GetItem(5));
 
-            new Chest
-            (
-            Program.OB.GetBlock(14),
-            i
-            ).Spawn(1, new Coord(3, 3));
 
 
             //Program.OB.GetBlock(2).Spawn(new Coord(6, 6, 0));

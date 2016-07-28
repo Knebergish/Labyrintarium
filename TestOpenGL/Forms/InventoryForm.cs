@@ -3,32 +3,37 @@ using System.Windows.Forms;
 
 using TestOpenGL.VisualObjects;
 
+
 namespace TestOpenGL.Forms
 {
-    public partial class InventoryForm : Form
+    partial class InventoryForm : Form
     {
-        //EventDelegate closeForm;
-        public InventoryForm(/*EventDelegate closeForm*/)
+        IInventoryble inventory;
+
+        public InventoryForm()
         {
             InitializeComponent();
-            //this.closeForm = closeForm;
         }
 
-        public void ChangeGamer()
+        public void SetInventory(IInventoryble inventory)
         {
-            if (Program.GCycle.Gamer != null)
+            this.inventory = inventory;
+
+            if(inventory!=null)
             {
-                Program.GCycle.Gamer.Inventory.EventsInventory.EventInventoryChangeBag += ReloadListInventory;
-                Program.GCycle.Gamer.Inventory.EventsInventory.EventInventoryChangeEquipment += ReloadListInventory;
+                inventory.ChangeEquipmentEvent += ReloadEquipmentList;
+                inventory.ChangeBagEvent += ReloadBagList;
             }
-            ReloadListInventory();
+
+            ReloadEquipmentList(inventory);
+            ReloadBagList(inventory);
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             try
             {
-                Program.GCycle.Gamer.Inventory.UnequipItem(listBox1.SelectedIndex);
+                inventory.Unequip(inventory.GetAllEquipmentItems()[listBox1.SelectedIndex].Section);
             }
             catch(ArgumentOutOfRangeException)
             {
@@ -38,45 +43,32 @@ namespace TestOpenGL.Forms
 
         private void button2_Click(object sender, EventArgs e)
         {
-            try
+            if(!inventory.Equip(listBox2.SelectedIndex))
             {
-                if(!Program.GCycle.Gamer.Inventory.EquipItem(listBox2.SelectedIndex))
-                {
-                    MessageBox.Show("Невозможно надеть вещь.");
-                }
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                MessageBox.Show("Неверно выбрана надеваемая вещь!");
+                MessageBox.Show("Невозможно надеть вещь.");
             }
         }
 
-        private void ReloadListInventory()
+        private void ReloadEquipmentList(IEquipmentable equipment)
         {
             listBox1.Items.Clear();
+            equipment.GetAllEquipmentItems()?.ForEach(i => { listBox1.Items.Add(i.ObjectInfo.Name); });
+        }
+        private void ReloadBagList(IBagable bag)
+        {
             listBox2.Items.Clear();
-
-            foreach(Item i in Program.GCycle.Gamer.Inventory.GetBagItems())
-            {
-                listBox2.Items.Add(i.ObjectInfo.Name);
-            }
-            foreach (Item i in Program.GCycle.Gamer.Inventory.GetEquipmentItems())
-            {
-                listBox1.Items.Add(i.ObjectInfo.Name);
-            }
+            bag.GetAllBagItems()?.ForEach(i => { listBox2.Items.Add(i.ObjectInfo.Name); });
         }
 
         private void Form2_Load(object sender, EventArgs e)
         {
-            Program.GCycle.Gamer.Inventory.EventsInventory.EventInventoryChangeBag += new VoidEventDelegate(ReloadListInventory);
-            Program.GCycle.Gamer.Inventory.EventsInventory.EventInventoryChangeEquipment += new VoidEventDelegate(ReloadListInventory);
+            //ChangeGamer();
         }
 
         private void Form2_FormClosing(object sender, FormClosingEventArgs e)
         {
             Hide();
             e.Cancel = true;
-            //closeForm();
         }
     }
 }

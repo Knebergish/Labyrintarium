@@ -4,27 +4,28 @@ namespace TestOpenGL.VisualObjects.ChieldsBlock
 {
     class Chest : Block, IUsable
     {
-        Inventory inventory;
+        IBagable bag;
         //-------------
 
 
-        public Chest(Block blockChest, Inventory inventory)
+        public Chest(Block blockChest, IBagable bag)
             : base(blockChest)
         {
-            this.inventory = inventory;
+            this.bag = bag;
         }
 
-        internal Inventory Inventory
+        public IBagable Bag
         {
-            get { return inventory; }
-            set { inventory = value; }
+            get { return bag; }
+            set { bag = value; }
         }
         //=============
 
 
         public void Used()
         {
-            Program.FA.ShowExchangeInventoryes(Program.GCycle.Gamer.Inventory, inventory);
+            //TODOTODO
+            //Program.FA.ShowExchangeInventoryes(Program.GCycle.Gamer.Inventory, inventory);
         }
     }
 }

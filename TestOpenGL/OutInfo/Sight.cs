@@ -15,7 +15,7 @@ namespace TestOpenGL.OutInfo
 
         public Sight(Camera camera)
         {
-            coord = new Coord(0, 0);
+            //coord = new Coord(0, 0);
             graphicObject = Program.OB.GetGraphicObject(6, Layer.Decal);
             this.camera = camera;
             eventSight = new EventSight();

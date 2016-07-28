@@ -1,6 +1,6 @@
 ﻿namespace TestOpenGL.Forms
 {
-    partial class ExchangeInventoryesForm
+    partial class ExchangeBagsForm
     {
         /// <summary>
         /// Required designer variable.
