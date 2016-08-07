@@ -1,4 +1,4 @@
-﻿using TestOpenGL.VisualObjects;
+﻿using TestOpenGL.PhisicalObjects;
 
 
 namespace TestOpenGL

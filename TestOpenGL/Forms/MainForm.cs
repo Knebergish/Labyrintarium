@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.Threading;
-using TestOpenGL.VisualObjects;
+using TestOpenGL.PhisicalObjects;
 using TestOpenGL.BeingContents;
-using TestOpenGL.VisualObjects.ChieldsBlock;
+using TestOpenGL.PhisicalObjects.ChieldsBlock;
 using System.Collections.Generic;
 
 namespace TestOpenGL.Forms
@@ -31,8 +31,9 @@ namespace TestOpenGL.Forms
             Stages.Stage_1 S1 = new Stages.Stage_1();
             S1.LoadStage();
 
-            Program.GCycle.Gamer.EventsBeing.EventBeingChangeHealth += ReloadGamerInfo;
-            Program.GCycle.Gamer.EventsBeing.EventBeingChangeActionPoints += ReloadGamerInfo;
+            //TODO: события изменения жизней и очков действия
+            //Program.GCycle.Gamer.Parameters. += ReloadGamerInfo;
+            //Program.GCycle.Gamer.Parameters. += ReloadGamerInfo;
             ReloadGamerInfo();
 
         }
@@ -153,8 +154,8 @@ namespace TestOpenGL.Forms
             Program.mainForm.Invoke(
             new Action(() =>
             {
-                label3.Text = Program.GCycle.Gamer.Features.CurrentHealth + "/" + Program.GCycle.Gamer.Features.MaxHealth;
-                label5.Text = Program.GCycle.Gamer.Features.ActionPoints.ToString();
+                label3.Text = Program.GCycle.Gamer.Parameters.CurrentHealth + "/" + Program.GCycle.Gamer.Parameters[State.MaxHealth];
+                label5.Text = Program.GCycle.Gamer.Parameters.CurrentActionPoints.ToString();
             })
             );
         }
@@ -167,7 +168,7 @@ namespace TestOpenGL.Forms
                 if (b == null)
                     label8.Text = "0/0";
                 else
-                    label8.Text = b.Features.CurrentHealth + "/" + b.Features.MaxHealth;
+                    label8.Text = b.Parameters.CurrentHealth + "/" + b.Parameters[State.MaxHealth];
             })
             );
         }

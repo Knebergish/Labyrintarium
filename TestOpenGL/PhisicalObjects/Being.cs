@@ -1,46 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using TestOpenGL.BeingContents;
 using TestOpenGL.Logic;
 using TestOpenGL.Renders;
-using TestOpenGL.VisualObjects.ChieldsItem;
+using TestOpenGL.PhisicalObjects.ChieldsItem;
 
 
-namespace TestOpenGL.VisualObjects
+namespace TestOpenGL.PhisicalObjects
 {
     class Being : PhisicalObject
     {
         bool isSpawned;
         int rangeOfVisibility;
 
-        Features features;
+        IParameterable parameters;
         IInventoryble inventory;
 
-        EventsBeing eventsBeing;
+        event VoidEventDelegate deathEvent;
+        event VoidEventDelegate startStepEvent;
+        event VoidEventDelegate endStepEvent;
+        event VoidEventDelegate endActionEvent;
         //-------------
 
 
         public Being(Being being)
             : this(being.GraphicObjectsPack, being.ObjectInfo, being.Alliance) { }
-
         public Being(GraphicObjectsPack graphicObjectPack, ObjectInfo objectInfo, int alliance)
             : this(graphicObjectPack, objectInfo, alliance, null, null) { }
-
-        public Being(GraphicObjectsPack graphicObjectPack, ObjectInfo objectInfo, int alliance, Features features, IInventoryble inventory)
+        public Being(GraphicObjectsPack graphicObjectPack, ObjectInfo objectInfo, int alliance, IInventoryble inventory, IParameterable parameters)
             : base(Layer.Being, graphicObjectPack, objectInfo)
         {
             NewPositionCheck += Program.L.IsPassable;
 
             isSpawned = false;
             rangeOfVisibility = 10;
-
-            this.features =  features ?? new Features(this);
-
+            
             Bag bag = new Bag(20);
             this.inventory = inventory ?? new StandartInventory(new Equipment(bag), bag);
 
-            eventsBeing = new EventsBeing();
+            this.parameters = parameters ?? new Parameters(this.inventory, new TestFeatures());
 
             Alliance = alliance;
         }
@@ -50,23 +48,37 @@ namespace TestOpenGL.VisualObjects
             get { return rangeOfVisibility; }
             set { rangeOfVisibility = value; }
         }
-
         public int Alliance
         { get; set; }
-
         public bool IsSpawned
-        {
-            get { return isSpawned; }
-        }
+        { get { return isSpawned; } }
 
-        public Features Features
-        { get { return features; } }
+        public IParameterable Parameters
+        { get { return parameters; } }
 
         public IInventoryble Inventory
         { get { return inventory; } }
 
-        public  EventsBeing EventsBeing
-        { get { return eventsBeing; } }
+        public event VoidEventDelegate DeathEvent
+        {
+            add { deathEvent += value; }
+            remove { deathEvent -= value; }
+        }
+        public event VoidEventDelegate StartStepEvent
+        {
+            add { startStepEvent += value; }
+            remove { startStepEvent -= value; }
+        }
+        public event VoidEventDelegate EndStepEvent
+        {
+            add { endStepEvent += value; }
+            remove { endStepEvent -= value; }
+        }
+        public event VoidEventDelegate EndActionEvent
+        {
+            add { endActionEvent += value; }
+            remove { endActionEvent -= value; }
+        }
         //=============
 
 
@@ -101,40 +113,38 @@ namespace TestOpenGL.VisualObjects
             //
             Program.L.GetMap<Being>().RemoveObject(PartLayer, Coord);
             Program.P.RemoveRenderObject(GraphicObjectsPack);
-            eventsBeing.BeingDeath();
+            deathEvent?.Invoke();
         }
 
         public void Step()
         {
-            this.eventsBeing.BeingStartStep();
-            //this.features.ActionPoints += this.features.IncreaseActionPoints;
+            startStepEvent?.Invoke();
             while (!CheckEndStep())
             {
                 Action();
-                //System.Threading.Thread.Sleep(100);
-                this.eventsBeing.BeingEndAction();
+                endActionEvent?.Invoke();
             }
-            this.eventsBeing.BeingEndStep();
+            endStepEvent?.Invoke();
         }
 
         protected virtual void Action() { }
 
         bool CheckEndStep()
         {
-            return this.features.ActionPoints < 1 ? true : false;
+            return parameters.CurrentActionPoints < 1 ? true : false;
         }
         
         public bool Move(Coord coord)
         {
-            if(isSpawned && this.features.ActionPoints >= 1 && SetNewPosition(0, coord))
+            if(isSpawned && parameters.CurrentActionPoints >= 1 && SetNewPosition(0, coord))
             {
                 Program.L.Pause(100);
-                features.ActionPoints--;
+                parameters.CurrentActionPoints--;
                 return true;
             }
             return false;
         }
-        public bool Move(TestOpenGL.Direction course)
+        public bool Move(Direction course)
         {
             int dx = 0, dy = 0;
             switch(course)
@@ -161,7 +171,7 @@ namespace TestOpenGL.VisualObjects
         {
             if (count > 0)
             {
-                features.CurrentHealth -= count;
+                parameters.CurrentHealth -= count;
                 Action removeDecal = Program.DA.AddDecal(Program.OB.GetDecal(3), Coord);
                 Program.L.Pause(150);
                 removeDecal();
@@ -176,7 +186,7 @@ namespace TestOpenGL.VisualObjects
         public void Heal(int count)
         {
             if (count > 0)
-                features.CurrentHealth += count;
+                parameters.CurrentHealth += count;
             else throw new Exception("Исцеление почему-то отрицательное.");
         }
 
@@ -205,7 +215,7 @@ namespace TestOpenGL.VisualObjects
                 )
                 if (Battle.Attack(this, coord))
                 {
-                    features.ActionPoints--;
+                    parameters.CurrentActionPoints--;
                     return true;
                 }
             return false;
@@ -213,12 +223,12 @@ namespace TestOpenGL.VisualObjects
 
         public void Increace()
         {
-            features.ActionPoints += features.IncreaseActionPoints;
-            //TODO: восстановление жизней тут же
+            parameters.CurrentActionPoints += parameters[State.IncreaseActionPoints];
+            parameters.CurrentHealth += parameters[State.IncreaseHealth];
         }
     }
 
-    class EventsBeing
+    /*class EventsBeing
     {
         public event VoidEventDelegate EventBeingDeath;
         public event VoidEventDelegate EventBeingStartStep;
@@ -258,6 +268,6 @@ namespace TestOpenGL.VisualObjects
         {
             EventBeingChangeHealth?.Invoke();
         }
-    }
+    }*/
 
 }

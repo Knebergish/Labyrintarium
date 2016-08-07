@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using System.IO;
 
 using TestOpenGL.Forms;
-using TestOpenGL.VisualObjects;
+using TestOpenGL.PhisicalObjects;
 
 namespace TestOpenGL.Forms
 {

@@ -1,4 +1,4 @@
-﻿namespace TestOpenGL.VisualObjects.ChieldsItem
+﻿namespace TestOpenGL.PhisicalObjects.ChieldsItem
 {
     class Armor : Item, IEquipable
     {

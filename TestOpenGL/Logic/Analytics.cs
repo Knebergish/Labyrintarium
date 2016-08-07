@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using TestOpenGL.VisualObjects;
+using TestOpenGL.PhisicalObjects;
 using TestOpenGL.Renders;
 
 namespace TestOpenGL.Logic
 {
-    // Проверку корректности координат провожу вручную, т.к. множественные срабатывания исключений конкретно тормозят алгоритм. Знаю, что костыль, но пока не придумал, как сделать лучше.
     static class Analytics
     {
         //TODO: почему я смотрю на это, и мне хочется плакать?..
@@ -15,6 +14,11 @@ namespace TestOpenGL.Logic
         public static Func<B, R> Partial<A, B, R>(this Func<A, B, R> f, A a)
         {
             return b => f(a, b);
+        }
+        public static Func<T7, T8, T9, T10, R> WepCon<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R>
+            (this Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R> f, T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6)
+        {
+            return (t7, t8, t9, t10) => f(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10);
         }
         public static Action RemoverDecal<A>(this Action<A> f, A a)
         {
@@ -276,10 +280,10 @@ namespace TestOpenGL.Logic
         }
         static public List<Being> GetBeingInArea(Coord C1, Coord C2)
         {
-            List<VisualObjects.Being> LB = Program.L.GetMap<Being>().GetAllObject();
-            List<VisualObjects.Being> answerLB = new List<VisualObjects.Being>();
+            List<Being> LB = Program.L.GetMap<Being>().GetAllObject();
+            List<Being> answerLB = new List<Being>();
 
-            foreach (VisualObjects.Being being in LB)
+            foreach (Being being in LB)
                 if (IsInArea(C1, C2, being.Coord))
                     answerLB.Add(being);
 
@@ -303,7 +307,7 @@ namespace TestOpenGL.Logic
             C1 = new Coord(mass[0], mass[1]);
             C2 = new Coord(mass[2], mass[3]);
 
-            List<VisualObjects.Being> LB = GetBeingInArea(C1, C2);
+            List<Being> LB = GetBeingInArea(C1, C2);
             for (int i = LB.Count - 1; i >= 0; i--)
             {
                 if (LB[i].Alliance == being.Alliance || LB[i].Alliance < 0)

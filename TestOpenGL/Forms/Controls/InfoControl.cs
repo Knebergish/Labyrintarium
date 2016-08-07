@@ -9,7 +9,7 @@ namespace TestOpenGL.Forms.Controls
             InitializeComponent();
         }
 
-        public void SetInfo(VisualObjects.ObjectInfo objectInfo)
+        public void SetInfo(PhisicalObjects.ObjectInfo objectInfo)
         {
             infoLabel.Text = "";
             infoLabel.Text += objectInfo?.Name + "\n" + objectInfo?.Description;

@@ -26,25 +26,25 @@ namespace TestOpenGL.Forms
         {
             dataGridView1.Rows.Clear();
             for (int i = 0; i < Enum.GetNames(typeof(Feature)).Length; i++)
-                dataGridView1.Rows.Add(Enum.GetName(typeof(Feature), (Feature)i), Program.GCycle.Gamer.Features[(Feature)i]);
+                dataGridView1.Rows.Add(Enum.GetName(typeof(Feature), (Feature)i), Program.GCycle.Gamer.Parameters[(Feature)i]);
 
-            label3.Text = Program.GCycle.Gamer.Features.CurrentLevel.ToString();
+            label3.Text = Program.GCycle.Gamer.Parameters.CurrentLevel.ToString();
 
-            label6.Text = Program.GCycle.Gamer.Features.FreeFeaturesPoints.ToString();
-            button1.Enabled = Program.GCycle.Gamer.Features.FreeFeaturesPoints >= 1 ? true : false;
+            label6.Text = Program.GCycle.Gamer.Parameters.FreeFeaturesPoints.ToString();
+            button1.Enabled = Program.GCycle.Gamer.Parameters.FreeFeaturesPoints >= 1 ? true : false;
 
-            label3.Text = Program.GCycle.Gamer.Features.CurrentLevel.ToString();
-            label9.Text = Program.GCycle.Gamer.Features.CurrentHealth.ToString() + "/" + Program.GCycle.Gamer.Features.MaxHealth.ToString();
-            label11.Text = Program.GCycle.Gamer.Features.IncreaceHealth.ToString();
-            label13.Text = Program.GCycle.Gamer.Features.ActionPoints.ToString();
-            label15.Text = Program.GCycle.Gamer.Features.IncreaseActionPoints.ToString();
-            label17.Text = Program.GCycle.Gamer.Features.CurrentExperience.ToString() + "/" + Program.GCycle.Gamer.Features.NextLevelExperience.ToString();
+            label3.Text = Program.GCycle.Gamer.Parameters.CurrentLevel.ToString();
+            label9.Text = Program.GCycle.Gamer.Parameters.CurrentHealth.ToString() + "/" + Program.GCycle.Gamer.Parameters[State.MaxHealth].ToString();
+            label11.Text = Program.GCycle.Gamer.Parameters[State.IncreaseHealth].ToString();
+            label13.Text = Program.GCycle.Gamer.Parameters.CurrentActionPoints.ToString();
+            label15.Text = Program.GCycle.Gamer.Parameters[State.IncreaseActionPoints].ToString();
+            label17.Text = Program.GCycle.Gamer.Parameters.CurrentExperience.ToString() + "/" + Program.GCycle.Gamer.Parameters.NextLevelExperience.ToString();
             label18.Text = "Эммануил Закусейлович";
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Program.GCycle.Gamer.Features.AdditionFeature((Feature)dataGridView1.SelectedRows[0].Index);
+            Program.GCycle.Gamer.Parameters.AdditionFeature((Feature)dataGridView1.SelectedRows[0].Index);
             ReloadData();
         }
 

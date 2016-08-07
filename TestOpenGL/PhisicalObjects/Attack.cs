@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using TestOpenGL;
 using TestOpenGL.Logic;
 
-namespace TestOpenGL.VisualObjects
+namespace TestOpenGL.PhisicalObjects
 {
     /*class Attack : VisualObject
     {

@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TestOpenGL.BeingContents;
-using TestOpenGL.VisualObjects;
+using TestOpenGL.PhisicalObjects;
 
 namespace TestOpenGL.Forms
 {

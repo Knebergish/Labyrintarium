@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TestOpenGL.VisualObjects.ChieldsBlock
+namespace TestOpenGL.PhisicalObjects.ChieldsBlock
 {
     class ActionBlock : Block, IUsable
     {

@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 
-using TestOpenGL.VisualObjects;
+using TestOpenGL.PhisicalObjects;
 
 namespace TestOpenGL.BeingContents
 {
     /// <summary>
     /// Класс описания характеристик сущности.
     /// </summary>
+    /*
     class Features
     {
         // Ссылка на хозяина характеристик.
@@ -79,9 +80,7 @@ namespace TestOpenGL.BeingContents
         { get { return maxHealth; } }
 
         public int IncreaceHealth
-        {
-            get { return increaceHealth; }
-        }
+        { get { return increaceHealth; } }
 
         public int CurrentHealth
         {
@@ -111,14 +110,11 @@ namespace TestOpenGL.BeingContents
         }
 
         public double IncreaseActionPoints
-        {
-            get { return increaseActionPoints; }
-        }
+        { get { return increaseActionPoints; } }
 
         public double CurrentExperience
         {
             get {  return currentExperience; }
-
             set
             {
                 currentExperience = value > currentExperience ? value : currentExperience;
@@ -132,11 +128,7 @@ namespace TestOpenGL.BeingContents
         public int FreeFeaturesPoints
         {
             get { return freeFeaturesPoints; }
-
-            set
-            {
-                freeFeaturesPoints = value > freeFeaturesPoints ? value : freeFeaturesPoints;
-            }
+            set { freeFeaturesPoints = value > freeFeaturesPoints ? value : freeFeaturesPoints; }
         }
 
         public int CurrentLevel
@@ -175,4 +167,5 @@ namespace TestOpenGL.BeingContents
             return false;
         }
     }
+    */
 }

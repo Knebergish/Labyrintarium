@@ -5,68 +5,53 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TestOpenGL.Renders;
-using TestOpenGL.VisualObjects;
-using TestOpenGL.VisualObjects.ChieldsBeing;
+using TestOpenGL.PhisicalObjects;
+using TestOpenGL.PhisicalObjects.ChieldsBeing;
 using TestOpenGL.World;
 
-namespace TestOpenGL.Tests
+namespace TestOpenGL
 {
-    /*[TestClass]
-    class VisualObjectsTests
-    {
-        [TestMethod]
-        public void TestMethod1()
-        {
-            
-        }
-    }*/
     [TestClass]
-    class VisualObjectsTests
+    public class VisualObjectsTests
     {
         [TestMethod]
-        public void TestBengs()
+        public void TestGraphicsObject()
         {
-            /*Program.L = new Level(10, 10, 5);
-            Being b = new Bot(7, "testName", "testDescription", new Texture(13), 666, null);
+            Program.L = new Level(5, 5, new int[] { 5, 5, 5, 5, 5 });
+            
+            GraphicObject go = new GraphicObject(Layer.Block);
+            if (go.Layer != Layer.Block)
+                throw new Exception("Не учитывается слой, переданный в конструкторе.");
 
-            if (b.Alliance != 666)
-                throw new Exception();
+            if(!go.SetNewPosition(3, new Coord(1, 2)))
+                throw new Exception("Не работает установка новой позиции.");
 
-            if(b.IsSpawned)
-                throw new Exception();
+            if (go.PartLayer != 3 || go.Coord.X != 1 || go.Coord.Y != 2)
+                throw new Exception("Некорректно работает установка новой позиции.");
 
-            //if(b.C != null)
-            //    throw new Exception(b.C.Y.ToString());
-                // Странно, вроде координаты стандартно не инициализируются, а они всё равно есть, нулевые.
+            go.AddCell(new UnsafeCoord(0, 0), 0, ModifyDepth.None, new Texture(1));
+            go.AddCell(new UnsafeCoord(0, 1), 0, ModifyDepth.ToLayer, new Texture(2));
+            go.AddCell(new UnsafeCoord(1, 0), 0, ModifyDepth.ToPartLayer, new Texture(3));
+            go.AddCell(new UnsafeCoord(0, -1), 0, ModifyDepth.UnderLayer, new Texture(4));
+            go.AddCell(new UnsafeCoord(-1, 1), 0, ModifyDepth.UnderPartLayer, new Texture(5));
 
-            Program.L.GetMap<Being>().AddVO(new Bot(1, "", "", new Texture(1), 665, null), new Coord(1, 2, 3));
+            List<Cell> lc = go.GetCells();
+            if (lc[0].C.X != 1 || lc[0].C.Y != 2 || lc[0].GlobalDepth != 8 || lc[0].Texture.textureId != 1)
+                throw new Exception("Ошибка в клетке 1.");
+            if (lc[1].C.X != 1 || lc[1].C.Y != 3 || lc[1].GlobalDepth != 10.5 || lc[1].Texture.textureId != 2)
+                throw new Exception("Ошибка в клетке 2.");
+            if (lc[2].C.X != 2 || lc[2].C.Y != 2 || lc[2].GlobalDepth != 8 || lc[2].Texture.textureId != 3)
+                throw new Exception("Ошибка в клетке 3.");
+            if (lc[3].C.X != 1 || lc[3].C.Y != 1 || lc[3].GlobalDepth != 8 || lc[3].Texture.textureId != 4)
+                throw new Exception("Ошибка в клетке 4.");
+            if (lc[4].C.X != 0 || lc[4].C.Y != 3 || lc[4].GlobalDepth != 8 || lc[4].Texture.textureId != 5)
+                throw new Exception("Ошибка в клетке 5.");
+        }
 
-            if(b.SetNewCoord(new Coord(1, 2, 3)))
-                throw new Exception();
-
-            if (b.C == new Coord(1, 2, 3))
-                throw new Exception();
-
-            Program.L.GetMap<Being>().RemoveVO(new Coord(1, 2, 3));
-
-            if(!b.Spawn(new Coord(1, 2, 0)))
-                throw new Exception();
-
-            if (b.C != new Coord(1, 2, 0)) 
-                throw new Exception();
-
-            if(!b.IsSpawned)
-                throw new Exception();
-
-            if(Program.L.GetMap<Being>().GetVO(new Coord(1,2,0)).visualObjectInfo.Name != "testName")
-                throw new Exception();
-
-            b.features.ActionPoints++;
-            if(!b.Move(Direction.Right))
-                throw new Exception();
-
-            if (b.C != new Coord(2,2,0))
-                throw new Exception();*/
+        [TestMethod]
+        public void TestBeing()
+        {
+            //Block b = new Block()
         }
     }
 }

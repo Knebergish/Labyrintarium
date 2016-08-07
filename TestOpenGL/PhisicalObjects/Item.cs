@@ -3,17 +3,16 @@
 using TestOpenGL.Renders;
 
 
-namespace TestOpenGL.VisualObjects
+namespace TestOpenGL.PhisicalObjects
 {
     class Item: IInfoble
     {
         int price;
-        
-        // Части тела, занимаемые предметом
-        //List<Part> parts;
 
         Section section;
         List<Section> closedSectionsList;
+
+        IStateble states;
 
         GraphicObject graphicObject;
 
@@ -22,14 +21,15 @@ namespace TestOpenGL.VisualObjects
 
 
         public Item(Item item)
-            :this(item.GraphicObject, item.ObjectInfo, item.Price, item.Section, item.ClosedSections) { }
-        public Item(GraphicObject graphicObject, ObjectInfo objectInfo, int price, Section section, List<Section> closedSectionsList)
+            :this(item.GraphicObject, item.ObjectInfo, item.Price, item.Section, item.ClosedSections, item.States) { }
+        public Item(GraphicObject graphicObject, ObjectInfo objectInfo, int price, Section section, List<Section> closedSectionsList, IStateble states)
         {
             this.graphicObject = graphicObject;
             this.objectInfo = objectInfo;
             this.price = price;
             this.section = section;
             this.closedSectionsList = new List<Section>(closedSectionsList);
+            this.states = states;
         }
 
         public int Price
@@ -46,6 +46,9 @@ namespace TestOpenGL.VisualObjects
 
         public List<Section> ClosedSections
         { get { return closedSectionsList; } }
+
+        public IStateble States
+        { get { return states; } }
         //=============
     }
 }

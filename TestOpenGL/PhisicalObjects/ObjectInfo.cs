@@ -1,4 +1,4 @@
-﻿namespace TestOpenGL.VisualObjects
+﻿namespace TestOpenGL.PhisicalObjects
 {
     class ObjectInfo
     {

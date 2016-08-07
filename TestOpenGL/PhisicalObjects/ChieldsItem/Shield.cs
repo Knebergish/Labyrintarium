@@ -2,7 +2,7 @@
 
 using TestOpenGL.Renders;
 
-namespace TestOpenGL.VisualObjects.ChieldsItem
+namespace TestOpenGL.PhisicalObjects.ChieldsItem
 {
     class Shield : Item, IEquipable
     {

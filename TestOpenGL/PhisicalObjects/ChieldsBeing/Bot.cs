@@ -2,7 +2,7 @@
 
 using TestOpenGL.Renders;
 
-namespace TestOpenGL.VisualObjects.ChieldsBeing
+namespace TestOpenGL.PhisicalObjects.ChieldsBeing
 {
     class Bot: Being
     {
@@ -26,7 +26,7 @@ namespace TestOpenGL.VisualObjects.ChieldsBeing
             if (ai != null)
                 ai(this);
             else
-                Features.ActionPoints--;
+                Parameters.CurrentActionPoints--;
         }
     }
 }

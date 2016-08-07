@@ -1,6 +1,6 @@
 ﻿using TestOpenGL.Renders;
 
-namespace TestOpenGL.VisualObjects.ChieldsBlock
+namespace TestOpenGL.PhisicalObjects.ChieldsBlock
 {
     class Door : Block, IUsable
     {

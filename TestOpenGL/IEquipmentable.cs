@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-using TestOpenGL.VisualObjects;
+using TestOpenGL.PhisicalObjects;
 
 
 namespace TestOpenGL
@@ -9,7 +9,8 @@ namespace TestOpenGL
     {
         List<Item> GetAllEquipmentItems();
         Item GetEquipedItem(Section section);
-        bool Equip(int index);
+        bool EquipFromBag(int index);
+        bool EquipFromWithout(Item item);
         bool Unequip(Section section);
 
         event TEventDelegate<IEquipmentable> ChangeEquipmentEvent;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 
 using TestOpenGL.OutInfo;
-using TestOpenGL.VisualObjects;
+using TestOpenGL.PhisicalObjects;
 
 namespace TestOpenGL.Forms.Controls
 {

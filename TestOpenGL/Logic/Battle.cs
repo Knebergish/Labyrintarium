@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using TestOpenGL.VisualObjects;
-using TestOpenGL.VisualObjects.ChieldsItem;
+using TestOpenGL.PhisicalObjects;
+using TestOpenGL.PhisicalObjects.ChieldsItem;
 
 namespace TestOpenGL.Logic
 {
@@ -33,9 +33,9 @@ namespace TestOpenGL.Logic
                 return;
 
 
-            int attack = attacking.Features[Feature.Power] + attacking.Features[Feature.Coordination] + rnd.Next(1, 11);
-            int defend = defending.Features[Feature.Power] + defending.Features[Feature.Coordination] + rnd.Next(1, 11);
-            int defendEvasion = defending.Features[Feature.Agility] + defending.Features[Feature.Sense] + rnd.Next(1, 11);
+            int attack = attacking.Parameters[Feature.Power] + attacking.Parameters[Feature.Coordination] + rnd.Next(1, 11);
+            int defend = defending.Parameters[Feature.Power] + defending.Parameters[Feature.Coordination] + rnd.Next(1, 11);
+            int defendEvasion = defending.Parameters[Feature.Agility] + defending.Parameters[Feature.Sense] + rnd.Next(1, 11);
 
             Program.Log.Log(attacking.GetType().Name + " " + attack.ToString() + " против " + defend.ToString());
 
@@ -43,11 +43,11 @@ namespace TestOpenGL.Logic
                 return;
 
 
-            int countAttack = attacking.Features[Feature.Power]
+            int countAttack = attacking.Parameters[Feature.Power]
                 //+ attacking.Inventory.GetLevelEquipmentItemsByType<Weapon>()
                 + rnd.Next(1, 5);
 
-            int countDefend = defending.Features[Feature.Stamina] 
+            int countDefend = defending.Parameters[Feature.Stamina] 
                 //+ defending.Inventory.GetLevelEquipmentItemsByType<Armor>()
                 + rnd.Next(1, 5);
 
@@ -60,7 +60,7 @@ namespace TestOpenGL.Logic
                 if (damage > 0)
                     defending.Damage(damage);
                 else
-                    defending.Features.ActionPoints--; //TODO: формализовать
+                    defending.Parameters.CurrentActionPoints--; //TODO: формализовать
             }
 
 

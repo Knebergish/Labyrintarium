@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using TestOpenGL.Logic;
-using TestOpenGL.VisualObjects;
+using TestOpenGL.PhisicalObjects;
 
 namespace TestOpenGL.BeingContents
 {
@@ -26,16 +26,16 @@ namespace TestOpenGL.BeingContents
                     if (sc.Count > 0)
                         b.Move(sc.Pop());
                     else
-                        b.Features.ActionPoints--;
+                        b.Parameters.CurrentActionPoints--;
                 }
                 else
                 {
                     if(!b.Attack(LB[0].Coord))
-                        b.Features.ActionPoints--;
+                        b.Parameters.CurrentActionPoints--;
                 }
             }
             else
-                b.Features.ActionPoints--;
+                b.Parameters.CurrentActionPoints--;
         }
     }
 }

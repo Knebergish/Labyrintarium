@@ -1,7 +1,7 @@
 ﻿using TestOpenGL.Renders;
 
 
-namespace TestOpenGL.VisualObjects
+namespace TestOpenGL.PhisicalObjects
 {
     class Block: PhisicalObject
     {

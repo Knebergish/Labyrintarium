@@ -2,6 +2,7 @@
 using System.IO;
 using System.Windows.Forms;
 
+using TestOpenGL.Logic;
 using TestOpenGL.DataIO;
 using TestOpenGL.Forms;
 using TestOpenGL.OutInfo;
@@ -45,8 +46,10 @@ namespace TestOpenGL
         public static void InitApp(MainForm f)
         {
             mainForm = f;
-            DBIO = new DataBaseIO(Directory.GetCurrentDirectory());
-            TA = new TexturesAssistant(Directory.GetCurrentDirectory());
+            string path = "D:\\Материя\\Я великий программист\\#Лабиринтариум# разработка\\TestOpenGL\\TestOpenGL\\bin\\x86\\Debug";
+            //string path = Directory.GetCurrentDirectory();
+            DBIO = new DataBaseIO(path);
+            TA = new TexturesAssistant(path);
             OB = new ObjectsBuilder(DBIO, TA);
 
             // Подгрузка уровня тут не нужна. Но при инициализации прицела при инициализации камеры для Painter Sight начинает свою отрисовку, а в FormAssistant в MapEditorForm в ContentControl идёт обращение опять же к координатам Sight.
@@ -63,6 +66,17 @@ namespace TestOpenGL
             
             C = new Controls.Control();
             FA = new FormsAssistant();
+
+            Func<int, double, Testo> ftesto = (a, b) => new Testo(a, b);
+            Func<double, Testo> ftp = ftesto.Partial(2);
+        }
+    }
+
+    class Testo
+    {
+        public Testo(int a, double b)
+        {
+
         }
     }
 }

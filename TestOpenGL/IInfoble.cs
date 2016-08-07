@@ -2,6 +2,6 @@
 {
     interface IInfoble
     {
-        VisualObjects.ObjectInfo ObjectInfo { get; }
+        PhisicalObjects.ObjectInfo ObjectInfo { get; }
     }
 }

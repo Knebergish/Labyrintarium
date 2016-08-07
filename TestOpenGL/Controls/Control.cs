@@ -18,7 +18,7 @@ namespace TestOpenGL.Controls
         {
             actionsControlDataTable = new DataTable();
             actionsControlDataTable.Columns.Add("keyChar", typeof(char));
-            actionsControlDataTable.Columns.Add("additionalKey", typeof(AdditionalKeys));
+            actionsControlDataTable.Columns.Add("additionalKey", typeof(AdditionalKey));
             actionsControlDataTable.Columns.Add("action", typeof(Action));
 
             IsEnabledControl = false;
@@ -39,11 +39,11 @@ namespace TestOpenGL.Controls
         //=============
 
 
-        public void AddNewActionControl(char c, AdditionalKeys ak, Action ved)
+        public void AddNewActionControl(char c, AdditionalKey ak, Action ved)
         {
             for (int i = 0; i < actionsControlDataTable.Rows.Count; i++)
                 if ((char)actionsControlDataTable.Rows[i][0] == char.ToLower(c))
-                    if ((AdditionalKeys)actionsControlDataTable.Rows[i][1] == ak)
+                    if ((AdditionalKey)actionsControlDataTable.Rows[i][1] == ak)
                     {
                         actionsControlDataTable.Rows[i][2] = ved;
                         return;
@@ -64,16 +64,16 @@ namespace TestOpenGL.Controls
             
             IsEnabledControl = false;
 
-            AdditionalKeys ak = kea.Shift ? AdditionalKeys.Shift :
-                kea.Control ? AdditionalKeys.Ctrl :
-                kea.Alt ? AdditionalKeys.Alt : 
-                AdditionalKeys.None;
+            AdditionalKey ak = kea.Shift ? AdditionalKey.Shift :
+                kea.Control ? AdditionalKey.Ctrl :
+                kea.Alt ? AdditionalKey.Alt : 
+                AdditionalKey.None;
             Action uv;
             char key = char.ToLower((char)kea.KeyCode);
 
             for (int i = 0; i < actionsControlDataTable.Rows.Count; i++)
                 if ((char)actionsControlDataTable.Rows[i][0] == char.ToLower((char)kea.KeyCode))
-                    if ((AdditionalKeys)actionsControlDataTable.Rows[i][1] == ak)
+                    if ((AdditionalKey)actionsControlDataTable.Rows[i][1] == ak)
                     {
                         uv = (Action)actionsControlDataTable.Rows[i][2];
                         uv();

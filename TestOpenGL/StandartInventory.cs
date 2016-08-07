@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using TestOpenGL.VisualObjects;
+using TestOpenGL.PhisicalObjects;
 
 
 namespace TestOpenGL
@@ -44,29 +44,23 @@ namespace TestOpenGL
 
         List<Item> IEquipmentable.GetAllEquipmentItems()
         { return equipment.GetAllEquipmentItems(); }
-
         Item IEquipmentable.GetEquipedItem(Section section)
         { return equipment.GetEquipedItem(section); }
-
-        bool IEquipmentable.Equip(int index)
-        { return equipment.Equip(index); }
-
+        bool IEquipmentable.EquipFromBag(int index)
+        { return equipment.EquipFromBag(index); }
+        bool IEquipmentable.EquipFromWithout(Item item)
+        { return equipment.EquipFromWithout(item); }
         bool IEquipmentable.Unequip(Section section)
         { return equipment.Unequip(section); }
 
-
         bool IBagable.IsFullBag()
         { return bag.IsFullBag(); }
-
         List<Item> IBagable.GetAllBagItems()
         { return bag.GetAllBagItems(); }
-
         Item IBagable.GetItemFromBag(int index)
         { return bag.GetItemFromBag(index); }
-
         bool IBagable.AddItemInBag(Item item)
         { return bag.AddItemInBag(item); }
-
         void IBagable.RemoveItemFromBag(int index)
         { bag.RemoveItemFromBag(index); }
     }

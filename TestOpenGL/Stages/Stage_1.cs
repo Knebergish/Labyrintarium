@@ -1,9 +1,9 @@
 ﻿using System;
 using TestOpenGL.BeingContents;
 using TestOpenGL.Controls;
-using TestOpenGL.VisualObjects;
-using TestOpenGL.VisualObjects.ChieldsBeing;
-using TestOpenGL.VisualObjects.ChieldsBlock;
+using TestOpenGL.PhisicalObjects;
+using TestOpenGL.PhisicalObjects.ChieldsBeing;
+using TestOpenGL.PhisicalObjects.ChieldsBlock;
 using TestOpenGL.World;
 
 namespace TestOpenGL.Stages
@@ -36,7 +36,7 @@ namespace TestOpenGL.Stages
 
         void LoadMap()
         {
-            Random rnd = new Random();
+            /*Random rnd = new Random();
             for (int x = 0; x < Program.L.LengthX; x++)
             {
                 for (int y = 0; y < Program.L.LengthY; y++)
@@ -45,7 +45,7 @@ namespace TestOpenGL.Stages
                     //if (rnd.Next(1, 7) == 1)
                     //    Program.OB.GetBlock(2).Spawn(new Coord(x, y, 0));
                 }
-            }
+            }*/
 
             for (int i = 0; i < 20; i += 3)
                 Program.OB.GetBlock(2).Spawn(2, new Coord(6, i));
@@ -60,14 +60,14 @@ namespace TestOpenGL.Stages
             for (int i = 1; i < 5; i++)
                 Program.GCycle.Gamer.Inventory.AddItemInBag(Program.OB.GetWeapon(i));
             Program.GCycle.Gamer.Inventory.AddItemInBag(Program.OB.GetShield(1));
-            Program.GCycle.Gamer.Features.CurrentExperience += 100;
+            Program.GCycle.Gamer.Parameters.CurrentExperience += 100;
             Program.GCycle.Gamer.Spawn(0, new Coord(0, 0));
 
-            new NPC(
+            /*new NPC(
                 Program.OB.GetBeing(3),
                 "Здравствуй, путник!",
                 null
-                ).Spawn(0, new Coord(4, 3));
+                ).Spawn(0, new Coord(4, 3));*/
 
             new Door(
                 Program.OB.GetBlock(15), 
@@ -144,7 +144,7 @@ namespace TestOpenGL.Stages
                         {
                             while (!GetNextBot().Spawn(0, new Coord(cx, 1)))
                                 cx = ++cx >= 30 ? 0 : ++cx; 
-                            Program.GCycle.Gamer.Features.CurrentHealth = 10;
+                            Program.GCycle.Gamer.Parameters.CurrentHealth = 10;
                         }
                     }
                 ));

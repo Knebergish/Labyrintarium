@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using TestOpenGL.VisualObjects;
+using TestOpenGL.PhisicalObjects;
 
 
 namespace TestOpenGL
@@ -84,12 +84,22 @@ namespace TestOpenGL
         {
             return GetInventorySection(section).Item;
         }
-        bool IEquipmentable.Equip(int index)
+        bool IEquipmentable.EquipFromBag(int index)
         {
             Item item = getItemFromBag(index);
             if (Equip(item))
             {
                 removeItemFromBag(index);
+                changeEquipmentEvent?.Invoke(this);
+                return true;
+            }
+            else
+                return false;
+        }
+        bool IEquipmentable.EquipFromWithout(Item item)
+        {
+            if (Equip(item))
+            {
                 changeEquipmentEvent?.Invoke(this);
                 return true;
             }

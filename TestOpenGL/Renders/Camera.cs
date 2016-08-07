@@ -1,7 +1,7 @@
 ﻿using System;
 
 using TestOpenGL.OutInfo;
-using TestOpenGL.VisualObjects;
+
 
 namespace TestOpenGL.Renders
 {
@@ -70,7 +70,7 @@ namespace TestOpenGL.Renders
             Look();
             if (b != null)
             {
-                b.Events.EventChangeCoord += new VoidEventDelegate(Look);
+                b.ChangeCoordEvent += new VoidEventDelegate(Look);
             }
         }
 

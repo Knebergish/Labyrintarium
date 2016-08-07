@@ -16,8 +16,8 @@ namespace TestOpenGL
     struct Coord
     {
         // Координата (0, 0) - левый нижний угол. Ось X - горизонтальная.
-        private int x;
-        private int y;
+        int x;
+        int y;
         //-------------
 
 
@@ -141,6 +141,11 @@ namespace TestOpenGL
     enum Feature { Power, Coordination, MMR, Stamina, Agility, Sense };
 
     /// <summary>
+    /// Статистики, которые имеет сущность.
+    /// </summary>
+    enum State { MaxHealth, IncreaseHealth, IncreaseActionPoints, Damage, Defend, Offend }
+
+    /// <summary>
     /// Слои отрисовки в порядке отрисовки.
     /// </summary>
     enum Layer { Background, Block, Being, Item, Decal };
@@ -168,5 +173,5 @@ namespace TestOpenGL
     /// <summary>
     /// Дополнительно нажатые клавиши управления.
     /// </summary>
-    enum AdditionalKeys { None, Shift, Ctrl, Alt};
+    enum AdditionalKey { None, Shift, Ctrl, Alt};
 }

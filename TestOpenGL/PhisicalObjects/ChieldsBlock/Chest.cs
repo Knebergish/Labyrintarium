@@ -1,6 +1,6 @@
 ﻿using TestOpenGL.BeingContents;
 
-namespace TestOpenGL.VisualObjects.ChieldsBlock
+namespace TestOpenGL.PhisicalObjects.ChieldsBlock
 {
     class Chest : Block, IUsable
     {

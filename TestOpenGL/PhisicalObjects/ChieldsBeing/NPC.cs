@@ -1,4 +1,4 @@
-﻿namespace TestOpenGL.VisualObjects.ChieldsBeing
+﻿namespace TestOpenGL.PhisicalObjects.ChieldsBeing
 {
     class NPC : Being, IUsable
     {
@@ -24,7 +24,7 @@
 
         protected override void Action()
         {
-            Features.ActionPoints = 0;
+            Parameters.CurrentActionPoints = 0;
         }
 
         public void Used()

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-using TestOpenGL.VisualObjects;
+using TestOpenGL.PhisicalObjects;
 
 
 namespace TestOpenGL.Forms
@@ -17,6 +17,12 @@ namespace TestOpenGL.Forms
 
         public void SetInventory(IInventoryble inventory)
         {
+            if (inventory != null)
+            {
+                inventory.ChangeEquipmentEvent -= ReloadEquipmentList;
+                inventory.ChangeBagEvent -= ReloadBagList;
+            }
+
             this.inventory = inventory;
 
             if(inventory!=null)
@@ -43,7 +49,7 @@ namespace TestOpenGL.Forms
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if(!inventory.Equip(listBox2.SelectedIndex))
+            if(!inventory.EquipFromBag(listBox2.SelectedIndex))
             {
                 MessageBox.Show("Невозможно надеть вещь.");
             }

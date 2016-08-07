@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 using TestOpenGL.Logic;
-using TestOpenGL.VisualObjects;
+using TestOpenGL.PhisicalObjects;
 
 namespace TestOpenGL.World
 {

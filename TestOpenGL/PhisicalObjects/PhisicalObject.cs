@@ -1,7 +1,7 @@
 ﻿using System;
 
 using TestOpenGL.Renders;
-using TestOpenGL.VisualObjects;
+using TestOpenGL.PhisicalObjects;
 
 
 namespace TestOpenGL
@@ -9,12 +9,12 @@ namespace TestOpenGL
     abstract class PhisicalObject : IPositionable, ISpawnable, IInfoble
     {
         Position position;
-        Events events;
         GraphicObjectsPack graphicObjectsPack;
         ObjectInfo objectInfo;
 
         protected delegate bool NewPositionCheckDelegate(int partLayer, Coord coord);
         protected NewPositionCheckDelegate NewPositionCheck;
+        event VoidEventDelegate changeCoordEvent;
         //-------------
 
 
@@ -22,7 +22,6 @@ namespace TestOpenGL
         {
             position = new Position(layer);
             NewPositionCheck += IsEmptyPosition;
-            events = new Events();
         }
         public PhisicalObject(Layer layer, GraphicObjectsPack graphicObjectsPack, ObjectInfo objectInfo)
             : this(layer)
@@ -39,8 +38,11 @@ namespace TestOpenGL
         public Coord Coord
         { get { return position.Coord; } }
 
-        public Events Events
-        { get { return events; } }
+        public event VoidEventDelegate ChangeCoordEvent
+        {
+            add { changeCoordEvent += value; }
+            remove { changeCoordEvent -= value; }
+        }
 
         public ObjectInfo ObjectInfo
         { get { return objectInfo; } }
@@ -68,7 +70,7 @@ namespace TestOpenGL
 
                 graphicObjectsPack.UpdatePosition();
 
-                events.ChangeCoord();
+                changeCoordEvent?.Invoke();
             }
 
             return flag;

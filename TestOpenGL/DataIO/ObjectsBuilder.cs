@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 
 using TestOpenGL.Renders;
-using TestOpenGL.VisualObjects;
-using TestOpenGL.VisualObjects.ChieldsItem;
+using TestOpenGL.PhisicalObjects;
+using TestOpenGL.PhisicalObjects.ChieldsItem;
+using TestOpenGL.Logic;
 
 
 namespace TestOpenGL.DataIO
@@ -15,6 +17,8 @@ namespace TestOpenGL.DataIO
     {
         private DataBaseIO DBIO;
         private TexturesAssistant TA;
+        Func<GraphicObject, ObjectInfo, int, Section, List<Section>, IStateble, int, int, int, int, Weapon> constructWeaponFunc;
+        
         //-------------
 
 
@@ -42,6 +46,25 @@ namespace TestOpenGL.DataIO
 
             return go;
         }
+
+        public IStateble GetStates(int index)
+        {
+            DataTable dt = DBIO.ExecuteSQL("SELECT * FROM States WHERE States.id = " + index);
+
+            if (dt.Rows.Count == 0)
+                return null;
+
+            double[] statesArray = new double[dt.Columns.Count - 1];
+            for (int i = 0; i < dt.Columns.Count - 1; i++)
+                statesArray[i] = double.Parse(dt.Rows[0][i + 1].ToString());
+
+            return new States(statesArray);
+        }
+
+        /*public IInventoryble GetInventory(int index)
+        {
+            DataTable dt = DBIO.ExecuteSQL("SELECT * FROM Cells WHERE Cells.idGraphicObject = " + index);
+        }*/
 
         public Background GetBackground(int num)
         {
@@ -134,7 +157,7 @@ namespace TestOpenGL.DataIO
                 );
         }
 
-        public Item GetItem(int num)
+        public Item GetFuncItem(int num)
         {
             DataTable dt = DBIO.ExecuteSQL("SELECT * FROM Items WHERE Items.id = " + num);
 
@@ -149,13 +172,38 @@ namespace TestOpenGL.DataIO
                 (string)dt.Rows[0]["description"]
                 );
 
+            return new Item(
+                GetGraphicObject(int.Parse(dt.Rows[0]["idGraphicObject"].ToString()), Layer.Item),
+                oi,
+                int.Parse(dt.Rows[0]["price"].ToString()),
+                (Section)int.Parse(dt.Rows[0]["section"].ToString()),
+                ls,
+                GetStates(int.Parse(dt.Rows[0]["states"].ToString()))
+                );
+        }
+
+        public Item GetItem(int num)
+        {
+            DataTable dt = DBIO.ExecuteSQL("SELECT * FROM Items WHERE Items.id = " + num);
+
+            DataTable dt2 = DBIO.ExecuteSQL("SELECT * FROM ClosedSections WHERE ClosedSections.idItem = " + num);
+            List<Section> ls = new List<Section>();
+            for (int i = 0; i < dt2.Rows.Count; i++)
+                ls.Add((Section)int.Parse(dt2.Rows[i]["section"].ToString()));
+            
+            ObjectInfo oi = new ObjectInfo(
+                num,
+                (string)dt.Rows[0]["name"],
+                (string)dt.Rows[0]["description"]
+                );
 
             return new Item(
                 GetGraphicObject(int.Parse(dt.Rows[0]["idGraphicObject"].ToString()), Layer.Item),
                 oi,
                 int.Parse(dt.Rows[0]["price"].ToString()),
                 (Section)int.Parse(dt.Rows[0]["section"].ToString()),
-                ls
+                ls,
+                GetStates(int.Parse(dt.Rows[0]["states"].ToString()))
                 );
         }
 
