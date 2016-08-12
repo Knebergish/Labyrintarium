@@ -32,7 +32,7 @@ namespace TestOpenGL.DataIO
 
         public GraphicObject GetGraphicObject(int num, Layer layer)
         {
-            DataTable dt = DBIO.ExecuteSQL("SELECT * FROM Cells WHERE Cells.idGraphicObject = " + num);
+            DataTable dt = DBIO.ExecuteSQL("SELECT * FROM GraphicObjects WHERE GraphicObjects.idGraphicObject = " + num);
             GraphicObject go = new GraphicObject(layer);
 
             for(int i = 0; i < dt.Rows.Count; i++)
@@ -60,11 +60,6 @@ namespace TestOpenGL.DataIO
 
             return new States(statesArray);
         }
-
-        /*public IInventoryble GetInventory(int index)
-        {
-            DataTable dt = DBIO.ExecuteSQL("SELECT * FROM Cells WHERE Cells.idGraphicObject = " + index);
-        }*/
 
         public Background GetBackground(int num)
         {
@@ -156,30 +151,14 @@ namespace TestOpenGL.DataIO
                 int.Parse(dt.Rows[0]["alliance"].ToString())
                 );
         }
-
-        public Item GetFuncItem(int num)
+        public IInventoryble GetInventory(int index)
         {
-            DataTable dt = DBIO.ExecuteSQL("SELECT * FROM Items WHERE Items.id = " + num);
+            IBagable bag = new Bag();
+            IInventoryble inventory= new StandartInventory(new Equipment(bag), bag);
 
-            DataTable dt2 = DBIO.ExecuteSQL("SELECT * FROM ClosedSections WHERE ClosedSections.idItem = " + num);
-            List<Section> ls = new List<Section>();
-            for (int i = 0; i < dt2.Rows.Count; i++)
-                ls.Add((Section)int.Parse(dt2.Rows[i]["section"].ToString()));
+            DataTable dt = DBIO.ExecuteSQL("SELECT * FROM Inventoryes WHERE Inventoryes.id = " + index);
 
-            ObjectInfo oi = new ObjectInfo(
-                num,
-                (string)dt.Rows[0]["name"],
-                (string)dt.Rows[0]["description"]
-                );
-
-            return new Item(
-                GetGraphicObject(int.Parse(dt.Rows[0]["idGraphicObject"].ToString()), Layer.Item),
-                oi,
-                int.Parse(dt.Rows[0]["price"].ToString()),
-                (Section)int.Parse(dt.Rows[0]["section"].ToString()),
-                ls,
-                GetStates(int.Parse(dt.Rows[0]["states"].ToString()))
-                );
+            return inventory;
         }
 
         public Item GetItem(int num)
@@ -207,7 +186,7 @@ namespace TestOpenGL.DataIO
                 );
         }
 
-        public Armor GetArmor(int num)
+        /*public Armor GetArmor(int num)
         {
             DataTable dt = DBIO.ExecuteSQL("SELECT * FROM Armors WHERE Armors.id = " + num);
 
@@ -236,6 +215,6 @@ namespace TestOpenGL.DataIO
                 int.Parse(dt.Rows[0]["maxDistance"].ToString()),
                 int.Parse(dt.Rows[0]["damage"].ToString())
                 );
-        }
+        }*/
     }
 }

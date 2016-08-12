@@ -8,6 +8,8 @@ namespace TestOpenGL
     class States : IStateble
     {
         Dictionary<State, double> statesDictionary;
+
+        event TEventDelegate<IStateble> changeStatesEvent;
         //-------------
 
 
@@ -18,7 +20,7 @@ namespace TestOpenGL
             for (int i = 0; i < countStates; i++)
                 statesDictionary.Add((State)i, 0);
 
-            statesDictionary[State.IncreaseActionPoints] = 1;
+            //statesDictionary[State.IncreaseActionPoints] = 1;
         }
         public States(params double[] args)
             : this()
@@ -37,12 +39,22 @@ namespace TestOpenGL
 
         double IStateble.this[State state]
         { get { return statesDictionary[state]; } }
+
+        event TEventDelegate<IStateble> IStateble.ChangeStatesEvent
+        {
+            add { changeStatesEvent += value; }
+            remove { changeStatesEvent -= value; }
+        }
         //=============
 
 
         List<double> IStateble.GetAllStates()
         {
             return statesDictionary.Values.ToList();
+        }
+        void IStateble.SetState(State state, double value)
+        {
+            statesDictionary[state] = value;
         }
     }
 }

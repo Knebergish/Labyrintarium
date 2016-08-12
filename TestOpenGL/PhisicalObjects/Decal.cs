@@ -25,7 +25,8 @@ namespace TestOpenGL.PhisicalObjects
 
         protected override bool IsEmptyPosition(int partLayer, Coord coord)
         {
-            return Program.L.GetMap<Decal>().GetObject(partLayer, coord) == null ? true : false;
+            //return Program.L.GetMap<Decal>().GetObject(partLayer, coord) == null ? true : false;
+            return true;
         }
 
         public override void Despawn()

@@ -20,15 +20,16 @@ namespace TestOpenGL.Stages
         {
             StartLoad();
             LoadMap();
-            //LoadShaders();
-            //LoadTriggers();
+            LoadShaders();
+            LoadTriggers();
             EndLoad();
         }
 
         void StartLoad()
         {
             Program.P.StopRender();
-            Program.P.ClearShadersList();
+            // Поддержка шейдеров
+            //Program.P.ClearShadersList();
             Program.GCycle.StopStep();
             Program.L = new Level(20, 20, new int[5] { 4, 4, 1, 3, 1 });
             VariantsControls.StandartGamerControl();
@@ -36,55 +37,63 @@ namespace TestOpenGL.Stages
 
         void LoadMap()
         {
-            /*Random rnd = new Random();
+            Random rnd = new Random();
             for (int x = 0; x < Program.L.LengthX; x++)
             {
                 for (int y = 0; y < Program.L.LengthY; y++)
                 {
                     Program.OB.GetBackground(1).Spawn(0, new Coord(x, y));
-                    //if (rnd.Next(1, 7) == 1)
-                    //    Program.OB.GetBlock(2).Spawn(new Coord(x, y, 0));
+                    if (rnd.Next(1, 20) == 1)
+                        Program.OB.GetBlock(1).Spawn(0, new Coord(x, y));
+                    if (rnd.Next(1, 30) == 1)
+                        Program.OB.GetBlock(2).Spawn(0, new Coord(x, y));
                 }
-            }*/
+            }
 
-            for (int i = 0; i < 20; i += 3)
-                Program.OB.GetBlock(2).Spawn(2, new Coord(6, i));
+            /*for (int i = 0; i < 20; i += 3)
+                Program.OB.GetBlock(2).Spawn(2, new Coord(6, i));*/
 
-            //Bot b = new Bot(Program.OB.GetBeing(1), AIs.AIAttacker);
-            //b.Spawn(0, new Coord(5, 1));
+           
 
-
-            Program.GCycle.Gamer = new Gamer(Program.OB.GetBeing(2));
-            for (int i = 1; i < 10; i++)
+            Program.GCycle.Gamer = new Gamer(Program.OB.GetBeing(3));
+            // До нормальной реализации стат.
+            /*for (int i = 1; i < 10; i++)
                 Program.GCycle.Gamer.Inventory.AddItemInBag(Program.OB.GetArmor(i));
             for (int i = 1; i < 5; i++)
                 Program.GCycle.Gamer.Inventory.AddItemInBag(Program.OB.GetWeapon(i));
-            Program.GCycle.Gamer.Inventory.AddItemInBag(Program.OB.GetShield(1));
-            Program.GCycle.Gamer.Parameters.CurrentExperience += 100;
-            Program.GCycle.Gamer.Spawn(0, new Coord(0, 0));
+            Program.GCycle.Gamer.Inventory.AddItemInBag(Program.OB.GetShield(1));*/
+            Program.GCycle.Gamer.Parameters.AddExperience(100);
+            Program.GCycle.Gamer.Spawn(0, new Coord(5, 5));
 
-            /*new NPC(
+            new Door
+                (
+                Program.OB.GetBlock(15),
+                Program.OB.GetGraphicObject(12, Layer.Block),
+                true,
+                false
+                ).Spawn(0, new Coord(5, 4));
+
+            Bot b = new Bot(Program.OB.GetBeing(1), AIs.AIAttacker);
+            b.Spawn(0, new Coord(0, 0));
+
+            new NPC
+                (
                 Program.OB.GetBeing(3),
                 "Здравствуй, путник!",
                 null
-                ).Spawn(0, new Coord(4, 3));*/
+                ).Spawn(0, new Coord(4, 4));
 
-            new Door(
-                Program.OB.GetBlock(15), 
-                Program.OB.GetGraphicObject(12, Layer.Block), 
-                true, 
-                false
-                ).Spawn(0, new Coord(1, 4));
+
 
             IBagable bag = new Bag(20);
             bag.AddItemInBag(Program.OB.GetItem(1));
             bag.AddItemInBag(Program.OB.GetItem(5));
 
             new Chest
-            (
-            Program.OB.GetBlock(14),
-            bag
-            ).Spawn(1, new Coord(3, 3));
+                (
+                Program.OB.GetBlock(14),
+                bag
+                ).Spawn(1, new Coord(3, 7));
 
             Program.P.Camera.Width = 30;
             Program.P.Camera.Height = 30;
@@ -133,7 +142,7 @@ namespace TestOpenGL.Stages
 
         void LoadTriggers()
         {
-            Triggers.currentTriggers.AddTrigger(
+            /*Triggers.currentTriggers.AddTrigger(
                 new Trigger(
                     1,
                     true,
@@ -147,7 +156,7 @@ namespace TestOpenGL.Stages
                             Program.GCycle.Gamer.Parameters.CurrentHealth = 10;
                         }
                     }
-                ));
+                ));*/
         }
 
         void EndLoad()
@@ -165,33 +174,3 @@ namespace TestOpenGL.Stages
         }
     }
 }
-
-/*static public void Stage_1()
-{
-    Stage s1 = new Stage();
-    s1.lengthX = 30;
-    s1.lengthY = 30;
-    s1.lengthZ = 1;
-    Triggers t = new Triggers();
-    //Triggers.currentTriggers = t;
-    t.AddTrigger(new Trigger(0, true, delegate ()
-    {
-        if (Logic.Analytics.IsInArea(new Coord(4, 4), new Coord(9, 9), Program.GCycle.Gamer.C))
-        {
-            //Program.L.MapDecals.RemoveGroupDecals(0); Устарело
-            Triggers.currentTriggers.DeactivateTrigger(0);
-        }
-    }));
-    s1.stageLoad = delegate ()
-    {
-        //VisualObjectStructure<VisualObjects.Decal> VOSD = new VisualObjectStructure<VisualObjects.Decal>();
-        //for(int i = 4; i <10;i++)
-        //    for(int j = 4; j<10;j++)
-        //        VOSD.Push(Program.OB.GetDecal(3), new Coord(i,j));
-        //Program.L.MapDecals.AddDecals(VOSD); //Переделать под новый движок
-
-        Program.GCycle.Gamer.Spawn(new Coord(0, 0));
-        //Program.L.GetMap<Being>().AddVO(Program.GCycle.Gamer);
-    };
-    s1.StartStage();
-}*/

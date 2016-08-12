@@ -15,6 +15,7 @@ namespace TestOpenGL
         //-------------
 
 
+        public Bag() : this(20) { }
         public Bag(int size)
         {
             this.size = size;

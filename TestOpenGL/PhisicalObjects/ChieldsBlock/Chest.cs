@@ -1,4 +1,6 @@
-﻿using TestOpenGL.BeingContents;
+﻿using System;
+
+using TestOpenGL.Forms;
 
 namespace TestOpenGL.PhisicalObjects.ChieldsBlock
 {
@@ -24,8 +26,15 @@ namespace TestOpenGL.PhisicalObjects.ChieldsBlock
 
         public void Used()
         {
-            //TODOTODO
-            //Program.FA.ShowExchangeInventoryes(Program.GCycle.Gamer.Inventory, inventory);
+            //TODO: FormAssistant!!!
+            Program.mainForm.Invoke(
+                new Action(() => 
+                {
+                    ExchangeBagsForm ebf = new ExchangeBagsForm(Program.GCycle.Gamer.Inventory, bag);
+                    ebf.Show();
+                })
+                );
+            
         }
     }
 }

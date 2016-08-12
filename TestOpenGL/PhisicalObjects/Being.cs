@@ -38,7 +38,9 @@ namespace TestOpenGL.PhisicalObjects
             Bag bag = new Bag(20);
             this.inventory = inventory ?? new StandartInventory(new Equipment(bag), bag);
 
-            this.parameters = parameters ?? new Parameters(this.inventory, new TestFeatures());
+            this.parameters = parameters ?? new Parameters(new TestFeatures(), this.inventory);
+                //TODO: временный костыль
+                this.parameters.SetState(State.IncreaseActionPoints, 1);
 
             Alliance = alliance;
         }
@@ -209,6 +211,9 @@ namespace TestOpenGL.PhisicalObjects
         public bool Attack(Coord coord)
         {
             Weapon weapon = (Weapon)inventory.GetEquipedItem(Section.Weapon);
+            if (weapon == null)
+                return false;
+
             if (
                 weapon.MinDistance <= Analytics.Distance(Coord, coord)
                 && weapon.MaxDistance >= Analytics.Distance(Coord, coord)

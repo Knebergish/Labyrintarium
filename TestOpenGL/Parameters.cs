@@ -27,7 +27,7 @@ namespace TestOpenGL
         //-------------
 
 
-        public Parameters(IEquipmentable equipment, IFeatureble features)
+        public Parameters(IFeatureble features, IEquipmentable equipment)
         {
             //TODO: нахрен?
             this.equipment = equipment;
@@ -40,7 +40,7 @@ namespace TestOpenGL
             equipment.ChangeEquipmentEvent += UpdateItemsStates;
             UpdateItemsStates(equipment);
 
-            //features.ChangeFeaturesEvent += UpdateFeaturesStates;
+            features.ChangeFeaturesEvent += UpdateFeaturesStates;
             UpdateFeaturesStates(features);
         }
 
@@ -70,10 +70,7 @@ namespace TestOpenGL
         int IFeatureble.this[Feature feature]
         { get { return features[feature]; } }
         double IFeatureble.CurrentExperience
-        {
-            get { return features.CurrentExperience; }
-            set { features.CurrentExperience = value; }
-        }
+        { get { return features.CurrentExperience; } }
         int IFeatureble.CurrentLevel
         { get { return features.CurrentLevel; } }
         double IFeatureble.NextLevelExperience
@@ -104,21 +101,26 @@ namespace TestOpenGL
             add { endActionPointsEvent += value; }
             remove { endActionPointsEvent -= value; }
         }
-        event TEventDelegate<IStateble> IParameterable.ChangeStatesEvent
-        {
-            add { changeStatesEvent += value; }
-            remove { changeStatesEvent -= value; }
-        }
         event TEventDelegate<IFeatureble> IFeatureble.ChangeFeaturesEvent
         {
             add { features.ChangeFeaturesEvent += value; }
             remove { features.ChangeFeaturesEvent -= value; }
+        }
+        event TEventDelegate<IStateble> IStateble.ChangeStatesEvent
+        {
+            add { changeStatesEvent += value; }
+            remove { changeStatesEvent -= value; }
         }
         //=============
 
 
         IStateble SumStates(IStateble states1, IStateble states2)
         {
+            if (states1 == null)
+                return states2;
+            if (states2 == null)
+                return states1;
+
             double[] resultArray = states1.GetAllStates().ToArray();
             double[] additionalArray = states2.GetAllStates().ToArray();
             for (int i = 0; i < resultArray.Length; i++)
@@ -130,6 +132,7 @@ namespace TestOpenGL
         void UpdatePrimoStates()
         {
             primoStates = SumStates(featuresStates, itemsStates);
+            primoStates.ChangeStatesEvent += changeStatesEvent;
             changeStatesEvent?.Invoke(this);
         }
         void UpdateItemsStates(IEquipmentable equipment)
@@ -148,8 +151,8 @@ namespace TestOpenGL
         }
         void UpdateFeaturesStates(IFeatureble features)
         {
-            //
-            //
+            //TODOTODO
+            
             UpdatePrimoStates();
         }
 
@@ -165,10 +168,18 @@ namespace TestOpenGL
         {
             return features.AdditionFeature(feature);
         }
+        void IFeatureble.AddExperience(int value)
+        {
+            features.AddExperience(value);
+        }
 
         List<double> IStateble.GetAllStates()
         {
             return primoStates.GetAllStates();
+        }
+        void IStateble.SetState(State state, double value)
+        {
+            primoStates.SetState(state, value);
         }
     }
 }

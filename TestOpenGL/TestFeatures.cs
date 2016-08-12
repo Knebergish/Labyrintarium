@@ -54,17 +54,10 @@ namespace TestOpenGL
 
         int IFeatureble.this[Feature feature]
         { get { return featuresDictionary[feature]; } }
+        double IFeatureble.CurrentExperience
+        { get { return currentExperience; } }
         int IFeatureble.CurrentLevel
         { get { return currentLevel; } }
-        double IFeatureble.CurrentExperience
-        {
-            get { return currentExperience; }
-            set
-            {
-                currentExperience = value > currentExperience ? value : currentExperience;
-                Recalculate();
-            }
-        }
         double IFeatureble.NextLevelExperience
         { get { return nextLevelExperience; } }
         int IFeatureble.FreeFeaturesPoints
@@ -97,6 +90,9 @@ namespace TestOpenGL
         }
         void IFeatureble.SetFeature(Feature feature, int value)
         {
+            if (value < 0)
+                ExceptionAssistant.NewException(new ArgumentOutOfRangeException("Значение характеристики не может быть меньше 0."));
+
             featuresDictionary[feature] = value;
             changeFeaturesEvent?.Invoke(this);
         }
@@ -110,6 +106,14 @@ namespace TestOpenGL
                 return true;
             }
             return false;
+        }
+        void IFeatureble.AddExperience(int value)
+        {
+            if (value < 0)
+                ExceptionAssistant.NewException(new ArgumentOutOfRangeException("Нельзя отнимать опыт."));
+
+            currentExperience += value;
+            Recalculate();
         }
     }
 }

@@ -3,7 +3,7 @@ using TestOpenGL.Renders;
 
 namespace TestOpenGL.PhisicalObjects.ChieldsItem
 {
-    class Weapon : Item, IEquipable
+    class Weapon : Item
     {
         int level;
         int minDistance;

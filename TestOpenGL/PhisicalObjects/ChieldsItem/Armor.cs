@@ -1,6 +1,6 @@
 ﻿namespace TestOpenGL.PhisicalObjects.ChieldsItem
 {
-    class Armor : Item, IEquipable
+    class Armor : Item
     {
         int level;
         //-------------

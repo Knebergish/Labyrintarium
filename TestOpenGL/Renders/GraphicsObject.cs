@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data;
 
-using TestOpenGL.Renders;
 using TestOpenGL.Logic;
 
 namespace TestOpenGL.Renders
@@ -32,13 +31,14 @@ namespace TestOpenGL.Renders
 
         public Coord Coord
         { get { return position.Coord; } }
-
-        
         //=============
 
 
         public void AddCell(UnsafeCoord deltaCoord, int deltaLayer, ModifyDepth modifyDepth, Texture texture)
         {
+            if (deltaCoord.Y < 0)
+                ExceptionAssistant.NewException(new System.ArgumentException("Отрицательное изменение Y-координаты недопустимо в силу несовершенства отрисовки."));
+
             cellsDataTable.Rows.Add(deltaCoord, deltaLayer, modifyDepth, texture);
         }
 

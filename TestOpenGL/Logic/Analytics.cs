@@ -210,7 +210,7 @@ namespace TestOpenGL.Logic
             for (int i = 0; i < (int)layer; i++)
                 resultDepth += Program.L.GetDepthLayer((Layer)i);
 
-            double delta = 0.5;
+            double delta = 0.4;
 
             switch (modifyDepth)
             {
@@ -223,7 +223,7 @@ namespace TestOpenGL.Logic
                     break;
 
                 case ModifyDepth.ToLayer:
-                    resultDepth += Program.L.GetDepthLayer(layer) - delta;
+                    resultDepth += Program.L.GetDepthLayer(layer) - 1 + delta;
                     break;
 
                 case ModifyDepth.UnderPartLayer:

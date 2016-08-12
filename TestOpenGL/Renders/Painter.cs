@@ -9,6 +9,7 @@ using Tao.OpenGl;
 
 using TestOpenGL.Logic;
 
+
 namespace TestOpenGL.Renders
 {
     class Painter
@@ -16,12 +17,13 @@ namespace TestOpenGL.Renders
         int maxFPS;
         int pauseMillisecond;
 
-        List<IRenderable> listRenderObject;
+        List<IRenderable> listRenderObjects;
 
         Thread RenderThread;
         ManualResetEvent isNextRender = new ManualResetEvent(false);
 
-        List<Func<List<Cell>>> shadersList;
+        // Поддержка шейдеров
+        //List<Func<List<Cell>>> shadersList;
 
         //TODO: вот как-то она тут не в тему, но куда её убрать?..
         Camera camera;
@@ -35,10 +37,10 @@ namespace TestOpenGL.Renders
             maxFPS = 60;
             pauseMillisecond = 0;
 
-            listRenderObject = new List<IRenderable>();
+            listRenderObjects = new List<IRenderable>();
 
-            shadersList = new List<Func<List<Cell>>>();
-
+            // Поддержка шейдеров
+            //shadersList = new List<Func<List<Cell>>>();
 
             SettingVisibleAreaSize();
 
@@ -69,17 +71,18 @@ namespace TestOpenGL.Renders
             set { maxFPS = value > 0 && value < 1000 ? value : 60; }
         }
 
-        public List<Func<List<Cell>>> ShadersList
-        { get { return shadersList; } }
+        // Поддержка шейдеров
+        //public List<Func<List<Cell>>> ShadersList
+        //{ get { return shadersList; } }
         //=============
 
         public void AddRenderObject(IRenderable renderObject)
         {
-            listRenderObject.Add(renderObject);
+            listRenderObjects.Add(renderObject);
         }
         public void RemoveRenderObject(IRenderable renderObject)
         {
-            listRenderObject.Remove(renderObject);
+            listRenderObjects.Remove(renderObject);
         }
 
         void FPSUpdate(int newValue)
@@ -117,7 +120,7 @@ namespace TestOpenGL.Renders
                 {
                     sw.Start();
 
-                    DrawFrame(listRenderObject); 
+                    DrawFrame(listRenderObjects); 
 
                     sw.Stop();
                     ProcessingFPS((int)sw.ElapsedMilliseconds);
@@ -147,8 +150,9 @@ namespace TestOpenGL.Renders
                 lC.AddRange(ro.GetCells());
             }
 
-            foreach (Func<List<Cell>> func in shadersList)
-                lC.AddRange(func());
+            // Поддержка шейдеров
+            //foreach (Func<List<Cell>> func in shadersList)
+            //    lC.AddRange(func());
 
             for (int i = lC.Count - 1; i >= 0; i--)
                 if (!Analytics.IsInCamera(lC[i].C, camera))
@@ -205,19 +209,22 @@ namespace TestOpenGL.Renders
         {
             int cW = camera?.Width ?? 10;
             int cH = camera?.Height ?? 10;
+
             Gl.glViewport(0, 0, GlControl.Width, GlControl.Height);
             // устанавливаем проекционную матрицу 
             Gl.glMatrixMode(Gl.GL_PROJECTION);
             // очищаем ее 
             Gl.glLoadIdentity();
 
+            Glu.gluOrtho2D(0.0, cW, 0.0, cH);
+
             // теперь необходимо корректно настроить 2D ортогональную проекцию 
             // в зависимости от того, какая сторона больше 
             // мы немного варьируем то, как будут сконфигурированы настройки проекции 
-            if (GlControl.Width <= GlControl.Height)
+            /*if (GlControl.Width <= GlControl.Height)
                 Glu.gluOrtho2D(0.0, cW, 0.0, cH * (float)GlControl.Height / (float)GlControl.Width);
             else
-                Glu.gluOrtho2D(0.0, cW * (float)GlControl.Width / (float)GlControl.Height, 0.0, cH);
+                Glu.gluOrtho2D(0.0, cW * (float)GlControl.Width / (float)GlControl.Height, 0.0, cH);*/
 
             // переходим к объектно-видовой матрице 
             Gl.glMatrixMode(Gl.GL_MODELVIEW);
@@ -225,10 +232,9 @@ namespace TestOpenGL.Renders
             Camera?.Look();
         }
 
-        public void ClearShadersList()
-        {
-            shadersList.Clear();
-        }
+        // Поддержка шейдеров
+        //public void ClearShadersList()
+        //{ shadersList.Clear(); }
 
         /*public void DrawColor(Coord C, double colorA, double colorB, double colorC)
         {

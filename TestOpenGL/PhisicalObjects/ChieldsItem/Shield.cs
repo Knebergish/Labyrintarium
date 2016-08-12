@@ -4,7 +4,7 @@ using TestOpenGL.Renders;
 
 namespace TestOpenGL.PhisicalObjects.ChieldsItem
 {
-    class Shield : Item, IEquipable
+    class Shield : Item
     {
         int level;
         //-------------

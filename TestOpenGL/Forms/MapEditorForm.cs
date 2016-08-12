@@ -224,7 +224,8 @@ namespace TestOpenGL.Forms
                     break;
 
                 case Layer.Decal:
-                    Program.L.GetMap<Decal>().RemoveObject
+                    //TODO
+                    /*Program.L.GetMap<Decal>().RemoveObject
                         (
                             comboBox1.SelectedIndex,
                             new Coord
@@ -232,7 +233,7 @@ namespace TestOpenGL.Forms
                             Program.P.Camera.Sight.Coord.X,
                             Program.P.Camera.Sight.Coord.Y
                             )
-                        );
+                        );*/
                     break;
             }
 

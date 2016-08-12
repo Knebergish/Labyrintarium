@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TestOpenGL
+﻿namespace TestOpenGL
 {
     interface IParameterable : IFeatureble, IStateble
     {
@@ -15,6 +9,5 @@ namespace TestOpenGL
         event TEventDelegate<IParameterable> ChangeCurrentActionPointsEvent;
         event VoidEventDelegate EndHealthEvent;
         event VoidEventDelegate EndActionPointsEvent;
-        event TEventDelegate<IStateble> ChangeStatesEvent;
     }
 }

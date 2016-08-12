@@ -1,20 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using TestOpenGL.BeingContents;
+
 using TestOpenGL.PhisicalObjects;
+
 
 namespace TestOpenGL.Forms
 {
     partial class ExchangeBagsForm : Form
     {
-
         IBagable primoBag, secundoBag;
 
         public ExchangeBagsForm(IBagable primoBag, IBagable secundoBag)
@@ -39,9 +32,9 @@ namespace TestOpenGL.Forms
             if (listBox2.SelectedIndex == -1)
                 return;
 
-            //Item i = secundoInventory.GetBagItems()[listBox2.SelectedIndex];
-            //secundoInventory.ThrowBagItem(listBox2.SelectedIndex);
-            //primoInventory.PutBagItem(i);
+            Item i = secundoBag.GetAllBagItems()[listBox2.SelectedIndex];
+            secundoBag.RemoveItemFromBag(listBox2.SelectedIndex);
+            primoBag.AddItemInBag(i);
 
             UpdateListBoxes();
         }
@@ -51,17 +44,20 @@ namespace TestOpenGL.Forms
             if (listBox1.SelectedIndex == -1)
                 return;
 
-            //Item i = primoInventory.GetBagItems()[listBox1.SelectedIndex];
-            //primoInventory.ThrowBagItem(listBox1.SelectedIndex);
-            //secundoInventory.PutBagItem(i);
+            Item i = primoBag.GetAllBagItems()[listBox1.SelectedIndex];
+            primoBag.RemoveItemFromBag(listBox1.SelectedIndex);
+            secundoBag.AddItemInBag(i);
 
             UpdateListBoxes();
         }
 
         private void UpdateListBoxes()
         {
-            //WriteInventoryToListBox(primoInventory, listBox1);
-            //WriteInventoryToListBox(secundoInventory, listBox2);
+            WriteInventoryToListBox(primoBag, listBox1);
+            WriteInventoryToListBox(secundoBag, listBox2);
+
+            infoControl1.SetInfo(null);
+            infoControl2.SetInfo(null);
         }
 
         private void Form4_FormClosed(object sender, FormClosedEventArgs e)
@@ -69,13 +65,23 @@ namespace TestOpenGL.Forms
             Program.mainForm.Enabled = true;
         }
 
-        /*private void WriteInventoryToListBox(Inventory inventory, ListBox listBox)
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            infoControl1.SetInfo(primoBag.GetAllBagItems()[listBox1.SelectedIndex].ObjectInfo);
+        }
+
+        private void listBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            infoControl2.SetInfo(secundoBag.GetAllBagItems()[listBox2.SelectedIndex].ObjectInfo);
+        }
+
+        private void WriteInventoryToListBox(IBagable inventory, ListBox listBox)
         {
             listBox.Items.Clear();
 
-            foreach (Item i in inventory.GetBagItems())
-                listBox.Items.Add(i.ObjectInfo.Name);
-        }*/
-        
+            if (inventory.CountItemsInBag > 0)
+                foreach (Item i in inventory.GetAllBagItems())
+                    listBox.Items.Add(i.ObjectInfo.Name);
+        }
     }
 }
