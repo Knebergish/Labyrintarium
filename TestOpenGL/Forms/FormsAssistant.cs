@@ -32,7 +32,7 @@ namespace TestOpenGL.Forms
 
         private void ProcessingOpeningForms(openForm delegateOpenForm)
         {
-            Program.mainForm.Invoke(
+            Program.MainThreadInvoke(
             new Func<int>(() => 
             {
                 delegateOpenForm();

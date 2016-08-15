@@ -72,7 +72,7 @@ namespace TestOpenGL.DataIO
             Gl.glClear(Gl.GL_COLOR_BUFFER_BIT | Gl.GL_DEPTH_BUFFER_BIT);
         }
 
-        private int LoadTextureFromFile(Layer layer, string imageName)
+        public int LoadTextureFromFile(Layer layer, string imageName)
         {
             string url = pathes[(int)layer] + imageName + ".png";
             int image = 0;
@@ -139,9 +139,9 @@ namespace TestOpenGL.DataIO
 
         private int LoadTexture(Layer layer, string imageName)
         {
-            return (int)Program.mainForm.Invoke(
-            new Func<int>(() => LoadTextureFromFile(layer, imageName))
-            );
+            return (int)Program.MainThreadInvoke(
+                new Func<int>(() => LoadTextureFromFile(layer, imageName))
+                );
         }
 
         private int SearchLoadedTexture(Layer layer, string imageName)

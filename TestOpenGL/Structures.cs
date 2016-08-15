@@ -10,6 +10,7 @@ namespace TestOpenGL
     public delegate void IntEventDelegate(int value);
     public delegate void TEventDelegate<T>(T t);
     public delegate void ADelegate<A>(A a);
+    public delegate B BDelegate<B>();
     public delegate A ABDelegate<A, B>(B b);
 
 

@@ -11,6 +11,7 @@ using TestOpenGL.World;
 
 namespace TestOpenGL
 {
+    
     static class Program
     {
         //public static ExceptionAssistant exceptionAssistant;
@@ -19,7 +20,8 @@ namespace TestOpenGL
         public static TexturesAssistant TA;
         public static DataBaseIO DBIO;
         public static Level L;
-        public static Painter P;
+        public static IRenderManager P;
+        public static Camera Cam;
         public static DecalsAssistant DA;
         public static Logger Log;
         public static GameCycle GCycle;
@@ -38,27 +40,31 @@ namespace TestOpenGL
 
             Application.Run(new MainForm());
         }
-
+        
         /// <summary>
         /// Инициализация игровых классов.
         /// </summary>
         /// <param name="f">Ссылка на форму с компонентом вывода изображения.</param>
         public static void InitApp(MainForm f)
         {
+            System.Threading.Thread.CurrentThread.Name = "MainThread";
+            
             mainForm = f;
             string path = "D:\\Материя\\Я великий программист\\#Лабиринтариум# разработка\\TestOpenGL\\TestOpenGL\\bin\\x86\\Debug";
             //string path = Directory.GetCurrentDirectory();
             DBIO = new DataBaseIO(path);
             TA = new TexturesAssistant(path);
             OB = new ObjectsBuilder(DBIO, TA);
-
+            
             // Подгрузка уровня тут не нужна. Но при инициализации прицела при инициализации камеры для Painter Sight начинает свою отрисовку, а в FormAssistant в MapEditorForm в ContentControl идёт обращение опять же к координатам Sight.
             //TODO: Исправить.
             L = new Level(1, 1, new int[5] { 1, 1, 1, 1, 1 });
 
-            P = new Painter();
+            P = new Painter(mainForm.GlControl);
+            Cam = new Camera(10, 10);
+            P.SetCamera(Cam);
+
             DA = new DecalsAssistant();
-            P.Camera = new Camera(10, 10);
             Log = new Logger(); Log.LoggerListBox = mainForm.logListBox; Log.QuestLabel = mainForm.questLabel;
 
             Triggers.currentTriggers = new Triggers();
@@ -67,16 +73,27 @@ namespace TestOpenGL
             C = new Controls.Control();
             FA = new FormsAssistant();
 
-            Func<int, double, Testo> ftesto = (a, b) => new Testo(a, b);
-            Func<double, Testo> ftp = ftesto.Partial(2);
+            Stages.Stage_1 S1 = new Stages.Stage_1();
+            S1.LoadStage();
+
+            
+            //Func<int, double, Testo> ftesto = (a, b) => new Testo(a, b);
+            //Func<double, Testo> ftp = ftesto.Partial(2);
+        }
+
+        public static object MainThreadInvoke(Delegate method)
+        {
+            return mainForm.Invoke(method);
         }
     }
 
-    class Testo
+    
+
+    /*class Testo
     {
         public Testo(int a, double b)
         {
 
         }
-    }
+    }*/
 }

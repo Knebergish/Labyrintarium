@@ -29,7 +29,7 @@ namespace TestOpenGL.World
             {
                 gamer = value;
                 Program.FA.UpdateForms();
-                Program.P.Camera.SetLookingVO(gamer);
+                Program.Cam.SetLookingVO(gamer);
             }
         }
         //=============

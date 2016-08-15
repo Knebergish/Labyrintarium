@@ -12,7 +12,8 @@ namespace TestOpenGL.Renders
         // Текущее смещение камеры относительно блока (0, 0)
         int shiftX, shiftY;
         // Позиция прицела
-        public VoidEventDelegate changeCameraPosition;
+        VoidEventDelegate changePositionEvent;
+        VoidEventDelegate changeSizeEvent;
         
         PhisicalObject looking;
         Sight sight;
@@ -30,9 +31,7 @@ namespace TestOpenGL.Renders
         }
 
         public Sight Sight
-        {
-            get { return sight; }
-        }
+        { get { return sight; } }
 
         public int Height
         { 
@@ -40,7 +39,7 @@ namespace TestOpenGL.Renders
             set
             {
                 height = value > Program.L.LengthX || value > Program.L.LengthY ? Math.Min(Program.L.LengthX, Program.L.LengthY) : (value < 1 ? 1 : value);
-                Program.P.SettingVisibleAreaSize();
+                changeSizeEvent?.Invoke();
             } 
         }
         public int Width
@@ -49,7 +48,7 @@ namespace TestOpenGL.Renders
             set
             {
                 width = value > Program.L.LengthX || value > Program.L.LengthY ? Math.Min(Program.L.LengthX, Program.L.LengthY) : (value < 1 ? 1 : value); ;
-                Program.P.SettingVisibleAreaSize();
+                changeSizeEvent?.Invoke();
             } 
         }
 
@@ -61,6 +60,17 @@ namespace TestOpenGL.Renders
         { get { return shiftY; } }
         public int MaxY
         { get { return shiftY + Height - 1; } }
+
+        public event VoidEventDelegate ChangePositionEvent
+        {
+            add { changePositionEvent += value; }
+            remove { changePositionEvent -= value; }
+        }
+        public event VoidEventDelegate ChangeSizeEvent
+        {
+            add { changeSizeEvent += value; }
+            remove { changeSizeEvent -= value; }
+        }
         //=============
 
 
@@ -91,7 +101,7 @@ namespace TestOpenGL.Renders
                 shiftY = 0;
             }
 
-            changeCameraPosition?.Invoke();
+            changePositionEvent?.Invoke();
             return;
         }
     }

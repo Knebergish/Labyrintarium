@@ -8,103 +8,127 @@ using System.Linq;
 using Tao.OpenGl;
 
 using TestOpenGL.Logic;
-
+using Tao.Platform.Windows;
 
 namespace TestOpenGL.Renders
 {
-    class Painter
+    class Painter : IRenderManager
     {
-        int maxFPS;
-        int pauseMillisecond;
-
+        SimpleOpenGlControl glControl;
         List<IRenderable> listRenderObjects;
+
+        int maxFPS;
+        int actualFPS;
+        int pauseMillisecond;
 
         Thread RenderThread;
         ManualResetEvent isNextRender = new ManualResetEvent(false);
 
-        // Поддержка шейдеров
-        //List<Func<List<Cell>>> shadersList;
-
         //TODO: вот как-то она тут не в тему, но куда её убрать?..
         Camera camera;
 
-        public event IntEventDelegate EventFPSUpdate;
+        event ADelegate<int> changeActualFPSEvent;
         //-------------
 
 
-        public Painter()
+        public Painter(SimpleOpenGlControl glControl)
         {
             maxFPS = 60;
             pauseMillisecond = 0;
-
+            
             listRenderObjects = new List<IRenderable>();
 
-            // Поддержка шейдеров
-            //shadersList = new List<Func<List<Cell>>>();
+            this.glControl = glControl;
+            this.glControl.SizeChanged += (object sender, EventArgs e) => SettingVisibleAreaSize();
 
             SettingVisibleAreaSize();
 
             RenderThread = new Thread(Render);
+            RenderThread.Name = "RenderThread";
             RenderThread.Start();
             StartRender();
         }
 
-        public Tao.Platform.Windows.SimpleOpenGlControl GlControl
+        event ADelegate<int> IRenderManager.ChangeActualFPSEvent
         {
-            get { return Program.mainForm.GlControl; }
+            add { changeActualFPSEvent += value; }
+            remove { changeActualFPSEvent -= value; }
         }
 
-        public Camera Camera
+        int IRenderManager.MaxFPS
+        { get { return maxFPS; } }
+        int IRenderManager.ActualFPS
+        { get { return ActualFPS; } }
+
+        int ActualFPS
         {
-            get { return camera; }
-            set 
+            get { return actualFPS; }
+            set
             {
-                StopRender();
-                camera = value;
-                StartRender();
+                actualFPS = value;
+                changeActualFPSEvent?.Invoke(actualFPS);
             }
         }
-
-        public int MaxFPS
-        {
-            get { return maxFPS; }
-            set { maxFPS = value > 0 && value < 1000 ? value : 60; }
-        }
-
-        // Поддержка шейдеров
-        //public List<Func<List<Cell>>> ShadersList
-        //{ get { return shadersList; } }
         //=============
 
-        public void AddRenderObject(IRenderable renderObject)
+
+        public void SetGLControl(SimpleOpenGlControl glControl)
+        {
+            this.glControl = glControl;
+            this.glControl.SizeChanged += (object sender, EventArgs e) => SettingVisibleAreaSize();
+        }
+
+        private void GlControl_SizeChanged(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IRenderManager.SetCamera(Camera camera)
+        {
+            StopRender();
+            this.camera = camera;
+            this.camera.ChangeSizeEvent += SettingVisibleAreaSize;
+            StartRender();
+        }
+        void IRenderManager.SetMaxFPS(int maxFPS)
+        {
+            this.maxFPS = maxFPS > 0 && maxFPS < 1000 ? maxFPS : 60;
+        }
+
+        void IRenderManager.AddRenderObject(IRenderable renderObject)
         {
             listRenderObjects.Add(renderObject);
         }
-        public void RemoveRenderObject(IRenderable renderObject)
+        void IRenderManager.RemoveRenderObject(IRenderable renderObject)
         {
             listRenderObjects.Remove(renderObject);
         }
 
-        void FPSUpdate(int newValue)
+        void IRenderManager.StartRender()
         {
-            EventFPSUpdate?.Invoke(newValue);
+            StartRender();
         }
-        void ProcessingFPS(int renderElapsedTime) //TODO: херовое название, придумать получше.
+        void IRenderManager.StopRender()
         {
-            FPSUpdate((int)(1000 / ((pauseMillisecond + renderElapsedTime) == 0 ? 1 : (pauseMillisecond + renderElapsedTime))));
-
-            pauseMillisecond = (int)(1000 / MaxFPS - renderElapsedTime);
-            pauseMillisecond = pauseMillisecond > 0 ? pauseMillisecond : 0;
+            StopRender();
         }
 
-        public void StartRender()
+        void StartRender()
         {
             isNextRender.Set();
         }
-        public void StopRender()
+        void StopRender()
         {
             isNextRender.Reset();
             Thread.Sleep(1);
+        }
+
+        void CalculateActualFPS(int renderElapsedTime) //TODO: херовое название, придумать получше.
+        {
+            ActualFPS = (int)(1000 / ((pauseMillisecond + renderElapsedTime) == 0 ? 1 : (pauseMillisecond + renderElapsedTime)));
+
+            pauseMillisecond = (int)(1000 / maxFPS - renderElapsedTime);
+            pauseMillisecond = pauseMillisecond > 0 ? pauseMillisecond : 0;
         }
 
         void Render()
@@ -114,27 +138,25 @@ namespace TestOpenGL.Renders
             while (true)
             {
                 isNextRender.WaitOne();
-                StopRender();
+                isNextRender.Reset();
 
-                VoidEventDelegate del = delegate
+                Action del = delegate
                 {
                     sw.Start();
 
                     DrawFrame(listRenderObjects); 
 
                     sw.Stop();
-                    ProcessingFPS((int)sw.ElapsedMilliseconds);
+                    CalculateActualFPS((int)sw.ElapsedMilliseconds);
                     sw.Reset();
 
-                    StartRender();
+                    isNextRender.Set();
                 };
-                Program.mainForm.Invoke(del);
-
+                Program.MainThreadInvoke(del);
 
                 Thread.Sleep(pauseMillisecond);
             }
         }
-
         void DrawFrame(List<IRenderable> listRenderObject)
         {
             List<IRenderable> lGO = new List<IRenderable>();
@@ -172,7 +194,6 @@ namespace TestOpenGL.Renders
 
             Program.mainForm.GlControl.SwapBuffers();
         }
-
         void DrawCell(Cell cell)
         {
             int deltaX = camera?.MinX ?? 0;
@@ -205,12 +226,12 @@ namespace TestOpenGL.Renders
             Gl.glDisable(Gl.GL_TEXTURE_2D);
         }
 
-        public void SettingVisibleAreaSize()
+        void SettingVisibleAreaSize()
         {
             int cW = camera?.Width ?? 10;
             int cH = camera?.Height ?? 10;
 
-            Gl.glViewport(0, 0, GlControl.Width, GlControl.Height);
+            Gl.glViewport(0, 0, glControl.Width, glControl.Height);
             // устанавливаем проекционную матрицу 
             Gl.glMatrixMode(Gl.GL_PROJECTION);
             // очищаем ее 
@@ -229,12 +250,8 @@ namespace TestOpenGL.Renders
             // переходим к объектно-видовой матрице 
             Gl.glMatrixMode(Gl.GL_MODELVIEW);
 
-            Camera?.Look();
+            camera?.Look();
         }
-
-        // Поддержка шейдеров
-        //public void ClearShadersList()
-        //{ shadersList.Clear(); }
 
         /*public void DrawColor(Coord C, double colorA, double colorB, double colorC)
         {

@@ -1,6 +1,5 @@
-TestOpenGL/bin/x86/
-TestOpenGL/obj/Debug/
-TestOpenGL/obj/
+TestOpenGL.sln
 TestOpenGL/Properties/
 TestOpenGL/TestOpenGL.csproj
-TestOpenGL.sln
+TestOpenGL/bin/
+TestOpenGL/obj/

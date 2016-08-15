@@ -29,23 +29,23 @@
 
             Program.C.AddNewActionControl('j', AdditionalKey.None, delegate
             {
-                Program.P.Camera.Sight.MoveSight(Direction.Left);
+                Program.Cam.Sight.MoveSight(Direction.Left);
             });
             Program.C.AddNewActionControl('i', AdditionalKey.None, delegate
             {
-                Program.P.Camera.Sight.MoveSight(Direction.Up);
+                Program.Cam.Sight.MoveSight(Direction.Up);
             });
             Program.C.AddNewActionControl('l', AdditionalKey.None, delegate
             {
-                Program.P.Camera.Sight.MoveSight(Direction.Right);
+                Program.Cam.Sight.MoveSight(Direction.Right);
             });
             Program.C.AddNewActionControl('k', AdditionalKey.None, delegate
             {
-                Program.P.Camera.Sight.MoveSight(Direction.Down);
+                Program.Cam.Sight.MoveSight(Direction.Down);
             });
             Program.C.AddNewActionControl(' ', AdditionalKey.None, delegate
             {
-                Program.GCycle.Gamer.Attack(Program.P.Camera.Sight.Coord);
+                Program.GCycle.Gamer.Attack(Program.Cam.Sight.Coord);
             });
             
 

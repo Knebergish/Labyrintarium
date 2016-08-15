@@ -194,14 +194,14 @@ namespace TestOpenGL.PhisicalObjects
 
         public bool Use()
         {
-            if (Analytics.Distance(Coord, Program.P.Camera.Sight.Coord) > 1)
+            if (Analytics.Distance(Coord, Program.Cam.Sight.Coord) > 1)
                 return false;
 
-            foreach (Block b in Program.L.GetMap<Block>().GetCellObject(Program.P.Camera.Sight.Coord))
+            foreach (Block b in Program.L.GetMap<Block>().GetCellObject(Program.Cam.Sight.Coord))
                 if (b is IUsable)
                     ((IUsable)b).Used();
 
-            foreach (Being b in Program.L.GetMap<Being>().GetCellObject(Program.P.Camera.Sight.Coord))
+            foreach (Being b in Program.L.GetMap<Being>().GetCellObject(Program.Cam.Sight.Coord))
                 if (b is IUsable)
                     ((IUsable)b).Used();
             return true;

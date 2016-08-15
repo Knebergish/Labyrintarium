@@ -17,7 +17,8 @@ namespace TestOpenGL.Forms
         public MapEditorForm()
         {
             InitializeComponent();
-            contentControl1.SetSight(Program.P.Camera.Sight);
+            //ExceptionAssistant.NewException(new Exception("Форма редактирования карты неработоспособна. Смирись или переделывай её."));
+            contentControl1.SetSight(Program.Cam.Sight);
         }
 
         private void Form3_Load(object sender, EventArgs e)
@@ -76,8 +77,8 @@ namespace TestOpenGL.Forms
         {
             listBox1.Items.Clear();
             foreach (T b in Program.L.GetMap<T>().GetCellObject(new Coord(
-                Program.P.Camera.Sight.Coord.X,
-                Program.P.Camera.Sight.Coord.Y
+                Program.Cam.Sight.Coord.X,
+                Program.Cam.Sight.Coord.Y
                 )))
                 listBox1.Items.Add(b.PartLayer + ". " + b.ObjectInfo.Name);
         }
@@ -110,8 +111,8 @@ namespace TestOpenGL.Forms
                                 comboBox1.SelectedIndex,
                                 new Coord
                                 (
-                                Program.P.Camera.Sight.Coord.X,
-                                Program.P.Camera.Sight.Coord.Y
+                                Program.Cam.Sight.Coord.X,
+                                Program.Cam.Sight.Coord.Y
                                 )
                             );
                         break;
@@ -122,8 +123,8 @@ namespace TestOpenGL.Forms
                                 comboBox1.SelectedIndex,
                                 new Coord
                                 (
-                                Program.P.Camera.Sight.Coord.X,
-                                Program.P.Camera.Sight.Coord.Y
+                                Program.Cam.Sight.Coord.X,
+                                Program.Cam.Sight.Coord.Y
                                 )
                             );
                         break;
@@ -134,8 +135,8 @@ namespace TestOpenGL.Forms
                                 0,
                                 new Coord
                                 (
-                                Program.P.Camera.Sight.Coord.X,
-                                Program.P.Camera.Sight.Coord.Y
+                                Program.Cam.Sight.Coord.X,
+                                Program.Cam.Sight.Coord.Y
                                 )
                             );
                         break;
@@ -146,8 +147,8 @@ namespace TestOpenGL.Forms
                                 comboBox1.SelectedIndex,
                                 new Coord
                                 (
-                                Program.P.Camera.Sight.Coord.X,
-                                Program.P.Camera.Sight.Coord.Y
+                                Program.Cam.Sight.Coord.X,
+                                Program.Cam.Sight.Coord.Y
                                 )
                             );
                         break;
@@ -193,8 +194,8 @@ namespace TestOpenGL.Forms
                             comboBox1.SelectedIndex,
                             new Coord
                             (
-                            Program.P.Camera.Sight.Coord.X,
-                            Program.P.Camera.Sight.Coord.Y
+                            Program.Cam.Sight.Coord.X,
+                            Program.Cam.Sight.Coord.Y
                             )
                         );
                     break;
@@ -205,8 +206,8 @@ namespace TestOpenGL.Forms
                             comboBox1.SelectedIndex,
                             new Coord
                             (
-                            Program.P.Camera.Sight.Coord.X,
-                            Program.P.Camera.Sight.Coord.Y
+                            Program.Cam.Sight.Coord.X,
+                            Program.Cam.Sight.Coord.Y
                             )
                         );
                     break;
@@ -217,8 +218,8 @@ namespace TestOpenGL.Forms
                             0,
                             new Coord
                             (
-                            Program.P.Camera.Sight.Coord.X,
-                            Program.P.Camera.Sight.Coord.Y
+                            Program.Cam.Sight.Coord.X,
+                            Program.Cam.Sight.Coord.Y
                             )
                         );
                     break;
@@ -230,8 +231,8 @@ namespace TestOpenGL.Forms
                             comboBox1.SelectedIndex,
                             new Coord
                             (
-                            Program.P.Camera.Sight.Coord.X,
-                            Program.P.Camera.Sight.Coord.Y
+                            Program.Cam.Sight.Coord.X,
+                            Program.Cam.Sight.Coord.Y
                             )
                         );*/
                     break;

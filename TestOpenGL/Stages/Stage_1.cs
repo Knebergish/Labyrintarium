@@ -65,13 +65,13 @@ namespace TestOpenGL.Stages
             Program.GCycle.Gamer.Parameters.AddExperience(100);
             Program.GCycle.Gamer.Spawn(0, new Coord(5, 5));
 
-            new Door
+            /*new Door
                 (
                 Program.OB.GetBlock(15),
                 Program.OB.GetGraphicObject(12, Layer.Block),
                 true,
                 false
-                ).Spawn(0, new Coord(5, 4));
+                ).Spawn(0, new Coord(5, 4));*/
 
             Bot b = new Bot(Program.OB.GetBeing(1), AIs.AIAttacker);
             b.Spawn(0, new Coord(0, 0));
@@ -95,8 +95,8 @@ namespace TestOpenGL.Stages
                 bag
                 ).Spawn(1, new Coord(3, 7));
 
-            Program.P.Camera.Width = 30;
-            Program.P.Camera.Height = 30;
+            Program.Cam.Width = 30;
+            Program.Cam.Height = 30;
         }
 
         void LoadShaders()
@@ -109,7 +109,7 @@ namespace TestOpenGL.Stages
 
                 foreach (Block block in Program.L.GetMap<Block>().GetAllVO())
                     if (block.ObjectInfo.Id == 2)
-                        if (Analytics.CorrectCoordinate(block.C.X, block.C.Y + 1) && Analytics.IsInCamera(new Coord(block.C.X, block.C.Y + 1), Program.P.Camera))
+                        if (Analytics.CorrectCoordinate(block.C.X, block.C.Y + 1) && Analytics.IsInCamera(new Coord(block.C.X, block.C.Y + 1), Program.Cam))
                             lro.Add(new RenderObject(t, new Coord(block.C.X, block.C.Y + 1), (int)TypeVisualObject.Being * (Program.L.LengthZ - 1) + Program.L.LengthZ + 0.5));
 
                 return lro;
@@ -121,7 +121,7 @@ namespace TestOpenGL.Stages
                 List<RenderObject> lro = new List<RenderObject>();
 
                 foreach (Being b in Program.L.GetMap<Being>().GetAllVO())
-                    if (Analytics.IsInCamera(new Coord(b.C.X, b.C.Y), Program.P.Camera))
+                    if (Analytics.IsInCamera(new Coord(b.C.X, b.C.Y), Program.Cam))
                     {
                         List<Armor> la = b.Inventory.GetEquipmentItemsByType<Armor>() ?? new List<Armor>();
                         foreach (Item i in la)
@@ -157,6 +157,20 @@ namespace TestOpenGL.Stages
                         }
                     }
                 ));*/
+            /*Triggers.currentTriggers.AddTrigger(
+                new Trigger(
+                    1, 
+                    true,
+                    delegate
+                    {
+                        if (Program.L.GetMap<Being>().GetObject(0, new Coord(0, 1)) != null)
+                        {
+                            Block b = Program.OB.GetBlock(15);
+                            b.Spawn(1, new Coord(5, 6));
+                        }
+                    }
+                    )
+                );*/
         }
 
         void EndLoad()

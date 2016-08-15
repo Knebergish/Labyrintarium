@@ -20,7 +20,7 @@ namespace TestOpenGL.OutInfo
             this.camera = camera;
             eventSight = new EventSight();
             
-            this.camera.changeCameraPosition += Check;
+            this.camera.ChangePositionEvent += Check;
             Program.P.AddRenderObject(graphicObject);
         }
         

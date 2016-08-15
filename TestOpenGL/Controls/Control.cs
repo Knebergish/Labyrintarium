@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace TestOpenGL.Controls
 {
@@ -11,6 +12,9 @@ namespace TestOpenGL.Controls
         private bool isEnabledControl;
 
         DataTable actionsControlDataTable;
+
+        Thread testThread;
+        public ManualResetEvent mre;
         //-------------
 
 
@@ -23,7 +27,29 @@ namespace TestOpenGL.Controls
 
             IsEnabledControl = false;
 
-            //Func<List<RenderObject>> fu = new Func<List<RenderObject>>(() => { return new List<RenderObject>(); });
+            mre = new ManualResetEvent(false);
+            testThread = new Thread(Test);
+            testThread.Name = "ControlThread";
+            testThread.Start();
+        }
+
+        void Test()
+        {
+            while(true)
+            {
+                mre.WaitOne();
+                lock (Program.mainForm.keyList)
+                {
+                    while (Program.mainForm.keyList.Count > 0)
+                    {
+
+                        ProcessingKeyPress(Program.mainForm.keyList[0]);
+                        Program.mainForm.keyList.RemoveAt(0);
+
+                    }
+                }
+                mre.Reset();
+            }
         }
 
         public bool IsEnabledControl
@@ -76,7 +102,7 @@ namespace TestOpenGL.Controls
                     if ((AdditionalKey)actionsControlDataTable.Rows[i][1] == ak)
                     {
                         uv = (Action)actionsControlDataTable.Rows[i][2];
-                        uv();
+                        Program.MainThreadInvoke(uv);
                         break;
                     }
 
