@@ -34,8 +34,8 @@ namespace TestOpenGL.Logic
         /// <returns></returns>
         public static bool CorrectCoordinate(int x, int y)
         {
-            if (x >= 0 && x < Program.L.LengthX)
-                if (y >= 0 && y < Program.L.LengthY)
+            if (x >= 0 && x < GlobalData.WorldData.Level.LengthX)
+                if (y >= 0 && y < GlobalData.WorldData.Level.LengthY)
                     return true;
             return false;
         }
@@ -61,10 +61,10 @@ namespace TestOpenGL.Logic
             //SW.Start();
             Stack<Coord> SC = new Stack<Coord>();
             int[] dx = { 1, 0, -1, 0 }, dy = { 0, 1, 0, -1 };
-            int[,] grid = new int[Program.L.LengthX, Program.L.LengthY];
+            int[,] grid = new int[GlobalData.WorldData.Level.LengthX, GlobalData.WorldData.Level.LengthY];
 
-            for (int i = 0; i < Program.L.LengthX; i++)
-                for (int j = 0; j < Program.L.LengthY; j++)
+            for (int i = 0; i < GlobalData.WorldData.Level.LengthX; i++)
+                for (int j = 0; j < GlobalData.WorldData.Level.LengthY; j++)
                     grid[i, j] = -1;
 
             int d = 0;
@@ -74,17 +74,17 @@ namespace TestOpenGL.Logic
             do
             {
                 stope = true;
-                for (int xd = 0; xd < Program.L.LengthX; xd++)
+                for (int xd = 0; xd < GlobalData.WorldData.Level.LengthX; xd++)
                 {
-                    for (int yd = 0; yd < Program.L.LengthY; yd++)
+                    for (int yd = 0; yd < GlobalData.WorldData.Level.LengthY; yd++)
                     {
                         if (grid[xd, yd] == d)
                         {
                             for (int k = 0; k < 4; k++)
                             {
-                                if(CorrectCoordinate(xd + dx[k], yd + dy[k]))//(yd + dy[k] >= 0 && yd + dy[k] < Program.L.LengthY && xd + dx[k] >= 0 && xd + dx[k] < Program.L.LengthX)
+                                if(CorrectCoordinate(xd + dx[k], yd + dy[k]))//(yd + dy[k] >= 0 && yd + dy[k] < GlobalData.WorldData.Level.LengthY && xd + dx[k] >= 0 && xd + dx[k] < GlobalData.WorldData.Level.LengthX)
                                 {
-                                    if (Program.L.IsPassable(0, new Coord(xd + dx[k], yd + dy[k])) == true || (xd + dx[k] == end.X && yd + dy[k] == end.Y))
+                                    if (GlobalData.WorldData.Level.IsPassable(0, new Coord(xd + dx[k], yd + dy[k])) == true || (xd + dx[k] == end.X && yd + dy[k] == end.Y))
                                     {
                                         if (grid[xd + dx[k], yd + dy[k]] == -1)
                                         {
@@ -111,7 +111,7 @@ namespace TestOpenGL.Logic
                 d--;
                 for (int k = 0; k < 4; k++)
                 {
-                    if ((ydop + dy[k] >= 0 && ydop + dy[k] < Program.L.LengthY && xdop + dx[k] >= 0 && xdop + dx[k] < Program.L.LengthX))//new Coord(xdop + dx[k], ydop + dy[k]);//
+                    if ((ydop + dy[k] >= 0 && ydop + dy[k] < GlobalData.WorldData.Level.LengthY && xdop + dx[k] >= 0 && xdop + dx[k] < GlobalData.WorldData.Level.LengthX))//new Coord(xdop + dx[k], ydop + dy[k]);//
                         if (grid[xdop + dx[k], ydop + dy[k]] == d)
                         {
                             xdop = xdop + dx[k];
@@ -208,7 +208,7 @@ namespace TestOpenGL.Logic
         {
             double resultDepth = 0;
             for (int i = 0; i < (int)layer; i++)
-                resultDepth += Program.L.GetDepthLayer((Layer)i);
+                resultDepth += GlobalData.WorldData.Level.GetDepthLayer((Layer)i);
 
             double delta = 0.4;
 
@@ -223,7 +223,7 @@ namespace TestOpenGL.Logic
                     break;
 
                 case ModifyDepth.ToLayer:
-                    resultDepth += Program.L.GetDepthLayer(layer) - 1 + delta;
+                    resultDepth += GlobalData.WorldData.Level.GetDepthLayer(layer) - 1 + delta;
                     break;
 
                 case ModifyDepth.UnderPartLayer:
@@ -280,7 +280,7 @@ namespace TestOpenGL.Logic
         }
         static public List<Being> GetBeingInArea(Coord C1, Coord C2)
         {
-            List<Being> LB = Program.L.GetMap<Being>().GetAllObject();
+            List<Being> LB = GlobalData.WorldData.Level.GetMap<Being>().GetAllObject();
             List<Being> answerLB = new List<Being>();
 
             foreach (Being being in LB)
@@ -301,8 +301,8 @@ namespace TestOpenGL.Logic
 
             mass[0] = mass[0] < 0 ? 0 : mass[0];
             mass[1] = mass[1] < 0 ? 0 : mass[1];
-            mass[2] = mass[2] >= Program.L.LengthX ? Program.L.LengthX - 1 : mass[2];
-            mass[3] = mass[3] >= Program.L.LengthY ? Program.L.LengthY - 1 : mass[3];
+            mass[2] = mass[2] >= GlobalData.WorldData.Level.LengthX ? GlobalData.WorldData.Level.LengthX - 1 : mass[2];
+            mass[3] = mass[3] >= GlobalData.WorldData.Level.LengthY ? GlobalData.WorldData.Level.LengthY - 1 : mass[3];
 
             C1 = new Coord(mass[0], mass[1]);
             C2 = new Coord(mass[2], mass[3]);

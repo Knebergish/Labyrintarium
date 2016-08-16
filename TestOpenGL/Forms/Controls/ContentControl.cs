@@ -41,11 +41,11 @@ namespace TestOpenGL.Forms.Controls
             if (sight == null)
                 return;
 
-            foreach (PhisicalObject go in Program.L.GetMap<Background>().GetCellObject(sight.Coord))
+            foreach (PhisicalObject go in GlobalData.WorldData.Level.GetMap<Background>().GetCellObject(sight.Coord))
                 listObjectsInfo.Add(go.ObjectInfo);
-            foreach (PhisicalObject go in Program.L.GetMap<Block>().GetCellObject(sight.Coord))
+            foreach (PhisicalObject go in GlobalData.WorldData.Level.GetMap<Block>().GetCellObject(sight.Coord))
                 listObjectsInfo.Add(go.ObjectInfo);
-            foreach (PhisicalObject go in Program.L.GetMap<Being>().GetCellObject(sight.Coord))
+            foreach (PhisicalObject go in GlobalData.WorldData.Level.GetMap<Being>().GetCellObject(sight.Coord))
                 listObjectsInfo.Add(go.ObjectInfo);
 
             foreach (ObjectInfo oi in listObjectsInfo)

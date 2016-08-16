@@ -5,48 +5,44 @@ using System.Threading;
 using System.Diagnostics;
 using System.Linq;
 
-using Tao.OpenGl;
-
 using TestOpenGL.Logic;
-using Tao.Platform.Windows;
+using TestOpenGL.PhisicalObjects;
+
 
 namespace TestOpenGL.Renders
 {
     class Painter : IRenderManager
     {
-        SimpleOpenGlControl glControl;
-        List<IRenderable> listRenderObjects;
-
         int maxFPS;
         int actualFPS;
         int pauseMillisecond;
 
+        //List<IRenderable> listRenderObjects;
+
         Thread RenderThread;
-        ManualResetEvent isNextRender = new ManualResetEvent(false);
+        ManualResetEvent isNextRender;
 
         //TODO: вот как-то она тут не в тему, но куда её убрать?..
-        Camera camera;
+        //Camera camera;
 
         event ADelegate<int> changeActualFPSEvent;
         //-------------
 
 
-        public Painter(SimpleOpenGlControl glControl)
+        public Painter()
         {
             maxFPS = 60;
+            actualFPS = 0;
             pauseMillisecond = 0;
             
-            listRenderObjects = new List<IRenderable>();
-
-            this.glControl = glControl;
-            this.glControl.SizeChanged += (object sender, EventArgs e) => SettingVisibleAreaSize();
-
-            SettingVisibleAreaSize();
+            //listRenderObjects = new List<IRenderable>();
 
             RenderThread = new Thread(Render);
             RenderThread.Name = "RenderThread";
+
+            isNextRender = new ManualResetEvent(false);
+
             RenderThread.Start();
-            StartRender();
         }
 
         event ADelegate<int> IRenderManager.ChangeActualFPSEvent
@@ -72,37 +68,27 @@ namespace TestOpenGL.Renders
         //=============
 
 
-        public void SetGLControl(SimpleOpenGlControl glControl)
-        {
-            this.glControl = glControl;
-            this.glControl.SizeChanged += (object sender, EventArgs e) => SettingVisibleAreaSize();
-        }
-
-        private void GlControl_SizeChanged(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        void IRenderManager.SetCamera(Camera camera)
+        /*void IRenderManager.SetCamera(Camera camera)
         {
             StopRender();
             this.camera = camera;
-            this.camera.ChangeSizeEvent += SettingVisibleAreaSize;
+            //TODO
+            //this.camera.ChangeSizeEvent += SettingVisibleAreaSize;
             StartRender();
-        }
+        }*/
         void IRenderManager.SetMaxFPS(int maxFPS)
         {
             this.maxFPS = maxFPS > 0 && maxFPS < 1000 ? maxFPS : 60;
         }
 
-        void IRenderManager.AddRenderObject(IRenderable renderObject)
+        /*void IRenderManager.AddRenderObject(IRenderable renderObject)
         {
             listRenderObjects.Add(renderObject);
         }
         void IRenderManager.RemoveRenderObject(IRenderable renderObject)
         {
             listRenderObjects.Remove(renderObject);
-        }
+        }*/
 
         void IRenderManager.StartRender()
         {
@@ -144,7 +130,7 @@ namespace TestOpenGL.Renders
                 {
                     sw.Start();
 
-                    DrawFrame(listRenderObjects); 
+                    DrawFrame(GlobalData.WorldData.RendereableObjectsContainer.GetAllRendereableObjects()); 
 
                     sw.Stop();
                     CalculateActualFPS((int)sw.ElapsedMilliseconds);
@@ -164,20 +150,15 @@ namespace TestOpenGL.Renders
 
             lGO.AddRange(listRenderObject); //TODO: Проверить, может и без этого норм.
 
-            Gl.glClear(Gl.GL_COLOR_BUFFER_BIT | Gl.GL_DEPTH_BUFFER_BIT);
-
+            GlobalData.LLL.ClearScreen();
 
             foreach(IRenderable ro in lGO)
             {
                 lC.AddRange(ro.GetCells());
             }
 
-            // Поддержка шейдеров
-            //foreach (Func<List<Cell>> func in shadersList)
-            //    lC.AddRange(func());
-
             for (int i = lC.Count - 1; i >= 0; i--)
-                if (!Analytics.IsInCamera(lC[i].C, camera))
+                if (!Analytics.IsInCamera(lC[i].C, GlobalData.WorldData.Camera))
                     lC.RemoveAt(i);
 
             var sort = from cell in lC
@@ -187,70 +168,15 @@ namespace TestOpenGL.Renders
             foreach (Cell cell in sort)
                 DrawCell(cell);
 
-            
-
-            // Прицел
-            // DrawCell(camera.Sight.AimDecal.GraphicsObject.GetCells()[0]);
-
-            Program.mainForm.GlControl.SwapBuffers();
+            GlobalData.LLL.RedrawScreed();
         }
+
         void DrawCell(Cell cell)
         {
-            int deltaX = camera?.MinX ?? 0;
-            int deltaY = camera?.MinY ?? 0;
+            int deltaX = GlobalData.WorldData.Camera?.MinX ?? 0;
+            int deltaY = GlobalData.WorldData.Camera?.MinY ?? 0;
 
-            int size = 1;
-            // включаем режим текстурирования
-            Gl.glEnable(Gl.GL_TEXTURE_2D);
-
-            // включаем режим текстурирования
-            Gl.glBindTexture(Gl.GL_TEXTURE_2D, cell.Texture.textureId);
-
-            Gl.glBegin(Gl.GL_QUADS);
-
-            Gl.glTexCoord2d(0.0, 0.0);
-            Gl.glVertex2d((double)cell.C.X - deltaX, (double)cell.C.Y - deltaY);
-
-            Gl.glTexCoord2d(0.0, 0.0 + size);
-            Gl.glVertex2d((double)cell.C.X - deltaX, (double)cell.C.Y + size - deltaY);
-
-            Gl.glTexCoord2d(0.0 + size, 0.0 + size);
-            Gl.glVertex2d((double)cell.C.X + size - deltaX, (double)cell.C.Y + size - deltaY);
-
-            Gl.glTexCoord2d(0.0 + size, 0.0);
-            Gl.glVertex2d((double)cell.C.X + size - deltaX, (double)cell.C.Y - deltaY);
-
-            Gl.glEnd();
-
-            // отключаем режим текстурирования
-            Gl.glDisable(Gl.GL_TEXTURE_2D);
-        }
-
-        void SettingVisibleAreaSize()
-        {
-            int cW = camera?.Width ?? 10;
-            int cH = camera?.Height ?? 10;
-
-            Gl.glViewport(0, 0, glControl.Width, glControl.Height);
-            // устанавливаем проекционную матрицу 
-            Gl.glMatrixMode(Gl.GL_PROJECTION);
-            // очищаем ее 
-            Gl.glLoadIdentity();
-
-            Glu.gluOrtho2D(0.0, cW, 0.0, cH);
-
-            // теперь необходимо корректно настроить 2D ортогональную проекцию 
-            // в зависимости от того, какая сторона больше 
-            // мы немного варьируем то, как будут сконфигурированы настройки проекции 
-            /*if (GlControl.Width <= GlControl.Height)
-                Glu.gluOrtho2D(0.0, cW, 0.0, cH * (float)GlControl.Height / (float)GlControl.Width);
-            else
-                Glu.gluOrtho2D(0.0, cW * (float)GlControl.Width / (float)GlControl.Height, 0.0, cH);*/
-
-            // переходим к объектно-видовой матрице 
-            Gl.glMatrixMode(Gl.GL_MODELVIEW);
-
-            camera?.Look();
+            GlobalData.LLL.DrawCell(cell.Texture, cell.C.X - deltaX, cell.C.Y - deltaY);
         }
 
         /*public void DrawColor(Coord C, double colorA, double colorB, double colorC)

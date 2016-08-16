@@ -27,58 +27,56 @@ namespace TestOpenGL.Stages
 
         void StartLoad()
         {
-            Program.P.StopRender();
-            // Поддержка шейдеров
-            //Program.P.ClearShadersList();
-            Program.GCycle.StopStep();
-            Program.L = new Level(20, 20, new int[5] { 4, 4, 1, 3, 1 });
+            GlobalData.RenderManager.StopRender();
+            GlobalData.GCycle.StopStep();
+            //GlobalData.WorldData.Level = new Level(20, 20, new int[5] { 4, 4, 1, 3, 1 });
             VariantsControls.StandartGamerControl();
         }
 
         void LoadMap()
         {
             Random rnd = new Random();
-            for (int x = 0; x < Program.L.LengthX; x++)
+            for (int x = 0; x < GlobalData.WorldData.Level.LengthX; x++)
             {
-                for (int y = 0; y < Program.L.LengthY; y++)
+                for (int y = 0; y < GlobalData.WorldData.Level.LengthY; y++)
                 {
-                    Program.OB.GetBackground(1).Spawn(0, new Coord(x, y));
+                    GlobalData.OB.GetBackground(1).Spawn(0, new Coord(x, y));
                     if (rnd.Next(1, 20) == 1)
-                        Program.OB.GetBlock(1).Spawn(0, new Coord(x, y));
+                        GlobalData.OB.GetBlock(1).Spawn(0, new Coord(x, y));
                     if (rnd.Next(1, 30) == 1)
-                        Program.OB.GetBlock(2).Spawn(0, new Coord(x, y));
+                        GlobalData.OB.GetBlock(2).Spawn(0, new Coord(x, y));
                 }
             }
 
             /*for (int i = 0; i < 20; i += 3)
-                Program.OB.GetBlock(2).Spawn(2, new Coord(6, i));*/
+                GlobalData.OB.GetBlock(2).Spawn(2, new Coord(6, i));*/
 
            
 
-            Program.GCycle.Gamer = new Gamer(Program.OB.GetBeing(3));
+            GlobalData.GCycle.Gamer = new Gamer(GlobalData.OB.GetBeing(1));
             // До нормальной реализации стат.
             /*for (int i = 1; i < 10; i++)
-                Program.GCycle.Gamer.Inventory.AddItemInBag(Program.OB.GetArmor(i));
+                GlobalData.GCycle.Gamer.Inventory.AddItemInBag(GlobalData.OB.GetArmor(i));
             for (int i = 1; i < 5; i++)
-                Program.GCycle.Gamer.Inventory.AddItemInBag(Program.OB.GetWeapon(i));
-            Program.GCycle.Gamer.Inventory.AddItemInBag(Program.OB.GetShield(1));*/
-            Program.GCycle.Gamer.Parameters.AddExperience(100);
-            Program.GCycle.Gamer.Spawn(0, new Coord(5, 5));
+                GlobalData.GCycle.Gamer.Inventory.AddItemInBag(GlobalData.OB.GetWeapon(i));
+            GlobalData.GCycle.Gamer.Inventory.AddItemInBag(GlobalData.OB.GetShield(1));*/
+            GlobalData.GCycle.Gamer.Parameters.AddExperience(100);
+            GlobalData.GCycle.Gamer.Spawn(0, new Coord(5, 5));
 
             /*new Door
                 (
-                Program.OB.GetBlock(15),
-                Program.OB.GetGraphicObject(12, Layer.Block),
+                GlobalData.OB.GetBlock(15),
+                GlobalData.OB.GetGraphicObject(12, Layer.Block),
                 true,
                 false
                 ).Spawn(0, new Coord(5, 4));*/
 
-            Bot b = new Bot(Program.OB.GetBeing(1), AIs.AIAttacker);
+            Bot b = new Bot(GlobalData.OB.GetBeing(1), AIs.AIAttacker);
             b.Spawn(0, new Coord(0, 0));
 
             new NPC
                 (
-                Program.OB.GetBeing(3),
+                GlobalData.OB.GetBeing(3),
                 "Здравствуй, путник!",
                 null
                 ).Spawn(0, new Coord(4, 4));
@@ -86,54 +84,54 @@ namespace TestOpenGL.Stages
 
 
             IBagable bag = new Bag(20);
-            bag.AddItemInBag(Program.OB.GetItem(1));
-            bag.AddItemInBag(Program.OB.GetItem(5));
+            bag.AddItemInBag(GlobalData.OB.GetItem(1));
+            bag.AddItemInBag(GlobalData.OB.GetItem(5));
 
             new Chest
                 (
-                Program.OB.GetBlock(14),
+                GlobalData.OB.GetBlock(14),
                 bag
                 ).Spawn(1, new Coord(3, 7));
 
-            Program.Cam.Width = 30;
-            Program.Cam.Height = 30;
+            GlobalData.WorldData.Camera.Width = 30;
+            GlobalData.WorldData.Camera.Height = 30;
         }
 
         void LoadShaders()
         {
             // Шейдер крон деревьев
-            /*Program.P.ShadersList.Add(new Func<List<RenderObject>>(() =>
+            /*GlobalData.RenderManager.ShadersList.Add(new Func<List<RenderObject>>(() =>
             {
                 Texture t = Program.TA.GetTexture(TypeVisualObject.Block, "3");
                 List<RenderObject> lro = new List<RenderObject>();
 
-                foreach (Block block in Program.L.GetMap<Block>().GetAllVO())
+                foreach (Block block in GlobalData.WorldData.Level.GetMap<Block>().GetAllVO())
                     if (block.ObjectInfo.Id == 2)
-                        if (Analytics.CorrectCoordinate(block.C.X, block.C.Y + 1) && Analytics.IsInCamera(new Coord(block.C.X, block.C.Y + 1), Program.Cam))
-                            lro.Add(new RenderObject(t, new Coord(block.C.X, block.C.Y + 1), (int)TypeVisualObject.Being * (Program.L.LengthZ - 1) + Program.L.LengthZ + 0.5));
+                        if (Analytics.CorrectCoordinate(block.C.X, block.C.Y + 1) && Analytics.IsInCamera(new Coord(block.C.X, block.C.Y + 1), GlobalData.WorldData.Camera))
+                            lro.Add(new RenderObject(t, new Coord(block.C.X, block.C.Y + 1), (int)TypeVisualObject.Being * (GlobalData.WorldData.Level.LengthZ - 1) + GlobalData.WorldData.Level.LengthZ + 0.5));
 
                 return lro;
             }));*/
 
             // Шейдер экипированных вещей
-            /*Program.P.ShadersList.Add(new Func<List<RenderObject>>(() =>
+            /*GlobalData.RenderManager.ShadersList.Add(new Func<List<RenderObject>>(() =>
             {
                 List<RenderObject> lro = new List<RenderObject>();
 
-                foreach (Being b in Program.L.GetMap<Being>().GetAllVO())
-                    if (Analytics.IsInCamera(new Coord(b.C.X, b.C.Y), Program.Cam))
+                foreach (Being b in GlobalData.WorldData.Level.GetMap<Being>().GetAllVO())
+                    if (Analytics.IsInCamera(new Coord(b.C.X, b.C.Y), GlobalData.WorldData.Camera))
                     {
                         List<Armor> la = b.Inventory.GetEquipmentItemsByType<Armor>() ?? new List<Armor>();
                         foreach (Item i in la)
-                            lro.Add(new RenderObject(i.Texture, b.C, (int)TypeVisualObject.Being * (Program.L.LengthZ - 1) + 0.1));
+                            lro.Add(new RenderObject(i.Texture, b.C, (int)TypeVisualObject.Being * (GlobalData.WorldData.Level.LengthZ - 1) + 0.1));
 
                         List<Weapon> lw = b.Inventory.GetEquipmentItemsByType<Weapon>() ?? new List<Weapon>();
                         foreach (Item i in lw)
-                            lro.Add(new RenderObject(i.Texture, b.C, (int)TypeVisualObject.Being * (Program.L.LengthZ - 1) + 0.1));
+                            lro.Add(new RenderObject(i.Texture, b.C, (int)TypeVisualObject.Being * (GlobalData.WorldData.Level.LengthZ - 1) + 0.1));
 
                         List<Shield> ls = b.Inventory.GetEquipmentItemsByType<Shield>() ?? new List<Shield>();
                         foreach (Item i in ls)
-                            lro.Add(new RenderObject(i.Texture, b.C, (int)TypeVisualObject.Being * (Program.L.LengthZ - 1) + 0.1));
+                            lro.Add(new RenderObject(i.Texture, b.C, (int)TypeVisualObject.Being * (GlobalData.WorldData.Level.LengthZ - 1) + 0.1));
                     }
                         
                 return lro;
@@ -149,11 +147,11 @@ namespace TestOpenGL.Stages
                     delegate 
                     {
                         int cx = 5;
-                        if (Program.L.GetMap<Being>().GetAllObject().Count < 5)
+                        if (GlobalData.WorldData.Level.GetMap<Being>().GetAllObject().Count < 5)
                         {
                             while (!GetNextBot().Spawn(0, new Coord(cx, 1)))
                                 cx = ++cx >= 30 ? 0 : ++cx; 
-                            Program.GCycle.Gamer.Parameters.CurrentHealth = 10;
+                            GlobalData.GCycle.Gamer.Parameters.CurrentHealth = 10;
                         }
                     }
                 ));*/
@@ -163,9 +161,9 @@ namespace TestOpenGL.Stages
                     true,
                     delegate
                     {
-                        if (Program.L.GetMap<Being>().GetObject(0, new Coord(0, 1)) != null)
+                        if (GlobalData.WorldData.Level.GetMap<Being>().GetObject(0, new Coord(0, 1)) != null)
                         {
-                            Block b = Program.OB.GetBlock(15);
+                            Block b = GlobalData.OB.GetBlock(15);
                             b.Spawn(1, new Coord(5, 6));
                         }
                     }
@@ -175,14 +173,14 @@ namespace TestOpenGL.Stages
 
         void EndLoad()
         {
-            Program.Log.SetCurrentQuest("Не умри!!");
-            Program.P.StartRender();
-            Program.GCycle.StartStep();
+            GlobalData.Log.SetCurrentQuest("Не умри!!");
+            GlobalData.RenderManager.StartRender();
+            GlobalData.GCycle.StartStep();
         }
 
         Bot GetNextBot()
         {
-            Bot b = new Bot(Program.OB.GetBeing(1), AIs.AIAttacker);
+            Bot b = new Bot(GlobalData.OB.GetBeing(1), AIs.AIAttacker);
             b.Alliance = currentAlliance++;
             return b;
         }

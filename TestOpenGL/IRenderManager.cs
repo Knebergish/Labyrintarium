@@ -11,11 +11,11 @@ namespace TestOpenGL
 {
     interface IRenderManager
     {
-        void SetCamera(Camera camera);
+        //void SetCamera(Camera camera);
         void SetMaxFPS(int maxFPS);
 
-        void AddRenderObject(IRenderable renderObject);
-        void RemoveRenderObject(IRenderable renderObject);
+        //void AddRenderObject(IRenderable renderObject);
+        //void RemoveRenderObject(IRenderable renderObject);
 
         void StartRender();
         void StopRender();

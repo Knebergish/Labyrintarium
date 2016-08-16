@@ -46,21 +46,21 @@ namespace TestOpenGL.PhisicalObjects
         {
             if (SetNewPosition(partLayer, coord))
             {
-                Program.L.GetMap<Block>().AddObject(this);
-                Program.P.AddRenderObject(GraphicObjectsPack);
+                GlobalData.WorldData.Level.GetMap<Block>().AddObject(this);
+                GlobalData.WorldData.RendereableObjectsContainer.Add(GraphicObjectsPack);
                 return true;
             }
             return false;
         }
         protected override bool IsEmptyPosition(int partLayer, Coord coord)
         {
-            return Program.L.GetMap<Block>().GetObject(partLayer, coord) == null ? true : false;
+            return GlobalData.WorldData.Level.GetMap<Block>().GetObject(partLayer, coord) == null ? true : false;
         }
 
         public override void Despawn()
         {
-            Program.L.GetMap<Block>().RemoveObject(PartLayer, Coord);
-            Program.P.RemoveRenderObject(GraphicObjectsPack);
+            GlobalData.WorldData.Level.GetMap<Block>().RemoveObject(PartLayer, Coord);
+            GlobalData.WorldData.RendereableObjectsContainer.Remove(GraphicObjectsPack);
         }
     }
 }

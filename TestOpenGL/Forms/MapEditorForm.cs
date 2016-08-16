@@ -18,7 +18,7 @@ namespace TestOpenGL.Forms
         {
             InitializeComponent();
             //ExceptionAssistant.NewException(new Exception("Форма редактирования карты неработоспособна. Смирись или переделывай её."));
-            contentControl1.SetSight(Program.Cam.Sight);
+            contentControl1.SetSight(GlobalData.WorldData.Camera.Sight);
         }
 
         private void Form3_Load(object sender, EventArgs e)
@@ -43,7 +43,7 @@ namespace TestOpenGL.Forms
             listView1.LargeImageList = IL;
             listView1.Items.Clear();
             
-            DataTable DT = Program.DBIO.ExecuteSQL("SELECT * FROM " + layer.ToString() + "s");
+            DataTable DT = GlobalData.DBIO.ExecuteSQL("SELECT * FROM " + layer.ToString() + "s");
             massId = new int[DT.Rows.Count];
 
             /*for (int i = 0; i <= DT.Rows.Count - 1; i++)
@@ -76,9 +76,9 @@ namespace TestOpenGL.Forms
         private void FillListContent<T>() where T : PhisicalObject, IInfoble
         {
             listBox1.Items.Clear();
-            foreach (T b in Program.L.GetMap<T>().GetCellObject(new Coord(
-                Program.Cam.Sight.Coord.X,
-                Program.Cam.Sight.Coord.Y
+            foreach (T b in GlobalData.WorldData.Level.GetMap<T>().GetCellObject(new Coord(
+                GlobalData.WorldData.Camera.Sight.Coord.X,
+                GlobalData.WorldData.Camera.Sight.Coord.Y
                 )))
                 listBox1.Items.Add(b.PartLayer + ". " + b.ObjectInfo.Name);
         }
@@ -106,49 +106,49 @@ namespace TestOpenGL.Forms
                 switch ((Layer)comboBox2.SelectedIndex)
                 {
                     case Layer.Background:
-                        Program.OB.GetBackground(massId[listView1.SelectedIndices[0]]).Spawn
+                        GlobalData.OB.GetBackground(massId[listView1.SelectedIndices[0]]).Spawn
                             (
                                 comboBox1.SelectedIndex,
                                 new Coord
                                 (
-                                Program.Cam.Sight.Coord.X,
-                                Program.Cam.Sight.Coord.Y
+                                GlobalData.WorldData.Camera.Sight.Coord.X,
+                                GlobalData.WorldData.Camera.Sight.Coord.Y
                                 )
                             );
                         break;
 
                     case Layer.Block:
-                        Program.OB.GetBlock(massId[listView1.SelectedIndices[0]]).Spawn
+                        GlobalData.OB.GetBlock(massId[listView1.SelectedIndices[0]]).Spawn
                             (
                                 comboBox1.SelectedIndex,
                                 new Coord
                                 (
-                                Program.Cam.Sight.Coord.X,
-                                Program.Cam.Sight.Coord.Y
+                                GlobalData.WorldData.Camera.Sight.Coord.X,
+                                GlobalData.WorldData.Camera.Sight.Coord.Y
                                 )
                             );
                         break;
 
                     case Layer.Being:
-                        Program.OB.GetBeing(massId[listView1.SelectedIndices[0]]).Spawn
+                        GlobalData.OB.GetBeing(massId[listView1.SelectedIndices[0]]).Spawn
                             (
                                 0,
                                 new Coord
                                 (
-                                Program.Cam.Sight.Coord.X,
-                                Program.Cam.Sight.Coord.Y
+                                GlobalData.WorldData.Camera.Sight.Coord.X,
+                                GlobalData.WorldData.Camera.Sight.Coord.Y
                                 )
                             );
                         break;
 
                     case Layer.Decal:
-                        Program.OB.GetDecal(massId[listView1.SelectedIndices[0]]).Spawn
+                        GlobalData.OB.GetDecal(massId[listView1.SelectedIndices[0]]).Spawn
                             (
                                 comboBox1.SelectedIndex,
                                 new Coord
                                 (
-                                Program.Cam.Sight.Coord.X,
-                                Program.Cam.Sight.Coord.Y
+                                GlobalData.WorldData.Camera.Sight.Coord.X,
+                                GlobalData.WorldData.Camera.Sight.Coord.Y
                                 )
                             );
                         break;
@@ -160,7 +160,7 @@ namespace TestOpenGL.Forms
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
             Layer layer = (Layer)comboBox2.SelectedIndex;
-            DataTable DT = Program.DBIO.ExecuteSQL("SELECT * FROM " + (layer.ToString() + "s WHERE " + ((Layer)comboBox2.SelectedIndex).ToString() + "s.id=" + massId[listView1.SelectedIndices[0]].ToString()));
+            DataTable DT = GlobalData.DBIO.ExecuteSQL("SELECT * FROM " + (layer.ToString() + "s WHERE " + ((Layer)comboBox2.SelectedIndex).ToString() + "s.id=" + massId[listView1.SelectedIndices[0]].ToString()));
             label3.Text = DT.Rows[0][1].ToString();
             label4.Text = DT.Rows[0][2].ToString();
         }
@@ -174,7 +174,7 @@ namespace TestOpenGL.Forms
 
         private void Form3_KeyDown(object sender, KeyEventArgs e)
         {
-            Program.C.ProcessingKeyPress(e);
+            GlobalData.WorldData.Control.ProcessingKeyPress(e);
             ReloadListContent();
         }
 
@@ -189,50 +189,50 @@ namespace TestOpenGL.Forms
             switch ((Layer)comboBox2.SelectedIndex)
             {
                 case Layer.Background:
-                    Program.L.GetMap<Background>().RemoveObject
+                    GlobalData.WorldData.Level.GetMap<Background>().RemoveObject
                         (
                             comboBox1.SelectedIndex,
                             new Coord
                             (
-                            Program.Cam.Sight.Coord.X,
-                            Program.Cam.Sight.Coord.Y
+                            GlobalData.WorldData.Camera.Sight.Coord.X,
+                            GlobalData.WorldData.Camera.Sight.Coord.Y
                             )
                         );
                     break;
 
                 case Layer.Block:
-                    Program.L.GetMap<Block>().RemoveObject
+                    GlobalData.WorldData.Level.GetMap<Block>().RemoveObject
                         (
                             comboBox1.SelectedIndex,
                             new Coord
                             (
-                            Program.Cam.Sight.Coord.X,
-                            Program.Cam.Sight.Coord.Y
+                            GlobalData.WorldData.Camera.Sight.Coord.X,
+                            GlobalData.WorldData.Camera.Sight.Coord.Y
                             )
                         );
                     break;
 
                 case Layer.Being:
-                    Program.L.GetMap<Being>().RemoveObject
+                    GlobalData.WorldData.Level.GetMap<Being>().RemoveObject
                         (
                             0,
                             new Coord
                             (
-                            Program.Cam.Sight.Coord.X,
-                            Program.Cam.Sight.Coord.Y
+                            GlobalData.WorldData.Camera.Sight.Coord.X,
+                            GlobalData.WorldData.Camera.Sight.Coord.Y
                             )
                         );
                     break;
 
                 case Layer.Decal:
                     //TODO
-                    /*Program.L.GetMap<Decal>().RemoveObject
+                    /*GlobalData.WorldData.Level.GetMap<Decal>().RemoveObject
                         (
                             comboBox1.SelectedIndex,
                             new Coord
                             (
-                            Program.Cam.Sight.Coord.X,
-                            Program.Cam.Sight.Coord.Y
+                            GlobalData.WorldData.Camera.Sight.Coord.X,
+                            GlobalData.WorldData.Camera.Sight.Coord.Y
                             )
                         );*/
                     break;

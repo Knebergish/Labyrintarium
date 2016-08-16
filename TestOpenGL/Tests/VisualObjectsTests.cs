@@ -24,7 +24,7 @@ namespace TestOpenGL
         [TestMethod]
         public void GraphicsObjectTest()
         {
-            Program.L = new Level(5, 5, new int[] { 5, 5, 5, 5, 5 });
+            //GlobalData.WorldData.Level = new Level(5, 5, new int[] { 5, 5, 5, 5, 5 });
             
             GraphicObject go = new GraphicObject(Layer.Block);
             if (go.Layer != Layer.Block)

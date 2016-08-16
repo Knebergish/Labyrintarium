@@ -27,7 +27,7 @@ namespace TestOpenGL.PhisicalObjects.ChieldsBlock
         public void Used()
         {
             //TODO: FormAssistant!!!
-            ExchangeBagsForm ebf = new ExchangeBagsForm(Program.GCycle.Gamer.Inventory, bag);
+            ExchangeBagsForm ebf = new ExchangeBagsForm(GlobalData.GCycle.Gamer.Inventory, bag);
             ebf.Show();
         }
     }

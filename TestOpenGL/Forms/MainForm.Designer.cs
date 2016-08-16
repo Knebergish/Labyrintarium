@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.GlControl = new Tao.Platform.Windows.SimpleOpenGlControl();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
@@ -51,22 +50,6 @@
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // GlControl
-            // 
-            this.GlControl.AccumBits = ((byte)(0));
-            this.GlControl.AutoCheckErrors = false;
-            this.GlControl.AutoFinish = false;
-            this.GlControl.AutoMakeCurrent = true;
-            this.GlControl.AutoSwapBuffers = true;
-            this.GlControl.BackColor = System.Drawing.Color.Black;
-            this.GlControl.ColorBits = ((byte)(32));
-            this.GlControl.DepthBits = ((byte)(16));
-            this.GlControl.Location = new System.Drawing.Point(12, 12);
-            this.GlControl.Name = "GlControl";
-            this.GlControl.Size = new System.Drawing.Size(600, 600);
-            this.GlControl.StencilBits = ((byte)(0));
-            this.GlControl.TabIndex = 0;
             // 
             // button1
             // 
@@ -120,7 +103,7 @@
             this.FPSValueLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 5.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.FPSValueLabel.Location = new System.Drawing.Point(40, 2);
             this.FPSValueLabel.Name = "FPSValueLabel";
-            this.FPSValueLabel.Size = new System.Drawing.Size(47, 10);
+            this.FPSValueLabel.Size = new System.Drawing.Size(47, 9);
             this.FPSValueLabel.TabIndex = 8;
             this.FPSValueLabel.Text = "99";
             // 
@@ -246,11 +229,11 @@
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.GlControl);
             this.Controls.Add(this.controlEnabledIndicator);
             this.KeyPreview = true;
             this.Name = "MainForm";
-            this.Text = "Лабиринтариум - разработка";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Лабиринтариум - игра";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.SizeChanged += new System.EventHandler(this.Form1_SizeChanged);
@@ -269,7 +252,6 @@
         #endregion
 
         private System.Windows.Forms.Button button1;
-        public Tao.Platform.Windows.SimpleOpenGlControl GlControl;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button4;
         public System.Windows.Forms.ListBox logListBox;

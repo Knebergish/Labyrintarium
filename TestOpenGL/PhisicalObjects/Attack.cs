@@ -34,13 +34,13 @@ namespace TestOpenGL.PhisicalObjects
             while (s.Count > 1)
             {
                 c = s.Dequeue();
-                if (Program.L.IsPermeable(c, Permeability.Block))
-                    temp = Program.L.MapDecals.AddDecal(decal, c);
+                if (GlobalData.WorldData.Level.IsPermeable(c, Permeability.Block))
+                    temp = GlobalData.WorldData.Level.MapDecals.AddDecal(decal, c);
                 else break;
 
                 System.Threading.Thread.Sleep(pause);
 
-                Program.L.MapDecals.RemoveGroupDecals(temp);
+                GlobalData.WorldData.Level.MapDecals.RemoveGroupDecals(temp);
             }
         }
 
@@ -61,21 +61,21 @@ namespace TestOpenGL.PhisicalObjects
             while (s.Count > 1)
             {
                 c = s.Dequeue();
-                if (Program.L.IsPermeable(c, Permeability.Block))
+                if (GlobalData.WorldData.Level.IsPermeable(c, Permeability.Block))
                     //TODO: херь, исправить
-                    Program.L.MapDecals.AddDecal(new Decal(-1, "test", "test", this.texture, c));
+                    GlobalData.WorldData.Level.MapDecals.AddDecal(new Decal(-1, "test", "test", this.texture, c));
                 else break;
-                //Program.GCycle.isEnabledControl = false;
+                //GlobalData.GCycle.isEnabledControl = false;
                 //await Task.Delay(50);//this.timePause);
-                //Program.GCycle.isEnabledControl = true;
+                //GlobalData.GCycle.isEnabledControl = true;
                 System.Threading.Thread.Sleep(1000);
-                //Program.L.Pause(1000);
-                Program.L.MapDecals.ClearDecals();
+                //GlobalData.WorldData.Level.Pause(1000);
+                GlobalData.WorldData.Level.MapDecals.ClearDecals();
                 //this.timePause);
             }
-            //Program.L.UnBlock();
+            //GlobalData.WorldData.Level.UnBlock();
             //Battle.Fight(attacking, this, 
-    Program.L.MapBeings.GetBeing(s.Dequeue()));
+    GlobalData.WorldData.Level.MapBeings.GetBeing(s.Dequeue()));
             return true;
         }
 
@@ -100,14 +100,14 @@ namespace TestOpenGL.PhisicalObjects
         {
             if (SetNewCoord(C))
             {
-                Program.L.GetMap<Block>().AddVO(this, C);
+                GlobalData.WorldData.Level.GetMap<Block>().AddVO(this, C);
                 return true;
             }
             return false;
         }
         protected override bool IsEmptyCell(Coord C)
         {
-            return Program.L.GetMap<Block>().GetVO(C) == null ? true : false;
+            return GlobalData.WorldData.Level.GetMap<Block>().GetVO(C) == null ? true : false;
         }
     }*/
 }

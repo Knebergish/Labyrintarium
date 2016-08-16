@@ -1,71 +1,74 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.Threading;
-using TestOpenGL.PhisicalObjects;
-using TestOpenGL.BeingContents;
-using TestOpenGL.PhisicalObjects.ChieldsBlock;
 using System.Collections.Generic;
+
+using Tao.Platform.Windows;
+using TestOpenGL.PhisicalObjects;
+
 
 namespace TestOpenGL.Forms
 {
     partial class MainForm : Form
     {
+        SimpleOpenGlControl glControl;
         public List<KeyEventArgs> keyList = new List<KeyEventArgs>();
         delegate bool TestyaHren();
         event TestyaHren NewKeyPress;
+        //-------------
+
 
         public MainForm()
         {
             InitializeComponent();
-            GlControl.InitializeContexts();
-            //simpleOpenGlControl1.InitializeContexts();
         }
+        //=============
 
-        
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            Program.InitApp(this);
+            glControl = ((OpenGLLibrary)GlobalData.LLL)?.GlControl;
+            if (glControl == null)
+                ExceptionAssistant.NewException(new Exception("Не подключены библиотеки работы с OpenGL."));
+            
+            Controls.Add(glControl);
 
-            NewKeyPress += Program.C.mre.Set;
+            NewKeyPress += GlobalData.WorldData.Control.mre.Set;
 
-            this.MouseWheel += new MouseEventHandler(ResizeMatrix);
-            Program.C.ChangeEnabledControl += ChangeColorControlEnabledIndicator;
-            Program.P.ChangeActualFPSEvent += SetFPS;
-            Program.Cam.Sight.EventSight.EventSightChangeCoord += ReloadGoalInfo;
+            MouseWheel += new MouseEventHandler(ResizeMatrix);
+            GlobalData.WorldData.Control.ChangeEnabledControl += ChangeColorControlEnabledIndicator;
+            GlobalData.RenderManager.ChangeActualFPSEvent += SetFPS;
+            GlobalData.WorldData.Camera.Sight.EventSight.EventSightChangeCoord += ReloadGoalInfo;
 
             Form1_SizeChanged(sender, e);
-
-            //button1_Click(sender, e);
             
 
             //TODO: события изменения жизней и очков действия
-            //Program.GCycle.Gamer.Parameters. += ReloadGamerInfo;
-            //Program.GCycle.Gamer.Parameters. += ReloadGamerInfo;
+            //GlobalData.GCycle.Gamer.Parameters. += ReloadGamerInfo;
+            //GlobalData.GCycle.Gamer.Parameters. += ReloadGamerInfo;
             ReloadGamerInfo();
-
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             Random rnd = new Random();
-            for (int x = 0; x < Program.L.LengthX; x++)
+            for (int x = 0; x < GlobalData.WorldData.Level.LengthX; x++)
             {
-                for (int y = 0; y < Program.L.LengthY; y++)
+                for (int y = 0; y < GlobalData.WorldData.Level.LengthY; y++)
                 {
-                    Program.OB.GetBackground(1).Spawn(0, new Coord(x, y));
+                    GlobalData.OB.GetBackground(1).Spawn(0, new Coord(x, y));
                     if (rnd.Next(0, 40) == 1)
                     {
-                        Program.OB.GetBlock(2).Spawn(0, new Coord(x, y));
+                        GlobalData.OB.GetBlock(2).Spawn(0, new Coord(x, y));
                     }
                     if (rnd.Next(0, 20) == 1)
                     {
-                        Program.OB.GetBlock(1).Spawn(0, new Coord(x, y));
+                        GlobalData.OB.GetBlock(1).Spawn(0, new Coord(x, y));
                     }
                 }
             }
 
-            /*Program.L.GetMap<Block>().AddObject
+            /*GlobalData.WorldData.Level.GetMap<Block>().AddObject
                 (
                     new Door
                     (
@@ -90,28 +93,28 @@ namespace TestOpenGL.Forms
 
 
 
-            //Program.OB.GetBlock(2).Spawn(new Coord(6, 6, 0));
-            //Program.OB.GetBlock(1).Spawn(new Coord(6, 6, 1));
+            //GlobalData.OB.GetBlock(2).Spawn(new Coord(6, 6, 0));
+            //GlobalData.OB.GetBlock(1).Spawn(new Coord(6, 6, 1));
 
             /*List<Block> lt = new List<Block>();
-            lt = Program.L.GetMap<Block>().GetCellVO(new Coord(6, 6));
+            lt = GlobalData.WorldData.Level.GetMap<Block>().GetCellVO(new Coord(6, 6));
             foreach (Block b in lt)
                 MessageBox.Show(b.visualObjectInfo.Name);*/
-            //Program.Cam.SetLookingVO(Program.L.GetMap<Block>().GetVO(new Coord(6, 6)));
+            //GlobalData.WorldData.Camera.SetLookingVO(GlobalData.WorldData.Level.GetMap<Block>().GetVO(new Coord(6, 6)));
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Program.FA.ShowInventory();
+            GlobalData.FA.ShowInventory();
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
             new Thread(delegate()
                 {
-                    //Program.FA.ShowCharacter();
-                    //Program.GCycle.Gamer.Attack(Program.Cam.Sight.C);
-                    //Battle.Attack(Program.GCycle.Gamer, Program.Cam.Sight.C);
+                    //GlobalData.FA.ShowCharacter();
+                    //GlobalData.GCycle.Gamer.Attack(GlobalData.WorldData.Camera.Sight.C);
+                    //Battle.Attack(GlobalData.GCycle.Gamer, GlobalData.WorldData.Camera.Sight.C);
                 }).Start();
         }
 
@@ -131,15 +134,14 @@ namespace TestOpenGL.Forms
         {
             if (e.Delta > 0)
             {
-                Program.Cam.Height++;
-                Program.Cam.Width++;
+                GlobalData.WorldData.Camera.Height++;
+                GlobalData.WorldData.Camera.Width++;
             }
             else
             {
-                Program.Cam.Height--;
-                Program.Cam.Width--;
+                GlobalData.WorldData.Camera.Height--;
+                GlobalData.WorldData.Camera.Width--;
             }
-            //Program.P.SettingVisibleAreaSize();
         }
 
         public void SetFPS(int value)
@@ -160,14 +162,14 @@ namespace TestOpenGL.Forms
 
         public void ReloadGamerInfo()
         {
-            if (Program.GCycle.Gamer == null)
+            if (GlobalData.GCycle.Gamer == null)
                 return;
 
             Program.MainThreadInvoke(
             new Action(() =>
             {
-                label3.Text = Program.GCycle.Gamer.Parameters.CurrentHealth + "/" + Program.GCycle.Gamer.Parameters[State.MaxHealth];
-                label5.Text = Program.GCycle.Gamer.Parameters.CurrentActionPoints.ToString();
+                label3.Text = GlobalData.GCycle.Gamer.Parameters.CurrentHealth + "/" + GlobalData.GCycle.Gamer.Parameters[State.MaxHealth];
+                label5.Text = GlobalData.GCycle.Gamer.Parameters.CurrentActionPoints.ToString();
             })
             );
         }
@@ -176,7 +178,7 @@ namespace TestOpenGL.Forms
             Program.MainThreadInvoke(
             new Action(() =>
             {
-                Being b = Program.L.GetMap<Being>().GetObject(0, Program.Cam.Sight.Coord);
+                Being b = GlobalData.WorldData.Level.GetMap<Being>().GetObject(0, GlobalData.WorldData.Camera.Sight.Coord);
                 if (b == null)
                     label8.Text = "0/0";
                 else
@@ -188,7 +190,7 @@ namespace TestOpenGL.Forms
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             keyList.Add(e);
-            Program.C.mre.Set();
+            GlobalData.WorldData.Control.mre.Set();
             //NewKeyPress();
         }
 
@@ -200,8 +202,10 @@ namespace TestOpenGL.Forms
 
             logListBox.Left = this.Width - logListBox.Width - 28;
 
-            GlControl.Width = Math.Min(this.Width - (this.Width - button1.Left) - 28, this.Height - 63);
-            GlControl.Height = GlControl.Width;
+            glControl.Top = 11;
+            glControl.Left = 11;
+            glControl.Width = Math.Min(this.Width - (this.Width - button1.Left) - 28, this.Height - 63);
+            glControl.Height = glControl.Width;
 
             controlEnabledIndicator.Top = 0;
             controlEnabledIndicator.Left = 0;
@@ -210,12 +214,12 @@ namespace TestOpenGL.Forms
 
             trackBar1.Left = this.Width - trackBar1.Width - 28;
 
-            //Program.P.SettingVisibleAreaSize();
+            //GlobalData.RenderManager.SettingVisibleAreaSize();
         }
 
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
-            Program.P.SetMaxFPS(trackBar1.Value);
+            GlobalData.RenderManager.SetMaxFPS(trackBar1.Value);
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)

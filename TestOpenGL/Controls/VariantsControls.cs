@@ -4,58 +4,58 @@
     {
         public static void StandartGamerControl()
         {
-            Program.C.ClearAllActionsControl();
+            GlobalData.WorldData.Control.ClearAllActionsControl();
             
-            Program.C.AddNewActionControl('a', AdditionalKey.None, delegate
+            GlobalData.WorldData.Control.AddNewActionControl('a', AdditionalKey.None, delegate
             {
-                Program.GCycle.Gamer.Move(TestOpenGL.Direction.Left);
+                GlobalData.GCycle.Gamer.Move(TestOpenGL.Direction.Left);
             });
-            Program.C.AddNewActionControl('w', AdditionalKey.None, delegate
+            GlobalData.WorldData.Control.AddNewActionControl('w', AdditionalKey.None, delegate
             {
-                Program.GCycle.Gamer.Move(TestOpenGL.Direction.Up);
+                GlobalData.GCycle.Gamer.Move(TestOpenGL.Direction.Up);
             });
-            Program.C.AddNewActionControl('d', AdditionalKey.None, delegate
+            GlobalData.WorldData.Control.AddNewActionControl('d', AdditionalKey.None, delegate
             {
-                Program.GCycle.Gamer.Move(TestOpenGL.Direction.Right);
+                GlobalData.GCycle.Gamer.Move(TestOpenGL.Direction.Right);
             });
-            Program.C.AddNewActionControl('s', AdditionalKey.None, delegate
+            GlobalData.WorldData.Control.AddNewActionControl('s', AdditionalKey.None, delegate
             {
-                Program.GCycle.Gamer.Move(TestOpenGL.Direction.Down);
+                GlobalData.GCycle.Gamer.Move(TestOpenGL.Direction.Down);
             });
-            Program.C.AddNewActionControl('e', AdditionalKey.None, delegate
+            GlobalData.WorldData.Control.AddNewActionControl('e', AdditionalKey.None, delegate
             {
-                Program.GCycle.Gamer.Use();
+                GlobalData.GCycle.Gamer.Use();
             });
 
-            Program.C.AddNewActionControl('j', AdditionalKey.None, delegate
+            GlobalData.WorldData.Control.AddNewActionControl('j', AdditionalKey.None, delegate
             {
-                Program.Cam.Sight.MoveSight(Direction.Left);
+                GlobalData.WorldData.Camera.Sight.MoveSight(Direction.Left);
             });
-            Program.C.AddNewActionControl('i', AdditionalKey.None, delegate
+            GlobalData.WorldData.Control.AddNewActionControl('i', AdditionalKey.None, delegate
             {
-                Program.Cam.Sight.MoveSight(Direction.Up);
+                GlobalData.WorldData.Camera.Sight.MoveSight(Direction.Up);
             });
-            Program.C.AddNewActionControl('l', AdditionalKey.None, delegate
+            GlobalData.WorldData.Control.AddNewActionControl('l', AdditionalKey.None, delegate
             {
-                Program.Cam.Sight.MoveSight(Direction.Right);
+                GlobalData.WorldData.Camera.Sight.MoveSight(Direction.Right);
             });
-            Program.C.AddNewActionControl('k', AdditionalKey.None, delegate
+            GlobalData.WorldData.Control.AddNewActionControl('k', AdditionalKey.None, delegate
             {
-                Program.Cam.Sight.MoveSight(Direction.Down);
+                GlobalData.WorldData.Camera.Sight.MoveSight(Direction.Down);
             });
-            Program.C.AddNewActionControl(' ', AdditionalKey.None, delegate
+            GlobalData.WorldData.Control.AddNewActionControl(' ', AdditionalKey.None, delegate
             {
-                Program.GCycle.Gamer.Attack(Program.Cam.Sight.Coord);
+                GlobalData.GCycle.Gamer.Attack(GlobalData.WorldData.Camera.Sight.Coord);
             });
             
 
-            Program.C.AddNewActionControl('i', AdditionalKey.Shift, delegate
+            GlobalData.WorldData.Control.AddNewActionControl('i', AdditionalKey.Shift, delegate
             {
-                Program.FA.ShowInventory();
+                GlobalData.FA.ShowInventory();
             });
-            Program.C.AddNewActionControl('m', AdditionalKey.Shift, delegate
+            GlobalData.WorldData.Control.AddNewActionControl('m', AdditionalKey.Shift, delegate
             {
-                Program.FA.ShowMapEditor();
+                GlobalData.FA.ShowMapEditor();
             });
         }
     }

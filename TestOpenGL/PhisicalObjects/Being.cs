@@ -30,7 +30,7 @@ namespace TestOpenGL.PhisicalObjects
         public Being(GraphicObjectsPack graphicObjectPack, ObjectInfo objectInfo, int alliance, IInventoryble inventory, IParameterable parameters)
             : base(Layer.Being, graphicObjectPack, objectInfo)
         {
-            NewPositionCheck += Program.L.IsPassable;
+            NewPositionCheck += GlobalData.WorldData.Level.IsPassable;
 
             isSpawned = false;
             rangeOfVisibility = 10;
@@ -91,10 +91,10 @@ namespace TestOpenGL.PhisicalObjects
 
             if (!isSpawned && SetNewPosition(0, coord))
             {
-                Program.L.GetMap<Being>().AddObject(this);
-                Program.P.AddRenderObject(GraphicObjectsPack);
-                Program.GCycle.EventStepBeings += Step;
-                Program.GCycle.EventStepBeingsIncrease += Increace;
+                GlobalData.WorldData.Level.GetMap<Being>().AddObject(this);
+                GlobalData.WorldData.RendereableObjectsContainer.Add(GraphicObjectsPack);
+                GlobalData.GCycle.EventStepBeings += Step;
+                GlobalData.GCycle.EventStepBeingsIncrease += Increace;
                 isSpawned = true;
                 return true;
             }
@@ -103,18 +103,18 @@ namespace TestOpenGL.PhisicalObjects
 
         protected override bool IsEmptyPosition(int partLayer, Coord coord)
         {
-            return Program.L.GetMap<Being>().GetObject(partLayer, coord) == null ? true : false;
+            return GlobalData.WorldData.Level.GetMap<Being>().GetObject(partLayer, coord) == null ? true : false;
         }
 
         public override void Despawn()
         {
             isSpawned = false;
             //TODO: проверить работоспособность этого кода
-            Program.GCycle.EventStepBeings -= Step;
-            Program.GCycle.EventStepBeingsIncrease -= Increace;
+            GlobalData.GCycle.EventStepBeings -= Step;
+            GlobalData.GCycle.EventStepBeingsIncrease -= Increace;
             //
-            Program.L.GetMap<Being>().RemoveObject(PartLayer, Coord);
-            Program.P.RemoveRenderObject(GraphicObjectsPack);
+            GlobalData.WorldData.Level.GetMap<Being>().RemoveObject(PartLayer, Coord);
+            GlobalData.WorldData.RendereableObjectsContainer.Remove(GraphicObjectsPack);
             deathEvent?.Invoke();
         }
 
@@ -140,7 +140,7 @@ namespace TestOpenGL.PhisicalObjects
         {
             if(isSpawned && parameters.CurrentActionPoints >= 1 && SetNewPosition(0, coord))
             {
-                Program.L.Pause(100);
+                GlobalData.WorldData.Level.Pause(100);
                 parameters.CurrentActionPoints--;
                 return true;
             }
@@ -158,7 +158,7 @@ namespace TestOpenGL.PhisicalObjects
             }
 
             if (Analytics.CorrectCoordinate(Coord.X + dx, Coord.Y + dy))
-                if (Program.L.IsPassable(PartLayer, new Coord(Coord.X + dx, Coord.Y + dy)))
+                if (GlobalData.WorldData.Level.IsPassable(PartLayer, new Coord(Coord.X + dx, Coord.Y + dy)))
                 {
                     return Move(new Coord(Coord.X + dx, Coord.Y + dy));
                 }
@@ -174,8 +174,8 @@ namespace TestOpenGL.PhisicalObjects
             if (count > 0)
             {
                 parameters.CurrentHealth -= count;
-                Action removeDecal = Program.DA.AddDecal(Program.OB.GetDecal(3), Coord);
-                Program.L.Pause(150);
+                Action removeDecal = GlobalData.WorldData.DecalsAssistant.AddDecal(GlobalData.OB.GetDecal(3), Coord);
+                GlobalData.WorldData.Level.Pause(150);
                 removeDecal();
             }
             else throw new Exception("Урон почему-то отрицательный.");
@@ -194,14 +194,14 @@ namespace TestOpenGL.PhisicalObjects
 
         public bool Use()
         {
-            if (Analytics.Distance(Coord, Program.Cam.Sight.Coord) > 1)
+            if (Analytics.Distance(Coord, GlobalData.WorldData.Camera.Sight.Coord) > 1)
                 return false;
 
-            foreach (Block b in Program.L.GetMap<Block>().GetCellObject(Program.Cam.Sight.Coord))
+            foreach (Block b in GlobalData.WorldData.Level.GetMap<Block>().GetCellObject(GlobalData.WorldData.Camera.Sight.Coord))
                 if (b is IUsable)
                     ((IUsable)b).Used();
 
-            foreach (Being b in Program.L.GetMap<Being>().GetCellObject(Program.Cam.Sight.Coord))
+            foreach (Being b in GlobalData.WorldData.Level.GetMap<Being>().GetCellObject(GlobalData.WorldData.Camera.Sight.Coord))
                 if (b is IUsable)
                     ((IUsable)b).Used();
             return true;

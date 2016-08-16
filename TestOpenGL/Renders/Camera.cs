@@ -38,7 +38,8 @@ namespace TestOpenGL.Renders
             get { return height; }
             set
             {
-                height = value > Program.L.LengthX || value > Program.L.LengthY ? Math.Min(Program.L.LengthX, Program.L.LengthY) : (value < 1 ? 1 : value);
+                height = value > GlobalData.WorldData.Level.LengthX || value > GlobalData.WorldData.Level.LengthY ? Math.Min(GlobalData.WorldData.Level.LengthX, GlobalData.WorldData.Level.LengthY) : (value < 1 ? 1 : value);
+                Look();
                 changeSizeEvent?.Invoke();
             } 
         }
@@ -47,7 +48,8 @@ namespace TestOpenGL.Renders
             get { return width; }
             set
             {
-                width = value > Program.L.LengthX || value > Program.L.LengthY ? Math.Min(Program.L.LengthX, Program.L.LengthY) : (value < 1 ? 1 : value); ;
+                width = value > GlobalData.WorldData.Level.LengthX || value > GlobalData.WorldData.Level.LengthY ? Math.Min(GlobalData.WorldData.Level.LengthX, GlobalData.WorldData.Level.LengthY) : (value < 1 ? 1 : value); ;
+                Look();
                 changeSizeEvent?.Invoke();
             } 
         }
@@ -68,7 +70,11 @@ namespace TestOpenGL.Renders
         }
         public event VoidEventDelegate ChangeSizeEvent
         {
-            add { changeSizeEvent += value; }
+            add
+            {
+                changeSizeEvent += value;
+                changeSizeEvent?.Invoke();
+            }
             remove { changeSizeEvent -= value; }
         }
         //=============
@@ -90,10 +96,10 @@ namespace TestOpenGL.Renders
             {
                 shiftX = looking.Coord.X - width / 2;
                 shiftX = shiftX < 0 ? 0 : shiftX;
-                shiftX = shiftX > Program.L.LengthX - width ? Program.L.LengthX - width : shiftX;
+                shiftX = shiftX > GlobalData.WorldData.Level.LengthX - width ? GlobalData.WorldData.Level.LengthX - width : shiftX;
                 shiftY = looking.Coord.Y - height / 2;
                 shiftY = shiftY < 0 ? 0 : shiftY;
-                shiftY = shiftY > Program.L.LengthY - height ? Program.L.LengthY - height : shiftY; //TODO: ВОТ ЗДУСЬ ЖИВУТ ИНОГДА ЧЁРТОВЫ НЕВЕРНЕНЬКИЕ КООРДИНАТКИ!!! Вроде исправлено (в заметках про 150+ кадров)
+                shiftY = shiftY > GlobalData.WorldData.Level.LengthY - height ? GlobalData.WorldData.Level.LengthY - height : shiftY; //TODO: ВОТ ЗДУСЬ ЖИВУТ ИНОГДА ЧЁРТОВЫ НЕВЕРНЕНЬКИЕ КООРДИНАТКИ!!! Вроде исправлено (в заметках про 150+ кадров)
             }
             else
             {

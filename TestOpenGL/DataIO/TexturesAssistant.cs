@@ -22,7 +22,7 @@ namespace TestOpenGL.DataIO
 
         private TexturesAssistant()
         {
-            InitializeGraphics();
+            //InitializeGraphics();
 
             texturesDataTable = new DataTable();
             texturesDataTable.Columns.Add("layer", typeof(Layer));
@@ -72,75 +72,13 @@ namespace TestOpenGL.DataIO
             Gl.glClear(Gl.GL_COLOR_BUFFER_BIT | Gl.GL_DEPTH_BUFFER_BIT);
         }
 
-        public int LoadTextureFromFile(Layer layer, string imageName)
-        {
-            string url = pathes[(int)layer] + imageName + ".png";
-            int image = 0;
-            // создаем изображение с идентификатором imageId
-            Il.ilGenImages(1, out image);
-            // делаем изображение текущим
-            Il.ilBindImage(image);
-
-            // адрес изображения полученный с помощью окна выбра файла
-
-            uint texObject = 0;
-            if (Il.ilLoadImage(url))
-            {
-                // сохраняем размеры изображения
-                int width = Il.ilGetInteger(Il.IL_IMAGE_WIDTH);
-                int height = Il.ilGetInteger(Il.IL_IMAGE_HEIGHT);
-
-                // определяем число бит на пиксель
-                int bitspp = Il.ilGetInteger(Il.IL_IMAGE_BITS_PER_PIXEL);
-
-                // генерируем текстурный объект
-                Gl.glGenTextures(1, out texObject);
-
-                // устанавливаем режим упаковки пикселей
-                Gl.glPixelStorei(Gl.GL_UNPACK_ALIGNMENT, 1);
-
-                // создаем привязку к только что созданной текстуре
-                Gl.glBindTexture(Gl.GL_TEXTURE_2D, texObject);
-
-                // устанавливаем режим фильтрации и повторения текстуры
-                switch (layer)
-                {
-                    case Layer.Background:
-                        Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_WRAP_S, Gl.GL_REPEAT);
-                        Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_WRAP_T, Gl.GL_REPEAT);
-                        break;
-
-                    default:
-                        Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_WRAP_S, Gl.GL_CLAMP_TO_EDGE);
-                        Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_WRAP_T, Gl.GL_CLAMP_TO_EDGE);
-                        break;
-                }
-
-                Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MAG_FILTER, Gl.GL_LINEAR);//
-                Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MIN_FILTER, Gl.GL_LINEAR);
-                Gl.glTexEnvf(Gl.GL_TEXTURE_ENV, Gl.GL_TEXTURE_ENV_MODE, Gl.GL_REPLACE);
-
-                // создаем RGBA текстуру
-                Gl.glTexImage2D(Gl.GL_TEXTURE_2D, 0, Gl.GL_RGBA, width, height, 0, Gl.GL_RGBA, Gl.GL_UNSIGNED_BYTE, Il.ilGetData());
-
-                // очищаем память
-                Il.ilDeleteImages(1, ref image);
-
-                // Удаление текстуры, когда дойдём до освобождения памяти.
-                //if(texObject == 1)
-                //    Gl.glDeleteTextures(1, ref texObject);
-            }
-            else
-                System.Windows.Forms.MessageBox.Show("Ошибка загрузки изображения по пути: " + url);
-
-            // возвращаем идентификатор текстурного объекта
-            return (int)texObject;
-        }
 
         private int LoadTexture(Layer layer, string imageName)
         {
+            string path = pathes[(int)layer] + imageName + ".png";
             return (int)Program.MainThreadInvoke(
-                new Func<int>(() => LoadTextureFromFile(layer, imageName))
+                //TODO: переделать весь класс на оперированием Texture, а не int.
+                new Func<int>(() => { return GlobalData.LLL.LoadTextureFromFile(path).textureId; })
                 );
         }
 

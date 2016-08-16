@@ -14,8 +14,8 @@ namespace TestOpenGL.PhisicalObjects
         {
             if (SetNewPosition(partLayer, coord))
             {
-                Program.L.GetMap<Background>().AddObject(this);
-                Program.P.AddRenderObject(GraphicObjectsPack);
+                GlobalData.WorldData.Level.GetMap<Background>().AddObject(this);
+                GlobalData.WorldData.RendereableObjectsContainer.Add(GraphicObjectsPack);
                 return true;
             }
             return false;
@@ -23,13 +23,13 @@ namespace TestOpenGL.PhisicalObjects
 
         protected override bool IsEmptyPosition(int partLayer, Coord coord)
         {
-            return Program.L.GetMap<Background>().GetObject(partLayer, coord) == null ? true : false;
+            return GlobalData.WorldData.Level.GetMap<Background>().GetObject(partLayer, coord) == null ? true : false;
         }
 
         public override void Despawn()
         {
-            Program.L.GetMap<Background>().RemoveObject(PartLayer, Coord);
-            Program.P.RemoveRenderObject(GraphicObjectsPack);
+            GlobalData.WorldData.Level.GetMap<Background>().RemoveObject(PartLayer, Coord);
+            GlobalData.WorldData.RendereableObjectsContainer.Remove(GraphicObjectsPack);
         }
     }
 }

@@ -16,12 +16,13 @@ namespace TestOpenGL.OutInfo
         public Sight(Camera camera)
         {
             //coord = new Coord(0, 0);
-            graphicObject = Program.OB.GetGraphicObject(6, Layer.Decal);
+            graphicObject = GlobalData.OB.GetGraphicObject(6, Layer.Decal);
             this.camera = camera;
             eventSight = new EventSight();
             
             this.camera.ChangePositionEvent += Check;
-            Program.P.AddRenderObject(graphicObject);
+            //GlobalData.WorldData.RendereableObjectsContainer.Add(graphicObject);
+            //GlobalData.WorldData.RendereableObjectsContainer.Add(graphicObject);
         }
         
         public Coord Coord

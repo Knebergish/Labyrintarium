@@ -11,8 +11,8 @@ namespace TestOpenGL.PhisicalObjects.ChieldsBeing
         public Gamer(Being being)
             : base(being)
         {
-            StartStepEvent += new VoidEventDelegate(() => { Program.C.IsEnabledControl = true; isEndStep.Reset();  });
-            EndStepEvent += new VoidEventDelegate(() => { Program.C.IsEnabledControl = false; });
+            StartStepEvent += new VoidEventDelegate(() => { GlobalData.WorldData.Control.IsEnabledControl = true; isEndStep.Reset();  });
+            EndStepEvent += new VoidEventDelegate(() => { GlobalData.WorldData.Control.IsEnabledControl = false; });
             Parameters.EndActionPointsEvent += new VoidEventDelegate(() => { isEndStep.Set(); });
         }
         //=============

@@ -28,8 +28,8 @@ namespace TestOpenGL.World
             set
             {
                 gamer = value;
-                Program.FA.UpdateForms();
-                Program.Cam.SetLookingVO(gamer);
+                //GlobalData.FA.UpdateForms();
+                GlobalData.WorldData.Camera.SetLookingVO(gamer);
             }
         }
         //=============

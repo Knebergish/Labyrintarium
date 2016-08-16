@@ -29,7 +29,7 @@ namespace TestOpenGL.World
         {
             List<T> lt = new List<T>();
             T t;
-            for (int i = 0; i < Program.L.GetDepthLayer(layer); i++)
+            for (int i = 0; i < GlobalData.WorldData.Level.GetDepthLayer(layer); i++)
             {
                 t = GetObject(i, new Coord(C.X, C.Y));
                 if (t != null)

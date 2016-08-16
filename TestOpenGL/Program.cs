@@ -15,7 +15,8 @@ namespace TestOpenGL
     static class Program
     {
         //public static ExceptionAssistant exceptionAssistant;
-        public static MainForm mainForm;
+        /*public static ILowLevelLibraryble LLL;
+        
         public static ObjectsBuilder OB;
         public static TexturesAssistant TA;
         public static DataBaseIO DBIO;
@@ -27,7 +28,11 @@ namespace TestOpenGL
         public static GameCycle GCycle;
         
         public static Controls.Control C;
-        public static FormsAssistant FA;
+        public static FormsAssistant FA;*/
+
+        //public static GlobalData GlobalData;
+        public static LoadForm loadForm;
+        public static MainForm mainForm;
 
         /// <summary>
         /// Главная точка входа для приложения.
@@ -38,62 +43,29 @@ namespace TestOpenGL
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Application.Run(new MainForm());
+            Application.Run(new LoadForm());
         }
         
         /// <summary>
         /// Инициализация игровых классов.
         /// </summary>
         /// <param name="f">Ссылка на форму с компонентом вывода изображения.</param>
-        public static void InitApp(MainForm f)
+        public static void InitApp(LoadForm f)
         {
             System.Threading.Thread.CurrentThread.Name = "MainThread";
-            
-            mainForm = f;
-            string path = "D:\\Материя\\Я великий программист\\#Лабиринтариум# разработка\\TestOpenGL\\TestOpenGL\\bin\\x86\\Debug";
-            //string path = Directory.GetCurrentDirectory();
-            DBIO = new DataBaseIO(path);
-            TA = new TexturesAssistant(path);
-            OB = new ObjectsBuilder(DBIO, TA);
-            
-            // Подгрузка уровня тут не нужна. Но при инициализации прицела при инициализации камеры для Painter Sight начинает свою отрисовку, а в FormAssistant в MapEditorForm в ContentControl идёт обращение опять же к координатам Sight.
-            //TODO: Исправить.
-            L = new Level(1, 1, new int[5] { 1, 1, 1, 1, 1 });
 
-            P = new Painter(mainForm.GlControl);
-            Cam = new Camera(10, 10);
-            P.SetCamera(Cam);
-
-            DA = new DecalsAssistant();
-            Log = new Logger(); Log.LoggerListBox = mainForm.logListBox; Log.QuestLabel = mainForm.questLabel;
+            loadForm = f;
+            mainForm = new MainForm();
+            GlobalData.Initialize();
 
             Triggers.currentTriggers = new Triggers();
-            GCycle = new GameCycle();
-            
-            C = new Controls.Control();
-            FA = new FormsAssistant();
-
-            Stages.Stage_1 S1 = new Stages.Stage_1();
-            S1.LoadStage();
 
             
-            //Func<int, double, Testo> ftesto = (a, b) => new Testo(a, b);
-            //Func<double, Testo> ftp = ftesto.Partial(2);
         }
 
         public static object MainThreadInvoke(Delegate method)
         {
-            return mainForm.Invoke(method);
+            return loadForm.Invoke(method);
         }
     }
-
-    
-
-    /*class Testo
-    {
-        public Testo(int a, double b)
-        {
-
-        }
-    }*/
 }

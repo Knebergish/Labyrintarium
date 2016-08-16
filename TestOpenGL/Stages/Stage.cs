@@ -18,8 +18,8 @@ namespace TestOpenGL.Stages
 
         public void StartStage()
         {
-            //Program.GCycle.triggers = triggers;
-            Program.L = new Level(lengthX, lengthY, lengthZ);
+            //GlobalData.GCycle.triggers = triggers;
+            GlobalData.WorldData.Level = new Level(lengthX, lengthY, lengthZ);
             stageLoad();
         }*/
     }

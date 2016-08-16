@@ -26,7 +26,7 @@ namespace TestOpenGL.World
         {
             decal.SetNewPosition(0, coord);
             dictionaryDecals.Add(nextKey++, decal);
-            Program.P.AddRenderObject(decal.GraphicObjectsPack);
+            GlobalData.WorldData.RendereableObjectsContainer.Add(decal.GraphicObjectsPack);
 
             int a = nextKey - 1;
             return new Action(() => RemoveDecal(a));
@@ -34,7 +34,7 @@ namespace TestOpenGL.World
 
         void RemoveDecal(int key)
         {
-            Program.P.RemoveRenderObject(dictionaryDecals[key].GraphicObjectsPack);
+            GlobalData.WorldData.RendereableObjectsContainer.Remove(dictionaryDecals[key].GraphicObjectsPack);
             dictionaryDecals.Remove(key);
         }
     }

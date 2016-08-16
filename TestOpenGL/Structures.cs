@@ -115,7 +115,7 @@ namespace TestOpenGL
 
         public void SetNewPartLayer(int newPartLayer)
         {
-            if (Program.L.GetDepthLayer(layer) > newPartLayer)
+            if (GlobalData.WorldData.Level.GetDepthLayer(layer) > newPartLayer)
             {
                 partLayer = newPartLayer;
                 return;

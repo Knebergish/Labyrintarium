@@ -124,7 +124,7 @@ namespace TestOpenGL.World
             while(!sr.EndOfStream)
             {
                 s = sr.ReadLine().Split(' ');
-                this.mapBlocks.SetBlock(Program.OB.GetBlock(int.Parse(s[3])), new Coord(int.Parse(s[0]), int.Parse(s[1]), int.Parse(s[2])));
+                this.mapBlocks.SetBlock(GlobalData.OB.GetBlock(int.Parse(s[3])), new Coord(int.Parse(s[0]), int.Parse(s[1]), int.Parse(s[2])));
             }
             sr.Close();
         }*/
