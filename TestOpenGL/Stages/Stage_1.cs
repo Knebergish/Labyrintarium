@@ -29,7 +29,12 @@ namespace TestOpenGL.Stages
         {
             GlobalData.RenderManager.StopRender();
             GlobalData.GCycle.StopStep();
-            //GlobalData.WorldData.Level = new Level(20, 20, new int[5] { 4, 4, 1, 3, 1 });
+            GlobalData.WorldData = new WorldData(
+                new Level(20, 20, new int[5] { 4, 4, 1, 3, 1 }), 
+                null, 
+                null, 
+                null, 
+                new Renders.Camera(5, 5));
             VariantsControls.StandartGamerControl();
         }
 
@@ -40,7 +45,7 @@ namespace TestOpenGL.Stages
             {
                 for (int y = 0; y < GlobalData.WorldData.Level.LengthY; y++)
                 {
-                    GlobalData.OB.GetBackground(1).Spawn(0, new Coord(x, y));
+                    GlobalData.OB.GetBackground(rnd.Next(1, 5)).Spawn(0, new Coord(x, y));
                     if (rnd.Next(1, 20) == 1)
                         GlobalData.OB.GetBlock(1).Spawn(0, new Coord(x, y));
                     if (rnd.Next(1, 30) == 1)
@@ -92,9 +97,6 @@ namespace TestOpenGL.Stages
                 GlobalData.OB.GetBlock(14),
                 bag
                 ).Spawn(1, new Coord(3, 7));
-
-            GlobalData.WorldData.Camera.Width = 30;
-            GlobalData.WorldData.Camera.Height = 30;
         }
 
         void LoadShaders()

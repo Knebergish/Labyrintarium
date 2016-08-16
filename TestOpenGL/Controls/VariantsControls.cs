@@ -29,23 +29,23 @@
 
             GlobalData.WorldData.Control.AddNewActionControl('j', AdditionalKey.None, delegate
             {
-                GlobalData.WorldData.Camera.Sight.MoveSight(Direction.Left);
+                GlobalData.Sight.Move(Direction.Left);
             });
             GlobalData.WorldData.Control.AddNewActionControl('i', AdditionalKey.None, delegate
             {
-                GlobalData.WorldData.Camera.Sight.MoveSight(Direction.Up);
+                GlobalData.Sight.Move(Direction.Up);
             });
             GlobalData.WorldData.Control.AddNewActionControl('l', AdditionalKey.None, delegate
             {
-                GlobalData.WorldData.Camera.Sight.MoveSight(Direction.Right);
+                GlobalData.Sight.Move(Direction.Right);
             });
             GlobalData.WorldData.Control.AddNewActionControl('k', AdditionalKey.None, delegate
             {
-                GlobalData.WorldData.Camera.Sight.MoveSight(Direction.Down);
+                GlobalData.Sight.Move(Direction.Down);
             });
             GlobalData.WorldData.Control.AddNewActionControl(' ', AdditionalKey.None, delegate
             {
-                GlobalData.GCycle.Gamer.Attack(GlobalData.WorldData.Camera.Sight.Coord);
+                GlobalData.GCycle.Gamer.Attack(GlobalData.Sight.Coord);
             });
             
 

@@ -30,15 +30,15 @@ namespace TestOpenGL.Forms
             glControl = ((OpenGLLibrary)GlobalData.LLL)?.GlControl;
             if (glControl == null)
                 ExceptionAssistant.NewException(new Exception("Не подключены библиотеки работы с OpenGL."));
-            
             Controls.Add(glControl);
+
 
             NewKeyPress += GlobalData.WorldData.Control.mre.Set;
 
             MouseWheel += new MouseEventHandler(ResizeMatrix);
             GlobalData.WorldData.Control.ChangeEnabledControl += ChangeColorControlEnabledIndicator;
             GlobalData.RenderManager.ChangeActualFPSEvent += SetFPS;
-            GlobalData.WorldData.Camera.Sight.EventSight.EventSightChangeCoord += ReloadGoalInfo;
+            GlobalData.Sight.ChangeCoordEvent += ReloadGoalInfo;
 
             Form1_SizeChanged(sender, e);
             
@@ -113,8 +113,8 @@ namespace TestOpenGL.Forms
             new Thread(delegate()
                 {
                     //GlobalData.FA.ShowCharacter();
-                    //GlobalData.GCycle.Gamer.Attack(GlobalData.WorldData.Camera.Sight.C);
-                    //Battle.Attack(GlobalData.GCycle.Gamer, GlobalData.WorldData.Camera.Sight.C);
+                    //GlobalData.GCycle.Gamer.Attack(GlobalData.Sight.C);
+                    //Battle.Attack(GlobalData.GCycle.Gamer, GlobalData.Sight.C);
                 }).Start();
         }
 
@@ -178,7 +178,7 @@ namespace TestOpenGL.Forms
             Program.MainThreadInvoke(
             new Action(() =>
             {
-                Being b = GlobalData.WorldData.Level.GetMap<Being>().GetObject(0, GlobalData.WorldData.Camera.Sight.Coord);
+                Being b = GlobalData.WorldData.Level.GetMap<Being>().GetObject(0, GlobalData.Sight.Coord);
                 if (b == null)
                     label8.Text = "0/0";
                 else

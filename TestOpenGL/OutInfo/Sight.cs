@@ -1,49 +1,19 @@
-﻿using TestOpenGL.Renders;
-using TestOpenGL.PhisicalObjects;
+﻿using TestOpenGL.PhisicalObjects;
+
 
 namespace TestOpenGL.OutInfo
 {
-    class Sight
+    class Sight : Decal
     {
-        Coord coord;
-        //Decal aimDecal;
-        GraphicObject graphicObject;
-        Camera camera;
-        EventSight eventSight;
-        //-------------
-
-
-        public Sight(Camera camera)
+        public Sight()
+            : base(GlobalData.OB.GetDecal(1))
         {
-            //coord = new Coord(0, 0);
-            graphicObject = GlobalData.OB.GetGraphicObject(6, Layer.Decal);
-            this.camera = camera;
-            eventSight = new EventSight();
-            
-            this.camera.ChangePositionEvent += Check;
-            //GlobalData.WorldData.RendereableObjectsContainer.Add(graphicObject);
-            //GlobalData.WorldData.RendereableObjectsContainer.Add(graphicObject);
+            NewPositionCheck += (int partLayer, Coord coord) => Logic.Analytics.IsInCamera(coord, GlobalData.WorldData.Camera);
         }
-        
-        public Coord Coord
-        {
-            get { return coord; }
-            set
-            {
-                coord = value;
-                graphicObject.SetNewPosition(0, coord);
-                Check();
-                eventSight.SightChangeCoord();
-            }
-        }
-
-        internal EventSight EventSight
-        { get { return eventSight; } }
-
         //=============
+        
 
-
-        public void MoveSight(Direction d)
+        public void Move(Direction d)
         {
             int dx = 0, dy = 0;
             switch(d)
@@ -54,29 +24,26 @@ namespace TestOpenGL.OutInfo
                 case Direction.Down: dy--; break;
             }
 
-            if (Logic.Analytics.CorrectCoordinate(coord.X + dx, coord.Y + dy))
-                Coord = new Coord(coord.X + dx, coord.Y + dy);
+            UnsafeCoord newCoord = new UnsafeCoord(Coord.X + dx, Coord.Y + dy);
+            if (newCoord.IsCorrect())
+                SetNewPosition(PartLayer, new Coord(newCoord));
         }
 
         public void Check()
         {
-            if (coord.X < camera.MinX)
-                Coord = new Coord(camera.MinX, coord.Y);
-            if (coord.X > camera.MaxX)
-                Coord = new Coord(camera.MaxX, coord.Y);
-            if (coord.Y < camera.MinY)
-                Coord = new Coord(coord.X, camera.MinY);
-            if (coord.Y > camera.MaxY)
-                Coord = new Coord(coord.X, camera.MaxY);
-        }
-    }
+            int newX = Coord.X, newY = Coord.Y;
 
-    class EventSight
-    {
-        public event VoidEventDelegate EventSightChangeCoord;
-        public void SightChangeCoord()
-        {
-            EventSightChangeCoord?.Invoke();
+            if (Coord.X < GlobalData.WorldData.Camera.MinX)
+                newX = GlobalData.WorldData.Camera.MinX;
+            if (Coord.X > GlobalData.WorldData.Camera.MaxX)
+                newX = GlobalData.WorldData.Camera.MaxX;
+            if (Coord.Y < GlobalData.WorldData.Camera.MinY)
+                newY = GlobalData.WorldData.Camera.MinY;
+            if (Coord.Y > GlobalData.WorldData.Camera.MaxY)
+                newY = GlobalData.WorldData.Camera.MaxY;
+
+            if(newX != Coord.X || newY != Coord.Y)
+                SetNewPosition(PartLayer, new Coord(newX, newY));
         }
     }
 }

@@ -23,11 +23,11 @@ namespace TestOpenGL.Forms.Controls
         public void SetSight(Sight sight)
         {
             if (this.sight != null)
-                this.sight.EventSight.EventSightChangeCoord -= ReloadContents;
+                this.sight.ChangeCoordEvent -= ReloadContents;
 
             this.sight = sight;
             if (this.sight != null)
-                sight.EventSight.EventSightChangeCoord += ReloadContents;
+                sight.ChangeCoordEvent += ReloadContents;
             //TODO: УПР. Исправить.
             ReloadContents();
         }

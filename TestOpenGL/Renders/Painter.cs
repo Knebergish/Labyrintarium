@@ -21,6 +21,7 @@ namespace TestOpenGL.Renders
 
         Thread RenderThread;
         ManualResetEvent isNextRender;
+        ManualResetEvent isStopRender;
 
         //TODO: вот как-то она тут не в тему, но куда её убрать?..
         //Camera camera;
@@ -41,8 +42,10 @@ namespace TestOpenGL.Renders
             RenderThread.Name = "RenderThread";
 
             isNextRender = new ManualResetEvent(false);
+            isStopRender = new ManualResetEvent(true);
 
             RenderThread.Start();
+            StartRender();
         }
 
         event ADelegate<int> IRenderManager.ChangeActualFPSEvent
@@ -65,30 +68,16 @@ namespace TestOpenGL.Renders
                 changeActualFPSEvent?.Invoke(actualFPS);
             }
         }
+
+        ManualResetEvent IRenderManager.IsStopRender
+        { get { return isStopRender; } }
         //=============
 
 
-        /*void IRenderManager.SetCamera(Camera camera)
-        {
-            StopRender();
-            this.camera = camera;
-            //TODO
-            //this.camera.ChangeSizeEvent += SettingVisibleAreaSize;
-            StartRender();
-        }*/
         void IRenderManager.SetMaxFPS(int maxFPS)
         {
             this.maxFPS = maxFPS > 0 && maxFPS < 1000 ? maxFPS : 60;
         }
-
-        /*void IRenderManager.AddRenderObject(IRenderable renderObject)
-        {
-            listRenderObjects.Add(renderObject);
-        }
-        void IRenderManager.RemoveRenderObject(IRenderable renderObject)
-        {
-            listRenderObjects.Remove(renderObject);
-        }*/
 
         void IRenderManager.StartRender()
         {
@@ -101,12 +90,13 @@ namespace TestOpenGL.Renders
 
         void StartRender()
         {
+            isStopRender.Reset();
             isNextRender.Set();
         }
         void StopRender()
         {
             isNextRender.Reset();
-            Thread.Sleep(1);
+            isStopRender.Set();
         }
 
         void CalculateActualFPS(int renderElapsedTime) //TODO: херовое название, придумать получше.
@@ -130,7 +120,7 @@ namespace TestOpenGL.Renders
                 {
                     sw.Start();
 
-                    DrawFrame(GlobalData.WorldData.RendereableObjectsContainer.GetAllRendereableObjects()); 
+                    DrawFrame(GlobalData.WorldData?.RendereableObjectsContainer.GetAllRendereableObjects()); 
 
                     sw.Stop();
                     CalculateActualFPS((int)sw.ElapsedMilliseconds);
@@ -148,7 +138,7 @@ namespace TestOpenGL.Renders
             List<IRenderable> lGO = new List<IRenderable>();
             List<Cell> lC = new List<Cell>();
 
-            lGO.AddRange(listRenderObject); //TODO: Проверить, может и без этого норм.
+            lGO.AddRange(listRenderObject ?? new List<IRenderable>()); //TODO: Проверить, может и без этого норм.
 
             GlobalData.LLL.ClearScreen();
 

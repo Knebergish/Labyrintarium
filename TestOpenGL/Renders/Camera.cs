@@ -16,7 +16,6 @@ namespace TestOpenGL.Renders
         VoidEventDelegate changeSizeEvent;
         
         PhisicalObject looking;
-        Sight sight;
         //-------------
 
 
@@ -25,13 +24,8 @@ namespace TestOpenGL.Renders
             this.width = width;
             this.height = height;
 
-            sight = new Sight(this);
-
             Look();
         }
-
-        public Sight Sight
-        { get { return sight; } }
 
         public int Height
         { 
@@ -111,5 +105,4 @@ namespace TestOpenGL.Renders
             return;
         }
     }
-
 }

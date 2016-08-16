@@ -1,10 +1,13 @@
-﻿using TestOpenGL.Renders;
+﻿using System;
+using TestOpenGL.Renders;
 
 
 namespace TestOpenGL.PhisicalObjects
 {
     class Decal : PhisicalObject
     {
+        Action thisRemover;
+        //-------------
         public Decal(Decal decal)
             : this(decal.GraphicObjectsPack) { }
         public Decal(GraphicObjectsPack graphicObjectsPack)
@@ -16,8 +19,9 @@ namespace TestOpenGL.PhisicalObjects
         {
             if (SetNewPosition(partLayer, coord))
             {
-                GlobalData.WorldData.Level.GetMap<Decal>().AddObject(this);
-                GlobalData.WorldData.RendereableObjectsContainer.Add(GraphicObjectsPack);
+                //GlobalData.WorldData.Level.GetMap<Decal>().AddObject(this);
+                //GlobalData.WorldData.RendereableObjectsContainer.Add(GraphicObjectsPack);
+                thisRemover = GlobalData.WorldData.DecalsAssistant.AddDecal(this, coord);
                 return true;
             }
             return false;
@@ -25,14 +29,14 @@ namespace TestOpenGL.PhisicalObjects
 
         protected override bool IsEmptyPosition(int partLayer, Coord coord)
         {
-            //return GlobalData.WorldData.Level.GetMap<Decal>().GetObject(partLayer, coord) == null ? true : false;
             return true;
         }
 
         public override void Despawn()
         {
-            GlobalData.WorldData.Level.GetMap<Decal>().RemoveObject(PartLayer, Coord);
-            GlobalData.WorldData.RendereableObjectsContainer.Remove(GraphicObjectsPack);
+            //GlobalData.WorldData.Level.GetMap<Decal>().RemoveObject(PartLayer, Coord);
+            //GlobalData.WorldData.RendereableObjectsContainer.Remove(GraphicObjectsPack);
+            thisRemover();
         }
     }
 }

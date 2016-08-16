@@ -18,7 +18,7 @@ namespace TestOpenGL.Forms
         {
             InitializeComponent();
             //ExceptionAssistant.NewException(new Exception("Форма редактирования карты неработоспособна. Смирись или переделывай её."));
-            contentControl1.SetSight(GlobalData.WorldData.Camera.Sight);
+            contentControl1.SetSight(GlobalData.Sight);
         }
 
         private void Form3_Load(object sender, EventArgs e)
@@ -77,8 +77,8 @@ namespace TestOpenGL.Forms
         {
             listBox1.Items.Clear();
             foreach (T b in GlobalData.WorldData.Level.GetMap<T>().GetCellObject(new Coord(
-                GlobalData.WorldData.Camera.Sight.Coord.X,
-                GlobalData.WorldData.Camera.Sight.Coord.Y
+                GlobalData.Sight.Coord.X,
+                GlobalData.Sight.Coord.Y
                 )))
                 listBox1.Items.Add(b.PartLayer + ". " + b.ObjectInfo.Name);
         }
@@ -111,8 +111,8 @@ namespace TestOpenGL.Forms
                                 comboBox1.SelectedIndex,
                                 new Coord
                                 (
-                                GlobalData.WorldData.Camera.Sight.Coord.X,
-                                GlobalData.WorldData.Camera.Sight.Coord.Y
+                                GlobalData.Sight.Coord.X,
+                                GlobalData.Sight.Coord.Y
                                 )
                             );
                         break;
@@ -123,8 +123,8 @@ namespace TestOpenGL.Forms
                                 comboBox1.SelectedIndex,
                                 new Coord
                                 (
-                                GlobalData.WorldData.Camera.Sight.Coord.X,
-                                GlobalData.WorldData.Camera.Sight.Coord.Y
+                                GlobalData.Sight.Coord.X,
+                                GlobalData.Sight.Coord.Y
                                 )
                             );
                         break;
@@ -135,8 +135,8 @@ namespace TestOpenGL.Forms
                                 0,
                                 new Coord
                                 (
-                                GlobalData.WorldData.Camera.Sight.Coord.X,
-                                GlobalData.WorldData.Camera.Sight.Coord.Y
+                                GlobalData.Sight.Coord.X,
+                                GlobalData.Sight.Coord.Y
                                 )
                             );
                         break;
@@ -147,8 +147,8 @@ namespace TestOpenGL.Forms
                                 comboBox1.SelectedIndex,
                                 new Coord
                                 (
-                                GlobalData.WorldData.Camera.Sight.Coord.X,
-                                GlobalData.WorldData.Camera.Sight.Coord.Y
+                                GlobalData.Sight.Coord.X,
+                                GlobalData.Sight.Coord.Y
                                 )
                             );
                         break;
@@ -194,8 +194,8 @@ namespace TestOpenGL.Forms
                             comboBox1.SelectedIndex,
                             new Coord
                             (
-                            GlobalData.WorldData.Camera.Sight.Coord.X,
-                            GlobalData.WorldData.Camera.Sight.Coord.Y
+                            GlobalData.Sight.Coord.X,
+                            GlobalData.Sight.Coord.Y
                             )
                         );
                     break;
@@ -206,8 +206,8 @@ namespace TestOpenGL.Forms
                             comboBox1.SelectedIndex,
                             new Coord
                             (
-                            GlobalData.WorldData.Camera.Sight.Coord.X,
-                            GlobalData.WorldData.Camera.Sight.Coord.Y
+                            GlobalData.Sight.Coord.X,
+                            GlobalData.Sight.Coord.Y
                             )
                         );
                     break;
@@ -218,8 +218,8 @@ namespace TestOpenGL.Forms
                             0,
                             new Coord
                             (
-                            GlobalData.WorldData.Camera.Sight.Coord.X,
-                            GlobalData.WorldData.Camera.Sight.Coord.Y
+                            GlobalData.Sight.Coord.X,
+                            GlobalData.Sight.Coord.Y
                             )
                         );
                     break;
@@ -231,8 +231,8 @@ namespace TestOpenGL.Forms
                             comboBox1.SelectedIndex,
                             new Coord
                             (
-                            GlobalData.WorldData.Camera.Sight.Coord.X,
-                            GlobalData.WorldData.Camera.Sight.Coord.Y
+                            GlobalData.Sight.Coord.X,
+                            GlobalData.Sight.Coord.Y
                             )
                         );*/
                     break;

@@ -7,15 +7,14 @@ using System.Threading.Tasks;
 using TestOpenGL.Renders;
 
 
+using System.Threading;
+
+
 namespace TestOpenGL
 {
     interface IRenderManager
     {
-        //void SetCamera(Camera camera);
         void SetMaxFPS(int maxFPS);
-
-        //void AddRenderObject(IRenderable renderObject);
-        //void RemoveRenderObject(IRenderable renderObject);
 
         void StartRender();
         void StopRender();
@@ -24,5 +23,7 @@ namespace TestOpenGL
         event ADelegate<int> ChangeActualFPSEvent;
 
         int MaxFPS { get; }
+
+        ManualResetEvent IsStopRender { get; }
     }
 }

@@ -26,20 +26,23 @@ namespace TestOpenGL
         //-------------
 
 
-        public WorldData()
+        public WorldData(
+            Level level, 
+            RendereableObjectsContainer rendereableObjectsContainer, 
+            DecalsAssistant decalsAssistant,
+            Controls.Control control,
+            Camera camera)
         {
-            level = new Level(30, 30, new int[5] { 4, 4, 1, 3, 1 });
-            rendereableObjectsContainer = new RendereableObjectsContainer();
-            decalsAssistant = new DecalsAssistant();
-            control = new Controls.Control();
-            camera = new Camera(10, 10);
-
+            this.level = level ?? new Level(1, 1, new int[5] { 1, 1, 1, 1, 1 });
+            this.rendereableObjectsContainer = rendereableObjectsContainer ?? new RendereableObjectsContainer();
+            this.decalsAssistant = decalsAssistant ?? new DecalsAssistant();
+            this.control = control ?? new Controls.Control();
+            this.camera = camera ?? new Camera(1, 1);
         }
 
         public Level Level
         {
             get { return level; }
-            //set { level = value; }
         }
         public DecalsAssistant DecalsAssistant
         { get { return decalsAssistant; } }
@@ -51,6 +54,6 @@ namespace TestOpenGL
         { get { return gamer; } }
         public RendereableObjectsContainer RendereableObjectsContainer
         { get { return rendereableObjectsContainer; } }
-
+        
     }
 }

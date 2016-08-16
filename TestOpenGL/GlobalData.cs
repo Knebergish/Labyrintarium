@@ -1,9 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Windows.Forms;
-
-using TestOpenGL.Logic;
-using TestOpenGL.DataIO;
+﻿using TestOpenGL.DataIO;
 using TestOpenGL.Forms;
 using TestOpenGL.OutInfo;
 using TestOpenGL.Renders;
@@ -13,21 +8,25 @@ namespace TestOpenGL
 {
     class GlobalData
     {
+#if DEBUG
         static string path = "D:\\Материя\\Я великий программист\\#Лабиринтариум# разработка\\TestOpenGL\\TestOpenGL\\bin\\x86\\Debug";
-        //string path = Directory.GetCurrentDirectory();
+#else
+        static string path = Directory.GetCurrentDirectory();
+#endif
 
-        static ILowLevelLibraryble lll;// = new OpenGLLibrary();
-        static DataBaseIO dbio;// = new DataBaseIO(path);
-        static TexturesAssistant ta;// = new TexturesAssistant(path);
-        static ObjectsBuilder ob;// = new ObjectsBuilder(dbio, ta);
-        static IRenderManager renderManager;// = new Painter();
-        static Logger log;// = new Logger();
-        static FormsAssistant fa;// = new FormsAssistant();
-        static GameCycle gCycle;// = new GameCycle();
+        static ILowLevelLibraryble lll;
+        static DataBaseIO dbio;
+        static TexturesAssistant ta;
+        static ObjectsBuilder ob;
+        static IRenderManager renderManager;
+        static Logger log;
+        static FormsAssistant fa;
+        static GameCycle gCycle;
+        static Sight sight;
 
-        static WorldData worldData;// = new WorldData();
+        static WorldData worldData;
 
-        
+        static event ADelegate<WorldData> changeWorldDataEvent;
         //-------------
 
 
@@ -41,33 +40,12 @@ namespace TestOpenGL
             log = new Logger(); //Log.LoggerListBox = mainForm.logListBox; Log.QuestLabel = mainForm.questLabel;
             fa = new FormsAssistant();
             gCycle = new GameCycle();
-
-            WorldData = new WorldData();
-
+            //sight = new Sight();
             
+
+            //WorldData = new WorldData();
         }
 
-        public static WorldData WorldData
-        {
-            get { return worldData; }
-            set
-            {
-                //gCycle.StopStep();
-                //renderManager.StopRender();
-                //worldData.Camera.ChangeSizeEvent -= () => { GlobalData.LLL.SettingVisibleAreaSize(GlobalData.WorldData.Camera.Width, GlobalData.WorldData.Camera.Height); };
-                worldData = value;
-                worldData.Camera.ChangeSizeEvent += () => 
-                {
-                    GlobalData.LLL.SettingVisibleAreaSize();
-                };
-                
-                //gCycle.StartStep();
-                //renderManager.StartRender();
-                // worldData.RenderManager.StopRender();
-                //Log.LoggerListBox = mainForm.logListBox; Log.QuestLabel = mainForm.questLabel;
-                //Cam.ChangeSizeEvent += LLL.SettingVisibleAreaSize;
-            }
-        }
         public static ILowLevelLibraryble LLL
         { get { return lll; } }
         public static DataBaseIO DBIO
@@ -84,5 +62,36 @@ namespace TestOpenGL
         { get { return fa; } }
         public static GameCycle GCycle
         { get { return gCycle; } }
+        public static Sight Sight
+        { get { return sight; } }
+
+        public static WorldData WorldData
+        {
+            get { return worldData; }
+            set
+            {
+                if (worldData != null)
+                {
+                    worldData.Camera.ChangeSizeEvent -= () => { LLL.SettingVisibleAreaSize(); };
+                    worldData.Camera.ChangeSizeEvent -= sight.Check;
+                    worldData.Camera.ChangePositionEvent -= sight.Check;
+                }
+                changeWorldDataEvent -= (WorldData worldData) => sight.Check();
+
+                worldData = value;
+
+                if (worldData != null)
+                {
+                    sight = new Sight();
+                    worldData.Camera.ChangeSizeEvent += () => { LLL.SettingVisibleAreaSize(); };
+                    worldData.Camera.ChangeSizeEvent += sight.Check;
+                    worldData.Camera.ChangePositionEvent += sight.Check;
+                    changeWorldDataEvent += (WorldData worldData) => sight.Check();
+                    sight.Spawn(0, worldData?.Gamer?.Coord ?? new Coord(0, 0));
+                }
+                
+                changeWorldDataEvent?.Invoke(worldData);
+            }
+        }
     }
 }

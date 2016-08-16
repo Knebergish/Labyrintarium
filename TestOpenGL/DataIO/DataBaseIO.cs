@@ -17,43 +17,37 @@ namespace TestOpenGL.DataIO
         public DataBaseIO(string path)
         {
             this.path = path;
-            try
-            {
-                InitDB();
-            }
-            catch(Exception)
-            {
-                throw;
-            }
+            InitDB();
         }
         //=============
 
 
         private void InitDB()
         {
-            if(!File.Exists(this.path + "\\" + this.nameDataBase))
+            string fullName = path + "\\" + nameDataBase;
+            if (!File.Exists(fullName))
             {
-                throw new FileNotFoundException("Файл игровой базы данных не найден. проверьте наличие файла " 
-                    + this.nameDataBase 
-                    + " в одной папке с исполняемым файлом игры.");
+                ExceptionAssistant.NewException(new FileNotFoundException("Файл игровой базы данных не найден. проверьте наличие файла "
+                    + nameDataBase
+                    + " в одной папке с исполняемым файлом игры."));
             }
 
             try
             {
-                this.conn = new SQLiteConnection(string.Format("Data Source=" + this.nameDataBase));
+                conn = new SQLiteConnection(string.Format("Data Source=" + fullName));
                 conn.Open();
                 conn.Close();
             }
             catch
             {
-                throw new FileLoadException("Файл игровой базы данных найден, но не может быть загружен. Проверьте его доступность.");
+                ExceptionAssistant.NewException(new FileLoadException("Файл игровой базы данных найден, но не может быть загружен. Проверьте его доступность."));
             }
         }
 
         public DataTable ExecuteSQL(string sql)
         {
             conn.Open();
-            SQLiteCommand sqliteCommand = new SQLiteCommand(this.conn);
+            SQLiteCommand sqliteCommand = new SQLiteCommand(conn);
             sqliteCommand.CommandText = sql;
             DataTable dt = new DataTable();
 
@@ -65,7 +59,7 @@ namespace TestOpenGL.DataIO
             }
             catch
             {
-                throw new DataException("Ошибка чтения данных из игровой базы данных.");
+                ExceptionAssistant.NewException(new DataException("Ошибка чтения данных из игровой базы данных."));
             }
             finally
             {

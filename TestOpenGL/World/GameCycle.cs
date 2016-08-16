@@ -8,7 +8,8 @@ namespace TestOpenGL.World
     {
         // Поток пошаговости.
         Thread ThreadSteps;
-        ManualResetEvent isNextStep = new ManualResetEvent(false);
+        ManualResetEvent isNextStep;
+        ManualResetEvent isStopStep;
         Gamer gamer;
         public event VoidEventDelegate EventStepBeings;
         public event VoidEventDelegate EventStepTriggers;
@@ -18,6 +19,8 @@ namespace TestOpenGL.World
 
         public GameCycle()
         {
+            isNextStep = new ManualResetEvent(false);
+            isStopStep = new ManualResetEvent(true);
             ThreadSteps = new Thread(Steps);
             ThreadSteps.Start();
         }
@@ -32,16 +35,21 @@ namespace TestOpenGL.World
                 GlobalData.WorldData.Camera.SetLookingVO(gamer);
             }
         }
+
+        public ManualResetEvent IsStopStep
+        { get { return isStopStep; } }
         //=============
 
 
         public void StartStep()
         {
+            isStopStep.Reset();
             isNextStep.Set();
         }
         public void StopStep()
         {
             isNextStep.Reset();
+            isStopStep.Set();
         }
 
         public void Steps()
@@ -63,7 +71,6 @@ namespace TestOpenGL.World
         }
         void StepTriggers()
         {
-            //EventStepTriggers?.Invoke();
             Triggers.currentTriggers.CallAllTriggers();
         }
         void StepBeingsIncrease()

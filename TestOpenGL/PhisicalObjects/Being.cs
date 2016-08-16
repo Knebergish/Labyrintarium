@@ -194,14 +194,14 @@ namespace TestOpenGL.PhisicalObjects
 
         public bool Use()
         {
-            if (Analytics.Distance(Coord, GlobalData.WorldData.Camera.Sight.Coord) > 1)
+            if (Analytics.Distance(Coord, GlobalData.Sight.Coord) > 1)
                 return false;
 
-            foreach (Block b in GlobalData.WorldData.Level.GetMap<Block>().GetCellObject(GlobalData.WorldData.Camera.Sight.Coord))
+            foreach (Block b in GlobalData.WorldData.Level.GetMap<Block>().GetCellObject(GlobalData.Sight.Coord))
                 if (b is IUsable)
                     ((IUsable)b).Used();
 
-            foreach (Being b in GlobalData.WorldData.Level.GetMap<Being>().GetCellObject(GlobalData.WorldData.Camera.Sight.Coord))
+            foreach (Being b in GlobalData.WorldData.Level.GetMap<Being>().GetCellObject(GlobalData.Sight.Coord))
                 if (b is IUsable)
                     ((IUsable)b).Used();
             return true;
