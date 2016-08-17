@@ -140,7 +140,7 @@ namespace TestOpenGL.PhisicalObjects
         {
             if(isSpawned && parameters.CurrentActionPoints >= 1 && SetNewPosition(0, coord))
             {
-                GlobalData.WorldData.Level.Pause(100);
+                //GlobalData.WorldData.Level.Pause(100);
                 parameters.CurrentActionPoints--;
                 return true;
             }

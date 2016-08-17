@@ -8,5 +8,7 @@ namespace TestOpenGL
     interface IRenderable
     {
         List<Cell> GetCells();
+        int PartLayer { get; }
+        Coord Coord { get; }
     }
 }

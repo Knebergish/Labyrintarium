@@ -50,15 +50,13 @@ namespace TestOpenGL.Stages
                         GlobalData.OB.GetBlock(1).Spawn(0, new Coord(x, y));
                     if (rnd.Next(1, 30) == 1)
                         GlobalData.OB.GetBlock(2).Spawn(0, new Coord(x, y));
+                    if (rnd.Next(1, 30) == 1)
+                        GlobalData.OB.GetBlock(16).Spawn(0, new Coord(x, y));
                 }
             }
-
-            /*for (int i = 0; i < 20; i += 3)
-                GlobalData.OB.GetBlock(2).Spawn(2, new Coord(6, i));*/
-
-           
-
-            GlobalData.GCycle.Gamer = new Gamer(GlobalData.OB.GetBeing(1));
+            GlobalData.OB.GetBlock(16).Spawn(0, new Coord(1, 0));
+            GlobalData.OB.GetBlock(16).Spawn(0, new Coord(1, 1));
+            GlobalData.GCycle.Gamer = new Gamer(GlobalData.OB.GetBeing(3));
             // До нормальной реализации стат.
             /*for (int i = 1; i < 10; i++)
                 GlobalData.GCycle.Gamer.Inventory.AddItemInBag(GlobalData.OB.GetArmor(i));
@@ -176,6 +174,7 @@ namespace TestOpenGL.Stages
         void EndLoad()
         {
             GlobalData.Log.SetCurrentQuest("Не умри!!");
+            GlobalData.FA.UpdateForms();
             GlobalData.RenderManager.StartRender();
             GlobalData.GCycle.StartStep();
         }

@@ -49,60 +49,6 @@ namespace TestOpenGL.Forms
             ReloadGamerInfo();
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            Random rnd = new Random();
-            for (int x = 0; x < GlobalData.WorldData.Level.LengthX; x++)
-            {
-                for (int y = 0; y < GlobalData.WorldData.Level.LengthY; y++)
-                {
-                    GlobalData.OB.GetBackground(1).Spawn(0, new Coord(x, y));
-                    if (rnd.Next(0, 40) == 1)
-                    {
-                        GlobalData.OB.GetBlock(2).Spawn(0, new Coord(x, y));
-                    }
-                    if (rnd.Next(0, 20) == 1)
-                    {
-                        GlobalData.OB.GetBlock(1).Spawn(0, new Coord(x, y));
-                    }
-                }
-            }
-
-            /*GlobalData.WorldData.Level.GetMap<Block>().AddObject
-                (
-                    new Door
-                    (
-                        new Block
-                            (
-                            new ObjectInfo(
-                                14,
-                                "Деревянная дверь",
-                                "Дверь, сделанная из дерева"),
-                                false,
-                                false,
-                                false,
-                                Program.TA.GetTexture(TypeVisualObject.Block, "14")
-                            ),
-                        Program.TA.GetTexture(TypeVisualObject.Block, "14-opened"),
-                        true,
-                        false
-                    ), 
-                    new Coord(5, 5, 3)
-                );*/
-
-
-
-
-            //GlobalData.OB.GetBlock(2).Spawn(new Coord(6, 6, 0));
-            //GlobalData.OB.GetBlock(1).Spawn(new Coord(6, 6, 1));
-
-            /*List<Block> lt = new List<Block>();
-            lt = GlobalData.WorldData.Level.GetMap<Block>().GetCellVO(new Coord(6, 6));
-            foreach (Block b in lt)
-                MessageBox.Show(b.visualObjectInfo.Name);*/
-            //GlobalData.WorldData.Camera.SetLookingVO(GlobalData.WorldData.Level.GetMap<Block>().GetVO(new Coord(6, 6)));
-        }
-
         private void button2_Click(object sender, EventArgs e)
         {
             GlobalData.FA.ShowInventory();
@@ -196,7 +142,6 @@ namespace TestOpenGL.Forms
 
         private void Form1_SizeChanged(object sender, EventArgs e)
         {
-            button1.Left = this.Width - button1.Width - 28;
             button2.Left = this.Width - button2.Width - 28;
             button4.Left = this.Width - button4.Width - 28;
 
@@ -204,7 +149,7 @@ namespace TestOpenGL.Forms
 
             glControl.Top = 11;
             glControl.Left = 11;
-            glControl.Width = Math.Min(this.Width - (this.Width - button1.Left) - 28, this.Height - 63);
+            glControl.Width = Math.Min(this.Width - (this.Width - button2.Left) - 28, this.Height - 63);
             glControl.Height = glControl.Width;
 
             controlEnabledIndicator.Top = 0;
@@ -225,6 +170,11 @@ namespace TestOpenGL.Forms
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             Environment.Exit(1);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            GlobalData.FA.ShowMapEditor();
         }
     }
 }

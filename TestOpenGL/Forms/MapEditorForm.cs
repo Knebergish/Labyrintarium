@@ -1,114 +1,109 @@
 ﻿using System;
 using System.Data;
-using System.Drawing;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using System.IO;
 
 using TestOpenGL.Forms;
 using TestOpenGL.PhisicalObjects;
+using TestOpenGL.PhisicalObjects.ChieldsBeing;
 
 namespace TestOpenGL.Forms
 {
     partial class MapEditorForm : Form
     {
-        ImageList IL;
-        int[] massId;
+        Layer currentLayer;
+        List<int> idList;
+
 
         public MapEditorForm()
         {
             InitializeComponent();
-            //ExceptionAssistant.NewException(new Exception("Форма редактирования карты неработоспособна. Смирись или переделывай её."));
-            contentControl1.SetSight(GlobalData.Sight);
+            idList = new List<int>();
         }
 
         private void Form3_Load(object sender, EventArgs e)
         {
-            comboBox1.Items.Clear();
-            for (int i = 0; i <= 13; i++)
-                comboBox1.Items.Add(i.ToString());
-            comboBox1.SelectedIndex = 0;
 
-            comboBox2.Items.Clear();
-            foreach (string s in Enum.GetNames(typeof(Layer)))
-                comboBox2.Items.Add(s);
-            comboBox2.SelectedIndex = 0;
+            UpdateForm();
 
-            
+
+
         }
 
-        private void ReloadImages()
+        public void UpdateForm()
         {
-            Layer layer = (Layer)comboBox2.SelectedIndex;
-            IL = new ImageList();
-            listView1.LargeImageList = IL;
-            listView1.Items.Clear();
-            
-            DataTable DT = GlobalData.DBIO.ExecuteSQL("SELECT * FROM " + layer.ToString() + "s");
-            massId = new int[DT.Rows.Count];
+            contentControl1.SetSight(GlobalData.Sight);
+            UpdateLayerComboBox();
+        }
 
-            /*for (int i = 0; i <= DT.Rows.Count - 1; i++)
+        void UpdateLayerComboBox()
+        {
+            layerComboBox.Items.Clear();
+            //foreach (string s in Enum.GetNames(typeof(Layer)))
+            for (int i = 0; i < 3; i++)
+                layerComboBox.Items.Add(Enum.GetName(typeof(Layer), (Layer)i));
+            layerComboBox.SelectedIndex = 0;
+        }
+        void UpdateDepthComboBox()
+        {
+            depthComboBox.Items.Clear();
+            for (int i = 0; i < GlobalData.WorldData.Level.GetDepthLayer(currentLayer); i++)
+                depthComboBox.Items.Add(i.ToString());
+            depthComboBox.SelectedIndex = 0;
+        }
+        void UpdateDataListView()
+        {
+            idList.Clear();
+            dataListView.Items.Clear();
+            DataTable dataTable = GlobalData.DBIO.ExecuteSQL($"SELECT * FROM {/*Enum.GetName(typeof(Layer), (Layer)layerComboBox.SelectedIndex)*/currentLayer.ToString()}s");
+            for (int i = 0; i < dataTable.Rows.Count; i++)
             {
-                IL.Images.Add(Image.FromFile(Directory.GetCurrentDirectory() + "\\Textures\\" + tvo.ToString() + "s\\" + DT.Rows[i][3].ToString() + ".png"));
-                listView1.Items.Add(DT.Rows[i][1].ToString(), i);
-                massId[i] = int.Parse(DT.Rows[i][0].ToString());
-            }*/
-            PictureBox pb = new PictureBox();
-            Controls.Add(pb);
-            pb.Width = 100;
-            pb.Height = 200;
-            pb.Top = 0;
-            pb.Left = 0;
-            //Image ima = Image.FromFile(Directory.GetCurrentDirectory() + "\\Textures\\Beings\\2.png");
-            Image ima1 = Image.FromFile(Directory.GetCurrentDirectory() + "\\Textures\\Beings\\3-2.png");
-            Image ima2 = Image.FromFile(Directory.GetCurrentDirectory() + "\\Textures\\Beings\\3-5.png");
-            ImageList il = new ImageList();
-            //il.TransparentColor = Color.FromArgb(1, 1, 1);
-            il.Images.Add(ima1);
-            il.Images.Add(ima2);
+                if (int.Parse(dataTable.Rows[i]["idGraphicObject"].ToString()) == 0)
+                    continue;
 
-            Bitmap b = new Bitmap(100, 200);
-            
-            il.Draw(Graphics.FromImage(pb.Image), 0, 0, 0);
-            il.Draw(Graphics.FromImage(pb.Image), 0, 100, 1);
-            
+                idList.Add(int.Parse(dataTable.Rows[i]["id"].ToString()));
+                dataListView.Items.Add(dataTable.Rows[i]["name"].ToString());
+            }
         }
 
-        private void FillListContent<T>() where T : PhisicalObject, IInfoble
+        
+        private void UpdateContentListBox()
         {
-            listBox1.Items.Clear();
+            switch ((Layer)layerComboBox.SelectedIndex)
+            {
+                case Layer.Background:
+                    FillContentListBox<Background>();
+                    break;
+
+                case Layer.Block:
+                    FillContentListBox<Block>();
+                    break;
+
+                case Layer.Being:
+                    FillContentListBox<Being>();
+                    break;
+            }
+        }
+        private void FillContentListBox<T>() where T : PhisicalObject, IInfoble
+        {
+            contentListBox.Items.Clear();
             foreach (T b in GlobalData.WorldData.Level.GetMap<T>().GetCellObject(new Coord(
                 GlobalData.Sight.Coord.X,
                 GlobalData.Sight.Coord.Y
                 )))
-                listBox1.Items.Add(b.PartLayer + ". " + b.ObjectInfo.Name);
-        }
-        private void ReloadListContent()
-        {
-            switch ((Layer)comboBox2.SelectedIndex)
-            {
-                case Layer.Background:
-                    FillListContent<Background>();
-                    break;
-
-                case Layer.Block:
-                    FillListContent<Block>();
-                    break;
-
-                case Layer.Being:
-                    FillListContent<Being>();
-                    break;
-            }
+                contentListBox.Items.Add(b.PartLayer + ". " + b.ObjectInfo.Name);
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void addButton_Click(object sender, EventArgs e)
         {
-            if(listView1.SelectedIndices.Count > 0)
-                switch ((Layer)comboBox2.SelectedIndex)
+            if(dataListView.SelectedIndices.Count > 0)
+                switch ((Layer)layerComboBox.SelectedIndex)
                 {
                     case Layer.Background:
-                        GlobalData.OB.GetBackground(massId[listView1.SelectedIndices[0]]).Spawn
+                        GlobalData.OB.GetBackground(idList[dataListView.SelectedIndices[0]]).Spawn
                             (
-                                comboBox1.SelectedIndex,
+                                depthComboBox.SelectedIndex,
                                 new Coord
                                 (
                                 GlobalData.Sight.Coord.X,
@@ -118,9 +113,9 @@ namespace TestOpenGL.Forms
                         break;
 
                     case Layer.Block:
-                        GlobalData.OB.GetBlock(massId[listView1.SelectedIndices[0]]).Spawn
+                        GlobalData.OB.GetBlock(idList[dataListView.SelectedIndices[0]]).Spawn
                             (
-                                comboBox1.SelectedIndex,
+                                depthComboBox.SelectedIndex,
                                 new Coord
                                 (
                                 GlobalData.Sight.Coord.X,
@@ -130,7 +125,7 @@ namespace TestOpenGL.Forms
                         break;
 
                     case Layer.Being:
-                        GlobalData.OB.GetBeing(massId[listView1.SelectedIndices[0]]).Spawn
+                        new Bot(GlobalData.OB.GetBeing(idList[dataListView.SelectedIndices[0]]), null).Spawn
                             (
                                 0,
                                 new Coord
@@ -141,28 +136,82 @@ namespace TestOpenGL.Forms
                             );
                         break;
 
-                    case Layer.Decal:
-                        GlobalData.OB.GetDecal(massId[listView1.SelectedIndices[0]]).Spawn
+                    /*case Layer.Decal:
+                        GlobalData.OB.GetDecal(massId[dataListView.SelectedIndices[0]]).Spawn
                             (
-                                comboBox1.SelectedIndex,
+                                depthComboBox.SelectedIndex,
                                 new Coord
                                 (
                                 GlobalData.Sight.Coord.X,
                                 GlobalData.Sight.Coord.Y
                                 )
                             );
-                        break;
+                        break;*/
                 }
 
-            ReloadListContent();
+            UpdateContentListBox();
+            contentControl1.ReloadContents();
+        }
+        private void removeButton_Click(object sender, EventArgs e)
+        {
+            switch ((Layer)layerComboBox.SelectedIndex)
+            {
+                case Layer.Background:
+                    GlobalData.WorldData.Level.GetMap<Background>().GetObject
+                        (
+                            depthComboBox.SelectedIndex,
+                            new Coord
+                            (
+                            GlobalData.Sight.Coord.X,
+                            GlobalData.Sight.Coord.Y
+                            )
+                        )?.Despawn();
+                    break;
+
+                case Layer.Block:
+                    GlobalData.WorldData.Level.GetMap<Block>().GetObject
+                        (
+                            depthComboBox.SelectedIndex,
+                            new Coord
+                            (
+                            GlobalData.Sight.Coord.X,
+                            GlobalData.Sight.Coord.Y
+                            )
+                        )?.Despawn();
+                    break;
+
+                case Layer.Being:
+                    GlobalData.WorldData.Level.GetMap<Being>().GetObject
+                        (
+                            0,
+                            new Coord
+                            (
+                            GlobalData.Sight.Coord.X,
+                            GlobalData.Sight.Coord.Y
+                            )
+                        )?.Despawn();
+                    break;
+            }
+
+            UpdateContentListBox();
+            contentControl1.ReloadContents();
         }
 
-        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        private void dataListView_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Layer layer = (Layer)comboBox2.SelectedIndex;
-            DataTable DT = GlobalData.DBIO.ExecuteSQL("SELECT * FROM " + (layer.ToString() + "s WHERE " + ((Layer)comboBox2.SelectedIndex).ToString() + "s.id=" + massId[listView1.SelectedIndices[0]].ToString()));
+            if (dataListView.SelectedIndices.Count == 0)
+                return;
+
+            DataTable DT = GlobalData.DBIO.ExecuteSQL("SELECT * FROM " + (currentLayer.ToString() + "s WHERE " + currentLayer.ToString() + "s.id=" + idList[dataListView.SelectedIndices[0]].ToString()));
             label3.Text = DT.Rows[0][1].ToString();
             label4.Text = DT.Rows[0][2].ToString();
+        }
+        private void layerComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            currentLayer = (Layer)layerComboBox.SelectedIndex;
+            UpdateDepthComboBox();
+            UpdateContentListBox();
+            UpdateDataListView();
         }
 
         private void Form3_FormClosing(object sender, FormClosingEventArgs e)
@@ -171,74 +220,10 @@ namespace TestOpenGL.Forms
             e.Cancel = true;
             //closeForm();
         }
-
         private void Form3_KeyDown(object sender, KeyEventArgs e)
         {
             GlobalData.WorldData.Control.ProcessingKeyPress(e);
-            ReloadListContent();
-        }
-
-        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            ReloadImages();
-            ReloadListContent();
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            switch ((Layer)comboBox2.SelectedIndex)
-            {
-                case Layer.Background:
-                    GlobalData.WorldData.Level.GetMap<Background>().RemoveObject
-                        (
-                            comboBox1.SelectedIndex,
-                            new Coord
-                            (
-                            GlobalData.Sight.Coord.X,
-                            GlobalData.Sight.Coord.Y
-                            )
-                        );
-                    break;
-
-                case Layer.Block:
-                    GlobalData.WorldData.Level.GetMap<Block>().RemoveObject
-                        (
-                            comboBox1.SelectedIndex,
-                            new Coord
-                            (
-                            GlobalData.Sight.Coord.X,
-                            GlobalData.Sight.Coord.Y
-                            )
-                        );
-                    break;
-
-                case Layer.Being:
-                    GlobalData.WorldData.Level.GetMap<Being>().RemoveObject
-                        (
-                            0,
-                            new Coord
-                            (
-                            GlobalData.Sight.Coord.X,
-                            GlobalData.Sight.Coord.Y
-                            )
-                        );
-                    break;
-
-                case Layer.Decal:
-                    //TODO
-                    /*GlobalData.WorldData.Level.GetMap<Decal>().RemoveObject
-                        (
-                            comboBox1.SelectedIndex,
-                            new Coord
-                            (
-                            GlobalData.Sight.Coord.X,
-                            GlobalData.Sight.Coord.Y
-                            )
-                        );*/
-                    break;
-            }
-
-            ReloadListContent();
+            UpdateContentListBox();
         }
     }
 }

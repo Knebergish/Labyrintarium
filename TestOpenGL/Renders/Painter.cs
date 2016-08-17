@@ -45,7 +45,7 @@ namespace TestOpenGL.Renders
             isStopRender = new ManualResetEvent(true);
 
             RenderThread.Start();
-            StartRender();
+            //StartRender();
         }
 
         event ADelegate<int> IRenderManager.ChangeActualFPSEvent
@@ -135,25 +135,36 @@ namespace TestOpenGL.Renders
         }
         void DrawFrame(List<IRenderable> listRenderObject)
         {
-            List<IRenderable> lGO = new List<IRenderable>();
-            List<Cell> lC = new List<Cell>();
+            List<IRenderable> renderList = new List<IRenderable>(listRenderObject);
+            //renderList.RemoveAll((IRenderable rend) => rend == null);
 
-            lGO.AddRange(listRenderObject ?? new List<IRenderable>()); //TODO: Проверить, может и без этого норм.
+            List<Cell> cellsList = new List<Cell>();
+
+            var sort1 = from obj in renderList
+                        orderby obj.Coord.Y descending, obj.PartLayer ascending
+                         select obj;
 
             GlobalData.LLL.ClearScreen();
 
-            foreach(IRenderable ro in lGO)
+            
+
+            foreach (IRenderable ro in sort1)
             {
-                lC.AddRange(ro.GetCells());
+                cellsList.AddRange(ro?.GetCells());
             }
 
-            for (int i = lC.Count - 1; i >= 0; i--)
-                if (!Analytics.IsInCamera(lC[i].C, GlobalData.WorldData.Camera))
-                    lC.RemoveAt(i);
 
-            var sort = from cell in lC
-                   orderby cell.GlobalDepth
-                   select cell;
+
+
+            for (int i = cellsList.Count - 1; i >= 0; i--)
+                if (!Analytics.IsInCamera(cellsList[i].C, GlobalData.WorldData.Camera))
+                    cellsList.RemoveAt(i);
+
+            
+
+            var sort = from cell in cellsList
+                       orderby cell.GlobalDepth ascending, cell.C.Y descending
+                       select cell;
 
             foreach (Cell cell in sort)
                 DrawCell(cell);

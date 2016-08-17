@@ -24,7 +24,10 @@ namespace TestOpenGL.BeingContents
 
                     Stack<Coord> sc = Analytics.BFS(b.Coord, LB[0].Coord);
                     if (sc.Count > 0)
+                    {
+                        GlobalData.WorldData.Level.Pause(100);
                         b.Move(sc.Pop());
+                    }
                     else
                         b.Parameters.CurrentActionPoints--;
                 }

@@ -16,8 +16,10 @@ namespace TestOpenGL.Forms
 
         public FormsAssistant()
         {
-            //formInventory = new InventoryForm();
-            //formMapEditor = new MapEditorForm();
+            GlobalData.ChangeWorldDataEvent += (WorldData worldData) => UpdateForms();
+
+            formInventory = new InventoryForm();
+            formMapEditor = new MapEditorForm();
             //formCharacter = new CharacterForm();
             //formExchangeInventoryes = new Form4();
 
@@ -27,7 +29,7 @@ namespace TestOpenGL.Forms
         //TODO: дописать этот метод
         public void UpdateForms()
         {
-            formInventory.SetInventory(GlobalData.GCycle?.Gamer.Inventory);
+            formInventory.SetInventory(GlobalData.GCycle?.Gamer?.Inventory);
         }
 
         private void ProcessingOpeningForms(openForm delegateOpenForm)

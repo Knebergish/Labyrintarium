@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 
 using TestOpenGL.Renders;
@@ -37,6 +38,12 @@ namespace TestOpenGL.Renders
                     UpdatePosition();
             }
         }
+
+        public int PartLayer
+        { get { return positionObject.PartLayer; } }
+        public Coord Coord
+        { get { return positionObject.Coord; } }
+
         //=============
 
 

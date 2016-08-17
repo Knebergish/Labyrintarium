@@ -58,12 +58,12 @@ namespace TestOpenGL.Forms
         private void ReloadEquipmentList(IEquipmentable equipment)
         {
             listBox1.Items.Clear();
-            equipment.GetAllEquipmentItems()?.ForEach(i => { listBox1.Items.Add(i.ObjectInfo.Name); });
+            equipment?.GetAllEquipmentItems()?.ForEach(i => { listBox1.Items.Add(i.ObjectInfo.Name); });
         }
         private void ReloadBagList(IBagable bag)
         {
             listBox2.Items.Clear();
-            bag.GetAllBagItems()?.ForEach(i => { listBox2.Items.Add(i.ObjectInfo.Name); });
+            bag?.GetAllBagItems()?.ForEach(i => { listBox2.Items.Add(i.ObjectInfo.Name); });
         }
 
         private void Form2_Load(object sender, EventArgs e)

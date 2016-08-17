@@ -1,4 +1,6 @@
-﻿using TestOpenGL.DataIO;
+﻿using System.IO;
+
+using TestOpenGL.DataIO;
 using TestOpenGL.Forms;
 using TestOpenGL.OutInfo;
 using TestOpenGL.Renders;
@@ -92,6 +94,12 @@ namespace TestOpenGL
                 
                 changeWorldDataEvent?.Invoke(worldData);
             }
+        }
+
+        public static event ADelegate<WorldData> ChangeWorldDataEvent
+        {
+            add { changeWorldDataEvent += value; }
+            remove { changeWorldDataEvent -= value; }
         }
     }
 }
