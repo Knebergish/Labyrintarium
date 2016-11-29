@@ -26,7 +26,9 @@ namespace TestOpenGL
 
             inventorySectionsList = new List<InventorySection>();
             //TODO: возможно, стоит сделать автоматическое заполнение всеми элементами Section?..
-            inventorySectionsList.Add(new InventorySection(Section.Armor));
+            inventorySectionsList.Add(new InventorySection(Section.Head));
+            inventorySectionsList.Add(new InventorySection(Section.Body));
+            inventorySectionsList.Add(new InventorySection(Section.Leg));
             inventorySectionsList.Add(new InventorySection(Section.Shield));
             inventorySectionsList.Add(new InventorySection(Section.Weapon));
 

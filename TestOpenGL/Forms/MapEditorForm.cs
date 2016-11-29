@@ -7,6 +7,7 @@ using System.IO;
 using TestOpenGL.Forms;
 using TestOpenGL.PhisicalObjects;
 using TestOpenGL.PhisicalObjects.ChieldsBeing;
+using System.Drawing;
 
 namespace TestOpenGL.Forms
 {
@@ -14,21 +15,20 @@ namespace TestOpenGL.Forms
     {
         Layer currentLayer;
         List<int> idList;
+        ImageList imageList;
 
 
         public MapEditorForm()
         {
             InitializeComponent();
             idList = new List<int>();
+            imageList = new ImageList();
+            dataListView.LargeImageList = imageList;
         }
 
         private void Form3_Load(object sender, EventArgs e)
         {
-
             UpdateForm();
-
-
-
         }
 
         public void UpdateForm()
@@ -55,15 +55,21 @@ namespace TestOpenGL.Forms
         void UpdateDataListView()
         {
             idList.Clear();
+            imageList.Images.Clear();
             dataListView.Items.Clear();
-            DataTable dataTable = GlobalData.DBIO.ExecuteSQL($"SELECT * FROM {/*Enum.GetName(typeof(Layer), (Layer)layerComboBox.SelectedIndex)*/currentLayer.ToString()}s");
+
+            DataTable dataTable = GlobalData.DBIO.ExecuteSQL($"SELECT * FROM {currentLayer.ToString()}s");
             for (int i = 0; i < dataTable.Rows.Count; i++)
             {
                 if (int.Parse(dataTable.Rows[i]["idGraphicObject"].ToString()) == 0)
                     continue;
 
+                DataTable graphicsObjectDataTable = GlobalData.DBIO.ExecuteSQL($"SELECT * FROM GraphicObjects WHERE GraphicObjects.idGraphicObject = {dataTable.Rows[i]["idGraphicObject"].ToString()}");
+                string imagePath = $"{GlobalData.Path}\\Textures\\{currentLayer.ToString()}s\\{graphicsObjectDataTable.Rows[0]["imageName"].ToString()}.png";
+                imageList.Images.Add(Image.FromFile(imagePath));
+
                 idList.Add(int.Parse(dataTable.Rows[i]["id"].ToString()));
-                dataListView.Items.Add(dataTable.Rows[i]["name"].ToString());
+                dataListView.Items.Add(dataTable.Rows[i]["name"].ToString(), imageList.Images.Count - 1);
             }
         }
 

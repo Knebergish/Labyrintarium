@@ -133,6 +133,7 @@ namespace TestOpenGL
         {
             primoStates = SumStates(featuresStates, itemsStates);
             primoStates.ChangeStatesEvent += changeStatesEvent;
+            primoStates.SetState(State.IncreaseActionPoints, 1);
             changeStatesEvent?.Invoke(this);
         }
         void UpdateItemsStates(IEquipmentable equipment)

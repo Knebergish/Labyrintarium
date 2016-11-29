@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+
 using TestOpenGL.BeingContents;
 using TestOpenGL.Controls;
 using TestOpenGL.PhisicalObjects;
 using TestOpenGL.PhisicalObjects.ChieldsBeing;
 using TestOpenGL.PhisicalObjects.ChieldsBlock;
 using TestOpenGL.World;
+
 
 namespace TestOpenGL.Stages
 {
@@ -34,7 +37,7 @@ namespace TestOpenGL.Stages
                 null, 
                 null, 
                 null, 
-                new Renders.Camera(5, 5));
+                new Renders.Camera(10, 10));
             VariantsControls.StandartGamerControl();
         }
 
@@ -48,14 +51,26 @@ namespace TestOpenGL.Stages
                     GlobalData.OB.GetBackground(rnd.Next(1, 5)).Spawn(0, new Coord(x, y));
                     if (rnd.Next(1, 20) == 1)
                         GlobalData.OB.GetBlock(1).Spawn(0, new Coord(x, y));
-                    if (rnd.Next(1, 30) == 1)
+                    if (rnd.Next(1, 50) == 1)
                         GlobalData.OB.GetBlock(2).Spawn(0, new Coord(x, y));
-                    if (rnd.Next(1, 30) == 1)
-                        GlobalData.OB.GetBlock(16).Spawn(0, new Coord(x, y));
+                    if (rnd.Next(1, 50) == 1)
+                        GlobalData.OB.GetBlock(rnd.Next(16, 18)).Spawn(0, new Coord(x, y));
                 }
             }
-            GlobalData.OB.GetBlock(16).Spawn(0, new Coord(1, 0));
-            GlobalData.OB.GetBlock(16).Spawn(0, new Coord(1, 1));
+            List<Block> lb = GlobalData.WorldData.Level.GetMap<Block>().GetAllObject().FindAll((Block block) => { if (block.ObjectInfo.Id == 2 || block.ObjectInfo.Id == 16 || block.ObjectInfo.Id == 17) return true;  return false; });
+            Block bl = lb[rnd.Next(0, lb.Count)];
+            bl.Despawn();
+            IBagable treeBag = new Bag(1);
+            treeBag.AddItemInBag(GlobalData.OB.GetItem(15));
+            new Chest
+                (
+                GlobalData.OB.GetBlock(bl.ObjectInfo.Id),
+                treeBag,
+                (() =>
+                { return true; }),
+                null
+                ).Spawn(0, bl.Coord);
+
             GlobalData.GCycle.Gamer = new Gamer(GlobalData.OB.GetBeing(3));
             // До нормальной реализации стат.
             /*for (int i = 1; i < 10; i++)
@@ -74,16 +89,18 @@ namespace TestOpenGL.Stages
                 false
                 ).Spawn(0, new Coord(5, 4));*/
 
-            Bot b = new Bot(GlobalData.OB.GetBeing(1), AIs.AIAttacker);
-            b.Spawn(0, new Coord(0, 0));
+            //Bot b = new Bot(GlobalData.OB.GetBeing(3), AIs.AIAttacker);
+            //b.Spawn(0, new Coord(0, 0));
 
-            new NPC
+            NPC npc = new NPC
                 (
-                GlobalData.OB.GetBeing(3),
+                GlobalData.OB.GetBeing(2),
                 "Здравствуй, путник!",
                 null
-                ).Spawn(0, new Coord(4, 4));
+                );
 
+            npc.Spawn(0, new Coord(4, 4));
+            npc.Inventory.EquipFromWithout(GlobalData.OB.GetItem(12));
 
 
             IBagable bag = new Bag(20);
@@ -93,7 +110,14 @@ namespace TestOpenGL.Stages
             new Chest
                 (
                 GlobalData.OB.GetBlock(14),
-                bag
+                bag,
+                (() =>
+                {
+                    if (GlobalData.GCycle.Gamer.Inventory.GetAllBagItems()?.Find((Item item) => { if (item.ObjectInfo.Name == "Ключ") return true; return false; }) != null)
+                        return true;
+                    return false;
+                }),
+                "Вы не нашли подходящего ключа."
                 ).Spawn(1, new Coord(3, 7));
         }
 
@@ -173,7 +197,7 @@ namespace TestOpenGL.Stages
 
         void EndLoad()
         {
-            GlobalData.Log.SetCurrentQuest("Не умри!!");
+            GlobalData.Log.SetCurrentQuest("Найди ключ от сундука в дереве!");
             GlobalData.FA.UpdateForms();
             GlobalData.RenderManager.StartRender();
             GlobalData.GCycle.StartStep();

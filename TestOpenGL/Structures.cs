@@ -129,12 +129,13 @@ namespace TestOpenGL
     /// <summary>
     /// Части тела, которые может занимать одетый предмет.
     /// </summary>
-    enum Part { Head, Body, Leg, LHand, RHand };
+    //enum Part { Head, Body, Leg, LHand, RHand };
 
     /// <summary>
     /// Секции инвентаря, занимаемые предметом.
+    /// При изменении необходимо отредактировать Equipment.cs
     /// </summary>
-    enum Section { NoEquipable, Armor, Weapon, Shield }
+    enum Section { NoEquipable, Head, Body, Leg, Weapon, Shield }
 
     /// <summary>
     /// Характеристики, которые имеет сущность.

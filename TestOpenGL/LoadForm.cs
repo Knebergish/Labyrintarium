@@ -24,6 +24,10 @@ namespace TestOpenGL
             S1.LoadStage();
             Hide();
             Program.mainForm.Show();
+
+            GlobalData.Log.LoggerListBox = Program.mainForm.logListBox;
+            GlobalData.Log.QuestLabel = Program.mainForm.questLabel;
+            GlobalData.Log.SetCurrentQuest("Найди ключ от сундука в дереве!");
         }
 
         private void LoadForm_FormClosing(object sender, FormClosingEventArgs e)

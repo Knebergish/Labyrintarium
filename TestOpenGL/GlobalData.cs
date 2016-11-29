@@ -11,7 +11,7 @@ namespace TestOpenGL
     class GlobalData
     {
 #if DEBUG
-        static string path = "D:\\Материя\\Я великий программист\\#Лабиринтариум# разработка\\TestOpenGL\\TestOpenGL\\bin\\x86\\Debug";
+        static string path = "D:\\Материя\\Я великий программист\\#Лабиринтариум# разработка\\TestOpenGL\\TestOpenGL\\bin\\x86\\Release";
 #else
         static string path = Directory.GetCurrentDirectory();
 #endif
@@ -39,7 +39,7 @@ namespace TestOpenGL
             ta = new TexturesAssistant(path);
             ob = new ObjectsBuilder(dbio, ta);
             renderManager = new Painter();
-            log = new Logger(); //Log.LoggerListBox = mainForm.logListBox; Log.QuestLabel = mainForm.questLabel;
+            log = new Logger();
             fa = new FormsAssistant();
             gCycle = new GameCycle();
             //sight = new Sight();
@@ -47,6 +47,9 @@ namespace TestOpenGL
 
             //WorldData = new WorldData();
         }
+
+        public static string Path
+        { get { return path; } }
 
         public static ILowLevelLibraryble LLL
         { get { return lll; } }

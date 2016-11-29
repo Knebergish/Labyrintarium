@@ -32,6 +32,7 @@ namespace TestOpenGL.Forms
                 ExceptionAssistant.NewException(new Exception("Не подключены библиотеки работы с OpenGL."));
             Controls.Add(glControl);
 
+            
 
             NewKeyPress += GlobalData.WorldData.Control.mre.Set;
 

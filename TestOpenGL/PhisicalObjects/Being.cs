@@ -15,6 +15,7 @@ namespace TestOpenGL.PhisicalObjects
 
         IParameterable parameters;
         IInventoryble inventory;
+        GraphicObjectsPack equipmentGraphicObjectsPack;
 
         event VoidEventDelegate deathEvent;
         event VoidEventDelegate startStepEvent;
@@ -34,13 +35,14 @@ namespace TestOpenGL.PhisicalObjects
 
             isSpawned = false;
             rangeOfVisibility = 10;
-            
+
+            equipmentGraphicObjectsPack = new GraphicObjectsPack(this);
             Bag bag = new Bag(20);
             this.inventory = inventory ?? new StandartInventory(new Equipment(bag), bag);
+            UpdateEquipmentGraphicObjectsPack(this.inventory);
+            this.inventory.ChangeEquipmentEvent += UpdateEquipmentGraphicObjectsPack;
 
             this.parameters = parameters ?? new Parameters(new TestFeatures(), this.inventory);
-                //TODO: временный костыль
-                this.parameters.SetState(State.IncreaseActionPoints, 1);
 
             Alliance = alliance;
         }
@@ -140,7 +142,7 @@ namespace TestOpenGL.PhisicalObjects
         {
             if(isSpawned && parameters.CurrentActionPoints >= 1 && SetNewPosition(0, coord))
             {
-                //GlobalData.WorldData.Level.Pause(100);
+                GlobalData.WorldData.Level.Pause(100);
                 parameters.CurrentActionPoints--;
                 return true;
             }
@@ -210,7 +212,7 @@ namespace TestOpenGL.PhisicalObjects
         //TODO: говнокод
         public bool Attack(Coord coord)
         {
-            Weapon weapon = (Weapon)inventory.GetEquipedItem(Section.Weapon);
+            /*Weapon weapon = (Weapon)inventory.GetEquipedItem(Section.Weapon);
             if (weapon == null)
                 return false;
 
@@ -223,7 +225,10 @@ namespace TestOpenGL.PhisicalObjects
                     parameters.CurrentActionPoints--;
                     return true;
                 }
-            return false;
+            return false;*/
+            GlobalData.WorldData.Level.GetMap<Being>().GetObject(0, coord)?.Damage(1);
+            Parameters.CurrentActionPoints--;
+            return true;
         }
 
         public void Increace()
@@ -231,48 +236,18 @@ namespace TestOpenGL.PhisicalObjects
             parameters.CurrentActionPoints += parameters[State.IncreaseActionPoints];
             parameters.CurrentHealth += parameters[State.IncreaseHealth];
         }
+
+        void UpdateEquipmentGraphicObjectsPack(IEquipmentable equipment)
+        {
+            GlobalData.WorldData?.RendereableObjectsContainer.Remove(equipmentGraphicObjectsPack);
+            ChangeCoordEvent -= equipmentGraphicObjectsPack.UpdatePosition;
+
+            equipmentGraphicObjectsPack = new GraphicObjectsPack(this);
+            foreach (Item item in equipment.GetAllEquipmentItems() ?? new List<Item>())
+                equipmentGraphicObjectsPack.AddGraphicObject(item.Section.ToString(), ChangePartLayer.No, item.GraphicObject);
+
+            GlobalData.WorldData?.RendereableObjectsContainer.Add(equipmentGraphicObjectsPack);
+            ChangeCoordEvent += equipmentGraphicObjectsPack.UpdatePosition;
+        }
     }
-
-    /*class EventsBeing
-    {
-        public event VoidEventDelegate EventBeingDeath;
-        public event VoidEventDelegate EventBeingStartStep;
-        public event VoidEventDelegate EventBeingEndStep;
-        public event VoidEventDelegate EventBeingEndAction;
-        public event VoidEventDelegate EventBeingEndActionPoints;
-        public event VoidEventDelegate EventBeingChangeActionPoints;
-        public event VoidEventDelegate EventBeingChangeHealth;
-        //-------------
-
-
-        public void BeingDeath()
-        {
-            EventBeingDeath?.Invoke();
-        }
-        public void BeingStartStep()
-        {
-            EventBeingStartStep?.Invoke();
-        }
-        public void BeingEndStep()
-        {
-                EventBeingEndStep?.Invoke();
-        }
-        public void BeingEndAction()
-        {
-                EventBeingEndAction?.Invoke();
-        }
-        public void BeingEndActionPoints()
-        {
-                EventBeingEndActionPoints?.Invoke();
-        }
-        public void BeingChangeActionPoints()
-        {
-            EventBeingChangeActionPoints?.Invoke();
-        }
-        public void BeingChangeHealth()
-        {
-            EventBeingChangeHealth?.Invoke();
-        }
-    }*/
-
 }
