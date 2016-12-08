@@ -62,6 +62,7 @@ namespace TestOpenGL.Forms
                     //GlobalData.FA.ShowCharacter();
                     //GlobalData.GCycle.Gamer.Attack(GlobalData.Sight.C);
                     //Battle.Attack(GlobalData.GCycle.Gamer, GlobalData.Sight.C);
+                    GlobalData.RenderManager.StopRender();
                 }).Start();
         }
 

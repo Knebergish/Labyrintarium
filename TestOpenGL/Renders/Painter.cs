@@ -90,13 +90,13 @@ namespace TestOpenGL.Renders
 
         void StartRender()
         {
-            isStopRender.Reset();
+            isStopRender.Set();
             isNextRender.Set();
         }
         void StopRender()
         {
             isNextRender.Reset();
-            isStopRender.Set();
+            isStopRender.Reset();
         }
 
         void CalculateActualFPS(int renderElapsedTime) //TODO: херовое название, придумать получше.
@@ -113,6 +113,7 @@ namespace TestOpenGL.Renders
 
             while (true)
             {
+                isStopRender.WaitOne();
                 isNextRender.WaitOne();
                 isNextRender.Reset();
 

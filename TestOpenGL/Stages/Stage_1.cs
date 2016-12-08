@@ -33,10 +33,10 @@ namespace TestOpenGL.Stages
             GlobalData.RenderManager.StopRender();
             GlobalData.GCycle.StopStep();
             GlobalData.WorldData = new WorldData(
-                new Level(20, 20, new int[5] { 4, 4, 1, 3, 1 }), 
-                null, 
-                null, 
-                null, 
+                new Level(20, 20, new int[5] { 4, 4, 1, 3, 1 }),
+                null,
+                null,
+                null,
                 new Renders.Camera(10, 10));
             VariantsControls.StandartGamerControl();
         }
@@ -57,7 +57,7 @@ namespace TestOpenGL.Stages
                         GlobalData.OB.GetBlock(rnd.Next(16, 18)).Spawn(0, new Coord(x, y));
                 }
             }
-            List<Block> lb = GlobalData.WorldData.Level.GetMap<Block>().GetAllObject().FindAll((Block block) => { if (block.ObjectInfo.Id == 2 || block.ObjectInfo.Id == 16 || block.ObjectInfo.Id == 17) return true;  return false; });
+            List<Block> lb = GlobalData.WorldData.Level.GetMap<Block>().GetAllObject().FindAll((Block block) => { if (block.ObjectInfo.Id == 2 || block.ObjectInfo.Id == 16 || block.ObjectInfo.Id == 17) return true; return false; });
             Block bl = lb[rnd.Next(0, lb.Count)];
             bl.Despawn();
             IBagable treeBag = new Bag(1);
@@ -98,9 +98,9 @@ namespace TestOpenGL.Stages
                 "Здравствуй, путник!",
                 null
                 );
-
-            npc.Spawn(0, new Coord(4, 4));
-            npc.Inventory.EquipFromWithout(GlobalData.OB.GetItem(12));
+            DecorBeing test = new DecorBeing(npc, new Coord(19, 19));
+            test.Spawn(0, new Coord(4, 4));
+            test.Inventory.EquipFromWithout(GlobalData.OB.GetItem(12));
 
 
             IBagable bag = new Bag(20);
