@@ -11,39 +11,39 @@ using TestOpenGL.World;
 
 namespace TestOpenGL.Stages
 {
-    class Stage_1
-    {
-        int currentAlliance = 2;
-        public Stage_1()
-        {
+	class Stage_1
+	{
+		int currentAlliance = 2;
+		public Stage_1()
+		{
 
-        }
+		}
 
-        public void LoadStage()
-        {
-            StartLoad();
-            LoadMap();
-            LoadShaders();
-            LoadTriggers();
-            EndLoad();
-        }
+		public void LoadStage()
+		{
+			StartLoad();
+			LoadMap();
+			LoadShaders();
+			LoadTriggers();
+			EndLoad();
+		}
 
-        void StartLoad()
-        {
-            GlobalData.RenderManager.StopRender();
-            GlobalData.GCycle.StopStep();
-            GlobalData.WorldData = new WorldData(
-                new Level(20, 20, new int[5] { 4, 4, 1, 3, 1 }),
-                null,
-                null,
-                null,
-                new Renders.Camera(10, 10));
-            VariantsControls.StandartGamerControl();
-        }
+		void StartLoad()
+		{
+			GlobalData.RenderManager.StopRender();
+			GlobalData.GCycle.StopStep();
+			GlobalData.WorldData = new WorldData(
+				new Level(20, 20, new int[5] { 4, 4, 1, 3, 1 }),
+				null,
+				null,
+				null,
+				new Renders.Camera(10, 10));
+			VariantsControls.StandartGamerControl();
+		}
 
-        void LoadMap()
-        {
-            Random rnd = new Random();
+		void LoadMap()
+		{
+			/*Random rnd = new Random();
             for (int x = 0; x < GlobalData.WorldData.Level.LengthX; x++)
             {
                 for (int y = 0; y < GlobalData.WorldData.Level.LengthY; y++)
@@ -70,18 +70,50 @@ namespace TestOpenGL.Stages
                 { return true; }),
                 null
                 ).Spawn(0, bl.Coord);
+				*/
 
-            GlobalData.GCycle.Gamer = new Gamer(GlobalData.OB.GetBeing(3));
-            // До нормальной реализации стат.
-            /*for (int i = 1; i < 10; i++)
+			var leafs = Leaf.Activate();
+			int flag = 1;
+
+
+			/*foreach (Leaf l in leafs)
+			{
+				Decal d = GlobalData.OB.GetDecal(flag);
+				for (int x = l.room.x; x < l.room.width + l.room.x; x++)
+					for (int y = l.room.y; y < l.room.height + l.room.y; y++)
+						d.Clone().Spawn(0, new Coord(x, y));
+
+				flag = flag + 1 > 4 ? 1 : flag + 1;
+			}*/
+			foreach (Leaf l in leafs)
+			{
+				if (l.room != null)
+				{
+					Leaf.Fill(l.room, () => GlobalData.OB.GetBackground(1));
+				}
+				if (l.halls != null)
+					foreach (Rectangle rec in (l.halls ?? new List<Rectangle>()))
+						Leaf.Fill(rec, () => GlobalData.OB.GetBackground(5));
+
+				flag = flag + 1 > 4 ? 1 : flag + 1;
+			}
+			for (int i = 0; i < GlobalData.WorldData.Level.LengthX; i++)
+				for (int j = 0; j < GlobalData.WorldData.Level.LengthY; j++)
+					if (GlobalData.WorldData.Level.GetMap<Background>().GetObject(0, new Coord(i, j)) == null)
+						GlobalData.OB.GetBlock(18).Spawn(0, new Coord(i, j));
+
+
+			GlobalData.GCycle.Gamer = new Gamer(GlobalData.OB.GetBeing(3));
+			// До нормальной реализации стат.
+			/*for (int i = 1; i < 10; i++)
                 GlobalData.GCycle.Gamer.Inventory.AddItemInBag(GlobalData.OB.GetArmor(i));
             for (int i = 1; i < 5; i++)
                 GlobalData.GCycle.Gamer.Inventory.AddItemInBag(GlobalData.OB.GetWeapon(i));
             GlobalData.GCycle.Gamer.Inventory.AddItemInBag(GlobalData.OB.GetShield(1));*/
-            GlobalData.GCycle.Gamer.Parameters.AddExperience(100);
-            GlobalData.GCycle.Gamer.Spawn(0, new Coord(5, 5));
+			GlobalData.GCycle.Gamer.Parameters.AddExperience(100);
+			GlobalData.GCycle.Gamer.Spawn(0, new Coord(2, 2));
 
-            /*new Door
+			/*new Door
                 (
                 GlobalData.OB.GetBlock(15),
                 GlobalData.OB.GetGraphicObject(12, Layer.Block),
@@ -89,42 +121,42 @@ namespace TestOpenGL.Stages
                 false
                 ).Spawn(0, new Coord(5, 4));*/
 
-            //Bot b = new Bot(GlobalData.OB.GetBeing(3), AIs.AIAttacker);
-            //b.Spawn(0, new Coord(0, 0));
+			//Bot b = new Bot(GlobalData.OB.GetBeing(3), AIs.AIAttacker);
+			//b.Spawn(0, new Coord(0, 0));
 
-            NPC npc = new NPC
-                (
-                GlobalData.OB.GetBeing(2),
-                "Здравствуй, путник!",
-                null
-                );
-            DecorBeing test = new DecorBeing(npc, new Coord(19, 19));
-            test.Spawn(0, new Coord(4, 4));
-            test.Inventory.EquipFromWithout(GlobalData.OB.GetItem(12));
+			NPC npc = new NPC
+				(
+				GlobalData.OB.GetBeing(2),
+				"Здравствуй, путник!",
+				null
+				);
+			DecorBeing test = new DecorBeing(npc, new Coord(19, 19));
+			test.Spawn(0, new Coord(4, 4));
+			test.Inventory.EquipFromWithout(GlobalData.OB.GetItem(12));
 
 
-            IBagable bag = new Bag(20);
-            bag.AddItemInBag(GlobalData.OB.GetItem(1));
-            bag.AddItemInBag(GlobalData.OB.GetItem(5));
+			IBagable bag = new Bag(20);
+			bag.AddItemInBag(GlobalData.OB.GetItem(1));
+			bag.AddItemInBag(GlobalData.OB.GetItem(5));
 
-            new Chest
-                (
-                GlobalData.OB.GetBlock(14),
-                bag,
-                (() =>
-                {
-                    if (GlobalData.GCycle.Gamer.Inventory.GetAllBagItems()?.Find((Item item) => { if (item.ObjectInfo.Name == "Ключ") return true; return false; }) != null)
-                        return true;
-                    return false;
-                }),
-                "Вы не нашли подходящего ключа."
-                ).Spawn(1, new Coord(3, 7));
-        }
+			new Chest
+				(
+				GlobalData.OB.GetBlock(14),
+				bag,
+				(() =>
+				{
+					if (GlobalData.GCycle.Gamer.Inventory.GetAllBagItems()?.Find((Item item) => { if (item.ObjectInfo.Name == "Ключ") return true; return false; }) != null)
+						return true;
+					return false;
+				}),
+				"Вы не нашли подходящего ключа."
+				).Spawn(1, new Coord(3, 7));
+		}
 
-        void LoadShaders()
-        {
-            // Шейдер крон деревьев
-            /*GlobalData.RenderManager.ShadersList.Add(new Func<List<RenderObject>>(() =>
+		void LoadShaders()
+		{
+			// Шейдер крон деревьев
+			/*GlobalData.RenderManager.ShadersList.Add(new Func<List<RenderObject>>(() =>
             {
                 Texture t = Program.TA.GetTexture(TypeVisualObject.Block, "3");
                 List<RenderObject> lro = new List<RenderObject>();
@@ -137,8 +169,8 @@ namespace TestOpenGL.Stages
                 return lro;
             }));*/
 
-            // Шейдер экипированных вещей
-            /*GlobalData.RenderManager.ShadersList.Add(new Func<List<RenderObject>>(() =>
+			// Шейдер экипированных вещей
+			/*GlobalData.RenderManager.ShadersList.Add(new Func<List<RenderObject>>(() =>
             {
                 List<RenderObject> lro = new List<RenderObject>();
 
@@ -160,11 +192,11 @@ namespace TestOpenGL.Stages
                         
                 return lro;
             }));*/
-        }
+		}
 
-        void LoadTriggers()
-        {
-            /*Triggers.currentTriggers.AddTrigger(
+		void LoadTriggers()
+		{
+			/*Triggers.currentTriggers.AddTrigger(
                 new Trigger(
                     1,
                     true,
@@ -179,7 +211,7 @@ namespace TestOpenGL.Stages
                         }
                     }
                 ));*/
-            /*Triggers.currentTriggers.AddTrigger(
+			/*Triggers.currentTriggers.AddTrigger(
                 new Trigger(
                     1, 
                     true,
@@ -193,21 +225,21 @@ namespace TestOpenGL.Stages
                     }
                     )
                 );*/
-        }
+		}
 
-        void EndLoad()
-        {
-            GlobalData.Log.SetCurrentQuest("Найди ключ от сундука в дереве!");
-            GlobalData.FA.UpdateForms();
-            GlobalData.RenderManager.StartRender();
-            GlobalData.GCycle.StartStep();
-        }
+		void EndLoad()
+		{
+			GlobalData.Log.SetCurrentQuest("Найди ключ от сундука в дереве!");
+			GlobalData.FA.UpdateForms();
+			GlobalData.RenderManager.StartRender();
+			GlobalData.GCycle.StartStep();
+		}
 
-        Bot GetNextBot()
-        {
-            Bot b = new Bot(GlobalData.OB.GetBeing(1), AIs.AIAttacker);
-            b.Alliance = currentAlliance++;
-            return b;
-        }
-    }
+		Bot GetNextBot()
+		{
+			Bot b = new Bot(GlobalData.OB.GetBeing(1), AIs.AIAttacker);
+			b.Alliance = currentAlliance++;
+			return b;
+		}
+	}
 }

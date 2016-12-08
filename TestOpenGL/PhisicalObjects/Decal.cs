@@ -38,5 +38,10 @@ namespace TestOpenGL.PhisicalObjects
             //GlobalData.WorldData.RendereableObjectsContainer.Remove(GraphicObjectsPack);
             thisRemover();
         }
-    }
+
+		public override PhisicalObject Clone()
+		{
+			return new Decal(this);
+		}
+	}
 }

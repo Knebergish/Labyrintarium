@@ -79,6 +79,8 @@ namespace TestOpenGL
 
         public abstract bool Spawn(int partLayer, Coord coord);
         public abstract void Despawn();
+
+		public abstract PhisicalObject Clone();
     }
 
 

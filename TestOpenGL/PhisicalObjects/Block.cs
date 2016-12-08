@@ -1,4 +1,5 @@
-﻿using TestOpenGL.Renders;
+﻿using System;
+using TestOpenGL.Renders;
 
 
 namespace TestOpenGL.PhisicalObjects
@@ -62,5 +63,10 @@ namespace TestOpenGL.PhisicalObjects
             GlobalData.WorldData.Level.GetMap<Block>().RemoveObject(PartLayer, Coord);
             GlobalData.WorldData.RendereableObjectsContainer.Remove(GraphicObjectsPack);
         }
-    }
+
+		public override PhisicalObject Clone()
+		{
+			return new Block(this);
+		}
+	}
 }

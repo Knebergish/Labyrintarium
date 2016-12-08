@@ -25,7 +25,8 @@ namespace TestOpenGL.PhisicalObjects.ChieldsBeing
             GlobalData.RenderManager.StopRender();
 
             Stack<Coord> sc = Analytics.BFS(Coord, goal);
-            Move(sc.Peek());
+            if (!Move(sc.Count > 0 ? sc.Peek() : Coord))
+                Parameters.CurrentActionPoints = 0;
 
             foreach (Action action in deletes)
                 action();

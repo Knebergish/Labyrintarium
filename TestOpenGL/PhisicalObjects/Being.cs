@@ -249,5 +249,10 @@ namespace TestOpenGL.PhisicalObjects
             GlobalData.WorldData?.RendereableObjectsContainer.Add(equipmentGraphicObjectsPack);
             ChangeCoordEvent += equipmentGraphicObjectsPack.UpdatePosition;
         }
-    }
+
+		public override PhisicalObject Clone()
+		{
+			return new Being(this);
+		}
+	}
 }

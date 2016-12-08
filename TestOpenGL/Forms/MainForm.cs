@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 using Tao.Platform.Windows;
 using TestOpenGL.PhisicalObjects;
-
+using TestOpenGL.World;
 
 namespace TestOpenGL.Forms
 {
@@ -59,10 +59,13 @@ namespace TestOpenGL.Forms
         {
             new Thread(delegate()
                 {
-                    //GlobalData.FA.ShowCharacter();
-                    //GlobalData.GCycle.Gamer.Attack(GlobalData.Sight.C);
-                    //Battle.Attack(GlobalData.GCycle.Gamer, GlobalData.Sight.C);
-                    GlobalData.RenderManager.StopRender();
+					//GlobalData.FA.ShowCharacter();
+					//GlobalData.GCycle.Gamer.Attack(GlobalData.Sight.C);
+					//Battle.Attack(GlobalData.GCycle.Gamer, GlobalData.Sight.C);
+					//GlobalData.RenderManager.StopRender();
+					//WorldGenerator wg = new WorldGenerator();
+					//wg.GenerateNumericMap();
+					Leaf.Activate();
                 }).Start();
         }
 
