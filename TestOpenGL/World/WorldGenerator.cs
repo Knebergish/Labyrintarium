@@ -4,8 +4,8 @@ namespace TestOpenGL.World
 {
 	class WorldGenerator
 	{
-		const int SIZE_X = 5;
-		const int SIZE_Y = 5;
+		const int SIZE_X = 6;
+		const int SIZE_Y = 6;
 
 		int[,] map;
 		List<int[,]> maps;

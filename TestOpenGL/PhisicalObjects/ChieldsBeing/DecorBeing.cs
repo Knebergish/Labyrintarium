@@ -15,20 +15,23 @@ namespace TestOpenGL.PhisicalObjects.ChieldsBeing
         public DecorBeing(Being being, Coord goal) :
             base(being)
         {
-            this.goal = goal;
+            //this.goal = goal;
             deletes = new List<Action>();
         }
 
         protected override void Action()
         {
-
             GlobalData.RenderManager.StopRender();
 
+	        goal = GlobalData.GCycle.Gamer.Coord;
+
             Stack<Coord> sc = Analytics.BFS(Coord, goal);
+
             if (!Move(sc.Count > 0 ? sc.Peek() : Coord))
                 Parameters.CurrentActionPoints = 0;
+	        Parameters.CurrentActionPoints--;
 
-            foreach (Action action in deletes)
+			foreach (Action action in deletes)
                 action();
 
             deletes.Clear();

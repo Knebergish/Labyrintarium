@@ -28,12 +28,12 @@ namespace TestOpenGL.Stages
 			EndLoad();
 		}
 
-		void StartLoad()
+		private void StartLoad()
 		{
 			GlobalData.RenderManager.StopRender();
 			GlobalData.GCycle.StopStep();
 			GlobalData.WorldData = new WorldData(
-				new Level(20, 20, new int[5] { 4, 4, 1, 3, 1 }),
+				new Level(30, 30, new int[5] { 4, 4, 1, 3, 1 }),
 				null,
 				null,
 				null,
@@ -73,37 +73,29 @@ namespace TestOpenGL.Stages
 				*/
 
 			var leafs = Leaf.Activate();
-			int flag = 1;
 
-
-			/*foreach (Leaf l in leafs)
-			{
-				Decal d = GlobalData.OB.GetDecal(flag);
-				for (int x = l.room.x; x < l.room.width + l.room.x; x++)
-					for (int y = l.room.y; y < l.room.height + l.room.y; y++)
-						d.Clone().Spawn(0, new Coord(x, y));
-
-				flag = flag + 1 > 4 ? 1 : flag + 1;
-			}*/
 			foreach (Leaf l in leafs)
 			{
-				if (l.room != null)
-				{
-					Leaf.Fill(l.room, () => GlobalData.OB.GetBackground(1));
-				}
+				// Заполняем тропинки фоном
 				if (l.halls != null)
 					foreach (Rectangle rec in (l.halls ?? new List<Rectangle>()))
-						Leaf.Fill(rec, () => GlobalData.OB.GetBackground(5));
+						Leaf.Fill(rec, () => GlobalData.OB.GetBackground(5), 0);
 
-				flag = flag + 1 > 4 ? 1 : flag + 1;
+				// Заполняем комнаты фоном
+				if (l.room != null)
+				{
+					Leaf.Fill(l.room, () => GlobalData.OB.GetBackground(5), 1);
+				}
 			}
+
+			// Заполняем остальное стенами
 			for (int i = 0; i < GlobalData.WorldData.Level.LengthX; i++)
 				for (int j = 0; j < GlobalData.WorldData.Level.LengthY; j++)
-					if (GlobalData.WorldData.Level.GetMap<Background>().GetObject(0, new Coord(i, j)) == null)
+					if (GlobalData.WorldData.Level.GetMap<Background>().GetCellObject(new Coord(i, j)).Count == 0)
 						GlobalData.OB.GetBlock(18).Spawn(0, new Coord(i, j));
 
-
-			GlobalData.GCycle.Gamer = new Gamer(GlobalData.OB.GetBeing(3));
+			//TODO: gamer хранится и в WorldData, и в GCycle?..
+			GlobalData.GCycle.Gamer = new Gamer(GlobalData.OB.GetBeing(1));
 			// До нормальной реализации стат.
 			/*for (int i = 1; i < 10; i++)
                 GlobalData.GCycle.Gamer.Inventory.AddItemInBag(GlobalData.OB.GetArmor(i));
@@ -111,7 +103,9 @@ namespace TestOpenGL.Stages
                 GlobalData.GCycle.Gamer.Inventory.AddItemInBag(GlobalData.OB.GetWeapon(i));
             GlobalData.GCycle.Gamer.Inventory.AddItemInBag(GlobalData.OB.GetShield(1));*/
 			GlobalData.GCycle.Gamer.Parameters.AddExperience(100);
-			GlobalData.GCycle.Gamer.Spawn(0, new Coord(2, 2));
+			Rectangle rect = leafs[0].getRoom();
+			Random rnd = new Random();
+			GlobalData.GCycle.Gamer.Spawn(0, new Coord(rnd.Next(rect.x, rect.x + rect.width), rnd.Next(rect.y, rect.y + rect.height)));
 
 			/*new Door
                 (
@@ -124,22 +118,25 @@ namespace TestOpenGL.Stages
 			//Bot b = new Bot(GlobalData.OB.GetBeing(3), AIs.AIAttacker);
 			//b.Spawn(0, new Coord(0, 0));
 
+			rect = leafs[0].getRoom();
 			NPC npc = new NPC
 				(
-				GlobalData.OB.GetBeing(2),
+				GlobalData.OB.GetBeing(4),
 				"Здравствуй, путник!",
 				null
 				);
-			DecorBeing test = new DecorBeing(npc, new Coord(19, 19));
-			test.Spawn(0, new Coord(4, 4));
-			test.Inventory.EquipFromWithout(GlobalData.OB.GetItem(12));
+			DecorBeing test = new DecorBeing(npc, new Coord(rnd.Next(rect.x, rect.x + rect.width), rnd.Next(rect.y, rect.y + rect.height)));
+			rect = leafs[0].getRoom();
+			test.Spawn(0, new Coord(GlobalData.GCycle.Gamer.Coord.X + 2, GlobalData.GCycle.Gamer.Coord.Y));
+				//new Coord(rnd.Next(rect.x, rect.x + rect.width), rnd.Next(rect.y, rect.y + rect.height)));
+			//test.Inventory.EquipFromWithout(GlobalData.OB.GetItem(12));
 
 
-			IBagable bag = new Bag(20);
-			bag.AddItemInBag(GlobalData.OB.GetItem(1));
-			bag.AddItemInBag(GlobalData.OB.GetItem(5));
+			//IBagable bag = new Bag(20);
+			//bag.AddItemInBag(GlobalData.OB.GetItem(1));
+			//bag.AddItemInBag(GlobalData.OB.GetItem(5));
 
-			new Chest
+			/*new Chest
 				(
 				GlobalData.OB.GetBlock(14),
 				bag,
@@ -150,7 +147,7 @@ namespace TestOpenGL.Stages
 					return false;
 				}),
 				"Вы не нашли подходящего ключа."
-				).Spawn(1, new Coord(3, 7));
+				).Spawn(1, new Coord(3, 7));*/
 		}
 
 		void LoadShaders()

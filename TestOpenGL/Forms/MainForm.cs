@@ -2,14 +2,13 @@
 using System.Windows.Forms;
 using System.Threading;
 using System.Collections.Generic;
-
 using Tao.Platform.Windows;
 using TestOpenGL.PhisicalObjects;
 using TestOpenGL.World;
 
 namespace TestOpenGL.Forms
 {
-    partial class MainForm : Form
+	partial class MainForm : Form
     {
         SimpleOpenGlControl glControl;
         public List<KeyEventArgs> keyList = new List<KeyEventArgs>();
@@ -65,7 +64,7 @@ namespace TestOpenGL.Forms
 					//GlobalData.RenderManager.StopRender();
 					//WorldGenerator wg = new WorldGenerator();
 					//wg.GenerateNumericMap();
-					Leaf.Activate();
+					//Leaf.Activate();
                 }).Start();
         }
 

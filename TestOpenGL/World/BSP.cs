@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TestOpenGL.PhisicalObjects;
 
 namespace TestOpenGL.World
 {
@@ -14,7 +10,15 @@ namespace TestOpenGL.World
 	class Leaf
 	{
 		static Random rnd = new Random();
-		private const int MIN_LEAF_SIZE = 5;
+		// Не меньше 4
+		private const int MIN_LEAF_SIZE = 8;
+
+		private const int MAX_LEAF_SIZE = 15;
+
+		// если ширина листа больше чем на 25% больше высоты, то разбиваем вертикалью
+		// если высота больше чем на 25% больше ширины, то разбиваем горизонталью
+		// иначе случайно
+		private const double LARGER_SPLIT = 0.01;
 
 		public int y, x, width, height; // the position and size of this Leaf
 
@@ -23,29 +27,27 @@ namespace TestOpenGL.World
 		public Rectangle room; // the room that is inside this Leaf
 		public List<Rectangle> halls; // hallways to connect this Leaf to other Leafs
 
-		public Leaf(int X, int Y, int Width, int Height)
+		public Leaf(int x, int y, int width, int height)
 		{
-			// initialize our leaf
-			x = X;
-			y = Y;
-			width = Width;
-			height = Height;
+			this.x = x;
+			this.y = y;
+			this.width = width;
+			this.height = height;
 		}
 
 		public bool split()
 		{
-			// begin splitting the leaf into two children
 			if (leftChild != null || rightChild != null)
-				return false; // we're already split! Abort!
+				return false;
 
 			// determine direction of split
 			// if the width is >25% larger than height, we split vertically
 			// if the height is >25% larger than the width, we split horizontally
 			// otherwise we split randomly
 			bool splitH = rnd.NextDouble() > 0.5;
-			if (width > height && width / height >= 1.25)
+			if (width > height && width / height >= 1.0 + LARGER_SPLIT)
 				splitH = false;
-			else if (height > width && height / width >= 1.25)
+			else if (height > width && height / width >= 1.0 + LARGER_SPLIT)
 				splitH = true;
 
 			int max = (splitH ? height : width) - MIN_LEAF_SIZE; // determine the maximum height or width
@@ -70,14 +72,14 @@ namespace TestOpenGL.World
 
 		static public List<Leaf> Activate()
 		{
-			const int MAX_LEAF_SIZE = 10;
+			
 
 			List<Leaf> leafs = new List<Leaf>();
 
 			//Leaf l; // helper Leaf
 
 			// first, create a Leaf to be the 'root' of all Leafs.
-			Leaf root = new Leaf(0, 0, 20, 20);
+			Leaf root = new Leaf(0, 0, GlobalData.WorldData.Level.LengthX, GlobalData.WorldData.Level.LengthY);
 			leafs.Add(root);
 
 			bool did_split = true;
@@ -106,7 +108,7 @@ namespace TestOpenGL.World
 				}
 			}
 
-			root.createRooms();
+			root.CreateRooms();
 
 			return leafs;
 			/*return new List<Leaf>(leafs.FindAll(
@@ -115,20 +117,14 @@ namespace TestOpenGL.World
 		}
 
 
-		public void createRooms()
+		public void CreateRooms()
 		{
 			// this function generates all the rooms and hallways for this Leaf and all of its children.
 			if (leftChild != null || rightChild != null)
 			{
 				// this leaf has been split, so go into the children leafs
-				if (leftChild != null)
-				{
-					leftChild.createRooms();
-				}
-				if (rightChild != null)
-				{
-					rightChild.createRooms();
-				}
+				leftChild?.CreateRooms();
+				rightChild?.CreateRooms();
 
 				// if there are both left and right children in this Leaf, create a hallway between them
 				if (leftChild != null && rightChild != null)
@@ -139,13 +135,11 @@ namespace TestOpenGL.World
 			else
 			{
 				// this Leaf is the ready to make a room
-				Tuple<int, int> roomSize;
-				Tuple<int, int> roomPos;
 				// the room can be between 3 x 3 tiles to the size of the leaf - 2.
-				roomSize = new Tuple<int, int>(rnd.Next(3, width), rnd.Next(3, height));
+				var roomSize = new Tuple<int, int>(rnd.Next(3, width), rnd.Next(3, height));
 				// place the room within the Leaf, but don't put it right 
 				// against the side of the Leaf (that would merge rooms together)
-				roomPos = new Tuple<int, int>(rnd.Next(1, width - roomSize.Item1), rnd.Next(1, height - roomSize.Item2));
+				var roomPos = new Tuple<int, int>(rnd.Next(1, width - roomSize.Item1), rnd.Next(1, height - roomSize.Item2));
 				room = new Rectangle(x + roomPos.Item1, y + roomPos.Item2, roomSize.Item1, roomSize.Item2);
 			}
 		}
@@ -273,12 +267,12 @@ namespace TestOpenGL.World
 			}
 		}
 
-		public static void Fill<T>(Rectangle rectangle, Func<T> getT) where T : PhisicalObject
+		public static void Fill<T>(Rectangle rectangle, Func<T> getT, int partLayer) where T : PhisicalObject
 		{
 			for (int x = rectangle.x; x < rectangle.x + rectangle.width; x++)
 				for (int y = rectangle.y; y < rectangle.y + rectangle.height; y++)
 				{
-					getT().Spawn(0, new Coord(x, y));
+					getT().Spawn(partLayer, new Coord(x, y));
 				}
 		}
 	}

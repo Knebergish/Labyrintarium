@@ -16,19 +16,19 @@ namespace TestOpenGL
         static string path = Directory.GetCurrentDirectory();
 #endif
 
-        static ILowLevelLibraryble lll;
-        static DataBaseIO dbio;
-        static TexturesAssistant ta;
-        static ObjectsBuilder ob;
-        static IRenderManager renderManager;
-        static Logger log;
-        static FormsAssistant fa;
-        static GameCycle gCycle;
-        static Sight sight;
+	    private static ILowLevelLibraryble lll;
+	    private static DataBaseIO dbio;
+	    private static TexturesAssistant ta;
+	    private static ObjectsBuilder ob;
+	    private static IRenderManager renderManager;
+	    private static Logger log;
+	    private static FormsAssistant fa;
+	    private static GameCycle gCycle;
+	    private static Sight sight;
 
-        static WorldData worldData;
+	    private static WorldData worldData;
 
-        static event ADelegate<WorldData> changeWorldDataEvent;
+	    private static event ADelegate<WorldData> changeWorldDataEvent;
         //-------------
 
 
@@ -48,29 +48,27 @@ namespace TestOpenGL
             //WorldData = new WorldData();
         }
 
-        public static string Path
-        { get { return path; } }
+        public static string Path => path;
 
-        public static ILowLevelLibraryble LLL
-        { get { return lll; } }
-        public static DataBaseIO DBIO
-        { get { return dbio; } }
-        public static TexturesAssistant TA
-        { get { return ta; } }
-        public static ObjectsBuilder OB
-        { get { return ob; } }
-        public static IRenderManager RenderManager
-        { get { return renderManager; } }
-        public static Logger Log
-        { get { return log; } }
-        public static FormsAssistant FA
-        { get { return fa; } }
-        public static GameCycle GCycle
-        { get { return gCycle; } }
-        public static Sight Sight
-        { get { return sight; } }
+	    public static ILowLevelLibraryble LLL => lll;
 
-        public static WorldData WorldData
+	    public static DataBaseIO DBIO => dbio;
+
+	    public static TexturesAssistant TA => ta;
+
+	    public static ObjectsBuilder OB => ob;
+
+	    public static IRenderManager RenderManager => renderManager;
+
+	    public static Logger Log => log;
+
+	    public static FormsAssistant FA => fa;
+
+	    public static GameCycle GCycle => gCycle;
+
+	    public static Sight Sight => sight;
+
+	    public static WorldData WorldData
         {
             get { return worldData; }
             set
